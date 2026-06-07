@@ -1,0 +1,1 @@
+from multilingual_bfcl.localization.locale_config import Locale, SUPPORTED_LOCALES

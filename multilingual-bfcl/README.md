@@ -14,7 +14,7 @@ pip install -e ../berkeley-function-call-leaderboard
 pip install -e .
 
 # Copy and fill in your API keys
-cp .env.example .env
+cp .env .env
 
 # List available categories and locales
 mbfcl categories

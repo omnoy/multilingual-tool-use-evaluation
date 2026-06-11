@@ -2,15 +2,18 @@
 classify_benchmark.py — Localization classifier for multilingual-bfcl benchmark entries.
 
 For each entry in data/benchmarks/<category>/eng_base.json, classifies:
-  - parameter_type          : "textual" | "non-textual"
-  - localizable_query       : "true" | "false"   (only classified when parameter_type is "textual")
-  - localizable_parameters  : "true" | "false"   (only classified when parameter_type is "textual")
+  - parameter_type          : "translatable" | "non-translatable"
+  - localizable_query       : "true" | "false"   (only classified when parameter_type is "translatable")
+  - localizable_parameters  : "true" | "false"   (only classified when parameter_type is "translatable")
 
-parameter_type is decided locally with a regex check on the ground-truth argument
-values: if every value is numeric, boolean, or otherwise non-textual, the entry is
-"non-textual" and no API call is made for it. Only "textual" entries are sent to the
-LLM (via langasync → the provider's native Batch API) to classify the two
-localizable_* dimensions. Non-textual entries get empty localizable_* columns.
+A regex pre-filter checks the ground-truth argument values: if every value is
+numeric, boolean, a date, or otherwise clearly non-translatable, the entry is
+classified "non-translatable" locally and no API call is made for it. All
+remaining entries are sent to the LLM (via langasync → the provider's native
+Batch API), which classifies parameter_type itself — string values can still be
+non-translatable (code, math expressions like "2x**2", identifiers) — plus the
+two localizable_* dimensions. Non-translatable entries get empty localizable_*
+columns.
 
 Results are written to data/benchmarks/<category>/base_classifications.csv.
 
@@ -60,19 +63,20 @@ DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks"
 load_dotenv(PACKAGE_ROOT / ".env")
 
 # ---------------------------------------------------------------------------
-# Prompt — only the two localizable_* dimensions; parameter_type is decided
-# locally by regex, and only "textual" entries reach the LLM.
+# Prompt — entries whose ground truth the regex pre-filter could not rule out
+# reach the LLM, which makes the final parameter_type call (string values may
+# still be code/math/identifiers) and classifies the two localizable_* dims.
 # ---------------------------------------------------------------------------
 
 SYSTEM_PROMPT = """\
 You are a research assistant classifying function-calling benchmark entries for \
 multilingual localization research. You will be given a benchmark entry consisting \
 of a user query, available function definitions, and the ground-truth function call \
-with argument values. Classify the entry on exactly two dimensions and return ONLY \
+with argument values. Classify the entry on exactly three dimensions and return ONLY \
 a JSON object — no explanation, no markdown fences."""
 
 CLASSIFICATION_TEMPLATE = """\
-Classify this benchmark entry on the two dimensions described below.
+Classify this benchmark entry on the three dimensions described below.
 
 === QUERY ===
 {query}
@@ -85,7 +89,20 @@ Classify this benchmark entry on the two dimensions described below.
 
 === CLASSIFICATION DIMENSIONS ===
 
-1. localizable_query
+1. parameter_type
+   Examine ONLY the ground-truth argument values (not the query text).
+   - "translatable"     : At least one argument value contains natural-language \
+text that would be written differently in another language — names, places, \
+search terms, descriptions, human-readable labels, etc.
+   - "non-translatable" : Every argument value is language-invariant. This \
+includes numbers, booleans, dates, AND strings that are not natural language: \
+code, mathematical expressions (e.g. "2x**2", "lambda x: x+1"), programming \
+identifiers, variable names (e.g. "x"), file paths, URLs, technical enum values \
+(e.g. "ascending", "celsius"), and units. A value being a string does NOT make \
+it translatable — what matters is whether it would change when written in a \
+different language.
+
+2. localizable_query
    "true"  if the query text contains culturally-anchored references that could \
 be replaced with culturally equivalent references from another country or culture: \
 place names, personal names, local institutions, local sports leagues/teams, \
@@ -93,7 +110,9 @@ local currencies, local public figures, etc.
    "false" if the query is purely abstract, mathematical, or technical — no \
 cultural anchors that would need substitution.
 
-2. localizable_parameters
+3. localizable_parameters
+   HARD RULE: If parameter_type is "non-translatable", this MUST be "false".
+   Otherwise:
    "true"  if ground-truth argument string values contain culturally-anchored \
 content (place names, person names, local entities) that would need to change \
 when localizing to a different culture.
@@ -101,7 +120,7 @@ when localizing to a different culture.
 labels, programming constructs, or culture-neutral terms.
 
 Return ONLY this JSON (no other text):
-{{"localizable_query": "...", "localizable_parameters": "..."}}"""
+{{"parameter_type": "...", "localizable_query": "...", "localizable_parameters": "..."}}"""
 
 
 # ---------------------------------------------------------------------------
@@ -117,7 +136,6 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
             if line:
                 records.append(json.loads(line))
     return records
-
 
 def format_ground_truth(ground_truth: list[dict]) -> str:
     """
@@ -180,58 +198,69 @@ def build_prompt_input(entry: dict, answer: dict) -> dict[str, str]:
 
 
 # ---------------------------------------------------------------------------
-# parameter_type — local regex check, no API call needed
+# parameter_type pre-filter — local regex check, no API call needed
 # ---------------------------------------------------------------------------
 
-# Matches strings that carry no textual semantics: numbers (int/float/scientific)
-# and booleans written as strings ("true", "False", "42", "-3.5e10", ...).
-NON_TEXTUAL_STRING_RE = re.compile(
-    r"^\s*(true|false|[-+]?\d+(\.\d+)?([eE][-+]?\d+)?)\s*$",
-    re.IGNORECASE,
+# Matches strings that are clearly language-invariant:
+#   - booleans   : "true", "False"
+#   - numbers    : "42", "-3.5", "1e10"
+#   - dates      : "2024-01-05", "01/05/2024", "2024.01.05"
+#   - datetimes  : "2024-01-05 14:30", "2024-01-05T14:30:00"
+#   - times      : "14:30", "14:30:00"
+NON_TRANSLATABLE_STRING_RE = re.compile(
+    r"""^\s*(
+        true|false
+        |[-+]?\d+(\.\d+)?([eE][-+]?\d+)?                        # number
+        |\d{4}[-/.]\d{1,2}[-/.]\d{1,2}([ T]\d{1,2}:\d{2}(:\d{2})?)?  # ISO-ish date(/time)
+        |\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}([ T]\d{1,2}:\d{2}(:\d{2})?)?  # day-first/US date(/time)
+        |\d{1,2}:\d{2}(:\d{2})?                                  # time
+    )\s*$""",
+    re.IGNORECASE | re.VERBOSE,
 )
 
 
-def is_non_textual_value(value: Any) -> bool:
-    """True if a single ground-truth value carries no textual content."""
+def is_non_translatable_value(value: Any) -> bool:
+    """True if a single ground-truth value is clearly language-invariant."""
     if value is None or isinstance(value, (bool, int, float)):
         return True
     if isinstance(value, str):
-        return value == "" or bool(NON_TEXTUAL_STRING_RE.match(value))
+        return value == "" or bool(NON_TRANSLATABLE_STRING_RE.match(value))
     if isinstance(value, list):
-        return all(is_non_textual_value(v) for v in value)
+        return all(is_non_translatable_value(v) for v in value)
     if isinstance(value, dict):
-        return all(is_non_textual_value(v) for v in value.values())
+        return all(is_non_translatable_value(v) for v in value.values())
     return False
 
 
-def detect_parameter_type(ground_truth: list[dict]) -> str:
+def prefilter_non_translatable(ground_truth: list[dict]) -> bool:
     """
-    Classify the entry as "textual" or "non-textual" from its ground-truth values.
-
-    "non-textual" — every acceptable value of every argument is numeric, boolean
-    (including "true"/"false" strings), empty, or a nested structure of such
+    True if the regex pre-filter can prove the entry is "non-translatable":
+    every acceptable value of every argument is numeric, boolean (including
+    "true"/"false" strings), a date/time, empty, or a nested structure of such
     values. These entries need no LLM call.
-    "textual"    — at least one argument value contains free text.
+
+    False means the entry has at least one free-form string and goes to the
+    LLM — which may STILL classify it as non-translatable (code, math
+    expressions, identifiers, etc. are strings the regex cannot rule out).
     """
     for call in ground_truth:
         for params in call.values():
             for values in params.values():
-                # values is the list of acceptable values for one argument;
-                # any textual alternative makes the whole entry textual
-                if not all(is_non_textual_value(v) for v in values):
-                    return "textual"
-    return "non-textual"
+                if not all(is_non_translatable_value(v) for v in values):
+                    return False
+    return True
 
 
 # ---------------------------------------------------------------------------
 # Parse LLM output
 # ---------------------------------------------------------------------------
 
+VALID_PARAMETER_TYPES = {"translatable", "non-translatable"}
 VALID_BOOL = {"true", "false"}
 
 def parse_classification(raw: str, entry_id: str) -> dict[str, str] | None:
     """
-    Parse the JSON object the model returned (localizable_query/_parameters only).
+    Parse the JSON object the model returned (parameter_type + localizable_*).
     Returns None and prints a warning on failure.
     """
     # Strip accidental markdown fences
@@ -256,13 +285,24 @@ def parse_classification(raw: str, entry_id: str) -> dict[str, str] | None:
             return None
 
     result = {
+        "parameter_type": str(obj.get("parameter_type", "")).lower().strip(),
         "localizable_query": str(obj.get("localizable_query", "")).lower().strip(),
         "localizable_parameters": str(obj.get("localizable_parameters", "")).lower().strip(),
     }
 
-    for key in ("localizable_query", "localizable_parameters"):
-        if result[key] not in VALID_BOOL:
-            print(f"[WARN] {entry_id}: unexpected {key}={result[key]!r}", file=sys.stderr)
+    if result["parameter_type"] not in VALID_PARAMETER_TYPES:
+        print(f"[WARN] {entry_id}: unexpected parameter_type={result['parameter_type']!r}", file=sys.stderr)
+
+    # Localizable dims are only meaningful for translatable parameters —
+    # blank them out when the LLM says non-translatable (mirrors the
+    # regex-prefiltered rows).
+    if result["parameter_type"] == "non-translatable":
+        result["localizable_query"] = ""
+        result["localizable_parameters"] = ""
+    else:
+        for key in ("localizable_query", "localizable_parameters"):
+            if result[key] not in VALID_BOOL:
+                print(f"[WARN] {entry_id}: unexpected {key}={result[key]!r}", file=sys.stderr)
 
     return result
 
@@ -274,11 +314,11 @@ def parse_classification(raw: str, entry_id: str) -> dict[str, str] | None:
 CSV_COLUMNS = ["id", "parameter_type", "localizable_query", "localizable_parameters"]
 
 
-def non_textual_row(entry_id: str) -> dict[str, str]:
-    """Pre-classified row for an entry whose ground truth is all non-textual."""
+def non_translatable_row(entry_id: str) -> dict[str, str]:
+    """Pre-classified row for an entry the regex filter proved non-translatable."""
     return {
         "id": entry_id,
-        "parameter_type": "non-textual",
+        "parameter_type": "non-translatable",
         "localizable_query": "",
         "localizable_parameters": "",
     }
@@ -287,7 +327,7 @@ def non_textual_row(entry_id: str) -> dict[str, str]:
 def error_row(entry_id: str, marker: str) -> dict[str, str]:
     return {
         "id": entry_id,
-        "parameter_type": "textual",
+        "parameter_type": marker,
         "localizable_query": marker,
         "localizable_parameters": marker,
     }
@@ -296,15 +336,16 @@ def error_row(entry_id: str, marker: str) -> dict[str, str]:
 def manifest_path(category: str) -> Path:
     return DATA_ROOT / category / "batch_manifest.json"
 
-
 def write_csv(rows: list[dict[str, str]], output_path: Path) -> None:
     """Write classification rows to a CSV file."""
+    rows.sort(key=lambda row: int(row["id"].split("_")[-1]))
+    print(rows)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
         writer.writeheader()
         writer.writerows(rows)
-    error_count = sum(1 for r in rows if "ERROR" in r.get("localizable_query", ""))
+    error_count = sum(1 for r in rows if "ERROR" in r.get("parameter_type", ""))
     print(f"\nDone. {len(rows)} rows written to {output_path}")
     if error_count:
         print(f"  {error_count} rows had errors — check stderr output above.")
@@ -315,9 +356,10 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
     Retrieve results for a completed Anthropic Message Batch and write the CSV.
     Uses the Anthropic SDK directly (not langasync) — provider must be Anthropic.
 
-    The batch only contains the "textual" entries; the non-textual rows and the
-    batch-index → entry-id mapping are read from the manifest written at submit
-    time (batch_manifest.json in the category folder).
+    The batch only contains entries the regex pre-filter could not rule out;
+    the pre-filtered non-translatable rows and the batch-index → entry-id
+    mapping are read from the manifest written at submit time
+    (batch_manifest.json in the category folder).
     """
     import anthropic as anthropic_sdk
 
@@ -334,8 +376,8 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
             f"but you are retrieving {batch_id!r}.",
             file=sys.stderr,
         )
-    textual_ids: list[str] = manifest["textual_ids"]       # batch index → entry id
-    rows: list[dict[str, str]] = [non_textual_row(eid) for eid in manifest["non_textual_ids"]]
+    llm_ids: list[str] = manifest["llm_ids"]               # batch index → entry id
+    rows: list[dict[str, str]] = [non_translatable_row(eid) for eid in manifest["prefiltered_ids"]]
 
     client = anthropic_sdk.Anthropic()
 
@@ -356,7 +398,7 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
         cid = item.custom_id
         # langasync uses sequential indices as custom IDs — map back via manifest
         try:
-            eid = textual_ids[int(cid)]
+            eid = llm_ids[int(cid)]
         except (ValueError, IndexError):
             eid = cid
 
@@ -367,7 +409,7 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
             if parsed is None:
                 rows.append(error_row(eid, "PARSE_ERROR"))
             else:
-                rows.append({"id": eid, "parameter_type": "textual", **parsed})
+                rows.append({"id": eid, **parsed})
 
         else:
             err_type = item.result.type  # "errored", "expired", "canceled"
@@ -388,7 +430,6 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
                 print(f"[{err_type.upper()}] {eid}", file=sys.stderr)
             rows.append(error_row(eid, err_type.upper()))
 
-    rows.sort(key=lambda row: row["id"])
     write_csv(rows, DATA_ROOT / category / "base_classifications.csv")
 
 
@@ -421,10 +462,11 @@ async def classify(
     # Index answers by id for O(1) lookup
     answer_index = {a["id"]: a for a in answers}
 
-    # Split entries: non-textual ones are classified locally (regex on ground
-    # truth, no API call); textual ones go into the LLM batch.
-    textual_pairs: list[tuple[str, dict[str, str]]] = []
-    non_textual_ids: list[str] = []
+    # Split entries: ground truths the regex filter proves non-translatable are
+    # classified locally (no API call); everything else goes to the LLM batch,
+    # which makes the final parameter_type call (strings may still be code/math).
+    llm_pairs: list[tuple[str, dict[str, str]]] = []
+    prefiltered_ids: list[str] = []
     missing = []
     for entry in entries:
         eid = entry["id"]
@@ -432,37 +474,36 @@ async def classify(
             missing.append(eid)
             continue
         answer = answer_index[eid]
-        if detect_parameter_type(answer.get("ground_truth", [])) == "non-textual":
-            non_textual_ids.append(eid)
+        if prefilter_non_translatable(answer.get("ground_truth", [])):
+            prefiltered_ids.append(eid)
         else:
-            textual_pairs.append((eid, build_prompt_input(entry, answer)))
+            llm_pairs.append((eid, build_prompt_input(entry, answer)))
 
     if missing:
         print(f"[WARN] {len(missing)} entries have no ground truth and will be skipped: {missing[:5]}...", file=sys.stderr)
 
-    print(f"Entries total      : {len(textual_pairs) + len(non_textual_ids)}")
-    print(f"  non-textual (no API call) : {len(non_textual_ids)}")
-    print(f"  textual (sent to LLM)     : {len(textual_pairs)}")
+    print(f"Entries total      : {len(llm_pairs) + len(prefiltered_ids)}")
+    print(f"  non-translatable by regex (no API call) : {len(prefiltered_ids)}")
+    print(f"  sent to LLM for classification          : {len(llm_pairs)}")
 
     if dry_run:
-        if textual_pairs:
-            print("\n--- DRY RUN: showing first textual prompt ---")
-            eid, vars_ = textual_pairs[0]
+        if llm_pairs:
+            print("\n--- DRY RUN: showing first LLM prompt ---")
+            eid, vars_ = llm_pairs[0]
             from langchain_core.prompts import ChatPromptTemplate
             p = ChatPromptTemplate.from_messages([
                 ("system", SYSTEM_PROMPT),
                 ("human", CLASSIFICATION_TEMPLATE),
             ])
             print(p.format(**vars_))
-        print(f"\n(Would submit {len(textual_pairs)} items to {provider}/{model_name}; "
-              f"{len(non_textual_ids)} classified locally as non-textual)")
+        print(f"\n(Would submit {len(llm_pairs)} items to {provider}/{model_name}; "
+              f"{len(prefiltered_ids)} classified locally as non-translatable)")
         return
 
-    rows: list[dict[str, str]] = [non_textual_row(eid) for eid in non_textual_ids]
+    rows: list[dict[str, str]] = [non_translatable_row(eid) for eid in prefiltered_ids]
 
-    if not textual_pairs:
-        print("No textual entries — nothing to send to the LLM.")
-        rows.sort(key=lambda row: row["id"])
+    if not llm_pairs:
+        print("All entries pre-filtered — nothing to send to the LLM.")
         write_csv(rows, output_path)
         return
 
@@ -472,9 +513,9 @@ async def classify(
     chain = make_chain(provider, model_name)
     batch_wrapper = batch_chain(chain)
 
-    print(f"Submitting batch of {len(textual_pairs)} items to {provider}/{model_name}...")
-    ids = [p[0] for p in textual_pairs]
-    inputs = [p[1] for p in textual_pairs]
+    print(f"Submitting batch of {len(llm_pairs)} items to {provider}/{model_name}...")
+    ids = [p[0] for p in llm_pairs]
+    inputs = [p[1] for p in llm_pairs]
 
     job = await batch_wrapper.submit(inputs)
     job_id = getattr(job, "job_id", "?")
@@ -484,14 +525,14 @@ async def classify(
     print(f"  Output   : {output_path}")
 
     # Manifest lets --retrieve map batch indices back to entry IDs and merge
-    # the locally-classified non-textual rows.
+    # the locally pre-filtered non-translatable rows.
     mpath = manifest_path(category)
     mpath.write_text(json.dumps({
         "batch_id": job_id,
         "provider": provider,
         "model": model_name,
-        "textual_ids": ids,
-        "non_textual_ids": non_textual_ids,
+        "llm_ids": ids,
+        "prefiltered_ids": prefiltered_ids,
     }, indent=2), encoding="utf-8")
     print(f"  Manifest : {mpath}")
 
@@ -526,9 +567,9 @@ async def classify(
         if parsed is None:
             rows.append(error_row(eid, "PARSE_ERROR"))
         else:
-            rows.append({"id": eid, "parameter_type": "textual", **parsed})
+            rows.append({"id": eid, **parsed})
 
-    rows.sort(key=lambda row: row["id"])
+
     write_csv(rows, output_path)
 
 

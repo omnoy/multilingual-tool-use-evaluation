@@ -7,8 +7,9 @@ Commands:
   mbfcl status  -- show which benchmarks have been built
 
 Usage examples:
-  mbfcl build simple_python --locales he zh-CN --level query_only
-  mbfcl build simple_python --locales he --limit 10 --force
+  mbfcl build multiple --locales he zh-CN --level query
+  mbfcl build multiple --locales he --level full --source eng_base_translatable.json
+  mbfcl build multiple --retrieve msgbatch_01AbCd...
   mbfcl locales
   mbfcl status
 """
@@ -28,26 +29,49 @@ app = typer.Typer(
 
 
 class Level(str, Enum):
-    query_only = "query_only"
+    query = "query"
     full = "full"
 
 
 @app.command()
 def build(
-    category: str = typer.Argument(..., help="BFCL category name, e.g. 'simple_python'"),
-    locales: list[str] = typer.Option(..., "--locales", "-l", help="Space-separated locale codes, e.g. he zh-CN"),
-    level: Level = typer.Option(Level.query_only, "--level", help="Localization level"),
-    limit: Optional[int] = typer.Option(None, "--limit", help="Translate only the first N test cases"),
-    force: bool = typer.Option(False, "--force", help="Overwrite existing output files"),
+    category: str = typer.Argument(..., help="Benchmark category folder under data/benchmarks/"),
+    locales: list[str] = typer.Option(None, "--locales", "-l", help="Space-separated locale codes, e.g. he zh-CN"),
+    level: Level = typer.Option(Level.query, "--level", help="Translation scope: query or full"),
+    source: str = typer.Option("eng_base.json", "--source", help="Input filename under data/benchmarks/<category>/"),
+    provider: str = typer.Option("anthropic", "--provider", help="LLM provider: anthropic or openai"),
+    model: Optional[str] = typer.Option(None, "--model", help="Model name (defaults to the translator's default)"),
+    limit: Optional[int] = typer.Option(None, "--limit", help="Translate only the first N source entries"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Print the first prompt and exit"),
+    submit_only: bool = typer.Option(False, "--submit-only", help="Submit the batch and exit; retrieve later"),
+    retrieve: Optional[str] = typer.Option(None, "--retrieve", help="Retrieve a previously submitted batch id"),
 ) -> None:
-    """Translate a BFCL category into one or more target locales."""
-    from multilingual_bfcl.benchmark_builder import build_benchmark
-    from multilingual_bfcl.localization.translator import LocalizationLevel
+    """Batch-translate a benchmark category into one or more target locales."""
+    import asyncio
 
-    lv = LocalizationLevel(level.value)
-    outputs = build_benchmark(category, locales, level=lv, limit=limit, force=force)
-    for locale_code, path in outputs.items():
-        typer.echo(f"  {locale_code}: {path}")
+    from multilingual_bfcl.benchmark_builder import retrieve_translation, translate_benchmark
+    from multilingual_bfcl.localization.translator import (
+        DEFAULT_TRANSLATION_MODEL,
+        LocalizationLevel,
+    )
+
+    if retrieve:
+        retrieve_translation(retrieve, category)
+        return
+    if not locales:
+        raise typer.BadParameter("--locales is required unless using --retrieve.")
+
+    asyncio.run(translate_benchmark(
+        category=category,
+        locales=locales,
+        level=LocalizationLevel(level.value),
+        source=source,
+        provider=provider,
+        model_name=model or DEFAULT_TRANSLATION_MODEL,
+        limit=limit,
+        dry_run=dry_run,
+        submit_only=submit_only,
+    ))
 
 
 @app.command()

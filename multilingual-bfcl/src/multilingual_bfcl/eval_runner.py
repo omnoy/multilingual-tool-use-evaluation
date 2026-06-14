@@ -21,7 +21,6 @@ from typing import Any
 from bfcl_eval.eval_checker import eval_runner as bfcl_runner
 from bfcl_eval.constants.eval_config import RESULT_PATH, SCORE_PATH
 
-from multilingual_bfcl.benchmark_builder import output_path as benchmark_output_path
 from multilingual_bfcl.localization.locale_config import get_locale
 
 _PACKAGE_ROOT = Path(__file__).parent.parent.parent

@@ -72,8 +72,44 @@ SYSTEM_PROMPT = """\
 You are a research assistant classifying function-calling benchmark entries for \
 multilingual localization research. You will be given a benchmark entry consisting \
 of a user query, available function definitions, and the ground-truth function call \
-with argument values. Classify the entry on exactly three dimensions and return ONLY \
+with argument values. Classify the entry on the given dimensions and return ONLY \
 a JSON object — no explanation, no markdown fences."""
+
+TRANSLATABILITY_PARAMETERS = """\
+-- translatable_parameters
+   Examine ONLY the ground-truth argument values (not the query text).
+   - "true"     : At least one argument value contains natural-language \
+text that would be written differently in another language — names, places, \
+search terms, descriptions, human-readable labels, etc.
+   - "false" : Every argument value is language-invariant. This \
+includes numbers, booleans, dates, AND strings that are not natural language: \
+code, mathematical expressions (e.g. "2x**2", "lambda x: x+1"), programming \
+identifiers, variable names (e.g. "x"), file paths, URLs, technical enum values \
+(e.g. "ascending", "celsius"), and units. A value being a string does NOT make \
+it translatable — what matters is whether it would change when written in a \
+different language.
+"""
+TRANSLATABILITY_OUTPUT = '"parameter_type": "..."'
+
+LOCALIZABILITY_PARAMETERS = """\
+-- localizable_query
+   "true"  if the query text contains culturally-anchored references that could \
+be replaced with culturally equivalent references from another country or culture: \
+place names, personal names, local institutions, local sports leagues/teams, \
+local currencies, local public figures, etc.
+   "false" if the query is purely abstract, mathematical, or technical — no \
+cultural anchors that would need substitution.
+
+-- localizable_parameters
+   HARD RULE: If parameter_type is "non-translatable", this MUST be "false".
+   Otherwise:
+   "true"  if ground-truth argument string values contain culturally-anchored \
+content (place names, person names, local entities) that would need to change \
+when localizing to a different culture.
+   "false" if the string values are universal technical identifiers, abstract \
+labels, programming constructs, or culture-neutral terms.
+"""
+LOCALIZABILITY_OUTPUT = '"localizable_query": "...", "localizable_parameters": "..."'
 
 CLASSIFICATION_TEMPLATE = """\
 Classify this benchmark entry on the three dimensions described below.
@@ -88,39 +124,10 @@ Classify this benchmark entry on the three dimensions described below.
 {ground_truth}
 
 === CLASSIFICATION DIMENSIONS ===
-
-1. parameter_type
-   Examine ONLY the ground-truth argument values (not the query text).
-   - "translatable"     : At least one argument value contains natural-language \
-text that would be written differently in another language — names, places, \
-search terms, descriptions, human-readable labels, etc.
-   - "non-translatable" : Every argument value is language-invariant. This \
-includes numbers, booleans, dates, AND strings that are not natural language: \
-code, mathematical expressions (e.g. "2x**2", "lambda x: x+1"), programming \
-identifiers, variable names (e.g. "x"), file paths, URLs, technical enum values \
-(e.g. "ascending", "celsius"), and units. A value being a string does NOT make \
-it translatable — what matters is whether it would change when written in a \
-different language.
-
-2. localizable_query
-   "true"  if the query text contains culturally-anchored references that could \
-be replaced with culturally equivalent references from another country or culture: \
-place names, personal names, local institutions, local sports leagues/teams, \
-local currencies, local public figures, etc.
-   "false" if the query is purely abstract, mathematical, or technical — no \
-cultural anchors that would need substitution.
-
-3. localizable_parameters
-   HARD RULE: If parameter_type is "non-translatable", this MUST be "false".
-   Otherwise:
-   "true"  if ground-truth argument string values contain culturally-anchored \
-content (place names, person names, local entities) that would need to change \
-when localizing to a different culture.
-   "false" if the string values are universal technical identifiers, abstract \
-labels, programming constructs, or culture-neutral terms.
+{classification_parameters}
 
 Return ONLY this JSON (no other text):
-{{"parameter_type": "...", "localizable_query": "...", "localizable_parameters": "..."}}"""
+{{ {classification_output} }}"""
 
 
 # ---------------------------------------------------------------------------
@@ -286,8 +293,8 @@ def parse_classification(raw: str, entry_id: str) -> dict[str, str] | None:
 
     result = {
         "parameter_type": str(obj.get("parameter_type", "")).lower().strip(),
-        "localizable_query": str(obj.get("localizable_query", "")).lower().strip(),
-        "localizable_parameters": str(obj.get("localizable_parameters", "")).lower().strip(),
+#        "localizable_query": str(obj.get("localizable_query", "")).lower().strip(),
+#        "localizable_parameters": str(obj.get("localizable_parameters", "")).lower().strip(),
     }
 
     if result["parameter_type"] not in VALID_PARAMETER_TYPES:

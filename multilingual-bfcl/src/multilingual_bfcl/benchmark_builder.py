@@ -63,6 +63,7 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def write_jsonl(records: list[dict[str, Any]], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    records.sort(key=lambda row: int(row["id"].split("_")[-2]))
     with open(path, "w", encoding="utf-8") as f:
         for rec in records:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
@@ -85,6 +86,23 @@ def output_filename(source: str, locale_code: str, level: LocalizationLevel) -> 
 
 def manifest_path(category: str) -> Path:
     return _BENCHMARK_DIR / category / "translate_manifest.json"
+
+
+def tag_batch_job(handle, **fields) -> None:
+    """Write human-readable labels into the langasync job file's `metadata` dict.
+
+    e.g. tag_batch_job(handle, job="translate_he_full", task="translate", ...).
+    Only `metadata` (not arbitrary top-level keys) is persisted by langasync, and
+    its status-update path round-trips the file, so values written here survive
+    later saves. Best-effort: a failure here must not fail the submission.
+    """
+    try:
+        path = handle.repository.storage_dir / f"{handle.job_id.replace('/', '_')}.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data.setdefault("metadata", {}).update(fields)
+        path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    except Exception as e:  # noqa: BLE001 - tagging is non-critical
+        print(f"[WARN] could not tag batch job file with metadata: {e}", file=sys.stderr)
 
 
 def _id_sort_key(record: dict[str, Any]):
@@ -239,10 +257,23 @@ async def translate_benchmark(
     job_id = getattr(job, "job_id", "?")
     print(f"Batch job submitted.\n  Batch ID : {job_id}\n  Category : {category}")
 
+    # Tag the langasync job file so the batch is identifiable by what it did.
+    job_label = f"translate_{'+'.join(locales)}_{level.value}"
+    tag_batch_job(
+        job,
+        job=job_label,
+        task="translate",
+        category=category,
+        source=source,
+        level=level.value,
+        locales=locales,
+    )
+
     mpath = manifest_path(category)
     mpath.parent.mkdir(parents=True, exist_ok=True)
     mpath.write_text(json.dumps({
         "batch_id": job_id,
+        "job": job_label,
         "provider": provider,
         "model": model_name,
         "category": category,

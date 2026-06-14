@@ -81,10 +81,14 @@ def is_translatable_string(value: Any) -> bool:
 SYSTEM_PROMPT = """\
 You are a professional translator localizing function-calling benchmark data \
 into {language}. Follow these rules strictly:
-1. Translate natural-language text faithfully and idiomatically into {language}.
-2. Do NOT translate or alter: function names, parameter names, JSON keys, enum \
-tokens, programming identifiers, code, mathematical expressions, file paths, \
-URLs, units, numbers, booleans, or dates. Return such values exactly as given.
+1. Translate ALL natural-language text into {language} faithfully and idiomatically. \
+This INCLUDES proper nouns — names of people, places, countries, organizations, \
+brands, teams, events, months, etc. Use the established {language} form when one \
+exists; otherwise transliterate the word phonetically into the {language} script. \
+Do NOT leave such words in English.
+2. Leave UNCHANGED only genuinely non-linguistic tokens: JSON keys, function names, \
+parameter names, programming identifiers and variable names, code, mathematical \
+expressions, file paths, URLs, and pure numbers/booleans/dates.
 3. Do not add, remove, or reorder information.
 4. Locale conventions for numbers/dates: {hints}
 5. Output ONLY a JSON object — no explanation, no markdown fences."""
@@ -105,10 +109,17 @@ of items in each list, in the same order:
 INPUT:
 {{payload}}"""
 
+# Note on braces: this string is inserted into HUMAN_TEMPLATE as a .format() VALUE,
+# so its braces are NOT processed at that pass. Write {language} single (a LangChain
+# runtime variable filled later) and any literal JSON braces doubled ({{ }}).
 _VALUES_INSTRUCTION = (
-    '- "values": ground-truth argument values — translate ONLY those that are '
-    "natural language (names, places, search terms, descriptions). Return any "
-    "identifier, enum, code, number, or unit value unchanged.\n"
+    '- "values": ground-truth argument values. Each item is an object '
+    '{{"param": <name>, "description": <what the parameter means>, "value": <the value>}} '
+    "given only for context. Every item was pre-screened as a natural-language value, "
+    'so translate its "value" into {language} — translate or transliterate proper nouns '
+    "exactly as in rule 1. Keep a value unchanged ONLY if it is genuinely a code token, "
+    "programming identifier, file path, or URL. Output \"values\" as a flat list of the "
+    "translated value strings, one per input item, in the same order.\n"
 )
 
 # Expected output object per level (doubled braces -> literal braces in the prompt).
@@ -191,6 +202,41 @@ def collect_textual_values(ground_truth: list[dict]) -> list[str]:
     return values
 
 
+def _param_descriptions(functions: list[dict[str, Any]]) -> dict[tuple[str, str], str]:
+    """Map (function_name, param_name) -> parameter description for context lookup."""
+    out: dict[tuple[str, str], str] = {}
+    for func in functions:
+        name = func.get("name", "")
+        props = func.get("parameters", {}).get("properties", {})
+        for param, pdef in props.items():
+            out[(name, param)] = pdef.get("description", "")
+    return out
+
+
+def collect_textual_value_contexts(
+    test_case: dict[str, Any], ground_truth: list[dict]
+) -> list[dict[str, str]]:
+    """Like collect_textual_values, but each value carries its parameter context.
+
+    Returns objects {"param", "description", "value"} in the SAME order as
+    collect_textual_values, so apply_translation can still map results back
+    positionally. The description is looked up from the test case's function defs.
+    """
+    descs = _param_descriptions(test_case.get("function", []))
+    items: list[dict[str, str]] = []
+    for call in ground_truth:
+        for func_name, params in call.items():
+            for param, value_list in params.items():
+                for v in value_list:
+                    if is_translatable_string(v):
+                        items.append({
+                            "param": param,
+                            "description": descs.get((func_name, param), ""),
+                            "value": v,
+                        })
+    return items
+
+
 def build_input(
     test_case: dict[str, Any],
     answer: dict[str, Any] | None,
@@ -206,7 +252,8 @@ def build_input(
     payload_obj: dict[str, list] = {"queries": queries}
     if level == LocalizationLevel.FULL:
         payload_obj["values"] = (
-            collect_textual_values(answer.get("ground_truth", [])) if answer is not None else []
+            collect_textual_value_contexts(test_case, answer.get("ground_truth", []))
+            if answer is not None else []
         )
 
     payload = json.dumps(payload_obj, ensure_ascii=False)
@@ -246,6 +293,10 @@ def parse_translation(raw: str, entry_id: str) -> dict[str, list] | None:
     if not isinstance(queries, list) or not isinstance(values, list):
         print(f"[WARN] {entry_id}: reply missing list 'queries'/'values': {obj!r}", file=sys.stderr)
         return None
+
+    # Be tolerant if the model echoed the value context objects instead of plain
+    # strings, e.g. {"param":..., "value":"..."} — pull the translated value out.
+    values = [v.get("value", "") if isinstance(v, dict) else v for v in values]
     return {"queries": queries, "values": values}
 
 

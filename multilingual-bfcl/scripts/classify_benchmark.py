@@ -393,6 +393,22 @@ def error_row(entry_id: str, marker: str, include_localizable: bool) -> dict[str
 def manifest_path(category: str) -> Path:
     return DATA_ROOT / category / "batch_manifest.json"
 
+
+def tag_batch_job(handle, **fields) -> None:
+    """Write human-readable labels into the langasync job file's `metadata` dict.
+
+    Only `metadata` is persisted by langasync, and its status-update path
+    round-trips the file, so values written here survive later saves.
+    Best-effort: a failure here must not fail the submission.
+    """
+    try:
+        path = handle.repository.storage_dir / f"{handle.job_id.replace('/', '_')}.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data.setdefault("metadata", {}).update(fields)
+        path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    except Exception as e:  # noqa: BLE001 - tagging is non-critical
+        print(f"[WARN] could not tag batch job file with metadata: {e}", file=sys.stderr)
+
 def write_csv(rows: list[dict[str, str]], output_path: Path, columns: list[str]) -> None:
     """Write classification rows to a CSV file."""
     rows.sort(key=lambda row: int(row["id"].split("_")[-1]))
@@ -586,6 +602,16 @@ async def classify(
     print(f"  Batch ID : {job_id}")
     print(f"  Category : {category}")
     print(f"  Output   : {output_path}")
+
+    # Tag the langasync job file so the batch is identifiable by what it did.
+    job_label = f"classify_{'localizable' if include_localizable else 'params'}"
+    tag_batch_job(
+        job,
+        job=job_label,
+        task="classify",
+        category=category,
+        include_localizable=include_localizable,
+    )
 
     # Manifest lets --retrieve map batch indices back to entry IDs and merge
     # the locally pre-filtered non-translatable rows.

@@ -2,24 +2,39 @@
 classify_benchmark.py — Localization classifier for multilingual-bfcl benchmark entries.
 
 For each entry in data/benchmarks/<category>/eng_base.json, classifies:
-  - parameter_type          : "translatable" | "non-translatable"
-  - localizable_query       : "true" | "false"   (only classified when parameter_type is "translatable")
-  - localizable_parameters  : "true" | "false"   (only classified when parameter_type is "translatable")
+  - translatable_params          : "true" | "false"
+  - localizable_query       : "true" | "false"   (only classified when translatable_params is "true")
+  - localizable_parameters  : "true" | "false"   (only classified when translatable_params is "true")
 
 A regex pre-filter checks the ground-truth argument values: if every value is
 numeric, boolean, a date, or otherwise clearly non-translatable, the entry is
 classified "non-translatable" locally and no API call is made for it. All
 remaining entries are sent to the LLM (via langasync → the provider's native
-Batch API), which classifies parameter_type itself — string values can still be
+Batch API), which classifies translatable_params itself — string values can still be
 non-translatable (code, math expressions like "2x**2", identifiers) — plus the
 two localizable_* dimensions. Non-translatable entries get empty localizable_*
 columns.
 
-Results are written to data/benchmarks/<category>/base_classifications.csv.
+Which classifications run is selectable on the command line:
+  --translatable_params   classify only translatable_params
+  --localizable      classify localizable_query + localizable_parameters
+                     (auto-includes translatable_params, since localizable_parameters
+                     depends on it)
+With no classification flag, all classifications run.
+
+Output file depends on the selection:
+  - translatable_params only        -> base_classifications_params.csv (id, translatable_params)
+  - everything else            -> base_classifications.csv (all columns)
 
 Usage:
-    # Submit and wait for results (default):
+    # Submit and wait for results — all classifications (default):
     python scripts/classify_benchmark.py --category multiple
+
+    # Only classify translatable_params:
+    python scripts/classify_benchmark.py --category multiple --translatable_params
+
+    # Only classify localizability (translatable_params is auto-included):
+    python scripts/classify_benchmark.py --category multiple --localizable
 
     # Submit only — print the batch ID and exit immediately:
     python scripts/classify_benchmark.py --category multiple --submit-only
@@ -64,7 +79,7 @@ load_dotenv(PACKAGE_ROOT / ".env")
 
 # ---------------------------------------------------------------------------
 # Prompt — entries whose ground truth the regex pre-filter could not rule out
-# reach the LLM, which makes the final parameter_type call (string values may
+# reach the LLM, which makes the final translatable_params call (string values may
 # still be code/math/identifiers) and classifies the two localizable_* dims.
 # ---------------------------------------------------------------------------
 
@@ -82,14 +97,13 @@ TRANSLATABILITY_PARAMETERS = """\
 text that would be written differently in another language — names, places, \
 search terms, descriptions, human-readable labels, etc.
    - "false" : Every argument value is language-invariant. This \
-includes numbers, booleans, dates, AND strings that are not natural language: \
+includes numbers, booleans, numerical dates, AND strings that are not natural language: \
 code, mathematical expressions (e.g. "2x**2", "lambda x: x+1"), programming \
-identifiers, variable names (e.g. "x"), file paths, URLs, technical enum values \
-(e.g. "ascending", "celsius"), and units. A value being a string does NOT make \
+identifiers, variable names (e.g. "x"), file paths and URLs. A value being a string does NOT make \
 it translatable — what matters is whether it would change when written in a \
 different language.
 """
-TRANSLATABILITY_OUTPUT = '"parameter_type": "..."'
+TRANSLATABILITY_OUTPUT = '"translatable_params": "..."'
 
 LOCALIZABILITY_PARAMETERS = """\
 -- localizable_query
@@ -101,7 +115,7 @@ local currencies, local public figures, etc.
 cultural anchors that would need substitution.
 
 -- localizable_parameters
-   HARD RULE: If parameter_type is "non-translatable", this MUST be "false".
+   HARD RULE: If translatable_params is "false", this MUST be "false".
    Otherwise:
    "true"  if ground-truth argument string values contain culturally-anchored \
 content (place names, person names, local entities) that would need to change \
@@ -112,15 +126,15 @@ labels, programming constructs, or culture-neutral terms.
 LOCALIZABILITY_OUTPUT = '"localizable_query": "...", "localizable_parameters": "..."'
 
 CLASSIFICATION_TEMPLATE = """\
-Classify this benchmark entry on the three dimensions described below.
+Classify this benchmark entry on the dimensions described below.
 
 === QUERY ===
 {query}
 
-=== AVAILABLE FUNCTIONS ===
-{functions}
+=== GROUND TRUTH FUNCTIONS ===
+{gt_functions_desc}
 
-=== GROUND TRUTH (correct function call + argument values) ===
+=== GROUND TRUTH PARAMETERS (correct function call + argument values) ===
 {ground_truth}
 
 === CLASSIFICATION DIMENSIONS ===
@@ -167,20 +181,36 @@ def format_ground_truth(ground_truth: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def format_functions(functions: list[dict]) -> str:
-    """Render function signatures concisely (name + param names + types)."""
+def format_gt_functions_desc(functions: list[dict], ground_truth_functions: list[dict]) -> str:
+    """
+    Render each function with its description and one line per parameter, including
+    the parameter's own description and any enum constraint.
+
+    The per-parameter detail matters for the translatability call: it lets the model
+    tell a free-text value (e.g. material = "The material used for the sculpture")
+    from a fixed token, instead of guessing from the bare value alone.
+    """
+    ground_truth_func_names = [list(func.keys())[0] for func in ground_truth_functions]
     lines = []
     for func in functions:
-        name = func.get("name", "?")
-        desc = func.get("description", "")
-        params = func.get("parameters", {}).get("properties", {})
-        required = func.get("parameters", {}).get("required", [])
-        param_strs = []
-        for p_name, p_def in params.items():
-            p_type = p_def.get("type", "any")
-            req_mark = "*" if p_name in required else ""
-            param_strs.append(f"{p_name}{req_mark}: {p_type}")
-        lines.append(f"{name}({', '.join(param_strs)}) — {desc}")
+        func_name = func.get("name", "?")
+        if func_name in ground_truth_func_names:
+            desc = func.get("description", "")
+            params = func.get("parameters", {}).get("properties", {})
+            required = func.get("parameters", {}).get("required", [])
+            header = f"{func_name} — {desc}" if desc else func_name
+            lines.append(header)
+            for p_name, p_def in params.items():
+                p_type = p_def.get("type", "any")
+                req_mark = "*" if p_name in required else ""
+                attrs = [p_type]
+                enum = p_def.get("enum")
+                if enum:
+                    attrs.append("enum: " + " | ".join(str(v) for v in enum))
+                p_desc = p_def.get("description", "")
+                detail = f": {p_desc}" if p_desc else ""
+                lines.append(f"  {p_name}{req_mark} ({', '.join(attrs)}){detail}")
+
     return "\n".join(lines)
 
 
@@ -193,19 +223,19 @@ def build_prompt_input(entry: dict, answer: dict) -> dict[str, str]:
             if msg.get("role") == "user":
                 query_parts.append(msg["content"])
     query = "\n".join(query_parts)
-
-    functions_text = format_functions(entry.get("function", []))
-    gt_text = format_ground_truth(answer.get("ground_truth", []))
+    ground_truth = answer.get("ground_truth", [])
+    gt_functions_desc = format_gt_functions_desc(entry.get("function", []), ground_truth)
+    gt_text = format_ground_truth(ground_truth)
 
     return {
         "query": query,
-        "functions": functions_text,
+        "gt_functions_desc": gt_functions_desc,
         "ground_truth": gt_text,
     }
 
 
 # ---------------------------------------------------------------------------
-# parameter_type pre-filter — local regex check, no API call needed
+# translatable_params pre-filter — local regex check, no API call needed
 # ---------------------------------------------------------------------------
 
 # Matches strings that are clearly language-invariant:
@@ -262,12 +292,14 @@ def prefilter_non_translatable(ground_truth: list[dict]) -> bool:
 # Parse LLM output
 # ---------------------------------------------------------------------------
 
-VALID_PARAMETER_TYPES = {"translatable", "non-translatable"}
 VALID_BOOL = {"true", "false"}
 
-def parse_classification(raw: str, entry_id: str) -> dict[str, str] | None:
+def parse_classification(
+    raw: str, entry_id: str, include_localizable: bool
+) -> dict[str, str] | None:
     """
-    Parse the JSON object the model returned (parameter_type + localizable_*).
+    Parse the JSON object the model returned. Always reads translatable_params; reads
+    the localizable_* dimensions only when include_localizable is True.
     Returns None and prints a warning on failure.
     """
     # Strip accidental markdown fences
@@ -292,24 +324,21 @@ def parse_classification(raw: str, entry_id: str) -> dict[str, str] | None:
             return None
 
     result = {
-        "parameter_type": str(obj.get("parameter_type", "")).lower().strip(),
-#        "localizable_query": str(obj.get("localizable_query", "")).lower().strip(),
-#        "localizable_parameters": str(obj.get("localizable_parameters", "")).lower().strip(),
+        "translatable_params": str(obj.get("translatable_params", "")).lower().strip(),
     }
 
-    if result["parameter_type"] not in VALID_PARAMETER_TYPES:
-        print(f"[WARN] {entry_id}: unexpected parameter_type={result['parameter_type']!r}", file=sys.stderr)
-
-    # Localizable dims are only meaningful for translatable parameters —
-    # blank them out when the LLM says non-translatable (mirrors the
-    # regex-prefiltered rows).
-    if result["parameter_type"] == "non-translatable":
-        result["localizable_query"] = ""
-        result["localizable_parameters"] = ""
-    else:
-        for key in ("localizable_query", "localizable_parameters"):
-            if result[key] not in VALID_BOOL:
-                print(f"[WARN] {entry_id}: unexpected {key}={result[key]!r}", file=sys.stderr)
+    if include_localizable:
+        # Localizable dims are only meaningful for translatable parameters —
+        # blank them out when the LLM says non-translatable (mirrors the
+        # regex-prefiltered rows).
+        if result["translatable_params"] == "false":
+            result["localizable_query"] = ""
+            result["localizable_parameters"] = ""
+        else:
+            for key in ("localizable_query", "localizable_parameters"):
+                result[key] = str(obj.get(key, "")).lower().strip()
+                if result[key] not in VALID_BOOL:
+                    print(f"[WARN] {entry_id}: unexpected {key}={result[key]!r}", file=sys.stderr)
 
     return result
 
@@ -318,41 +347,61 @@ def parse_classification(raw: str, entry_id: str) -> dict[str, str] | None:
 # Output / manifest
 # ---------------------------------------------------------------------------
 
-CSV_COLUMNS = ["id", "parameter_type", "localizable_query", "localizable_parameters"]
+LOCALIZABLE_COLUMNS = ["localizable_query", "localizable_parameters"]
 
 
-def non_translatable_row(entry_id: str) -> dict[str, str]:
+def csv_columns(include_localizable: bool) -> list[str]:
+    """Output columns for the selected classifications. translatable_params is always present."""
+    cols = ["id", "translatable_params"]
+    if include_localizable:
+        cols += LOCALIZABLE_COLUMNS
+    return cols
+
+
+def output_filename(include_localizable: bool) -> str:
+    """CSV filename for the selected classifications."""
+    return "base_classifications.csv" if include_localizable else "base_classifications_params.csv"
+
+
+def classification_blocks(include_localizable: bool) -> tuple[str, str]:
+    """Build the prompt's classification-dimension text and JSON-output fragment."""
+    params = TRANSLATABILITY_PARAMETERS
+    output = TRANSLATABILITY_OUTPUT
+    if include_localizable:
+        params = params + "\n" + LOCALIZABILITY_PARAMETERS
+        output = output + ", " + LOCALIZABILITY_OUTPUT
+    return params, output
+
+
+def non_translatable_row(entry_id: str, include_localizable: bool) -> dict[str, str]:
     """Pre-classified row for an entry the regex filter proved non-translatable."""
-    return {
-        "id": entry_id,
-        "parameter_type": "non-translatable",
-        "localizable_query": "",
-        "localizable_parameters": "",
-    }
+    row = {"id": entry_id, "translatable_params": "false"}
+    if include_localizable:
+        row["localizable_query"] = ""
+        row["localizable_parameters"] = ""
+    return row
 
 
-def error_row(entry_id: str, marker: str) -> dict[str, str]:
-    return {
-        "id": entry_id,
-        "parameter_type": marker,
-        "localizable_query": marker,
-        "localizable_parameters": marker,
-    }
+def error_row(entry_id: str, marker: str, include_localizable: bool) -> dict[str, str]:
+    row = {"id": entry_id, "translatable_params": marker}
+    if include_localizable:
+        row["localizable_query"] = marker
+        row["localizable_parameters"] = marker
+    return row
 
 
 def manifest_path(category: str) -> Path:
     return DATA_ROOT / category / "batch_manifest.json"
 
-def write_csv(rows: list[dict[str, str]], output_path: Path) -> None:
+def write_csv(rows: list[dict[str, str]], output_path: Path, columns: list[str]) -> None:
     """Write classification rows to a CSV file."""
     rows.sort(key=lambda row: int(row["id"].split("_")[-1]))
-    print(rows)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
+        writer = csv.DictWriter(f, fieldnames=columns)
         writer.writeheader()
         writer.writerows(rows)
-    error_count = sum(1 for r in rows if "ERROR" in r.get("parameter_type", ""))
+    error_count = sum(1 for r in rows if "ERROR" in r.get("translatable_params", ""))
     print(f"\nDone. {len(rows)} rows written to {output_path}")
     if error_count:
         print(f"  {error_count} rows had errors — check stderr output above.")
@@ -383,8 +432,14 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
             f"but you are retrieving {batch_id!r}.",
             file=sys.stderr,
         )
+    # The classification selection is recorded at submit time so retrieval
+    # produces the matching columns and output filename.
+    include_localizable: bool = manifest.get("include_localizable", True)
+    columns = csv_columns(include_localizable)
     llm_ids: list[str] = manifest["llm_ids"]               # batch index → entry id
-    rows: list[dict[str, str]] = [non_translatable_row(eid) for eid in manifest["prefiltered_ids"]]
+    rows: list[dict[str, str]] = [
+        non_translatable_row(eid, include_localizable) for eid in manifest["prefiltered_ids"]
+    ]
 
     client = anthropic_sdk.Anthropic()
 
@@ -412,9 +467,9 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
         if item.result.type == "succeeded":
             content_blocks = item.result.message.content
             raw = next((b.text for b in content_blocks if hasattr(b, "text")), "")
-            parsed = parse_classification(raw, eid)
+            parsed = parse_classification(raw, eid, include_localizable)
             if parsed is None:
-                rows.append(error_row(eid, "PARSE_ERROR"))
+                rows.append(error_row(eid, "PARSE_ERROR", include_localizable))
             else:
                 rows.append({"id": eid, **parsed})
 
@@ -435,9 +490,9 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
                     print(f"[ERR] {eid}: {err_kind} — {err_msg}", file=sys.stderr)
             else:
                 print(f"[{err_type.upper()}] {eid}", file=sys.stderr)
-            rows.append(error_row(eid, err_type.upper()))
+            rows.append(error_row(eid, err_type.upper(), include_localizable))
 
-    write_csv(rows, DATA_ROOT / category / "base_classifications.csv")
+    write_csv(rows, DATA_ROOT / category / output_filename(include_localizable), columns)
 
 
 # ---------------------------------------------------------------------------
@@ -450,11 +505,14 @@ async def classify(
     model_name: str,
     dry_run: bool,
     submit_only: bool,
+    include_localizable: bool,
 ) -> None:
     bench_dir = DATA_ROOT / category
     source_path = bench_dir / "eng_base.json"
     answer_path = bench_dir / "possible_answer" / "eng_base.json"
-    output_path = bench_dir / "base_classifications.csv"
+    output_path = bench_dir / output_filename(include_localizable)
+    columns = csv_columns(include_localizable)
+    class_params, class_output = classification_blocks(include_localizable)
 
     if not source_path.exists():
         sys.exit(f"ERROR: {source_path} not found.")
@@ -471,7 +529,7 @@ async def classify(
 
     # Split entries: ground truths the regex filter proves non-translatable are
     # classified locally (no API call); everything else goes to the LLM batch,
-    # which makes the final parameter_type call (strings may still be code/math).
+    # which makes the final translatable_params call (strings may still be code/math).
     llm_pairs: list[tuple[str, dict[str, str]]] = []
     prefiltered_ids: list[str] = []
     missing = []
@@ -497,27 +555,25 @@ async def classify(
         if llm_pairs:
             print("\n--- DRY RUN: showing first LLM prompt ---")
             eid, vars_ = llm_pairs[0]
-            from langchain_core.prompts import ChatPromptTemplate
-            p = ChatPromptTemplate.from_messages([
-                ("system", SYSTEM_PROMPT),
-                ("human", CLASSIFICATION_TEMPLATE),
-            ])
+            p = build_prompt(class_params, class_output)
             print(p.format(**vars_))
         print(f"\n(Would submit {len(llm_pairs)} items to {provider}/{model_name}; "
               f"{len(prefiltered_ids)} classified locally as non-translatable)")
         return
 
-    rows: list[dict[str, str]] = [non_translatable_row(eid) for eid in prefiltered_ids]
+    rows: list[dict[str, str]] = [
+        non_translatable_row(eid, include_localizable) for eid in prefiltered_ids
+    ]
 
     if not llm_pairs:
         print("All entries pre-filtered — nothing to send to the LLM.")
-        write_csv(rows, output_path)
+        write_csv(rows, output_path, columns)
         return
 
     # Build chain and wrap with langasync
     from langasync import batch_chain
 
-    chain = make_chain(provider, model_name)
+    chain = make_chain(provider, model_name, class_params, class_output)
     batch_wrapper = batch_chain(chain)
 
     print(f"Submitting batch of {len(llm_pairs)} items to {provider}/{model_name}...")
@@ -538,6 +594,7 @@ async def classify(
         "batch_id": job_id,
         "provider": provider,
         "model": model_name,
+        "include_localizable": include_localizable,
         "llm_ids": ids,
         "prefiltered_ids": prefiltered_ids,
     }, indent=2), encoding="utf-8")
@@ -566,36 +623,52 @@ async def classify(
     for eid, result_item in zip(ids, results_list):
         if hasattr(result_item, "success") and not result_item.success:
             print(f"[WARN] {eid}: batch item failed — {getattr(result_item, 'error', '?')}", file=sys.stderr)
-            rows.append(error_row(eid, "ERROR"))
+            rows.append(error_row(eid, "ERROR", include_localizable))
             continue
 
         raw = result_item.content if hasattr(result_item, "content") else str(result_item)
-        parsed = parse_classification(raw, eid)
+        parsed = parse_classification(raw, eid, include_localizable)
         if parsed is None:
-            rows.append(error_row(eid, "PARSE_ERROR"))
+            rows.append(error_row(eid, "PARSE_ERROR", include_localizable))
         else:
             rows.append({"id": eid, **parsed})
 
 
-    write_csv(rows, output_path)
+    write_csv(rows, output_path, columns)
 
 
 # ---------------------------------------------------------------------------
 # Model factory — swap provider here
 # ---------------------------------------------------------------------------
 
-def make_chain(provider: str, model_name: str):
+def build_prompt(classification_parameters: str, classification_output: str):
+    """
+    Build the ChatPromptTemplate with the selected classification dimensions baked
+    in. classification_parameters / classification_output are constant across all
+    entries, so they are partialled in here, leaving query/functions/ground_truth
+    as the per-entry variables.
+    """
+    from langchain_core.prompts import ChatPromptTemplate
+
+    return ChatPromptTemplate.from_messages([
+        ("system", SYSTEM_PROMPT),
+        ("human", CLASSIFICATION_TEMPLATE),
+    ]).partial(
+        classification_parameters=classification_parameters,
+        classification_output=classification_output,
+    )
+
+
+def make_chain(
+    provider: str, model_name: str, classification_parameters: str, classification_output: str
+):
     """
     Build a LangChain chain: SystemMessage + HumanMessage template → model → str.
     langasync wraps this chain, so switching the model is just changing this factory.
     """
     from langchain_core.output_parsers import StrOutputParser
-    from langchain_core.prompts import ChatPromptTemplate
 
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", SYSTEM_PROMPT),
-        ("human", CLASSIFICATION_TEMPLATE),
-    ])
+    prompt = build_prompt(classification_parameters, classification_output)
 
     if provider == "anthropic":
         from langchain_anthropic import ChatAnthropic
@@ -636,6 +709,17 @@ def main() -> None:
         help="Model name passed to the provider SDK.",
     )
     parser.add_argument(
+        "--translatable_params",
+        action="store_true",
+        help="Classify translatable_params (true / false).",
+    )
+    parser.add_argument(
+        "--localizable",
+        action="store_true",
+        help="Classify localizable_query and localizable_parameters. Auto-includes "
+             "translatable_params, since localizable_parameters depends on it.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Print the first prompt and exit without making any API calls.",
@@ -662,12 +746,18 @@ def main() -> None:
     if args.retrieve and args.dry_run:
         parser.error("--dry-run has no effect with --retrieve.")
 
-    # Retrieve-only path — no asyncio needed
+    # Retrieve-only path — no asyncio needed. The classification selection is read
+    # from the manifest, so the --translatable_params / --localizable flags are ignored.
     if args.retrieve:
         if args.provider != "anthropic":
             parser.error("--retrieve only supports --provider anthropic.")
         retrieve_and_write(args.retrieve, args.category)
         return
+
+    # Selection: no classification flag => run everything. --localizable auto-includes
+    # translatable_params (localizable_parameters depends on it), so translatable_params is
+    # always computed; include_localizable is the only real switch.
+    include_localizable = args.localizable or not (args.translatable_params or args.localizable)
 
     asyncio.run(classify(
         category=args.category,
@@ -675,6 +765,7 @@ def main() -> None:
         model_name=args.model,
         dry_run=args.dry_run,
         submit_only=args.submit_only,
+        include_localizable=include_localizable,
     ))
 
 

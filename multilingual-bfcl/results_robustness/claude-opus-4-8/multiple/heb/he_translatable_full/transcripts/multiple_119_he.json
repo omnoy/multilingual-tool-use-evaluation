@@ -1,0 +1,493 @@
+{
+  "id": "multiple_119_he",
+  "source_id": "multiple_119",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "claude-opus-4-8",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_failed_calls": 5,
+  "final_error_type": "value_error:string",
+  "total_input_tokens": 9349,
+  "total_output_tokens": 1187,
+  "total_latency_s": 34.475927114486694,
+  "estimated_cost_usd": 0.07641999999999999,
+  "error": null,
+  "ground_truth": [
+    {
+      "database.query": {
+        "table": [
+          "משתמש"
+        ],
+        "conditions": [
+          [
+            {
+              "field": [
+                "age"
+              ],
+              "operation": [
+                ">"
+              ],
+              "value": [
+                "25"
+              ]
+            },
+            {
+              "field": [
+                "job"
+              ],
+              "operation": [
+                "="
+              ],
+              "value": [
+                "engineer"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "אני אבצע שאילתה במסד הנתונים עבורך."
+      ],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "id": "toolu_018Nza6WajZ6gt3cVVxEpjEp"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'table': 'users'. Expected one of ['משתמש']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 1286,
+      "output_tokens": 142,
+      "latency_s": 3.055670738220215,
+      "num_calls": 1,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "ביצעתי את השאילתה במסד הנתונים בטבלת המשתמשים (users) עם התנאים הבאים:\n- גיל גדול מ-25 (age > 25)\n- מקצוע שווה ל'מהנדס' (profession = engineer)\n\nנראה שהשרת החזיר שגיאה. ייתכן שערך המקצוע צריך להיות בעברית. אנסה שוב עם הערך 'מהנדס':"
+      ],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          },
+          "id": "toolu_011XvKqmDkAbsmaX29SnmkRF"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'table': 'users'. Expected one of ['משתמש']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 1467,
+      "output_tokens": 274,
+      "latency_s": 6.825835466384888,
+      "num_calls": 1,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "השאילתה עדיין מחזירה שגיאת 400 (בקשה שגויה) מצד השרת. ביצעתי את הקריאה בהתאם להגדרת הפונקציה:\n\n- **טבלה:** users\n- **תנאי 1:** השדה `age` עם הפעולה `>` והערך `25`\n- **תנאי 2:** השדה `profession` עם הפעולה `=` והערך `מהנדס`\n\nהפרמטרים שנשלחו תואמים את מבנה הפונקציה המוגדר, אך השרת ממשיך להחזיר שגיאה. ייתכן שהבעיה נובעת מאחד מהגורמים הבאים:\n\n1. **שמות השדות** – ייתכן שהשדות בטבלה נקראים אחרת (למשל בעברית, או בשם אחר כמו `job`/`occupation` במקום `profession`).\n2. **ערך המקצוע** – ייתכן שצריך ערך אחר או בשפה אחרת.\n3. **בעיה זמנית בשרת** או הגדרה פנימית שאינה זמינה לי.\n\nתוכל בבקשה לוודא את שמות השדות המדויקים בטבלת המשתמשים, ובאיזו שפה/פורמט מאוחסן ערך המקצוע? כך אוכל להריץ את השאילתה בצורה תקינה."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1799,
+      "output_tokens": 477,
+      "latency_s": 12.864530324935913,
+      "num_calls": 0,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "אנסה שוב עם הערך באנגלית בשם השדה שונה:"
+      ],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "id": "toolu_01MSFrcmJn6ZexYKzvMr547N"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'table': 'users'. Expected one of ['משתמש']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 2306,
+      "output_tokens": 146,
+      "latency_s": 4.771221160888672,
+      "num_calls": 1,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "אנסה גרסה נוספת עם שם הטבלה ושם השדה שונים:"
+      ],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "id": "toolu_01AC12aMpN82wMYFc26GfKjy"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'table': 'user'. Expected one of ['משתמש']. Case insensitive."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2491,
+      "output_tokens": 148,
+      "latency_s": 6.958669424057007,
+      "num_calls": 1,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "מצא רשומות במסד הנתונים בטבלת המשתמשים שבהן הגיל גדול מ-25 והמקצוע הוא 'מהנדס'."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "אני אבצע שאילתה במסד הנתונים עבורך.",
+          "type": "text"
+        },
+        {
+          "id": "toolu_018Nza6WajZ6gt3cVVxEpjEp",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_018Nza6WajZ6gt3cVVxEpjEp"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "ביצעתי את השאילתה במסד הנתונים בטבלת המשתמשים (users) עם התנאים הבאים:\n- גיל גדול מ-25 (age > 25)\n- מקצוע שווה ל'מהנדס' (profession = engineer)\n\nנראה שהשרת החזיר שגיאה. ייתכן שערך המקצוע צריך להיות בעברית. אנסה שוב עם הערך 'מהנדס':",
+          "type": "text"
+        },
+        {
+          "id": "toolu_011XvKqmDkAbsmaX29SnmkRF",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_011XvKqmDkAbsmaX29SnmkRF"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "השאילתה עדיין מחזירה שגיאת 400 (בקשה שגויה) מצד השרת. ביצעתי את הקריאה בהתאם להגדרת הפונקציה:\n\n- **טבלה:** users\n- **תנאי 1:** השדה `age` עם הפעולה `>` והערך `25`\n- **תנאי 2:** השדה `profession` עם הפעולה `=` והערך `מהנדס`\n\nהפרמטרים שנשלחו תואמים את מבנה הפונקציה המוגדר, אך השרת ממשיך להחזיר שגיאה. ייתכן שהבעיה נובעת מאחד מהגורמים הבאים:\n\n1. **שמות השדות** – ייתכן שהשדות בטבלה נקראים אחרת (למשל בעברית, או בשם אחר כמו `job`/`occupation` במקום `profession`).\n2. **ערך המקצוע** – ייתכן שצריך ערך אחר או בשפה אחרת.\n3. **בעיה זמנית בשרת** או הגדרה פנימית שאינה זמינה לי.\n\nתוכל בבקשה לוודא את שמות השדות המדויקים בטבלת המשתמשים, ובאיזו שפה/פורמט מאוחסן ערך המקצוע? כך אוכל להריץ את השאילתה בצורה תקינה.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "אנסה שוב עם הערך באנגלית בשם השדה שונה:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01MSFrcmJn6ZexYKzvMr547N",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01MSFrcmJn6ZexYKzvMr547N"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "אנסה גרסה נוספת עם שם הטבלה ושם השדה שונים:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01AC12aMpN82wMYFc26GfKjy",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ]
+}

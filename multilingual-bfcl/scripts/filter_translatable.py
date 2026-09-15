@@ -8,9 +8,9 @@ copies of the benchmark that keep only the entries whose effective
 translatable_params == "true":
 
     data/benchmarks/<category>/eng_base.json
-        -> data/benchmarks/<category>/eng_base_translatable.json
+        -> data/benchmarks/<category>/eng_translatable.json
     data/benchmarks/<category>/possible_answer/eng_base.json
-        -> data/benchmarks/<category>/possible_answer/eng_base_translatable.json
+        -> data/benchmarks/<category>/possible_answer/eng_translatable.json
 
 Both source files are newline-delimited JSON (one object per line); the outputs
 preserve that format and the original ordering.
@@ -34,7 +34,7 @@ DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks"
 
 BASE_CSV = "base_classifications_params.csv"
 OVERLAY_CSV = "base_classifications_params.corrections.csv"
-TRANSLATABLE_SUFFIX = "eng_base_translatable.json"
+TRANSLATABLE_SUFFIX = "eng_translatable.json"
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -107,7 +107,7 @@ def filter_file(src: Path, keep_ids: set[str], dst: Path) -> tuple[int, int]:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Write translatable-only copies of a benchmark "
-                    "(eng_base_translatable.json) based on the merged "
+                    "(eng_translatable.json) based on the merged "
                     "translatable_params classification.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )

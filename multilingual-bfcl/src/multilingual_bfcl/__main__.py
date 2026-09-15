@@ -8,7 +8,7 @@ Commands:
 
 Usage examples:
   mbfcl build multiple --locales he zh-CN --level query
-  mbfcl build multiple --locales he --level full --source eng_base_translatable.json
+  mbfcl build multiple --locales he --level full --source eng_translatable.json
   mbfcl build multiple --retrieve msgbatch_01AbCd...
   mbfcl locales
   mbfcl status

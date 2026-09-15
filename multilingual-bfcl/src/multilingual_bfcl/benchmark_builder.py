@@ -11,7 +11,7 @@ Input/output live under data/benchmarks/<category>/:
   - output question file : <locale>_<level>.json    (e.g. he_full.json)
   - output ground truth  : possible_answer/<locale>_<level>.json
 
-`--source` chooses the input (e.g. eng_base_translatable.json → he_translatable_full.json).
+`--source` chooses the input (e.g. eng_translatable.json → he_translatable_full.json).
 
 Levels (see translator.LocalizationLevel):
   - query : translate only the user query; ground truth left unchanged.
@@ -73,7 +73,7 @@ def output_filename(source: str, locale_code: str, level: LocalizationLevel) -> 
     """Map a source filename to its translated counterpart.
 
     eng_base.json              -> <locale>_<level>.json
-    eng_base_translatable.json -> <locale>_translatable_<level>.json
+    eng_translatable.json -> <locale>_translatable_<level>.json
     anything else              -> <stem>_<locale>_<level>.json
     """
     stem = Path(source).stem

@@ -15,7 +15,7 @@ Outputs (under data/benchmarks/<category>/):
   <locale>_<level>.json                  e.g. he_full.json
   possible_answer/<locale>_<level>.json
 (For non-default sources the stem is preserved, e.g.
- eng_base_translatable.json -> he_translatable_full.json.)
+ eng_translatable.json -> he_translatable_full.json.)
 
 Usage:
     # Submit and wait for results:
@@ -23,7 +23,7 @@ Usage:
 
     # Translate the translatable-only subset, query level:
     python scripts/translate_benchmark.py --category multiple --locales he \
-        --source eng_base_translatable.json --level query
+        --source eng_translatable.json --level query
 
     # Submit only, then retrieve later (Anthropic):
     python scripts/translate_benchmark.py --category multiple --locales he --level full --submit-only

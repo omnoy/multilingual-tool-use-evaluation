@@ -1,0 +1,495 @@
+{
+  "id": "wild_tool_bench_14",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "claude-opus-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "simple_function_checker:wrong_count",
+  "total_input_tokens": 9193,
+  "total_output_tokens": 1291,
+  "total_latency_s": 26.29163432121277,
+  "estimated_cost_usd": 0.07824,
+  "error": null,
+  "ground_truth": [
+    {
+      "echoPost": {
+        "content": [
+          {
+            "number": 123,
+            "text": "Test text"
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "I'll echo that content object for you."
+      ],
+      "tool_calls": [
+        {
+          "name": "echoPost",
+          "arguments": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            }
+          },
+          "id": "toolu_01NTkPMtB8BScJe5KHBaApse"
+        }
+      ],
+      "decoded": [
+        {
+          "echoPost": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "checker_error": [
+        "Function name 'echoGet' not found in model output."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'echoPost'. Please review the function definition and try again.",
+      "input_tokens": 980,
+      "output_tokens": 74,
+      "latency_s": 2.723612070083618,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "The first attempt returned a 400. Let me retry with an explicit content type header:"
+      ],
+      "tool_calls": [
+        {
+          "name": "echoPost",
+          "arguments": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            },
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          "id": "toolu_017NsVP4jJdvwY7BydkmLm2X"
+        }
+      ],
+      "decoded": [
+        {
+          "echoPost": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            },
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "checker_error": [
+        "Function name 'echoGet' not found in model output."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'echoPost'. Please review the function definition and try again.",
+      "input_tokens": 1094,
+      "output_tokens": 149,
+      "latency_s": 2.8941502571105957,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Still failing. Let me isolate which field is causing the issue:"
+      ],
+      "tool_calls": [
+        {
+          "name": "echoPost",
+          "arguments": {
+            "content": {
+              "text": "Test text"
+            }
+          },
+          "id": "toolu_01Ax17kbcybBxLAWGs6AS3f9"
+        },
+        {
+          "name": "echoPost",
+          "arguments": {
+            "content": {
+              "number": 123
+            }
+          },
+          "id": "toolu_01EiptpLXPR45v7dAYbuaHbu"
+        }
+      ],
+      "decoded": null,
+      "valid": false,
+      "error_type": "decode_failed",
+      "checker_error": [
+        "argument of type 'int' is not iterable"
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'echoPost'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'echoPost'. Please review the function definition and try again.",
+      "input_tokens": 1283,
+      "output_tokens": 245,
+      "latency_s": 4.162598609924316,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Both individual fields fail too, which suggests `echoPost` itself is rejecting all input. Let me verify whether other endpoints are working:"
+      ],
+      "tool_calls": [
+        {
+          "name": "echoGet",
+          "arguments": {
+            "data": "Test text 123"
+          },
+          "id": "toolu_015xtXwPo8yrgCyHrzf5LioX"
+        }
+      ],
+      "decoded": [
+        {
+          "echoGet": {
+            "data": "Test text 123"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "simple_function_checker:unexpected_param",
+      "checker_error": [
+        "Unexpected parameter: 'data'."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'echoGet'. Please review the function definition and try again.",
+      "input_tokens": 1656,
+      "output_tokens": 143,
+      "latency_s": 3.809814691543579,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "I wasn't able to complete your request — the echo service is returning errors.\n\n**What I tried:**\n\n| Attempt | Request | Result |\n|---|---|---|\n| 1 | `echoPost` with `{text: \"Test text\", number: 123}` | 400 Bad Request |\n| 2 | Same, plus `Content-Type: application/json` header | 400 Bad Request |\n| 3 | `echoPost` with only `{text: \"Test text\"}` | 400 Bad Request |\n| 4 | `echoPost` with only `{number: 123}` | 400 Bad Request |\n| 5 | `echoGet` with `data: \"Test text 123\"` | 400 Bad Request |\n\n**What this tells me:** My original request matched the documented schema exactly — `content` is an object accepting a `text` string and a `number` integer, and neither `headers` nor `timestamp` is required. Stripping the payload down to a single field still failed, and a completely different endpoint (`echoGet`) failed the same way. Since even the most minimal valid requests are rejected, this looks like a problem with the echo service itself rather than with how the request was formed.\n\n**For reference, here's the object you asked to echo:**\n\n```json\n{\n  \"content\": {\n    \"text\": \"Test text\",\n    \"number\": 123\n  }\n}\n```\n\nIf you'd like, I can retry in case the issue is transient, or try a variation if you have reason to think the service expects a different payload shape than what its schema documents."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1839,
+      "output_tokens": 472,
+      "latency_s": 7.692894697189331,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "echoPost",
+          "arguments": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            }
+          },
+          "id": "toolu_01LRmeC8y8MFMBAYmZSdsxT9"
+        },
+        {
+          "name": "echoHeaders",
+          "arguments": {
+            "verbose": true
+          },
+          "id": "toolu_01TEvQg1fiH5eJHVs7LiMbCd"
+        }
+      ],
+      "decoded": [
+        {
+          "echoPost": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            }
+          }
+        },
+        {
+          "echoHeaders": {
+            "verbose": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "simple_function_checker:wrong_count",
+      "checker_error": [
+        "Wrong number of functions."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2341,
+      "output_tokens": 208,
+      "latency_s": 5.008563995361328,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Please echo the content object, where the text content is 'Test text' and it contains a number 123."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "I'll echo that content object for you.",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01NTkPMtB8BScJe5KHBaApse",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            }
+          },
+          "name": "echoPost",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'echoPost'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01NTkPMtB8BScJe5KHBaApse"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISxgIKjgEIERgCKkBKPg8h5Dh2twgsbbc8kEDw9Zuvcg/qL9XeCYz+qbCVC+vvzrO4TnjSd288ATfNY+6H63QWl70QGhOh2Y4lTwIqMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAaeOqdUGEgwi+8uLcpZXgl4pdMsaDE8vjTBXUCVoh51QYiIwUhXG9dqHJo/A/3BKnF0+BWvqylmhScjXiObKBPaSY/ZO/oI/89dMSSUj9/FjamoFKmU6kxx10VcZoj+4ieWSi5Ng9R2b8YlDuAXbUQ5yp30fO6/D7ZrTnDK2ki2W6h807Mpv5ANxFwtZiIgpj77tmvr1Ciqe9SYpQq6sCubUSKZBThO7PnTKgaaOqDnSAbfgb0GgWGYgvxgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "The first attempt returned a 400. Let me retry with an explicit content type header:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_017NsVP4jJdvwY7BydkmLm2X",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            },
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          "name": "echoPost",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'echoPost'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_017NsVP4jJdvwY7BydkmLm2X"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS3gQKjgEIERgCKkD/j4zRpSKDjOm4nWrfcRXGYZpbFJ15hGUvnltL6qPL01jyS4L5/B5qBXY4SuQPm0SQXpA5Yc1rPtTvHm1jBwNWMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAauOqdUGEgxpBT9hVB7F/U+3ImMaDDeQRkTwX2jNcMSW1iIwlURL4bS/Aiw1tbtOAWiY/BQho7pTuvEjo2J4FZXOnV1GWj/MHkisP5XKlLivCkBwKvwCrE1Q/Ylu4xOz3hCyeuumHrqX2hDj/Dr1lESkoHBrsax//7TYv1NpEezUZYV9+Nv6+idvluKy0LdT/uuVerzgtjH8KtaeETR5vV3dmPk8x0NEuAdpyBIgyCrMOxHh/ogEZ2/na10F/RAcGwsWIfRyEOG7O1pmMGL2RFsicmtVZCvGdcXUNxB+deFwP9M2vA8RoCniUs7PGrL/Pv2QFWLBVU/Fa7IzuMnaGS5JrwEkar3lf28GTrT0iqviDYx2jPuTVWYXV3KxE6BGCGVJQNhlY8eyqlJSzHJJJ/zm12Z3WjIRcHWGyg0FtVJaJR4O5T6EAJSzzGOWPY1IEnBxb1OO242pQ69Pp8tA1iN6bfNK602HjE/n5UhjAi2KN/ii3QRDabaYym1Vop0a1hAP3/FV3zHPGNfeE8LLSAAxhfMNsjLKUgIQd+AcLjtvH/D3VYFny9T4XplW+/JQE8J2/ETqA5E9jIbcl6qdHXwo03Hp1YDJu1HTbt6R5EwGRaIYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Still failing. Let me isolate which field is causing the issue:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01Ax17kbcybBxLAWGs6AS3f9",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "content": {
+              "text": "Test text"
+            }
+          },
+          "name": "echoPost",
+          "type": "tool_use"
+        },
+        {
+          "id": "toolu_01EiptpLXPR45v7dAYbuaHbu",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "content": {
+              "number": 123
+            }
+          },
+          "name": "echoPost",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'echoPost'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01Ax17kbcybBxLAWGs6AS3f9"
+        },
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'echoPost'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01EiptpLXPR45v7dAYbuaHbu"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS8QIKjgEIERgCKkCGNZDcLSfLd7cM54MU/WuTYjDlP8LJ8MkzDmo249dqfygfR6rekidPWPdvmBTNY/DBv5uu/K0SCAXCyhK4ZmYNMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAa+OqdUGEgxXFaKwj5RWgbWS/9YaDF9i//dNqm6a8ErxiyIwtDwmGqiaoyLo5GGiRCfe1GAb9PqEegtZk7bf0PrVDpg/ZZ9Q85k1hwNqxLp6oTGxKo8BUVOCG0Cxqpzv2AygeCHj7uGS6Tp7PLstipkr+ldn3J20I278epfA9CgL+2ljEvoppEh7DistU+JRJItawgvpWkoNVwHrGC1yiXtP89IiBot4Ay2cAb4pHAiQ6XM9FG7oQ8A/MNnH77MVWQKRW4rIPrPNa9oRnxa+n7IRC0xXDyceJQBujCn7I6dq5vytcwwYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Both individual fields fail too, which suggests `echoPost` itself is rejecting all input. Let me verify whether other endpoints are working:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_015xtXwPo8yrgCyHrzf5LioX",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "data": "Test text 123"
+          },
+          "name": "echoGet",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'echoGet'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_015xtXwPo8yrgCyHrzf5LioX"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "I wasn't able to complete your request — the echo service is returning errors.\n\n**What I tried:**\n\n| Attempt | Request | Result |\n|---|---|---|\n| 1 | `echoPost` with `{text: \"Test text\", number: 123}` | 400 Bad Request |\n| 2 | Same, plus `Content-Type: application/json` header | 400 Bad Request |\n| 3 | `echoPost` with only `{text: \"Test text\"}` | 400 Bad Request |\n| 4 | `echoPost` with only `{number: 123}` | 400 Bad Request |\n| 5 | `echoGet` with `data: \"Test text 123\"` | 400 Bad Request |\n\n**What this tells me:** My original request matched the documented schema exactly — `content` is an object accepting a `text` string and a `number` integer, and neither `headers` nor `timestamp` is required. Stripping the payload down to a single field still failed, and a completely different endpoint (`echoGet`) failed the same way. Since even the most minimal valid requests are rejected, this looks like a problem with the echo service itself rather than with how the request was formed.\n\n**For reference, here's the object you asked to echo:**\n\n```json\n{\n  \"content\": {\n    \"text\": \"Test text\",\n    \"number\": 123\n  }\n}\n```\n\nIf you'd like, I can retry in case the issue is transient, or try a variation if you have reason to think the service expects a different payload shape than what its schema documents.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISjgQKjgEIERgCKkBiF/HBupTm52AMWdZ3PJjEqeVyWb8WYzvni1+1DAIvzEegvQpaq2eeD1wNhHgIgNh/Itj/pj4FLVYBdcREgzWqMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAbyOqdUGEgz22SMigWr6jDedaDcaDKgWYBK55lgbdB2TlSIw2VTycFUlF2h7eeZkN6HMCZVHGpXDtKMwOffMvyje2GdCRVsunDMsETZEcV8HcyBoKqwCX6wAvSLztKFotQJBKEd+yQsCLvk+x01j947lT9nFy9xEhMavynrmZfy8ZQevurCBlhGs0b1daLlW+El8Pe81i/r+x5zTmlqshOfX35aGZOVMB/iesHEzasNFtbaaVEJirn4XKxtVh0QnIJJxYb4TwIUU7UG2DRCfWXKAD4rnC1VrEPvXxV4HRsryEg6MMOYEl3ZuCJ+52ZjNNtNOPIuNvzm62AkAw4UPHmHtJ2GqDM0sV0fYfNylrJcatg6senMhvrrZXbK0ayiU0k/Sk5Dew6HHOIN2U5VEtyXg/jFL3TpuZLJGBDlyw0EWbkNF9msfNEKHlkylG+8Zks60VcPu6aXcNAZekkDTHWGnjOg3/PVVQiUMStnmuGCsnA/YSX/alySqSDXypGLQsWGGGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01LRmeC8y8MFMBAYmZSdsxT9",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "content": {
+              "text": "Test text",
+              "number": 123
+            }
+          },
+          "name": "echoPost",
+          "type": "tool_use"
+        },
+        {
+          "id": "toolu_01TEvQg1fiH5eJHVs7LiMbCd",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "verbose": true
+          },
+          "name": "echoHeaders",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ]
+}

@@ -28,24 +28,24 @@ Output file depends on the selection:
 
 Usage:
     # Submit and wait for results — all classifications (default):
-    python scripts/classify_benchmark.py --category multiple
+    python scripts/classify_benchmark.py --category bfcl_multiple
 
     # Only classify translatable_params:
-    python scripts/classify_benchmark.py --category multiple --translatable_params
+    python scripts/classify_benchmark.py --category bfcl_multiple --translatable_params
 
     # Only classify localizability (translatable_params is auto-included):
-    python scripts/classify_benchmark.py --category multiple --localizable
+    python scripts/classify_benchmark.py --category bfcl_multiple --localizable
 
     # Submit only — print the batch ID and exit immediately:
-    python scripts/classify_benchmark.py --category multiple --submit-only
+    python scripts/classify_benchmark.py --category bfcl_multiple --submit-only
 
     # Retrieve results for a previously submitted batch (Anthropic only):
-    python scripts/classify_benchmark.py --category multiple --retrieve msgbatch_01AbCdEf...
+    python scripts/classify_benchmark.py --category bfcl_multiple --retrieve msgbatch_01AbCdEf...
 
     # Other options:
-    python scripts/classify_benchmark.py --category multiple --model claude-opus-4-8 --provider anthropic
-    python scripts/classify_benchmark.py --category multiple --model gpt-4o-mini --provider openai
-    python scripts/classify_benchmark.py --category multiple --dry-run
+    python scripts/classify_benchmark.py --category bfcl_multiple --model claude-opus-4-8 --provider anthropic
+    python scripts/classify_benchmark.py --category bfcl_multiple --model gpt-4o-mini --provider openai
+    python scripts/classify_benchmark.py --category bfcl_multiple --dry-run
 
 Requirements:
     pip install langasync langchain-anthropic langchain-openai
@@ -720,7 +720,7 @@ def main() -> None:
     parser.add_argument(
         "--category",
         required=True,
-        help="Benchmark category name, e.g. 'multiple'. "
+        help="Benchmark category name, e.g. 'bfcl_multiple'. "
              "Must have eng_base.json and possible_answer/eng_base.json under data/benchmarks/<category>/.",
     )
     parser.add_argument(

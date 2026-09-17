@@ -1,0 +1,460 @@
+{
+  "id": "multiple_134_he",
+  "source_id": "multiple_134",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "claude-opus-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "value_error:string",
+  "total_input_tokens": 13746,
+  "total_output_tokens": 1521,
+  "total_latency_s": 43.00754475593567,
+  "estimated_cost_usd": 0.106755,
+  "error": null,
+  "ground_truth": [
+    {
+      "crime_record.get_record": {
+        "case_number": [
+          "CA123456"
+        ],
+        "county": [
+          "סן דייגו",
+          "מחוז סן דייגו"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "toolu_01CwNzrtbzZHdqreDj8NEbjG"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'county': 'San Diego'. Expected one of ['סן דייגו', 'מחוז סן דייגו']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1220,
+      "output_tokens": 134,
+      "latency_s": 3.041825771331787,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "קיבלתי שגיאה מהמערכת בניסיון הראשון. אנסה שוב עם ניסוח מעט שונה של שם המחוז:"
+      ],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego County",
+            "details": true
+          },
+          "id": "toolu_014QWsBzT3Q7xoPg2wubQ6Tx"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego County",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'county': 'San Diego County'. Expected one of ['סן דייגו', 'מחוז סן דייגו']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1398,
+      "output_tokens": 201,
+      "latency_s": 5.488899230957031,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "אנסה פעם נוספת, הפעם ללא פרמטר הפירוט:"
+      ],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego"
+          },
+          "id": "toolu_017TpwhAEXHQs6aTw1N8KLav"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'county': 'San Diego'. Expected one of ['סן דייגו', 'מחוז סן דייגו']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1643,
+      "output_tokens": 120,
+      "latency_s": 3.8059048652648926,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "לא הצלחתי לאחזר את הרשומה. ניסיתי שלוש פעמים:\n\n1. עם מספר תיק `CA123456`, מחוז `San Diego` ודגל פירוט מלא — שגיאה 400\n2. עם שם המחוז בנוסח `San Diego County` — שגיאה 400\n3. ללא פרמטר הפירוט (ברירת מחדל) — שגיאה 400\n\nבכל שלוש הפעמים השירות החזיר **400 Bad Request: invalid parameters** — כלומר הקריאה נדחתה לפני שבכלל בוצע חיפוש, ולא מדובר בכך ש\"התיק לא נמצא\".\n\nכדי שאוכל לנסות שוב, אשמח לוודא איתך:\n\n- **פורמט מספר התיק** — האם `CA123456` הוא הפורמט המדויק? לעיתים נדרשים מקפים או מספר שנה (למשל `CA-123-456` או `2023-CA123456`).\n- **שם המחוז** — האם הכוונה למחוז סן דייגו בקליפורניה? ייתכן שהמערכת מצפה לניסוח אחר.\n\nשים לב גם שגישה לרשומות פליליות מפורטות עשויה להיות מוגבלת להרשאות מסוימות, כך שייתכן שהחסימה נובעת מהרשאות ולא מהפורמט."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1807,
+      "output_tokens": 492,
+      "latency_s": 15.276205062866211,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "toolu_0159UNcgDPYETn7Uvara7Fur"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'county': 'San Diego'. Expected one of ['סן דייגו', 'מחוז סן דייגו']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 2329,
+      "output_tokens": 102,
+      "latency_s": 2.9797818660736084,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "הקריאה נדחתה שוב עם אותה שגיאה: **400 Bad Request: invalid parameters**.\n\nביצעתי את הקריאה עם:\n- `case_number`: CA123456\n- `county`: San Diego\n- `details`: true\n\nזו הפעם הרביעית שהשירות דוחה את הבקשה עוד לפני ביצוע החיפוש עצמו — כלומר זו אינה תשובה של \"תיק לא נמצא\", אלא דחייה של הפרמטרים.\n\nכדי לנסות שוב בהצלחה, אשמח לקבל ממך:\n- **פורמט מדויק של מספר התיק** — ייתכן שנדרשים מקפים או שנה (למשל `CA-123456` או `2023-CA123456`)\n- **אימות שם המחוז** — האם מדובר במחוז סן דייגו שבקליפורניה?\n\nייתכן גם שהגישה לרשומות פליליות מפורטות דורשת הרשאות מיוחדות שאינן זמינות בחיבור הנוכחי."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2475,
+      "output_tokens": 369,
+      "latency_s": 9.684186935424805,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA-123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "toolu_01QiWj3aTkvGPWfj85Xxpeby"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA-123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'county': 'San Diego'. Expected one of ['סן דייגו', 'מחוז סן דייגו']. Case insensitive."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2874,
+      "output_tokens": 103,
+      "latency_s": 2.730741024017334,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "חפש פרטים של רישום פלילי חמור עבור מספר תיק CA123456 במחוז סן דייגו"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISzQIKjgEIERgCKkAG2HSAYpmUzfS9GuPUnT6DL2SccqwwYz1MAAvItbIMbmfAvC9NT8h9AauyPOYWigf0D2ldBbMYQR+dDPjG6HR5Mg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAZiCqdUGEgxnQD2n5OW2nn8Z6TYaDOqOH8NEilm2dLptFCIwmF5r/OkNcPL/Pei2lngGf23Vg15+aSOzkWQ9GZRkIQoCJryhlwNO8+PBV3UcNl/XKmwf8sDmGbiBAbJL+PdLN84+LEXdNHonwgNcWyAevy9JrEvhpxH98TwsNajm0v0BGzbhpm+IehNxATgyTfWwB5NLdtp3nq7qljcisdyT1fo5xKxAY8wGp1vFCyUNjf39nWxltpeRz5nTnWSkTZ0YAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01CwNzrtbzZHdqreDj8NEbjG",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "name": "crime_record_get_record",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01CwNzrtbzZHdqreDj8NEbjG"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS5wIKjgEIERgCKkCfBhMw7jVjKTXS4YRnrPFXTb5PmySqvxf5SdLfgOOVrIxKmHcf01N9bSmCBpt8iUiKwDdPFad1eLraQRXgVfLnMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAZuCqdUGEgwBLi0K/9EUlBYEB7UaDCIce/aFaDGJs3hM6CIw37lHF6NeqYDIV4dDSpwJaVq2jbekHRKw7u9vjzYshtvcEGmSV0oT4klbRMZSWIpLKoUBU6sMqt2LOC+OrdpvrCz6TcB/Zj8iuaYGwjDC2WgktWhNtvJ+PCFRQSWtT+/GpAOZdl5X2L0ViGS7x5Ne5OIzDKFpQCJdZm17Vdn8YhEvOBVjgmTfyI5FHsFbyqff5o5LRucnS1wdvs2gZRaoKLPYGIWpke9FSrOU1+HhFyA3DSz4VLhVpBgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "קיבלתי שגיאה מהמערכת בניסיון הראשון. אנסה שוב עם ניסוח מעט שונה של שם המחוז:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_014QWsBzT3Q7xoPg2wubQ6Tx",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_number": "CA123456",
+            "county": "San Diego County",
+            "details": true
+          },
+          "name": "crime_record_get_record",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_014QWsBzT3Q7xoPg2wubQ6Tx"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISiwIKjgEIERgCKkC65YkdjeUcwdUFdNpt870yI/UKzFgi56SWZ4C7yRPZSKC49Hl1ieH2TkXZawfjfOIym7uyFumn+vK9m2iwv3NEMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAaCCqdUGEgx7+dKGXse3EfNRCrkaDHVK851H2AUry0skrSIwsAW9JRnyShBfItYayoarmPiyaVaFJmKjdaIMzIj9FeSZrkHxFJCYk7F9K0WGcDYTKioAW6sWMtubEVc7uFIUv5Osp2LHM8TNWBeZ7TBaNxOtAXft+HjZSE3Kxg0YAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "אנסה פעם נוספת, הפעם ללא פרמטר הפירוט:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_017TpwhAEXHQs6aTw1N8KLav",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_number": "CA123456",
+            "county": "San Diego"
+          },
+          "name": "crime_record_get_record",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_017TpwhAEXHQs6aTw1N8KLav"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "לא הצלחתי לאחזר את הרשומה. ניסיתי שלוש פעמים:\n\n1. עם מספר תיק `CA123456`, מחוז `San Diego` ודגל פירוט מלא — שגיאה 400\n2. עם שם המחוז בנוסח `San Diego County` — שגיאה 400\n3. ללא פרמטר הפירוט (ברירת מחדל) — שגיאה 400\n\nבכל שלוש הפעמים השירות החזיר **400 Bad Request: invalid parameters** — כלומר הקריאה נדחתה לפני שבכלל בוצע חיפוש, ולא מדובר בכך ש\"התיק לא נמצא\".\n\nכדי שאוכל לנסות שוב, אשמח לוודא איתך:\n\n- **פורמט מספר התיק** — האם `CA123456` הוא הפורמט המדויק? לעיתים נדרשים מקפים או מספר שנה (למשל `CA-123-456` או `2023-CA123456`).\n- **שם המחוז** — האם הכוונה למחוז סן דייגו בקליפורניה? ייתכן שהמערכת מצפה לניסוח אחר.\n\nשים לב גם שגישה לרשומות פליליות מפורטות עשויה להיות מוגבלת להרשאות מסוימות, כך שייתכן שהחסימה נובעת מהרשאות ולא מהפורמט.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_0159UNcgDPYETn7Uvara7Fur",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "name": "crime_record_get_record",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_0159UNcgDPYETn7Uvara7Fur"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "הקריאה נדחתה שוב עם אותה שגיאה: **400 Bad Request: invalid parameters**.\n\nביצעתי את הקריאה עם:\n- `case_number`: CA123456\n- `county`: San Diego\n- `details`: true\n\nזו הפעם הרביעית שהשירות דוחה את הבקשה עוד לפני ביצוע החיפוש עצמו — כלומר זו אינה תשובה של \"תיק לא נמצא\", אלא דחייה של הפרמטרים.\n\nכדי לנסות שוב בהצלחה, אשמח לקבל ממך:\n- **פורמט מדויק של מספר התיק** — ייתכן שנדרשים מקפים או שנה (למשל `CA-123456` או `2023-CA123456`)\n- **אימות שם המחוז** — האם מדובר במחוז סן דייגו שבקליפורניה?\n\nייתכן גם שהגישה לרשומות פליליות מפורטות דורשת הרשאות מיוחדות שאינן זמינות בחיבור הנוכחי.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01QiWj3aTkvGPWfj85Xxpeby",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_number": "CA-123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "name": "crime_record_get_record",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ]
+}

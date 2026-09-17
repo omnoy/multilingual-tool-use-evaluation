@@ -6,7 +6,7 @@ condition (no API calls — pure deterministic merge):
 
   - function/parameter DESCRIPTIONS  <- he_translated_function_descriptions.json
   - user QUERY                       <- he_translatable_full.json
-  - ground-truth parameter VALUES    <- possible_answer/heb/he_translatable_full.json
+  - ground-truth parameter VALUES    <- possible_answer/he/he_translatable_full.json
 
 Function names, parameter names, and types stay English (they are identical across
 both sources). The result is: Hebrew query + Hebrew API descriptions + Hebrew ground
@@ -16,9 +16,9 @@ Both sources derive from the same 132 base entries and share ids (multiple_X_he)
 the merge is a straight per-id combine. The script verifies that the two sources'
 function definitions are structurally identical (ignoring descriptions) before merging.
 
-Outputs (under data/benchmarks/multiple/):
-  heb/he_translated_full_and_function_descriptions.json
-  possible_answer/heb/he_translated_full_and_function_descriptions.json
+Outputs (under data/benchmarks/bfcl_multiple/):
+  he/he_translatable_full_func_desc.jsonl
+  possible_answer/he/he_translatable_full_func_desc.jsonl
 
 Usage:
     python scripts/merge_full_and_function_descriptions.py
@@ -34,7 +34,7 @@ from pathlib import Path
 from typing import Any
 
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent
-DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks" / "multiple"
+DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks" / "bfcl_multiple"
 
 DEFAULT_DESC_SOURCE = "he_translated_function_descriptions"   # Hebrew descriptions
 DEFAULT_QUERY_SOURCE = "he_translatable_full"                 # Hebrew query + Hebrew GT
@@ -73,20 +73,20 @@ def main() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("--desc-source", default=DEFAULT_DESC_SOURCE,
-                        help="Benchmark stem (under heb/) providing translated function defs.")
+                        help="Benchmark stem (under he/) providing translated function defs.")
     parser.add_argument("--query-source", default=DEFAULT_QUERY_SOURCE,
-                        help="Benchmark stem (under heb/) providing the translated query and, "
+                        help="Benchmark stem (under he/) providing the translated query and, "
                              "via its possible_answer file, the translated ground truth.")
     parser.add_argument("--output", default=DEFAULT_OUTPUT,
-                        help="Output benchmark stem (under heb/ and possible_answer/heb/).")
+                        help="Output benchmark stem (under he/ and possible_answer/he/).")
     parser.add_argument("--level", default=DEFAULT_LEVEL,
                         help="localization_level tag written onto each merged entry.")
     args = parser.parse_args()
 
-    desc = _index(_load_jsonl(DATA_ROOT / "heb" / f"{args.desc_source}.json"))
-    query = _index(_load_jsonl(DATA_ROOT / "heb" / f"{args.query_source}.json"))
+    desc = _index(_load_jsonl(DATA_ROOT / "he" / f"{args.desc_source}.json"))
+    query = _index(_load_jsonl(DATA_ROOT / "he" / f"{args.query_source}.json"))
     query_gt = _index(_load_jsonl(
-        DATA_ROOT / "possible_answer" / "heb" / f"{args.query_source}.json"))
+        DATA_ROOT / "possible_answer" / "he" / f"{args.query_source}.json"))
 
     ids = [i for i in desc if i in query]  # preserve desc-source order
     missing = sorted(set(desc) ^ set(query))
@@ -121,8 +121,8 @@ def main() -> None:
         else:
             out_answers.append({"id": entry_id, "ground_truth": gt["ground_truth"]})
 
-    out_bench = DATA_ROOT / "heb" / f"{args.output}.json"
-    out_gt = DATA_ROOT / "possible_answer" / "heb" / f"{args.output}.json"
+    out_bench = DATA_ROOT / "he" / f"{args.output}.json"
+    out_gt = DATA_ROOT / "possible_answer" / "he" / f"{args.output}.json"
     _write_jsonl(out_bench, out_entries)
     _write_jsonl(out_gt, out_answers)
 

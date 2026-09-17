@@ -195,7 +195,7 @@ def main() -> None:
                     "ground-truth parameters between two localization levels.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--category", default="multiple",
+    parser.add_argument("--category", default="bfcl_multiple",
                         help="Benchmark category folder under data/benchmarks/.")
     parser.add_argument("--locale", default="he",
                         help="Locale code used in filenames and id suffixes.")
@@ -206,7 +206,7 @@ def main() -> None:
     parser.add_argument("--level-full", default="full",
                         help="Level name of the fully-translated source.")
     parser.add_argument("--subdir", default=None,
-                        help="Locale subfolder under the category (e.g. 'heb'). "
+                        help="Locale subfolder under the category (e.g. 'he'). "
                              "Default: auto-detect; pass '' to force the flat layout.")
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed for reproducible shuffling.")
@@ -223,7 +223,7 @@ def main() -> None:
     q_level, f_level = args.level_query, args.level_full
 
     # Resolve the (optional) locale subfolder. Files may live either directly
-    # under the category or under a locale subfolder like 'heb/'.
+    # under the category or under a locale subfolder like 'he/'.
     subdir = args.subdir
     if subdir is None:
         if (bench / fname(q_level)).exists():

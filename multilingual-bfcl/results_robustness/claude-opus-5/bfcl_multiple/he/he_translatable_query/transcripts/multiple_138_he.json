@@ -1,0 +1,446 @@
+{
+  "id": "multiple_138_he",
+  "source_id": "multiple_138",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "claude-opus-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "value_error:string",
+  "total_input_tokens": 11905,
+  "total_output_tokens": 1424,
+  "total_latency_s": 34.61597299575806,
+  "estimated_cost_usd": 0.095125,
+  "error": null,
+  "ground_truth": [
+    {
+      "legal_case.fetch": {
+        "case_id": [
+          "R vs Adams",
+          "R_vs_Adams"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "legal_case_fetch",
+          "arguments": {
+            "case_id": "R v Adams",
+            "details": true
+          },
+          "id": "toolu_016PT1eD7oorzbphaa6CkdVt"
+        }
+      ],
+      "decoded": [
+        {
+          "legal_case_fetch": {
+            "case_id": "R v Adams",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'case_id': 'R v Adams'. Expected one of ['R vs Adams', 'R_vs_Adams']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'legal_case_fetch'. Please review the function definition and try again.",
+      "input_tokens": 966,
+      "output_tokens": 156,
+      "latency_s": 2.936119318008423,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "הקריאה למערכת נכשלה (400 – פרמטרים לא תקינים). נראה שהשדה `case_id` מצפה למזהה תיק רשמי מהמאגר (למשל מחרוזת כמו \"UKHL-1993-12\" או מספר תיק), ולא לשם התיק \"R נגד Adams\".\n\nכדי שאוכל לשלוף את המידע המפורט, אנא ספק/י את מזהה התיק (case ID) המדויק. ברגע שיהיה לי המזהה, אבצע את השליפה עם `details=true` ואביא את כל פרטי התיק."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1166,
+      "output_tokens": 318,
+      "latency_s": 9.72444772720337,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "legal_case_fetch",
+          "arguments": {
+            "case_id": "R_v_Adams",
+            "details": true
+          },
+          "id": "toolu_01CZu6HZcptDrQse5We1pmxM"
+        }
+      ],
+      "decoded": [
+        {
+          "legal_case_fetch": {
+            "case_id": "R_v_Adams",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'case_id': 'R_v_Adams'. Expected one of ['R vs Adams', 'R_vs_Adams']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'legal_case_fetch'. Please review the function definition and try again.",
+      "input_tokens": 1514,
+      "output_tokens": 157,
+      "latency_s": 2.9449005126953125,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "legal_case_fetch",
+          "arguments": {
+            "case_id": "R v. Adams",
+            "details": true
+          },
+          "id": "toolu_01DHtRxBqJZQJRJCARoR2wW6"
+        }
+      ],
+      "decoded": [
+        {
+          "legal_case_fetch": {
+            "case_id": "R v. Adams",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'case_id': 'R v. Adams'. Expected one of ['R vs Adams', 'R_vs_Adams']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'legal_case_fetch'. Please review the function definition and try again.",
+      "input_tokens": 1715,
+      "output_tokens": 113,
+      "latency_s": 2.7952098846435547,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "ניסיתי לשלוף את התיק בשלוש וריאציות של השם (\"R v Adams\", \"R_v_Adams\", \"R v. Adams\") — וכולן הוחזרו עם שגיאת 400 (פרמטרים לא תקינים).\n\nהמסקנה: הפונקציה `legal_case_fetch` דורשת **מזהה תיק רשמי מהמאגר** (case ID), ולא את שם הצדדים בתיק.\n\nכדי להמשיך, אנא ספק/י אחד מהבאים:\n- מספר/מזהה התיק במאגר (למשל בפורמט של קוד אלפאנומרי)\n- או ציטוט משפטי רשמי (neutral citation), למשל בסגנון `[2007] EWCA Crim 1`\n\nברגע שיהיה בידי המזהה, אקרא שוב לפונקציה עם `details=true` ואחזיר את המידע המפורט על התיק."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1872,
+      "output_tokens": 326,
+      "latency_s": 8.937052726745605,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "legal_case_fetch",
+          "arguments": {
+            "case_id": "Adams",
+            "details": true
+          },
+          "id": "toolu_01ShVw7UgUHzedbkiBrhj8i5"
+        }
+      ],
+      "decoded": [
+        {
+          "legal_case_fetch": {
+            "case_id": "Adams",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'case_id': 'Adams'. Expected one of ['R vs Adams', 'R_vs_Adams']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'legal_case_fetch'. Please review the function definition and try again.",
+      "input_tokens": 2228,
+      "output_tokens": 172,
+      "latency_s": 3.1359591484069824,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "legal_case_fetch",
+          "arguments": {
+            "case_id": "R v Adams",
+            "details": false
+          },
+          "id": "toolu_01HTzyQY6LeAbzhRSE2Rd4nY"
+        }
+      ],
+      "decoded": [
+        {
+          "legal_case_fetch": {
+            "case_id": "R v Adams",
+            "details": false
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'case_id': 'R v Adams'. Expected one of ['R vs Adams', 'R_vs_Adams']. Case insensitive."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2444,
+      "output_tokens": 182,
+      "latency_s": 4.14228367805481,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "כיצד ניתן לקבל את המידע המפורט על תיק התביעה של R נגד Adams?"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISyAMKjgEIERgCKkCgswKZvzp1JlGAYYZY/kHjJ+5ShbPoCh/r27VYojTQ5nVVFKFIg6VZFD5FLRdvheGxeA6cnx25HpXorD1n5HLtMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAZf9qNUGEgyxhG3Nv8QXGqEoj1EaDJEapG1qe/Kc4R6J+CIwBiz1MZ6N7RIlu3s2twg+/N0eh9IuNwmoODAFEyCHDKZuuvDMeVogjeBSv+6T5LXbKuYBwI8OArF6bfngM8Zx6Pja7TuisFfwPiJceR/sK6sioH3Obt+I6WW6/2pu4wXE63jzfhpnsUuCNoEIAKWbfDTUcPESGcrWPweo2uZWkIZq5QQY63sL9x/osOYFQqLQThvpjG+rVthq+9abwGCSt/jrESqad/fe8NDQe4vuEhG4iS4jyUshjcX2ZiyervMH9U6PSsLyBppSztxVvARMlq5G0+gk7/BQWZOb8bryfktjOxvP/+J/BWAedLt/RHX/MVjx9+svBC2/ax3dB6lgjXlrJOKCNkMbfKWhHt+AtaLyQIfAM2Tbk18YAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_016PT1eD7oorzbphaa6CkdVt",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_id": "R v Adams",
+            "details": true
+          },
+          "name": "legal_case_fetch",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'legal_case_fetch'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_016PT1eD7oorzbphaa6CkdVt"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISpgQKjgEIERgCKkDEIyUCLUTvs8Y4IEEw/lMylguVwJEErEcwJUYPTQL6PDxJ9qkMb7bbyluuHzmP5WnysZseOervlg6jFaMHg4wKMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAZr9qNUGEgxHf0cVPO4UsSg8e60aDBeC9MzXemuJHOvtfyIw+CA4qr7y+rfU1ico8q7rW4dU2FErfOyrj3xFasyppoonntTHMTKOBxlR8+Wo51eeKsQC+gVeBxtMRhXjM2m3rujfN8cWF+b1EN0uXRAyN3qELB//eGRjvNy/+HhxBlGpUdvFSkA7AvEU15iOWranB6uRuVqOmilF0AKHYRy6Q6CYyfZavOEmOMIa9OKlOOo7nJjUZ+OGszGPXmqYaTnPVIdobIY2o+o6ilDrx9QGoSUy483HNcuX1VbKFv3E0eD5o5hkjklBTl5oU9UxpyuO8/Ak2++kLqPZSM/T5ybaa0KFqyPjycCSZqirnhACFA5Rh3L+em3O/K4cFaJyYJcFGoUIoEHpraxXFR3+Fp0NSPfbB8IT1C2sebDzm8p2PHO1ZgYEVD36cTx384DHaxMi9vzXRTqvrv6KJWdqVjZ4X0+HOhs8qqiDjoeGlb2yzo81xMGEfkndVKSRfh158VGyt9gD8Y9rztCe1+93kQh+iMiuzpPU9isqGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "הקריאה למערכת נכשלה (400 – פרמטרים לא תקינים). נראה שהשדה `case_id` מצפה למזהה תיק רשמי מהמאגר (למשל מחרוזת כמו \"UKHL-1993-12\" או מספר תיק), ולא לשם התיק \"R נגד Adams\".\n\nכדי שאוכל לשלוף את המידע המפורט, אנא ספק/י את מזהה התיק (case ID) המדויק. ברגע שיהיה לי המזהה, אבצע את השליפה עם `details=true` ואביא את כל פרטי התיק.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIStQMKjgEIERgCKkBYdVVdfR/7GwFPhJ7g2B+WzCZguJHgBLrdNkSR4NX+Hm2agZYN3cHfO3zm4syP69xtldGnUf2wFygj5XPcrKZaMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAaT9qNUGEgw9NqJkvQkxKJNWrgoaDDB+LwRhTiTq7zGkiiIwE6OQfF+8TV4BKFw6mBYpJ3ojs2I4Z6bQ2dXm7rasjFvUL6I+W8uIH+5nAJAgpFMTKtMBHG7Xw6QlgnRvmPB/vdRM7fYWvRna9Z6q6E+S2A5tiWfpIGycPF40T86I1+fDgxvclt7cVS+YgCbdbSbJ4CnaUhe7uyCP9oCQVbbSontzFZ21wxKHzxpsT7cGtnBYMtqQnvYpycxRTve+94vpw28SYOffuSWNOoYM+aeteALzByTcZiYUH5/J/lCQOrs8Rh41FFUoQwXateSs1ZqpQWnZjvDRIDnue7JCvpwRmHuNf7jdpY40mK6siN0nTkUkIliMg/506GUg0f8lzUW83gKs7E4RhRgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01CZu6HZcptDrQse5We1pmxM",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_id": "R_v_Adams",
+            "details": true
+          },
+          "name": "legal_case_fetch",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'legal_case_fetch'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01CZu6HZcptDrQse5We1pmxM"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISyAIKjgEIERgCKkDKW4i15i0YIpcT0O6WLr3Gg8dCST3tqbzgShThbRj5IAGMmvIGKfrVDH+JjcZOSvYlfxOOEyNVg7XCGuQg3uAjMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAab9qNUGEgw+nAMSyc7azHmNtWAaDKUEVKDdwFk8hGIPziIwU+KuqoR+mhpgejxAQ2N3K81qsxFU16FQYL3tSO01NksMbzUmotBHMfGmFkFoReOxKme5qc8+z556mIg2SJV61r0fgMtqFfnpG6SMEhfK1JeWnxmCf5bXGluqrqJrPmEHjnQsNpWHIyKq7RWslaJQRugM4CukoUj577LNIh5rX89tAHX+lsuWQqg1jJZ4jHRsrLcmXzkHaO6wGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01DHtRxBqJZQJRJCARoR2wW6",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_id": "R v. Adams",
+            "details": true
+          },
+          "name": "legal_case_fetch",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'legal_case_fetch'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01DHtRxBqJZQJRJCARoR2wW6"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "ניסיתי לשלוף את התיק בשלוש וריאציות של השם (\"R v Adams\", \"R_v_Adams\", \"R v. Adams\") — וכולן הוחזרו עם שגיאת 400 (פרמטרים לא תקינים).\n\nהמסקנה: הפונקציה `legal_case_fetch` דורשת **מזהה תיק רשמי מהמאגר** (case ID), ולא את שם הצדדים בתיק.\n\nכדי להמשיך, אנא ספק/י אחד מהבאים:\n- מספר/מזהה התיק במאגר (למשל בפורמט של קוד אלפאנומרי)\n- או ציטוט משפטי רשמי (neutral citation), למשל בסגנון `[2007] EWCA Crim 1`\n\nברגע שיהיה בידי המזהה, אקרא שוב לפונקציה עם `details=true` ואחזיר את המידע המפורט על התיק.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS8gMKjgEIERgCKkDkyPZMja0TXn/Dw5VQ+HZyDgRx3ZA/IGmoeQNoe0Rhd+ISdcyY/ND3QPC16S68c74ygy0nY3Ir5gwd98A1lfXjMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAbP9qNUGEgzBn7e6Id0sSfnW37gaDNw7ablfrh+YRzmr1yIwPed7nqJryxRpwzEZmWeYq3Q1aorhjzxQ4MfxANeiDte/yBn9bve3kL+yXUtqJvlIKpACHwodXmvBbGBlE+P1qcpK/5sDgBqd9GeJrgyD6vgggG5FVyGsB49VnXPBbNy3tu8LpP2VX7hUjqMjd3Z3J31sfjObumxcqtESjHCEHBjasnin4mPAAHHithvZ2i7zwYPGxI7Etny2SqW9I0lxnTrhFj6HcJlHB7t5GiwBmc2maW15neljeHBNhyapfSE3fA0Uw3TFJOq2yXVU/0yCMdbbPjuCtAqmmLq60Q3LE42uO2bGYLDIAmmVuOrXp4/8NuBWkv2aNFGlwCATLfhcJeFzH5PK1uamk0lqgwZ66Snn0vVeSkW2y3WW8jYHFSyZ3KAvKv8plPnpQG6KPZujljv16FETPOoLgocfYsAMe4kqmUoYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01ShVw7UgUHzedbkiBrhj8i5",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_id": "Adams",
+            "details": true
+          },
+          "name": "legal_case_fetch",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'legal_case_fetch'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01ShVw7UgUHzedbkiBrhj8i5"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISswQKjgEIERgCKkB0V07wbjfSYtS/hRcyCG862lyhzGtBdrJw0QQn5961nDXcB2c0Bh9lL8Qe5ueAM+WtlzVlRQ5gBy4iWVOsCo1rMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAbf9qNUGEgzi8mwNyvd/nU18V5IaDLUtpRLcuH5rOWkzGyIwmzb54x3ZpWaCMeVaWr+bDE6d4HnLmKiRfBhROi5LZXAmxoxMe+6H3D0Fq1giInM+KtECZkj0B4Pwy6AQ5WWYKKPHLzDviyxsni3JXH9YnpqJpXUbZ6JNMyiWncNjT5TxjQpiZN5npQ8TMIT6DcMATEqakzsU9MSHi658sgcrovLggkh7/yMsaKm8a+vjXMA+qF1X+hUlFEbTdPNB9Ju0LMPY6XGJFDqaQbygI9z/pfj0vqq5uIOVGxSW4r6IGl8r5RrNDRhS8ncOWdimim+LhdHIzpoSieZHjJeUOdK/IxFhbUd+zcjQuk+52FZKT8Jupcl06dbj/m8CSIDgscOk/UqPESnyVfSzse2nXhksSTM7wpGC6FkiRozCKxEzkvg2xYDj2YOS5E1Jg1RYbBMdWTLI4aGyyYNoLSWz9lniI0Dl8hsS/FZzrcFVUgR9KLUmn8L6Uz2Fs6kTAM9Afu7SBFfkE/jY/LqdXkwxfFlpmFxW6yuSVnLq55bAm4DLr8NMX2FvpxgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01HTzyQY6LeAbzhRSE2Rd4nY",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "case_id": "R v Adams",
+            "details": false
+          },
+          "name": "legal_case_fetch",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,445 @@
+{
+  "id": "multiple_137_he",
+  "source_id": "multiple_137",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "claude-opus-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "value_error:string",
+  "total_input_tokens": 9815,
+  "total_output_tokens": 1268,
+  "total_latency_s": 31.584561586380005,
+  "estimated_cost_usd": 0.08077500000000001,
+  "error": null,
+  "ground_truth": [
+    {
+      "lawsuit_search": {
+        "company": [
+          "גוגל"
+        ],
+        "start_date": [
+          "2021-01-01",
+          "01/01/2021",
+          "1 בינואר 2021",
+          "1 בינואר 2021"
+        ],
+        "location": [
+          "קליפורניה",
+          "קליפורניה"
+        ],
+        "status": [
+          "מתמשכת",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Google",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "id": "toolu_01AttDgaMEVfDgkAqwT7s1sK"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Google",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'company': 'Google'. Expected one of ['גוגל']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 1031,
+      "output_tokens": 125,
+      "latency_s": 2.9256629943847656,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "השרת דחה את הבקשה — אנסה שוב עם פורמט תאריך אחר:"
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Google",
+            "start_date": "January 1, 2021",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "id": "toolu_01Q757hLnq5JLbdpqL82WmHT"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Google",
+            "start_date": "January 1, 2021",
+            "location": "California",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'company': 'Google'. Expected one of ['גוגל']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 1199,
+      "output_tokens": 185,
+      "latency_s": 4.395449876785278,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "אנסה ללא פרמטר הסטטוס (ברירת המחדל היא \"ongoing\") ועם ניסוח מקום מלא:"
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Google",
+            "start_date": "01/01/2021",
+            "location": "California, USA"
+          },
+          "id": "toolu_01G1JTLyfCnHF9j1PzpKqMdC"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Google",
+            "start_date": "01/01/2021",
+            "location": "California, USA"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'company': 'Google'. Expected one of ['גוגל']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 1427,
+      "output_tokens": 197,
+      "latency_s": 4.738603591918945,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "ניסיתי שלוש פעמים עם צירופי פרמטרים שונים, אך הכלי `lawsuit_search` מחזיר בכל פעם שגיאת 400 (פרמטרים לא תקינים), כך שלא הצלחתי לאחזר את התביעות.\n\nמה שניסיתי:\n1. `company: \"Google\"`, `start_date: \"2021-01-01\"`, `location: \"California\"`, `status: \"ongoing\"`\n2. אותו דבר עם תאריך בפורמט `\"January 1, 2021\"`\n3. ללא פרמטר `status`, תאריך `\"01/01/2021\"`, מקום `\"California, USA\"`\n\nנראה שמדובר בבעיה בצד השירות או בדרישת פורמט שאינה מתועדת בהגדרת הכלי (למשל פורמט תאריך או שם מקום ספציפי). אם יש לך מידע נוסף שיכול לעזור — למשל שם החברה המלא כפי שהוא מופיע במערכת (\"Google LLC\" או \"Alphabet Inc.\"), או מקום מדויק יותר כמו בית משפט או מחוז ספציפי (\"Santa Clara County, CA\") — אשמח לנסות שוב."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1667,
+      "output_tokens": 425,
+      "latency_s": 12.912258863449097,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Google LLC",
+            "start_date": "2021-01-01",
+            "location": "Santa Clara County, CA",
+            "status": "ongoing"
+          },
+          "id": "toolu_01DMkbuBvcWkfDuQZrcBYNwH"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Google LLC",
+            "start_date": "2021-01-01",
+            "location": "Santa Clara County, CA",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'company': 'Google LLC'. Expected one of ['גוגל']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 2122,
+      "output_tokens": 204,
+      "latency_s": 3.746687173843384,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "גוגל",
+            "start_date": "2021-01-01",
+            "location": "קליפורניה",
+            "status": "ongoing"
+          },
+          "id": "toolu_017btoUCyXv4pedMayGQoisU"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "גוגל",
+            "start_date": "2021-01-01",
+            "location": "קליפורניה",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'status': 'ongoing'. Expected one of ['מתמשכת', '']. Case insensitive."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2369,
+      "output_tokens": 132,
+      "latency_s": 2.865899085998535,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "חפש תביעות משפטיות מתמשכות הקשורות לחברת 'גוגל' שהוגשו אחרי 1 בינואר 2021 בקליפורניה."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01AttDgaMEVfDgkAqwT7s1sK",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Google",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01AttDgaMEVfDgkAqwT7s1sK"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISswIKjgEIERgCKkBQbDbH3W9IPvVQk2+OXO9oOmZa9ldkT/2GwXbM7850QQavP6oDoUQ97sBSaewJkUrnQw+ESFiU0Rm7gtr5/5/0Mg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAbOCqdUGEgzexLqkuo5ZDMcANR4aDHlcKirMRK28F9rhNiIwi5FuUhy9Kn82Aq1OiLATXslYZnY7DoMDOET73XU7rM50RsTn1VJBriSkKBXG9prGKlIbHOeEfr80QLoqQ3eF6WKRIJMGLASECCjOdSkIVm+yXYl9uvA/kILn5/bmZv8OK3Cv3mp1MkdbwbCa5RARg0jD6GlgEy/ZWmRH3/22tJI7ssfDGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "השרת דחה את הבקשה — אנסה שוב עם פורמט תאריך אחר:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01Q757hLnq5JLbdpqL82WmHT",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Google",
+            "start_date": "January 1, 2021",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01Q757hLnq5JLbdpqL82WmHT"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS5gIKjgEIERgCKkDmHNnQc1wC77IvJ2kayewkloLcA68L37/tVG3Rqzjib+bgAjPAb92I27NiBdzYA07Qjfqi+fL8MmEfeagzv55IMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAbiCqdUGEgz/ZvUqF5vB5eY+4gYaDJW2d1d9YYE42WCdDCIwLTTLYuq9foFvMui1O5g63+on8v0ru2FeJ+CBG/25NoPfRSauSY8UNzoF3/lAHNN8KoQBds9bQvQmo8+4V6p/1pFhb7wJSPqkKR72Wf2WQuJqK8E+fzgRYePuVSMRG7ModRykDzeISwuwJKT90mTqWOC7l+J83pG1Wec4+Mo8hPu1PKkmTdwyl9Ud5DzdjmPjsVqUrlT/E0crwKINIfCTj5CS3rLyZJj3Z3BsR4P98hhHDLSvAxR9GAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "אנסה ללא פרמטר הסטטוס (ברירת המחדל היא \"ongoing\") ועם ניסוח מקום מלא:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01G1JTLyfCnHF9j1PzpKqMdC",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Google",
+            "start_date": "01/01/2021",
+            "location": "California, USA"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01G1JTLyfCnHF9j1PzpKqMdC"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "ניסיתי שלוש פעמים עם צירופי פרמטרים שונים, אך הכלי `lawsuit_search` מחזיר בכל פעם שגיאת 400 (פרמטרים לא תקינים), כך שלא הצלחתי לאחזר את התביעות.\n\nמה שניסיתי:\n1. `company: \"Google\"`, `start_date: \"2021-01-01\"`, `location: \"California\"`, `status: \"ongoing\"`\n2. אותו דבר עם תאריך בפורמט `\"January 1, 2021\"`\n3. ללא פרמטר `status`, תאריך `\"01/01/2021\"`, מקום `\"California, USA\"`\n\nנראה שמדובר בבעיה בצד השירות או בדרישת פורמט שאינה מתועדת בהגדרת הכלי (למשל פורמט תאריך או שם מקום ספציפי). אם יש לך מידע נוסף שיכול לעזור — למשל שם החברה המלא כפי שהוא מופיע במערכת (\"Google LLC\" או \"Alphabet Inc.\"), או מקום מדויק יותר כמו בית משפט או מחוז ספציפי (\"Santa Clara County, CA\") — אשמח לנסות שוב.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISxAMKjgEIERgCKkCs2312p32jwH8EiGCi4fXHRHU3QUsXrNZDQQPrvHXjcurQsnkrZkS9AS8wcv46gsyNikSsI2vU8rD7B5u4v4vYMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAcuCqdUGEgzELEQckm7VXhYT0cQaDPRoEYg1hzNqnH5ZICIwpG71JtmIQGOo0Bg4O8I91gHxFHHN9rBDIilWM1BYeAd24LiFm8J/+940W4ify37VKuIBF9+vGnbuUo3FlOYHJ/36ul865wnUOtS4bYWaJuNWTfyDb7TZe3+ayDlSJ7xgyWxnsW20jI3JZPouYtgDYdP8f5oEDi5bD4Yn9zlTOBYxZg+d1x/S2KVZLISS5n+E4rguP6WyBBMKARJKee5B2zR1e4pC7Qk7GlIpcQvHQHSoZ5wkXV78Xvkl8RawyjomGqnWxmv1s63OszG+ThbV9qRyJYE17OX/aw2df8P9hPkLq8Acce/Ew9GrSkToZ2asuYOz2bEBKwbPN1ONYXchOuLgYEENIaQF6/WOPC49T7BnvHh1oRgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01DMkbuBvcWkfDuQZrcBYNwH",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Google LLC",
+            "start_date": "2021-01-01",
+            "location": "Santa Clara County, CA",
+            "status": "ongoing"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01DMkbuBvcWkfDuQZrcBYNwH"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_017btoUCyXv4pedMayGQoisU",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "גוגל",
+            "start_date": "2021-01-01",
+            "location": "קליפורניה",
+            "status": "ongoing"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ]
+}

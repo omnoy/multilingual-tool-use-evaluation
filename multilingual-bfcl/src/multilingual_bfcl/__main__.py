@@ -7,9 +7,9 @@ Commands:
   mbfcl status  -- show which benchmarks have been built
 
 Usage examples:
-  mbfcl build multiple --locales he zh-CN --level query
-  mbfcl build multiple --locales he --level full --source eng_translatable.json
-  mbfcl build multiple --retrieve msgbatch_01AbCd...
+  mbfcl build bfcl_multiple --locales he zh-CN --level query
+  mbfcl build bfcl_multiple --locales he --level full --source eng_translatable.json
+  mbfcl build bfcl_multiple --retrieve msgbatch_01AbCd...
   mbfcl locales
   mbfcl status
 """

@@ -1,0 +1,412 @@
+{
+  "id": "multiple_53_he",
+  "source_id": "multiple_53",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "claude-opus-5",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 5,
+  "num_clarifications": 1,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 8215,
+  "total_output_tokens": 1444,
+  "total_latency_s": 32.74621224403381,
+  "estimated_cost_usd": 0.077175,
+  "error": null,
+  "ground_truth": [
+    {
+      "linear_regression": {
+        "independent_var": [
+          [
+            "interest rates",
+            "unemployment rates"
+          ],
+          [
+            "interest_rate",
+            "unemployment_rate"
+          ],
+          [
+            "interest rate",
+            "unemployment rate"
+          ]
+        ],
+        "dependent_var": [
+          "house_price",
+          "מחיר בית"
+        ],
+        "forecast_period": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "linear_regression",
+          "arguments": {
+            "independent_var": [
+              "interest_rates",
+              "unemployment_rates"
+            ],
+            "dependent_var": "house_prices",
+            "forecast_period": 5
+          },
+          "id": "toolu_01Uia8eaCWmG8bePqR6FSo6D"
+        }
+      ],
+      "decoded": [
+        {
+          "linear_regression": {
+            "independent_var": [
+              "interest_rates",
+              "unemployment_rates"
+            ],
+            "dependent_var": "house_prices",
+            "forecast_period": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:string",
+      "checker_error": [
+        "Invalid value for parameter 'dependent_var': 'house_prices'. Expected one of ['house_price', 'מחיר בית']. Case insensitive."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'linear_regression'. Please review the function definition and try again.",
+      "input_tokens": 944,
+      "output_tokens": 208,
+      "latency_s": 3.5391952991485596,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "הקריאה נכשלה; אנסה שוב עם שמות משתנים בעברית:"
+      ],
+      "tool_calls": [
+        {
+          "name": "linear_regression",
+          "arguments": {
+            "independent_var": [
+              "שיעורי הריבית",
+              "שיעורי האבטלה"
+            ],
+            "dependent_var": "מחירי הבתים",
+            "forecast_period": 5
+          },
+          "id": "toolu_01ViRNKqhTMhruEVe7ocdAWx"
+        }
+      ],
+      "decoded": [
+        {
+          "linear_regression": {
+            "independent_var": [
+              "שיעורי הריבית",
+              "שיעורי האבטלה"
+            ],
+            "dependent_var": "מחירי הבתים",
+            "forecast_period": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "value_error:list/tuple",
+      "checker_error": [
+        "Invalid value for parameter 'independent_var': ['שיעורי הריבית', 'שיעורי האבטלה']. Expected one of [['interest rates', 'unemployment rates'], ['interest_rate', 'unemployment_rate'], ['interest rate', 'unemployment rate']]."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'linear_regression'. Please review the function definition and try again.",
+      "input_tokens": 1193,
+      "output_tokens": 268,
+      "latency_s": 4.598597764968872,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "אנסה מודל חלופי:"
+      ],
+      "tool_calls": [
+        {
+          "name": "random_forest_regression",
+          "arguments": {
+            "independent_var": [
+              "interest_rates",
+              "unemployment_rates"
+            ],
+            "dependent_var": "house_prices",
+            "forecast_period": 5
+          },
+          "id": "toolu_01RbgYYS439Nog2oPf8iTbA2"
+        }
+      ],
+      "decoded": [
+        {
+          "random_forest_regression": {
+            "independent_var": [
+              "interest_rates",
+              "unemployment_rates"
+            ],
+            "dependent_var": "house_prices",
+            "forecast_period": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "simple_function_checker:wrong_func_name",
+      "checker_error": [
+        "Function name 'linear_regression' not found in model output."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'random_forest_regression'. Please review the function definition and try again.",
+      "input_tokens": 1605,
+      "output_tokens": 342,
+      "latency_s": 5.632131576538086,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "נתקלתי בבעיה: שתי הפונקציות (רגרסיה לינארית ויער אקראי) החזירו שגיאת 400 – \"פרמטרים לא תקינים\", גם עם שמות משתנים באנגלית וגם בעברית. לכן לא הצלחתי להפיק תחזית למחירי הבתים ל-5 השנים הקרובות.\n\nכדי שאוכל לנסות שוב, זה יעזור אם תוכל/י לציין:\n\n1. **את השמות המדויקים של המשתנים** כפי שהם מופיעים במאגר הנתונים שלך (למשל: `interest_rate`, `unemployment_rate`, `median_house_price` – ביחיד? ברבים? עם קו תחתון?).\n2. **את שם המשתנה התלוי** המדויק (מחיר בית ממוצע? חציוני? מדד מחירי דיור?).\n3. האם יש מגבלה על **טווח החיזוי** (ייתכן שהמערכת תומכת בחיזוי של פחות מ-5 שנים, ואז אפשר להריץ טווח קצר יותר).\n\nברגע שאקבל את הפרטים, אריץ שוב את החיזוי – ואם תרצה/י, אריץ את שני המודלים במקביל כדי להשוות ביניהם."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1990,
+      "output_tokens": 463,
+      "latency_s": 16.00215744972229,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "linear_regression",
+          "arguments": {
+            "independent_var": [
+              "interest_rate",
+              "unemployment_rate"
+            ],
+            "dependent_var": "house_price",
+            "forecast_period": 5
+          },
+          "id": "toolu_01Ny4fTa2Ji5SGDeesaJdh7Z"
+        }
+      ],
+      "decoded": [
+        {
+          "linear_regression": {
+            "independent_var": [
+              "interest_rate",
+              "unemployment_rate"
+            ],
+            "dependent_var": "house_price",
+            "forecast_period": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 2483,
+      "output_tokens": 163,
+      "latency_s": 2.974130153656006,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "חזה את מחירי הבתים ל-5 השנים הבאות על סמך שיעורי הריבית ושיעורי האבטלה."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISgwQKjgEIERgCKkANazlwHsTfWVfFsGzCGVCOTYnh+3daHF/15tRD2kB7egcFh768IpSd+RaorPXZbHWvOVgWEhjnBNGwhS2xUuoIMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAb6rqdUGEgwrzd176eZPC5ckEw4aDCRYFB5ThJQcdxB8IyIweTHecJksch90BuhFufq3kDi4E/pkEljnWWoJdTkFgqvCs5MFhlb4Z+7TajBNbMZlKqECxeRrVInonZzTEW7B6WOdB1a1HMsUNTTOX/6h7+ZvBcNZQslRnW97h3+z7Ch9sXjiCoqADg/T8Wj27NRDLNaq3uJ8T7D8qPL3VANiyslHoXcIljAKohc3g1RcK0DSBmi1iAgl3uIMmTHiHSBgWpBPgL0ph42o8QBlikgwSzPdeAPlLfzXh1jc/CLzeKJ0ImcxvcRMUrkJXgH9GU4IEnjj6aX7mqNbTcD/fcwFDIwxlCLMjpZ5x/YAqsyhuBRTAc9uTpxV+MfODDlwGJc61TBYWNIhy+Xu/onaoGqPHrc/3hElxXeKKHfy6ckYtPj5Qrx25zTtyFgX1fJmdzmbPG5N1GFpWvq+8TDUWztMYx4MRL4AfBhvp7xRpCONaAxR2lrzxhgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01Uia8eaCWmG8bePqR6FSo6D",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "independent_var": [
+              "interest_rates",
+              "unemployment_rates"
+            ],
+            "dependent_var": "house_prices",
+            "forecast_period": 5
+          },
+          "name": "linear_regression",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'linear_regression'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01Uia8eaCWmG8bePqR6FSo6D"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIShAQKjgEIERgCKkCLFXy/hlJknjDRIvreuQ21Xi9iAbV0dsu77QZcuv4WLdKq4w2IbPRiJuWHv5EzuUGO1HllFUTJvdRz0FTVrA9VMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAcGrqdUGEgxHPw89cUr7DhewfEcaDFX5DNRij3N6AmeyzSIwQDUlc9FYejcqb+1FeUGgWoBmfAhINj0coUlm+6JzTTSRP9IXIe0JzdL2H1+EFb+9KqICQyq/4fZlrgerpjoBM3HTEB2+ZvjkP1kYKH9QLrmYQ6E4dpja1X3R5eUwu/k5U7IAFEekDNetZA1/Tu40vUjA0FFN5h8x7QKZT/Pw+dFERk47+HfxjunxGk1nB4RsmYWCsGQ9GTacf474gG5mHSOasahdCYzR47NvyjUzFUzozjQ15YsF895V6+RuwvUOjppomnJVApBcNj9WUEKvkPJcBgNs2CsE3VnoYCSDf/IJ4Nc5lDvTGUwxaN+1AqjTB3yWsWVOEmbTTJ53rxzuPhchuY2sHb9G9nPC4hA79zukvPW//N6zEyS7/jet7//X1AeaTT45qtw2wkFrjEzIYgZzSMfs6F7An6n+Nk471HNgxyc0VsqzciJY7+lLLe2YsterOLcYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "הקריאה נכשלה; אנסה שוב עם שמות משתנים בעברית:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01ViRNKqhTMhruEVe7ocdAWx",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "independent_var": [
+              "שיעורי הריבית",
+              "שיעורי האבטלה"
+            ],
+            "dependent_var": "מחירי הבתים",
+            "forecast_period": 5
+          },
+          "name": "linear_regression",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'linear_regression'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01ViRNKqhTMhruEVe7ocdAWx"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS/QYKjgEIERgCKkCOXCV7ynbpb6ghfGgypkbqIWS52+xLWinSFKEplxfGhxTWueoJa7xgZg9y64By1kRkPBCeCjmY3glP9qzL2soCMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAcerqdUGEgydNvNaBt4hLTFV4tQaDB6OK207+rJS8rxMtiIwfl/hpfs4vgu496jY8vbM/MCMyCQN/ITUEGgoluX0fMW9SAZF/uknH/TXTucjxGFAKpsFbSyCDuZdGVsaXnfVwSf0usqukPYOYyMADcNy6v81dnjNMQlg977AckpRsR8ihOo31xaH59CRLtyxYDBCluYf5XoAE2sVYhscbvA4chBy4FBAUxNJJJF3H4tx97mLpeU8TZK1qCSBxvcc1C4zALRUdJxfBvPLcEBSSLLFJltuIeF3V87bc/kRmHRU05LcF1KQ+EEDw1LO+QyILeTc3gKYFgngZw5PgFrJduEQ/yIhMivvmmwmyllQkd9V0d/7DuE96e3THiQ+7cXwM3KsMSNfDDSyCsC0uCCu/6Ze4m9uwPNU7acxNEHkL+4hRsAGRAzmyJ7N54UsoA+Xp4CACe/jaR9h1Qy36dPT6mefaKPmJJ9HFgDrDXhYpam3ra9CXcn8Vr8J9UGYsy/Qigkqon91Ht4FC1BZYnzrVY+yIsfuHPip6orr13hbMWHPqKXj8PHXhQy+emvuE43eYIn0mzaEx8qqpmjM2+RQ7CgLuOx9PyoGu4V6KkOrW4u+I2lvR97GazHMQXveJ9kPtiMHxgMhpYxe5P9cyGIXqlHpqADiMF3fDGPLmuBfoslJFeJhDUw6B4AesGGr9N25LggbAYeMfmQnEqZOu4owyfwINVfdCFGcOzy1sL0YCsbX6nsEDHtdDiIv5CpjSl0p0t1UH3Ox6bmrmJlRSv/IW3WARveVVkskktr4Pa8O3+4cL/wRBrJbTa/UxMhoH9pjbrVsY2K7GrMVQbTII5aXFMrik0HjG++lHhoRwQRa7ObbvYhwxl5EbNUP5SkXn17E1HGExY7VNQ8I28nvdn7oG3kbXfrXEt38u/1oHvdYyetucx4t2hDc9Uu87nYCAZ+TSztcWEtYZNlRPT/BLkVdTWyrTqZct+mMcaySRpmgIVWuwBgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "אנסה מודל חלופי:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01RbgYYS439Nog2oPf8iTbA2",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "independent_var": [
+              "interest_rates",
+              "unemployment_rates"
+            ],
+            "dependent_var": "house_prices",
+            "forecast_period": 5
+          },
+          "name": "random_forest_regression",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'random_forest_regression'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01RbgYYS439Nog2oPf8iTbA2"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "נתקלתי בבעיה: שתי הפונקציות (רגרסיה לינארית ויער אקראי) החזירו שגיאת 400 – \"פרמטרים לא תקינים\", גם עם שמות משתנים באנגלית וגם בעברית. לכן לא הצלחתי להפיק תחזית למחירי הבתים ל-5 השנים הקרובות.\n\nכדי שאוכל לנסות שוב, זה יעזור אם תוכל/י לציין:\n\n1. **את השמות המדויקים של המשתנים** כפי שהם מופיעים במאגר הנתונים שלך (למשל: `interest_rate`, `unemployment_rate`, `median_house_price` – ביחיד? ברבים? עם קו תחתון?).\n2. **את שם המשתנה התלוי** המדויק (מחיר בית ממוצע? חציוני? מדד מחירי דיור?).\n3. האם יש מגבלה על **טווח החיזוי** (ייתכן שהמערכת תומכת בחיזוי של פחות מ-5 שנים, ואז אפשר להריץ טווח קצר יותר).\n\nברגע שאקבל את הפרטים, אריץ שוב את החיזוי – ואם תרצה/י, אריץ את שני המודלים במקביל כדי להשוות ביניהם.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIShwMKjgEIERgCKkCDKIr6jV0YszUoUJZiOgBG6YvZaDeRdw8OK0fxNz8T/SYbuvf59IA8yNdTxvtNnwJhWk4kMHRRdvLRur5LoxbgMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRmODEzZGM3ZC1hZTExLTQxNmItOTY3NS01YzNiYmM2ZmMwMDGoAdurqdUGEgysgmNGdbr0SiSp/gsaDErQDpeMps8/zT9xcyIwNwSQWuDky0j6zFBIaOTQOO4HJId31iW7ak+kRyZtQ1iXNur+bWMES7wVQHIm65ZdKqUBDMc7PZdCzNWkORgQwwuQP5HNaEXslGP86LvRRYe4/io7wLa27LLrwpwUE/64JcfyfAJ0QylvdPbjrkWTgQjccGiAAa5L9MSsY9V/o5hJWxrlA1wKZzmgrOmzNfxkEib/I/Q1Jb4V97WaDF18TfE8wNv18nz8Kt0WzQZCHDJZT9vb2lG8lveYI/z+WX80rZRMUABYOV+rOzi34+2qfh22qOwTKdBAGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01Ny4fTa2Ji5SGDeesaJdh7Z",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "independent_var": [
+              "interest_rate",
+              "unemployment_rate"
+            ],
+            "dependent_var": "house_price",
+            "forecast_period": 5
+          },
+          "name": "linear_regression",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ]
+}

@@ -17,15 +17,15 @@ different definitions (e.g. restaurant.find_nearby has 4).
 Only strings under a "description" key are translated (function-level and any nested
 parameter descriptions, at any depth). Positional mapping keeps them aligned.
 
-Inputs (under data/benchmarks/multiple/):
+Inputs (under data/benchmarks/bfcl_multiple/):
   eng_translatable.json                      base entries (English)
   possible_answer/eng_translatable.json      base ground truth (English)
 
-Outputs (under data/benchmarks/multiple/):
-  heb/he_translated_function_descriptions.json                 translated benchmark
-  possible_answer/heb/he_translated_function_descriptions.json English GT, re-keyed
+Outputs (under data/benchmarks/bfcl_multiple/):
+  he/he_translated_function_descriptions.json                 translated benchmark
+  possible_answer/he/he_translated_function_descriptions.json English GT, re-keyed
 
-Entries mirror the existing heb convention: id "<source>_he", plus source_id, locale,
+Entries mirror the existing he convention: id "<source>_he", plus source_id, locale,
 and localization_level="function_descriptions". The query is byte-for-byte the base
 English query; only the tool definitions change.
 
@@ -65,7 +65,7 @@ from anthropic import AsyncAnthropic  # noqa: E402
 
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
 
-DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks" / "multiple"
+DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks" / "bfcl_multiple"
 
 DEFAULT_MODEL = "claude-opus-4-8"
 DEFAULT_SOURCE = "eng_translatable.json"
@@ -327,8 +327,8 @@ async def main_async(args: argparse.Namespace) -> None:
         else:
             out_answers.append({"id": new_entry["id"], "ground_truth": gt})
 
-    out_bench = DATA_ROOT / "heb" / f"{OUTPUT_STEM}.json"
-    out_gt = DATA_ROOT / "possible_answer" / "heb" / f"{OUTPUT_STEM}.json"
+    out_bench = DATA_ROOT / "he" / f"{OUTPUT_STEM}.json"
+    out_gt = DATA_ROOT / "possible_answer" / "he" / f"{OUTPUT_STEM}.json"
     _write_jsonl(out_bench, out_entries)
     _write_jsonl(out_gt, out_answers)
 
@@ -347,7 +347,7 @@ def main() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("--source", default=DEFAULT_SOURCE,
-                        help="Base benchmark filename under data/benchmarks/multiple/.")
+                        help="Base benchmark filename under data/benchmarks/bfcl_multiple/.")
     parser.add_argument("--model", default=DEFAULT_MODEL, help="Translation model id.")
     parser.add_argument("--limit", type=int, default=0,
                         help="Only process the first N entries (0 = all).")
@@ -357,7 +357,7 @@ def main() -> None:
                         help="max_tokens per translation request.")
     parser.add_argument("--max-retries", type=int, default=6,
                         help="SDK-level retries for rate limits / transient errors.")
-    parser.add_argument("--cache", default="data/benchmarks/multiple/heb/.he_fn_desc_cache.json",
+    parser.add_argument("--cache", default="data/benchmarks/bfcl_multiple/he/.he_fn_desc_cache.json",
                         help="Translation cache path (relative to package root).")
     parser.add_argument("--dry-run", action="store_true",
                         help="Print the first translation prompt and exit without calling the API.")

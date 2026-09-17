@@ -19,18 +19,18 @@ Outputs (under data/benchmarks/<category>/):
 
 Usage:
     # Submit and wait for results:
-    python scripts/translate_benchmark.py --category multiple --locales he zh-CN --level full
+    python scripts/translate_benchmark.py --category bfcl_multiple --locales he zh-CN --level full
 
     # Translate the translatable-only subset, query level:
-    python scripts/translate_benchmark.py --category multiple --locales he \
+    python scripts/translate_benchmark.py --category bfcl_multiple --locales he \
         --source eng_translatable.json --level query
 
     # Submit only, then retrieve later (Anthropic):
-    python scripts/translate_benchmark.py --category multiple --locales he --level full --submit-only
-    python scripts/translate_benchmark.py --category multiple --retrieve msgbatch_01AbCd...
+    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --submit-only
+    python scripts/translate_benchmark.py --category bfcl_multiple --retrieve msgbatch_01AbCd...
 
     # Preview the first prompt without calling the API:
-    python scripts/translate_benchmark.py --category multiple --locales he --level full --dry-run
+    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --dry-run
 
 Requirements:
     pip install langasync langchain-anthropic langchain-openai

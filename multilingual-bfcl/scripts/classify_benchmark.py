@@ -9,11 +9,10 @@ For each entry in data/benchmarks/<category>/eng_base.json, classifies:
 A regex pre-filter checks the ground-truth argument values: if every value is
 numeric, boolean, a date, or otherwise clearly non-translatable, the entry is
 classified "non-translatable" locally and no API call is made for it. All
-remaining entries are sent to the LLM (via langasync → the provider's native
-Batch API), which classifies translatable_params itself — string values can still be
-non-translatable (code, math expressions like "2x**2", identifiers) — plus the
-two localizable_* dimensions. Non-translatable entries get empty localizable_*
-columns.
+remaining entries are sent to the LLM (via the Azure OpenAI Batch API), which
+classifies translatable_params itself — string values can still be non-translatable
+(code, math expressions like "2x**2", identifiers) — plus the two localizable_*
+dimensions. Non-translatable entries get empty localizable_* columns.
 
 Which classifications run is selectable on the command line:
   --translatable_params   classify only translatable_params
@@ -39,20 +38,21 @@ Usage:
     # Submit only — print the batch ID and exit immediately:
     python scripts/classify_benchmark.py --category bfcl_multiple --submit-only
 
-    # Retrieve results for a previously submitted batch (Anthropic only):
-    python scripts/classify_benchmark.py --category bfcl_multiple --retrieve msgbatch_01AbCdEf...
+    # Retrieve results for a previously submitted batch:
+    python scripts/classify_benchmark.py --category bfcl_multiple --retrieve batch_01AbCdEf...
 
     # Other options:
-    python scripts/classify_benchmark.py --category bfcl_multiple --model claude-opus-4-8 --provider anthropic
-    python scripts/classify_benchmark.py --category bfcl_multiple --model gpt-4o-mini --provider openai
+    python scripts/classify_benchmark.py --category bfcl_multiple --model gpt-4o
     python scripts/classify_benchmark.py --category bfcl_multiple --dry-run
 
 Requirements:
-    pip install langasync langchain-anthropic langchain-openai
+    pip install openai langchain-openai
 
 Environment variables (put in multilingual-bfcl/.env):
-    ANTHROPIC_API_KEY=...
-    OPENAI_API_KEY=...      # only needed when --provider openai
+    AZURE_OPENAI_ENDPOINT=...
+    AZURE_OPENAI_API_KEY=...
+    AZURE_OPENAI_API_VERSION=...   # optional
+    AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
 from __future__ import annotations
@@ -75,7 +75,28 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PACKAGE_ROOT = SCRIPT_DIR.parent           # multilingual-bfcl/
 DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks"
 
+sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 load_dotenv(PACKAGE_ROOT / ".env")
+
+from multilingual_bfcl.azure_batch import (  # noqa: E402
+    build_chat_request,
+    collect_results,
+    get_batch,
+    is_finished,
+    status_line,
+    submit_batch,
+)
+from multilingual_bfcl.azure_client import (  # noqa: E402
+    ModelType,
+    build_chat_params,
+    default_deployment,
+    make_sync_client,
+)
+
+# Cap on classification output tokens per batch item (labels are short).
+_CLASSIFY_MAX_TOKENS = 256
+# Seconds between batch status polls while waiting for results.
+_POLL_INTERVAL_S = 30
 
 # ---------------------------------------------------------------------------
 # Prompt — entries whose ground truth the regex pre-filter could not rule out
@@ -394,21 +415,6 @@ def manifest_path(category: str) -> Path:
     return DATA_ROOT / category / "batch_manifest.json"
 
 
-def tag_batch_job(handle, **fields) -> None:
-    """Write human-readable labels into the langasync job file's `metadata` dict.
-
-    Only `metadata` is persisted by langasync, and its status-update path
-    round-trips the file, so values written here survive later saves.
-    Best-effort: a failure here must not fail the submission.
-    """
-    try:
-        path = handle.repository.storage_dir / f"{handle.job_id.replace('/', '_')}.json"
-        data = json.loads(path.read_text(encoding="utf-8"))
-        data.setdefault("metadata", {}).update(fields)
-        path.write_text(json.dumps(data, indent=2), encoding="utf-8")
-    except Exception as e:  # noqa: BLE001 - tagging is non-critical
-        print(f"[WARN] could not tag batch job file with metadata: {e}", file=sys.stderr)
-
 def write_csv(rows: list[dict[str, str]], output_path: Path, columns: list[str]) -> None:
     """Write classification rows to a CSV file."""
     rows.sort(key=lambda row: int(row["id"].split("_")[-1]))
@@ -425,16 +431,13 @@ def write_csv(rows: list[dict[str, str]], output_path: Path, columns: list[str])
 
 def retrieve_and_write(batch_id: str, category: str) -> None:
     """
-    Retrieve results for a completed Anthropic Message Batch and write the CSV.
-    Uses the Anthropic SDK directly (not langasync) — provider must be Anthropic.
+    Retrieve results for a completed Azure OpenAI batch and write the CSV.
 
     The batch only contains entries the regex pre-filter could not rule out;
     the pre-filtered non-translatable rows and the batch-index → entry-id
     mapping are read from the manifest written at submit time
     (batch_manifest.json in the category folder).
     """
-    import anthropic as anthropic_sdk
-
     mpath = manifest_path(category)
     if not mpath.exists():
         sys.exit(
@@ -457,56 +460,25 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
         non_translatable_row(eid, include_localizable) for eid in manifest["prefiltered_ids"]
     ]
 
-    client = anthropic_sdk.Anthropic()
-
-    # Check status first so we can give a clear error if not ended yet
-    batch = client.messages.batches.retrieve(batch_id)
-    if batch.processing_status != "ended":
-        rc = batch.request_counts
-        total = rc.processing + rc.succeeded + rc.errored + rc.expired + rc.canceled
-        done  = rc.succeeded + rc.errored + rc.expired + rc.canceled
-        sys.exit(
-            f"ERROR: Batch {batch_id!r} is still '{batch.processing_status}' "
-            f"({done}/{total} done). Wait for it to finish, then retry."
-        )
-
+    client = make_sync_client()
     print(f"Retrieving results for batch {batch_id!r}...")
+    results = collect_results(client, batch_id)  # raises if the batch is not finished
 
-    for item in client.messages.batches.results(batch_id):
-        cid = item.custom_id
-        # langasync uses sequential indices as custom IDs — map back via manifest
-        try:
-            eid = llm_ids[int(cid)]
-        except (ValueError, IndexError):
-            eid = cid
-
-        if item.result.type == "succeeded":
-            content_blocks = item.result.message.content
-            raw = next((b.text for b in content_blocks if hasattr(b, "text")), "")
-            parsed = parse_classification(raw, eid, include_localizable)
-            if parsed is None:
-                rows.append(error_row(eid, "PARSE_ERROR", include_localizable))
-            else:
-                rows.append({"id": eid, **parsed})
-
+    for idx, eid in enumerate(llm_ids):
+        item = results.get(str(idx))
+        if item is None:
+            print(f"[ERR] {eid}: no result for batch index {idx}", file=sys.stderr)
+            rows.append(error_row(eid, "ERROR", include_localizable))
+            continue
+        if not item.success:
+            print(f"[ERR] {eid}: {item.error}", file=sys.stderr)
+            rows.append(error_row(eid, "ERROR", include_localizable))
+            continue
+        parsed = parse_classification(item.content, eid, include_localizable)
+        if parsed is None:
+            rows.append(error_row(eid, "PARSE_ERROR", include_localizable))
         else:
-            err_type = item.result.type  # "errored", "expired", "canceled"
-            if err_type == "errored":
-                err_obj  = item.result.error
-                err_kind = getattr(err_obj, "type", "unknown")
-                err_msg  = getattr(err_obj, "message", "")
-                # If message is empty, dump the full object so we can see what's there
-                if not err_msg:
-                    try:
-                        err_detail = err_obj.model_dump() if hasattr(err_obj, "model_dump") else vars(err_obj)
-                    except Exception:
-                        err_detail = repr(err_obj)
-                    print(f"[ERR] {eid}: {err_kind} — (no message) raw={err_detail}", file=sys.stderr)
-                else:
-                    print(f"[ERR] {eid}: {err_kind} — {err_msg}", file=sys.stderr)
-            else:
-                print(f"[{err_type.upper()}] {eid}", file=sys.stderr)
-            rows.append(error_row(eid, err_type.upper(), include_localizable))
+            rows.append({"id": eid, **parsed})
 
     write_csv(rows, DATA_ROOT / category / output_filename(include_localizable), columns)
 
@@ -517,8 +489,8 @@ def retrieve_and_write(batch_id: str, category: str) -> None:
 
 async def classify(
     category: str,
-    provider: str,
     model_name: str,
+    model_type: ModelType,
     dry_run: bool,
     submit_only: bool,
     include_localizable: bool,
@@ -571,9 +543,9 @@ async def classify(
         if llm_pairs:
             print("\n--- DRY RUN: showing first LLM prompt ---")
             eid, vars_ = llm_pairs[0]
-            p = build_prompt(class_params, class_output)
-            print(p.format(**vars_))
-        print(f"\n(Would submit {len(llm_pairs)} items to {provider}/{model_name}; "
+            for msg in render_messages(class_params, class_output, vars_):
+                print(f"[{msg['role']}]\n{msg['content']}\n")
+        print(f"\n(Would submit {len(llm_pairs)} items to Azure deployment {model_name!r}; "
               f"{len(prefiltered_ids)} classified locally as non-translatable)")
         return
 
@@ -586,40 +558,44 @@ async def classify(
         write_csv(rows, output_path, columns)
         return
 
-    # Build chain and wrap with langasync
-    from langasync import batch_chain
-
-    chain = make_chain(provider, model_name, class_params, class_output)
-    batch_wrapper = batch_chain(chain)
-
-    print(f"Submitting batch of {len(llm_pairs)} items to {provider}/{model_name}...")
+    # Build one Azure Batch API request per entry; custom_id is the batch index
+    # (string), and the manifest records index -> entry-id so retrieval maps back.
     ids = [p[0] for p in llm_pairs]
     inputs = [p[1] for p in llm_pairs]
+    requests = [
+        build_chat_request(
+            idx,
+            build_chat_params(
+                model_name,
+                render_messages(class_params, class_output, vars_),
+                model_type=model_type,
+                max_tokens=_CLASSIFY_MAX_TOKENS,
+            ),
+        )
+        for idx, vars_ in enumerate(inputs)
+    ]
 
-    job = await batch_wrapper.submit(inputs)
-    job_id = getattr(job, "job_id", "?")
+    client = make_sync_client()
+    print(f"Submitting batch of {len(requests)} items to Azure deployment {model_name!r}...")
+    batch = submit_batch(
+        client,
+        requests,
+        metadata={"task": "classify", "category": category},
+    )
+    batch_id = batch.id
     print(f"Batch job submitted.")
-    print(f"  Batch ID : {job_id}")
+    print(f"  Batch ID : {batch_id}")
     print(f"  Category : {category}")
     print(f"  Output   : {output_path}")
-
-    # Tag the langasync job file so the batch is identifiable by what it did.
-    job_label = f"classify_{'localizable' if include_localizable else 'params'}"
-    tag_batch_job(
-        job,
-        job=job_label,
-        task="classify",
-        category=category,
-        include_localizable=include_localizable,
-    )
 
     # Manifest lets --retrieve map batch indices back to entry IDs and merge
     # the locally pre-filtered non-translatable rows.
     mpath = manifest_path(category)
     mpath.write_text(json.dumps({
-        "batch_id": job_id,
-        "provider": provider,
+        "batch_id": batch_id,
+        "task": "classify",
         "model": model_name,
+        "model_type": model_type.value,
         "include_localizable": include_localizable,
         "llm_ids": ids,
         "prefiltered_ids": prefiltered_ids,
@@ -629,36 +605,31 @@ async def classify(
     if submit_only:
         print(
             "\nRun with --retrieve to fetch results when the batch finishes:\n"
-            f"  python scripts/classify_benchmark.py --category {category} --retrieve {job_id}"
+            f"  python scripts/classify_benchmark.py --category {category} --retrieve {batch_id}"
         )
         return
 
     print("Waiting for results (this can take up to 24 hours for large batches)...")
+    while True:
+        batch = get_batch(client, batch_id)
+        if is_finished(batch):
+            break
+        print(f"  {status_line(batch)} — checking again in {_POLL_INTERVAL_S}s", file=sys.stderr)
+        await asyncio.sleep(_POLL_INTERVAL_S)
 
-    # get_results() polls until the batch is complete
-    batch_result = await job.get_results()
-
-    results_list = batch_result.results if hasattr(batch_result, "results") else list(batch_result)
-    if len(results_list) != len(ids):
-        print(
-            f"[WARN] Expected {len(ids)} results, got {len(results_list)}. "
-            "IDs may be misaligned.",
-            file=sys.stderr,
-        )
-
-    for eid, result_item in zip(ids, results_list):
-        if hasattr(result_item, "success") and not result_item.success:
-            print(f"[WARN] {eid}: batch item failed — {getattr(result_item, 'error', '?')}", file=sys.stderr)
+    results = collect_results(client, batch_id)
+    for idx, eid in enumerate(ids):
+        item = results.get(str(idx))
+        if item is None or not item.success:
+            detail = item.error if item else "no result returned"
+            print(f"[WARN] {eid}: batch item failed — {detail}", file=sys.stderr)
             rows.append(error_row(eid, "ERROR", include_localizable))
             continue
-
-        raw = result_item.content if hasattr(result_item, "content") else str(result_item)
-        parsed = parse_classification(raw, eid, include_localizable)
+        parsed = parse_classification(item.content, eid, include_localizable)
         if parsed is None:
             rows.append(error_row(eid, "PARSE_ERROR", include_localizable))
         else:
             rows.append({"id": eid, **parsed})
-
 
     write_csv(rows, output_path, columns)
 
@@ -685,27 +656,18 @@ def build_prompt(classification_parameters: str, classification_output: str):
     )
 
 
-def make_chain(
-    provider: str, model_name: str, classification_parameters: str, classification_output: str
-):
-    """
-    Build a LangChain chain: SystemMessage + HumanMessage template → model → str.
-    langasync wraps this chain, so switching the model is just changing this factory.
-    """
-    from langchain_core.output_parsers import StrOutputParser
+def render_messages(
+    classification_parameters: str, classification_output: str, variables: dict[str, str]
+) -> list[dict[str, str]]:
+    """Render the classification prompt for one entry into OpenAI-style chat messages."""
+    from langchain_core.messages import SystemMessage
 
     prompt = build_prompt(classification_parameters, classification_output)
-
-    if provider == "anthropic":
-        from langchain_anthropic import ChatAnthropic
-        model = ChatAnthropic(model=model_name, max_tokens=256)
-    elif provider == "openai":
-        from langchain_openai import ChatOpenAI
-        model = ChatOpenAI(model=model_name, temperature=0, max_tokens=256)
-    else:
-        raise ValueError(f"Unsupported provider '{provider}'. Choose 'anthropic' or 'openai'.")
-
-    return prompt | model | StrOutputParser()
+    messages = prompt.format_messages(**variables)
+    return [
+        {"role": "system" if isinstance(m, SystemMessage) else "user", "content": m.content}
+        for m in messages
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -724,15 +686,16 @@ def main() -> None:
              "Must have eng_base.json and possible_answer/eng_base.json under data/benchmarks/<category>/.",
     )
     parser.add_argument(
-        "--provider",
-        default="anthropic",
-        choices=["anthropic", "openai"],
-        help="LLM provider to use for classification.",
+        "--model",
+        default=default_deployment() or "gpt-4o",
+        help="Azure deployment name to classify with (defaults to AZURE_OPENAI_DEPLOYMENT).",
     )
     parser.add_argument(
-        "--model",
-        default="claude-opus-4-8",
-        help="Model name passed to the provider SDK.",
+        "--model-type",
+        choices=[mt.value for mt in ModelType],
+        default=ModelType.STANDARD.value,
+        help="Deployment kind: 'standard' (temperature + max_tokens) or "
+             "'reasoning' (no temperature, max_completion_tokens).",
     )
     parser.add_argument(
         "--translatable_params",
@@ -761,9 +724,8 @@ def main() -> None:
         metavar="BATCH_ID",
         default=None,
         help="Skip submission entirely. Retrieve results for a previously submitted "
-             "Anthropic Message Batch and write the CSV. "
-             "Requires --provider anthropic (the default). "
-             "Example: --retrieve msgbatch_01AbCdEf...",
+             "Azure OpenAI batch and write the CSV. "
+             "Example: --retrieve batch_01AbCdEf...",
     )
     args = parser.parse_args()
 
@@ -775,8 +737,6 @@ def main() -> None:
     # Retrieve-only path — no asyncio needed. The classification selection is read
     # from the manifest, so the --translatable_params / --localizable flags are ignored.
     if args.retrieve:
-        if args.provider != "anthropic":
-            parser.error("--retrieve only supports --provider anthropic.")
         retrieve_and_write(args.retrieve, args.category)
         return
 
@@ -787,8 +747,8 @@ def main() -> None:
 
     asyncio.run(classify(
         category=args.category,
-        provider=args.provider,
         model_name=args.model,
+        model_type=ModelType(args.model_type),
         dry_run=args.dry_run,
         submit_only=args.submit_only,
         include_localizable=include_localizable,

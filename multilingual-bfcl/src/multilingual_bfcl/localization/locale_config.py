@@ -3,7 +3,7 @@ Per-language locale configuration.
 
 A Locale captures everything that differs between languages when we localize
 a BFCL test case: the BCP-47 language tag, text direction, date/number format
-conventions, and the Anthropic model best suited for translation work.
+conventions, and any model hints that steer the translation.
 """
 
 from dataclasses import dataclass, field

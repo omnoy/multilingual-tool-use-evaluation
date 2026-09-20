@@ -40,7 +40,10 @@ Usage:
     python scripts/translate_function_descriptions.py --dry-run
 
 Environment (multilingual-bfcl/.env):
-    ANTHROPIC_API_KEY=...
+    AZURE_OPENAI_ENDPOINT=...
+    AZURE_OPENAI_API_KEY=...
+    AZURE_OPENAI_API_VERSION=...   # optional
+    AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
 from __future__ import annotations
@@ -61,13 +64,17 @@ PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 load_dotenv(PACKAGE_ROOT / ".env")
 
-from anthropic import AsyncAnthropic  # noqa: E402
-
+from multilingual_bfcl.azure_client import (  # noqa: E402
+    ModelType,
+    build_chat_params,
+    default_deployment,
+    make_async_client,
+)
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
 
 DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks" / "bfcl_multiple"
 
-DEFAULT_MODEL = "claude-opus-4-8"
+DEFAULT_MODEL = default_deployment() or "gpt-4o"
 DEFAULT_SOURCE = "eng_translatable.json"
 OUTPUT_STEM = "he_translated_function_descriptions"
 LOCALIZATION_LEVEL = "function_descriptions"
@@ -182,14 +189,18 @@ def _parse_descriptions(raw: str, expected: int) -> list[str] | None:
 
 
 async def translate_descriptions(
-    client: AsyncAnthropic,
+    client,
     model: str,
+    model_type: ModelType,
     descriptions: list[str],
     language: str,
     hints: str,
     max_tokens: int,
 ) -> list[str] | None:
-    """Translate an ordered list of description strings. None on unrecoverable failure."""
+    """Translate an ordered list of description strings. None on unrecoverable failure.
+
+    `model` is an Azure deployment name.
+    """
     if not descriptions:
         return []
     system = SYSTEM_PROMPT.format(language=language, hints=hints)
@@ -197,15 +208,15 @@ async def translate_descriptions(
         n=len(descriptions), language=language,
         payload=json.dumps(descriptions, ensure_ascii=False, indent=2),
     )
-    # opus-4-8 rejects the temperature parameter, so we don't pass it.
+    params = build_chat_params(
+        model,
+        [{"role": "system", "content": system}, {"role": "user", "content": human}],
+        model_type=model_type,
+        max_tokens=max_tokens,
+    )
     for _ in range(2):  # one retry on a malformed / wrong-length reply
-        resp = await client.messages.create(
-            model=model,
-            max_tokens=max_tokens,
-            system=system,
-            messages=[{"role": "user", "content": human}],
-        )
-        raw = "".join(b.text for b in resp.content if getattr(b, "type", None) == "text")
+        resp = await client.chat.completions.create(**params)
+        raw = resp.choices[0].message.content or ""
         parsed = _parse_descriptions(raw, len(descriptions))
         if parsed is not None:
             return parsed
@@ -277,7 +288,8 @@ async def main_async(args: argparse.Namespace) -> None:
     # 2. Translate each distinct definition once (cache-backed, concurrent).
     cache_path = PACKAGE_ROOT / args.cache
     cache = _load_cache(cache_path)
-    client = AsyncAnthropic(max_retries=args.max_retries)
+    model_type = ModelType(args.model_type)
+    client = make_async_client(max_retries=args.max_retries)
     semaphore = asyncio.Semaphore(args.concurrency)
     translated_funcs: dict[str, dict] = {}
     failures: list[str] = []
@@ -293,7 +305,7 @@ async def main_async(args: argparse.Namespace) -> None:
         else:
             async with semaphore:
                 result = await translate_descriptions(
-                    client, args.model, descriptions, language, hints, args.max_tokens
+                    client, args.model, model_type, descriptions, language, hints, args.max_tokens
                 )
             if result is None:
                 failures.append(func.get("name", "<unknown>"))
@@ -348,7 +360,12 @@ def main() -> None:
     )
     parser.add_argument("--source", default=DEFAULT_SOURCE,
                         help="Base benchmark filename under data/benchmarks/bfcl_multiple/.")
-    parser.add_argument("--model", default=DEFAULT_MODEL, help="Translation model id.")
+    parser.add_argument("--model", default=DEFAULT_MODEL,
+                        help="Azure deployment name to translate with.")
+    parser.add_argument("--model-type", choices=[mt.value for mt in ModelType],
+                        default=ModelType.STANDARD.value,
+                        help="Deployment kind: 'standard' (temperature + max_tokens) or "
+                             "'reasoning' (no temperature, max_completion_tokens).")
     parser.add_argument("--limit", type=int, default=0,
                         help="Only process the first N entries (0 = all).")
     parser.add_argument("--concurrency", type=int, default=6,

@@ -31,7 +31,7 @@ The statistics record success_with_extra_calls so the two can be compared.
 Why plain async and not the Batch API: each retry depends on the error returned for the
 previous attempt, so the turns within an entry are inherently sequential and cannot be
 pre-packed into a batch. Entries, however, are independent, so we run them concurrently
-with a semaphore cap and rely on ClaudeHandler's built-in rate-limit backoff.
+with a semaphore cap and rely on the handler's built-in rate-limit backoff.
 
 Data layout (under data/benchmarks/<category>/<lang-dir>/):
   <benchmark>.jsonl   one JSON object per line, each carrying its own ground truth.
@@ -47,33 +47,40 @@ Outputs (under <output-dir>/<model>/<category>/<lang-dir>/<benchmark>/):
                                 #failed calls, tokens, estimated_cost_usd, ...)
   summary.json                  aggregate counts + total_estimated_cost_usd for the run
 
-The cost column is derived from the recorded token counts (Anthropic per-token
-pricing). Pass --recompute-stats to rebuild statistics.csv + summary.json (including
+The cost column is derived from the recorded token counts (per-token pricing set via
+--price-input / --price-output). Pass --recompute-stats to rebuild statistics.csv + summary.json (including
 cost) from existing transcripts WITHOUT calling the API — useful after a pricing
 change or to add the cost column to runs done before it existed.
 
+A "model" here is an Azure deployment name. --model-type selects how request
+parameters are shaped ('standard' vs 'reasoning'); see azure_client.ModelType.
+
 Usage:
-    # Small sample (default 10 entries) against the default model (claude-opus-5):
-    python scripts/run_robustness_eval.py --benchmark he_translatable_query
+    # Small sample (default 10 entries) against an Azure deployment:
+    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
+        --category bfcl_multiple --lang-dir he --model gpt-4o
 
     # Full file, more retries, higher concurrency:
     python scripts/run_robustness_eval.py --benchmark he_translatable_query \
-        --limit 0 --max-attempts 8 --concurrency 8
+        --model gpt-4o --limit 0 --max-attempts 8 --concurrency 8
 
-    # Several benchmark files in one run:
-    python scripts/run_robustness_eval.py \
-        --benchmark he_translatable_query he_translatable_full
+    # A reasoning deployment (no temperature; uses max_completion_tokens):
+    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
+        --model o3 --model-type reasoning
 
     # Finish a run that stopped early (only runs entries missing a transcript), then
     # rebuild stats over the whole benchmark:
     python scripts/run_robustness_eval.py --benchmark he_translatable_full \
-        --category bfcl_multiple --lang-dir he --model claude-opus-5 --limit 0 --resume
+        --category bfcl_multiple --lang-dir he --model gpt-4o --limit 0 --resume
 
     # Rebuild stats + cost from existing transcripts, no API calls:
     python scripts/run_robustness_eval.py --benchmark he_translatable_query --recompute-stats
 
 Environment (multilingual-bfcl/.env):
-    ANTHROPIC_API_KEY=...
+    AZURE_OPENAI_ENDPOINT=...
+    AZURE_OPENAI_API_KEY=...
+    AZURE_OPENAI_API_VERSION=...   # optional
+    AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
 from __future__ import annotations
@@ -99,7 +106,6 @@ load_dotenv(PACKAGE_ROOT / ".env")
 
 import dataclasses  # noqa: E402
 
-from anthropic.types import TextBlock, ToolUseBlock  # noqa: E402
 from bfcl_eval.constants.enums import Language, ReturnFormat  # noqa: E402
 from bfcl_eval.constants.model_config import MODEL_CONFIG_MAPPING  # noqa: E402
 from bfcl_eval.eval_checker.ast_eval.ast_checker import (  # noqa: E402
@@ -107,48 +113,50 @@ from bfcl_eval.eval_checker.ast_eval.ast_checker import (  # noqa: E402
     find_description,
     simple_function_checker,
 )
-from bfcl_eval.model_handler.api_inference.claude import ClaudeHandler  # noqa: E402
 
+from multilingual_bfcl.azure_client import ModelType  # noqa: E402
+from multilingual_bfcl.model_handler.azure_openai_handler import (  # noqa: E402
+    AzureOpenAIFCHandler,
+)
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
 
 # BFCL's checker looks the model up in MODEL_CONFIG_MAPPING (keyed by registry name)
-# to learn whether '.' in function names was rewritten to '_' for the API. The bundled
-# release predates claude-opus-4-8, so we clone the registered Claude FC entry (which
-# correctly has underscore_to_dot=True for Anthropic) under the requested name.
-_TEMPLATE_CLAUDE_FC_KEY = "claude-opus-4-5-20251101-FC"
+# to learn whether '.' in function names was rewritten to '_' for the API. Azure
+# deployments are not registered, so we clone a bundled OpenAI FC entry (which has
+# underscore_to_dot=True, matching the OpenAI-style tool schema) under the requested
+# name. Only the checker-relevant fields matter; the handler is built separately.
+_TEMPLATE_OPENAI_FC_KEY = "gpt-4.1-2025-04-14-FC"
 
 
 def ensure_model_config(registry_name: str, api_model_name: str) -> None:
     """Register a ModelConfig for registry_name if BFCL doesn't already know it."""
     if registry_name in MODEL_CONFIG_MAPPING:
         return
-    template = MODEL_CONFIG_MAPPING[_TEMPLATE_CLAUDE_FC_KEY]
+    template = MODEL_CONFIG_MAPPING[_TEMPLATE_OPENAI_FC_KEY]
     MODEL_CONFIG_MAPPING[registry_name] = dataclasses.replace(
         template, model_name=api_model_name, display_name=f"{registry_name} (cloned)"
     )
 
 
-# USD per 1M tokens (input, output), keyed by model-id substring. Source: Anthropic
-# pricing as of 2026-09. Update here if prices change.
-_PRICING_PER_MTOK: dict[str, tuple[float, float]] = {
-    "claude-opus-5": (5.0, 25.0),
-    "claude-opus-4-8": (5.0, 25.0),
-    "claude-opus-4-7": (5.0, 25.0),
-    "claude-opus-4-6": (5.0, 25.0),
-    "claude-opus-4-5": (5.0, 25.0),
-    "claude-sonnet-4-6": (3.0, 15.0),
-    "claude-sonnet-4-5": (3.0, 15.0),
-    "claude-haiku-4-5": (1.0, 5.0),
-}
+# USD per 1M tokens (input, output), keyed by deployment-name substring. Azure
+# deployments are named freely, so this stays empty by default — set prices for the
+# cost column via --price-input / --price-output, or add substrings here.
+_PRICING_PER_MTOK: dict[str, tuple[float, float]] = {}
+
+# Populated from --price-input / --price-output when both are given; applies to any
+# deployment, taking precedence over the table above.
+_PRICE_OVERRIDE: tuple[float, float] | None = None
 
 
 def estimated_cost_usd(model: str, input_tokens: int, output_tokens: int) -> float | None:
     """Cost estimate from recorded token counts. None if the model isn't priced.
 
     Note: input_tokens already sums the (growing) context resent on each retry,
-    so this reflects the real billed input across the conversation. It does not
-    account for prompt-cache discounts (caching is off for the 'bfcl_multiple' category).
+    so this reflects the real billed input across the conversation.
     """
+    if _PRICE_OVERRIDE is not None:
+        in_price, out_price = _PRICE_OVERRIDE
+        return input_tokens / 1e6 * in_price + output_tokens / 1e6 * out_price
     for key, (in_price, out_price) in _PRICING_PER_MTOK.items():
         if key in model:
             return input_tokens / 1e6 * in_price + output_tokens / 1e6 * out_price
@@ -242,36 +250,6 @@ LANG_PREFIX_TEMPLATE = (
 )
 
 
-class PatchedClaudeHandler(ClaudeHandler):
-    """ClaudeHandler whose _get_max_tokens knows about models the bundled BFCL
-    release does not (e.g. claude-opus-4-8), instead of raising ValueError."""
-
-    _MAX_TOKENS = {
-        "claude-opus-5": 64000,
-        "claude-opus-4-8": 64000,
-        "claude-opus-4-5": 64000,
-        "claude-sonnet-5": 64000,
-        "claude-sonnet-4-6": 64000,
-        "claude-sonnet-4-5": 64000,
-        "claude-haiku-4-5": 64000,
-    }
-
-    # Models that reject the `temperature` parameter (it is removed/deprecated for them
-    # and returns a 400 if sent). claude-opus-5 rejects sampling params like opus-4-8.
-    _NO_TEMPERATURE = ("claude-opus-5", "claude-opus-4-8", "claude-sonnet-5", "claude-sonnet-4-6")
-
-    def _get_max_tokens(self) -> int:
-        for key, value in self._MAX_TOKENS.items():
-            if key in self.model_name:
-                return value
-        return 8192
-
-    def generate_with_backoff(self, **kwargs):
-        if any(m in self.model_name for m in self._NO_TEMPERATURE):
-            kwargs.pop("temperature", None)
-        return super().generate_with_backoff(**kwargs)
-
-
 @dataclass
 class Attempt:
     # 1-based index of this model turn / API call within the entry's conversation.
@@ -355,14 +333,23 @@ def _locale_name(code: str) -> str:
 
 
 def _json_default(obj: Any) -> Any:
-    # Anthropic SDK content blocks are pydantic models.
+    # OpenAI SDK message/response objects are pydantic models.
     if hasattr(obj, "model_dump"):
         return obj.model_dump()
     return str(obj)
 
 
+def _safe_json_args(arguments: str) -> Any:
+    """OpenAI tool-call arguments arrive as a JSON string. Parse for logging, but keep
+    the raw string if the model emitted something unparseable."""
+    try:
+        return json.loads(arguments)
+    except (json.JSONDecodeError, TypeError):
+        return arguments
+
+
 async def run_entry(
-    handler: ClaudeHandler,
+    handler: AzureOpenAIFCHandler,
     entry: dict,
     ground_truth: Any,
     benchmark: str,
@@ -415,11 +402,16 @@ async def run_entry(
             inference_data = handler._pre_query_processing_FC(inference_data, test_entry)
             inference_data = handler._compile_tools(inference_data, test_entry)
 
+            # OpenAI-style FC models carry no separate system prompt; when a language
+            # prefix is wanted we prepend it as a system message. inference_data["message"]
+            # is still empty at this point (set by _pre_query_processing_FC), so the system
+            # message lands before the first user turn added just below.
             if add_lang_prefix and entry.get("locale"):
                 language = _locale_name(entry["locale"])
-                prefix = {"type": "text", "text": LANG_PREFIX_TEMPLATE.format(language=language)}
-                existing = inference_data.get("system_prompt", [])
-                inference_data["system_prompt"] = [prefix] + existing
+                inference_data["message"].insert(
+                    0,
+                    {"role": "system", "content": LANG_PREFIX_TEMPLATE.format(language=language)},
+                )
 
             first_turn = copy.deepcopy(test_entry["question"][0])
             handler.add_first_turn_message_FC(inference_data, first_turn)
@@ -436,11 +428,13 @@ async def run_entry(
                 parsed = handler._parse_query_response_FC(api_response)
                 handler._add_assistant_message_FC(inference_data, parsed)
 
-                texts = [b.text for b in api_response.content if isinstance(b, TextBlock)]
+                assistant = api_response.choices[0].message
+                texts = [assistant.content] if assistant.content else []
                 tool_calls = [
-                    {"name": b.name, "arguments": b.input, "id": b.id}
-                    for b in api_response.content
-                    if isinstance(b, ToolUseBlock)
+                    {"name": tc.function.name,
+                     "arguments": _safe_json_args(tc.function.arguments),
+                     "id": tc.id}
+                    for tc in (assistant.tool_calls or [])
                 ]
 
                 result.num_api_calls = api_calls
@@ -469,7 +463,7 @@ async def run_entry(
                     ))
                     if reprompt:
                         inference_data["message"].append(
-                            {"role": "user", "content": [{"type": "text", "text": feedback}]}
+                            {"role": "user", "content": feedback}
                         )
                     continue
 
@@ -686,7 +680,7 @@ def recompute_stats(benchmark: str, args: argparse.Namespace) -> None:
 
 
 async def run_benchmark(
-    handler: ClaudeHandler,
+    handler: AzureOpenAIFCHandler,
     benchmark: str,
     args: argparse.Namespace,
 ) -> None:
@@ -783,6 +777,11 @@ async def run_benchmark(
 
 
 async def main_async(args: argparse.Namespace) -> None:
+    # Set the per-token price override (used by the cost column) if both are given.
+    if args.price_input is not None and args.price_output is not None:
+        global _PRICE_OVERRIDE
+        _PRICE_OVERRIDE = (args.price_input, args.price_output)
+
     if args.recompute_stats:
         # Pure local recompute from saved transcripts — no model, no API key needed.
         for benchmark in args.benchmark:
@@ -791,11 +790,13 @@ async def main_async(args: argparse.Namespace) -> None:
 
     registry_name = f"{args.model}-FC"
     ensure_model_config(registry_name, args.model)
-    handler = PatchedClaudeHandler(
+    handler = AzureOpenAIFCHandler(
         model_name=registry_name,
         temperature=args.temperature,
         registry_name=registry_name,
         is_fc_model=True,
+        model_type=ModelType(args.model_type),
+        max_tokens=args.max_tokens,
     )
     for benchmark in args.benchmark:
         await run_benchmark(handler, benchmark, args)
@@ -815,7 +816,19 @@ def main() -> None:
                         help="Benchmark file stem(s) (without the .jsonl extension) under "
                              "data/benchmarks/<category>/<lang-dir>/, e.g. he_translatable_query.")
     parser.add_argument("--model", required=True,
-                        help="Model id (the handler appends/normalises the -FC suffix).")
+                        help="Azure deployment name (the harness appends the -FC registry suffix).")
+    parser.add_argument("--model-type", choices=[mt.value for mt in ModelType],
+                        default=ModelType.STANDARD.value,
+                        help="Deployment kind: 'standard' (temperature + max_tokens) or "
+                             "'reasoning' (no temperature, uses max_completion_tokens).")
+    parser.add_argument("--max-tokens", type=int, default=8192,
+                        help="Max tokens generated per model turn.")
+    parser.add_argument("--price-input", type=float, default=None,
+                        help="USD per 1M input tokens, for the cost column. "
+                             "Set together with --price-output.")
+    parser.add_argument("--price-output", type=float, default=None,
+                        help="USD per 1M output tokens, for the cost column. "
+                             "Set together with --price-input.")
     parser.add_argument("--max-tool-call-attempts", type=int, default=5,
                         help="Max *tool-call* attempts per entry (turns that emit a function "
                              "call) before it is marked failed. Clarification turns do not "

@@ -8,7 +8,8 @@ the pure pieces the batch driver needs:
   - build_input()           : one batch item = one (test_case, locale) — packs the
                               query messages and (for FULL) the textual ground-truth
                               parameter values into a single JSON payload
-  - make_chain()/build_prompt(): the LangChain chain langasync wraps
+  - build_prompt()/render_messages(): the prompt template and the OpenAI-style
+                              message list handed to the Azure Batch API
   - parse_translation()     : parse the model's JSON reply
   - apply_translation()     : reassemble a translated test_case + possible_answer entry
 
@@ -30,11 +31,12 @@ import sys
 from enum import Enum
 from typing import Any
 
+from multilingual_bfcl.azure_client import default_deployment
 from multilingual_bfcl.localization.locale_config import Locale
 
-# Default model for translation. Claude supports the full set of target
-# languages and produces high-quality, low-artifact translations.
-DEFAULT_TRANSLATION_MODEL = "claude-opus-4-8"
+# Default deployment for translation. A "model" here is an Azure deployment name;
+# it defaults to AZURE_OPENAI_DEPLOYMENT and can be overridden on the command line.
+DEFAULT_TRANSLATION_MODEL = default_deployment() or "gpt-4o"
 
 
 class LocalizationLevel(str, Enum):
@@ -143,7 +145,7 @@ def build_human_template(level: LocalizationLevel) -> str:
 
 
 def build_prompt(level: LocalizationLevel):
-    """The ChatPromptTemplate langasync wraps (variables: language, hints, payload)."""
+    """The ChatPromptTemplate for translation (variables: language, hints, payload)."""
     from langchain_core.prompts import ChatPromptTemplate
 
     return ChatPromptTemplate.from_messages([
@@ -152,22 +154,20 @@ def build_prompt(level: LocalizationLevel):
     ])
 
 
-def make_chain(provider: str, model_name: str, level: LocalizationLevel):
-    """Build prompt | model | str. Switching providers is just this factory."""
-    from langchain_core.output_parsers import StrOutputParser
+def render_messages(level: LocalizationLevel, variables: dict[str, str]) -> list[dict[str, str]]:
+    """Render the prompt for one batch item into OpenAI-style chat messages.
 
-    prompt = build_prompt(level)
+    `variables` fills the template slots (language, hints, payload). The result is a
+    list of {"role": ..., "content": ...} dicts ready to drop into a chat.completions
+    request body (used for the Azure Batch API).
+    """
+    from langchain_core.messages import SystemMessage
 
-    if provider == "anthropic":
-        from langchain_anthropic import ChatAnthropic
-        model = ChatAnthropic(model=model_name, max_tokens=4096)
-    elif provider == "openai":
-        from langchain_openai import ChatOpenAI
-        model = ChatOpenAI(model=model_name, temperature=0, max_tokens=4096)
-    else:
-        raise ValueError(f"Unsupported provider '{provider}'. Choose 'anthropic' or 'openai'.")
-
-    return prompt | model | StrOutputParser()
+    messages = build_prompt(level).format_messages(**variables)
+    return [
+        {"role": "system" if isinstance(m, SystemMessage) else "user", "content": m.content}
+        for m in messages
+    ]
 
 
 # ---------------------------------------------------------------------------

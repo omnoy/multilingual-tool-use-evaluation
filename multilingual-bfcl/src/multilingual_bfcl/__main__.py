@@ -9,7 +9,7 @@ Commands:
 Usage examples:
   mbfcl build bfcl_multiple --locales he zh-CN --level query
   mbfcl build bfcl_multiple --locales he --level full --source eng_translatable.json
-  mbfcl build bfcl_multiple --retrieve msgbatch_01AbCd...
+  mbfcl build bfcl_multiple --retrieve batch_01AbCd...
   mbfcl locales
   mbfcl status
 """
@@ -39,8 +39,8 @@ def build(
     locales: list[str] = typer.Option(None, "--locales", "-l", help="Space-separated locale codes, e.g. he zh-CN"),
     level: Level = typer.Option(Level.query, "--level", help="Translation scope: query or full"),
     source: str = typer.Option("eng_base.json", "--source", help="Input filename under data/benchmarks/<category>/"),
-    provider: str = typer.Option("anthropic", "--provider", help="LLM provider: anthropic or openai"),
-    model: Optional[str] = typer.Option(None, "--model", help="Model name (defaults to the translator's default)"),
+    model: Optional[str] = typer.Option(None, "--model", help="Azure deployment name (defaults to AZURE_OPENAI_DEPLOYMENT)"),
+    model_type: str = typer.Option("standard", "--model-type", help="Deployment kind: 'standard' or 'reasoning'"),
     limit: Optional[int] = typer.Option(None, "--limit", help="Translate only the first N source entries"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Print the first prompt and exit"),
     submit_only: bool = typer.Option(False, "--submit-only", help="Submit the batch and exit; retrieve later"),
@@ -49,6 +49,7 @@ def build(
     """Batch-translate a benchmark category into one or more target locales."""
     import asyncio
 
+    from multilingual_bfcl.azure_client import ModelType
     from multilingual_bfcl.benchmark_builder import retrieve_translation, translate_benchmark
     from multilingual_bfcl.localization.translator import (
         DEFAULT_TRANSLATION_MODEL,
@@ -66,8 +67,8 @@ def build(
         locales=locales,
         level=LocalizationLevel(level.value),
         source=source,
-        provider=provider,
         model_name=model or DEFAULT_TRANSLATION_MODEL,
+        model_type=ModelType(model_type),
         limit=limit,
         dry_run=dry_run,
         submit_only=submit_only,

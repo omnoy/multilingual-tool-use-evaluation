@@ -30,7 +30,7 @@ class MultilingualHandler:
     Wraps a BFCL handler to inject locale context into every inference call.
 
     Example:
-        base = ClaudeHandler("claude-opus-4-8", temperature=0.0, ...)
+        base = AzureOpenAIFCHandler("gpt-4o-FC", temperature=0.0, ...)
         handler = MultilingualHandler(base, locale=get_locale("he"))
         result = handler.inference_single_turn_FC(test_entry, include_input_log=True)
     """

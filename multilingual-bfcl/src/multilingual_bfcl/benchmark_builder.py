@@ -1,9 +1,8 @@
 """
 Benchmark builder: batch-translates local BFCL benchmark files into target locales.
 
-Unlike the old per-string synchronous translator, this uses the provider's native
-Batch API (via langasync) — one batch item per (test case, locale) — mirroring
-scripts/classify_benchmark.py.
+This uses the Azure OpenAI Batch API — one batch item per (test case, locale) —
+mirroring scripts/classify_benchmark.py.
 
 Input/output live under data/benchmarks/<category>/:
   - source question file : <source>                 (e.g. eng_base.json, JSONL)
@@ -24,12 +23,26 @@ batch-index → (id, locale) mapping so results can be retrieved later.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
+from multilingual_bfcl.azure_batch import (
+    build_chat_request,
+    collect_results,
+    get_batch,
+    is_finished,
+    status_line,
+    submit_batch,
+)
+from multilingual_bfcl.azure_client import (
+    ModelType,
+    build_chat_params,
+    make_sync_client,
+)
 from multilingual_bfcl.localization.locale_config import get_locale
 from multilingual_bfcl.localization.translator import (
     DEFAULT_TRANSLATION_MODEL,
@@ -37,9 +50,14 @@ from multilingual_bfcl.localization.translator import (
     apply_translation,
     build_input,
     build_prompt,
-    make_chain,
     parse_translation,
+    render_messages,
 )
+
+# Cap on translation output tokens per batch item.
+_TRANSLATION_MAX_TOKENS = 4096
+# Seconds between batch status polls while waiting for results.
+_POLL_INTERVAL_S = 30
 
 # Root of the multilingual-bfcl package (two levels up from this file)
 _PACKAGE_ROOT = Path(__file__).parent.parent.parent
@@ -86,23 +104,6 @@ def output_filename(source: str, locale_code: str, level: LocalizationLevel) -> 
 
 def manifest_path(category: str) -> Path:
     return _BENCHMARK_DIR / category / "translate_manifest.json"
-
-
-def tag_batch_job(handle, **fields) -> None:
-    """Write human-readable labels into the langasync job file's `metadata` dict.
-
-    e.g. tag_batch_job(handle, job="translate_he_full", task="translate", ...).
-    Only `metadata` (not arbitrary top-level keys) is persisted by langasync, and
-    its status-update path round-trips the file, so values written here survive
-    later saves. Best-effort: a failure here must not fail the submission.
-    """
-    try:
-        path = handle.repository.storage_dir / f"{handle.job_id.replace('/', '_')}.json"
-        data = json.loads(path.read_text(encoding="utf-8"))
-        data.setdefault("metadata", {}).update(fields)
-        path.write_text(json.dumps(data, indent=2), encoding="utf-8")
-    except Exception as e:  # noqa: BLE001 - tagging is non-critical
-        print(f"[WARN] could not tag batch job file with metadata: {e}", file=sys.stderr)
 
 
 def _id_sort_key(record: dict[str, Any]):
@@ -179,7 +180,7 @@ def _write_outputs(
 
 
 # ---------------------------------------------------------------------------
-# Submit (and optionally wait) — async, uses langasync
+# Submit (and optionally wait) — async, uses the Azure OpenAI Batch API
 # ---------------------------------------------------------------------------
 
 async def translate_benchmark(
@@ -187,15 +188,16 @@ async def translate_benchmark(
     locales: list[str],
     level: LocalizationLevel = LocalizationLevel.QUERY,
     source: str = "eng_base.json",
-    provider: str = "anthropic",
     model_name: str = DEFAULT_TRANSLATION_MODEL,
+    model_type: ModelType = ModelType.STANDARD,
     limit: int | None = None,
     dry_run: bool = False,
     submit_only: bool = False,
 ) -> str | None:
-    """Submit a translation batch (and wait for results unless submit_only).
+    """Submit an Azure translation batch (and wait for results unless submit_only).
 
-    Returns the batch id (or None for dry-run / nothing-to-do).
+    `model_name` is the Azure deployment name. Returns the batch id (or None for
+    dry-run / nothing-to-do).
     """
     bench = _BENCHMARK_DIR / category
     src_q = bench / source
@@ -239,43 +241,47 @@ async def translate_benchmark(
     if dry_run:
         if inputs:
             print("\n--- DRY RUN: first prompt ---")
-            print(build_prompt(level).format(**inputs[0]))
-        print(f"\n(Would submit {len(inputs)} items to {provider}/{model_name})")
+            for msg in render_messages(level, inputs[0]):
+                print(f"[{msg['role']}]\n{msg['content']}\n")
+        print(f"\n(Would submit {len(inputs)} items to Azure deployment {model_name!r})")
         return None
 
     if not inputs:
         print("Nothing to translate.")
         return None
 
-    from langasync import batch_chain
+    # Build one Batch API request per item; custom_id is the item index (string),
+    # matching the manifest's `units` order so retrieval maps results back positionally.
+    requests = [
+        build_chat_request(
+            idx,
+            build_chat_params(
+                model_name,
+                render_messages(level, item),
+                model_type=model_type,
+                max_tokens=_TRANSLATION_MAX_TOKENS,
+            ),
+        )
+        for idx, item in enumerate(inputs)
+    ]
 
-    chain = make_chain(provider, model_name, level)
-    wrapper = batch_chain(chain)
-
-    print(f"Submitting batch of {len(inputs)} items to {provider}/{model_name}...")
-    job = await wrapper.submit(inputs)
-    job_id = getattr(job, "job_id", "?")
-    print(f"Batch job submitted.\n  Batch ID : {job_id}\n  Category : {category}")
-
-    # Tag the langasync job file so the batch is identifiable by what it did.
-    job_label = f"translate_{'+'.join(locales)}_{level.value}"
-    tag_batch_job(
-        job,
-        job=job_label,
-        task="translate",
-        category=category,
-        source=source,
-        level=level.value,
-        locales=locales,
+    client = make_sync_client()
+    print(f"Submitting batch of {len(requests)} items to Azure deployment {model_name!r}...")
+    batch = submit_batch(
+        client,
+        requests,
+        metadata={"task": "translate", "category": category, "level": level.value},
     )
+    batch_id = batch.id
+    print(f"Batch job submitted.\n  Batch ID : {batch_id}\n  Category : {category}")
 
     mpath = manifest_path(category)
     mpath.parent.mkdir(parents=True, exist_ok=True)
     mpath.write_text(json.dumps({
-        "batch_id": job_id,
-        "job": job_label,
-        "provider": provider,
+        "batch_id": batch_id,
+        "task": "translate",
         "model": model_name,
+        "model_type": model_type.value,
         "category": category,
         "source": source,
         "level": level.value,
@@ -287,37 +293,28 @@ async def translate_benchmark(
     if submit_only:
         print(
             "\nRetrieve results when the batch finishes:\n"
-            f"  python scripts/translate_benchmark.py --category {category} --retrieve {job_id}"
+            f"  python scripts/translate_benchmark.py --category {category} --retrieve {batch_id}"
         )
-        return job_id
+        return batch_id
 
     print("Waiting for results (can take up to 24h for large batches)...")
-    batch_result = await job.get_results()
-    results_list = batch_result.results if hasattr(batch_result, "results") else list(batch_result)
-    if len(results_list) != len(units):
-        print(f"[WARN] Expected {len(units)} results, got {len(results_list)}; ids may misalign.",
-              file=sys.stderr)
+    while True:
+        batch = get_batch(client, batch_id)
+        if is_finished(batch):
+            break
+        print(f"  {status_line(batch)} — checking again in {_POLL_INTERVAL_S}s", file=sys.stderr)
+        await asyncio.sleep(_POLL_INTERVAL_S)
 
-    raws: list[str | None] = []
-    for item in results_list:
-        if hasattr(item, "success") and not item.success:
-            print(f"[WARN] batch item failed — {getattr(item, 'error', '?')}", file=sys.stderr)
-            raws.append(None)
-        else:
-            raws.append(item.content if hasattr(item, "content") else str(item))
-
-    _write_outputs(category, source, level, units, raws)
-    return job_id
+    _retrieve_and_write(client, batch_id, category, source, level, units)
+    return batch_id
 
 
 # ---------------------------------------------------------------------------
-# Retrieve a previously submitted Anthropic batch — sync, uses the SDK directly
+# Retrieve a previously submitted Azure batch — sync, uses the SDK directly
 # ---------------------------------------------------------------------------
 
 def retrieve_translation(batch_id: str, category: str) -> None:
-    """Fetch a completed Anthropic Message Batch and write the translated files."""
-    import anthropic as anthropic_sdk
-
+    """Fetch a completed Azure OpenAI batch and write the translated files."""
     mpath = manifest_path(category)
     if not mpath.exists():
         sys.exit(f"ERROR: {mpath} not found (written at submit time; required to map results).")
@@ -330,33 +327,36 @@ def retrieve_translation(batch_id: str, category: str) -> None:
     source: str = manifest["source"]
     level = LocalizationLevel(manifest["level"])
 
-    client = anthropic_sdk.Anthropic()
-    batch = client.messages.batches.retrieve(batch_id)
-    if batch.processing_status != "ended":
-        rc = batch.request_counts
-        done = rc.succeeded + rc.errored + rc.expired + rc.canceled
-        total = rc.processing + done
-        sys.exit(f"ERROR: Batch {batch_id!r} is '{batch.processing_status}' ({done}/{total}). Try later.")
+    client = make_sync_client()
+    _retrieve_and_write(client, batch_id, category, source, level, units)
 
+
+def _retrieve_and_write(
+    client,
+    batch_id: str,
+    category: str,
+    source: str,
+    level: LocalizationLevel,
+    units: list[dict[str, str]],
+) -> None:
+    """Download a completed batch's results and write per-locale output files."""
     print(f"Retrieving results for batch {batch_id!r}...")
+    results = collect_results(client, batch_id)
+
     raws: list[str | None] = [None] * len(units)
-    for item in client.messages.batches.results(batch_id):
+    for cid, item in results.items():
         try:
-            idx = int(item.custom_id)
+            idx = int(cid)
         except (ValueError, TypeError):
-            print(f"[WARN] unexpected custom_id {item.custom_id!r}; skipping.", file=sys.stderr)
+            print(f"[WARN] unexpected custom_id {cid!r}; skipping.", file=sys.stderr)
             continue
         if not (0 <= idx < len(units)):
             print(f"[WARN] custom_id {idx} out of range; skipping.", file=sys.stderr)
             continue
-
-        if item.result.type == "succeeded":
-            blocks = item.result.message.content
-            raws[idx] = next((b.text for b in blocks if hasattr(b, "text")), "")
+        if item.success:
+            raws[idx] = item.content or ""
         else:
-            err = item.result.type
-            detail = getattr(getattr(item.result, "error", None), "message", "")
-            print(f"[{err.upper()}] unit {idx}{(' — ' + detail) if detail else ''}", file=sys.stderr)
+            print(f"[ERR] unit {idx} — {item.error}", file=sys.stderr)
 
     _write_outputs(category, source, level, units, raws)
 

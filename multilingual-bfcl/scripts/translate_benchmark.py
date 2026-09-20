@@ -2,8 +2,8 @@
 translate_benchmark.py — Batch translator for multilingual-bfcl benchmarks.
 
 Translates a local benchmark (data/benchmarks/<category>/<source>) into one or more
-locales using the provider's native Batch API (via langasync), one batch item per
-(test case, locale). Mirrors scripts/classify_benchmark.py.
+locales using the Azure OpenAI Batch API, one batch item per (test case, locale).
+Mirrors scripts/classify_benchmark.py.
 
 Levels:
   --level query   translate only the user query; ground truth unchanged.
@@ -25,18 +25,20 @@ Usage:
     python scripts/translate_benchmark.py --category bfcl_multiple --locales he \
         --source eng_translatable.json --level query
 
-    # Submit only, then retrieve later (Anthropic):
+    # Submit only, then retrieve later:
     python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --submit-only
-    python scripts/translate_benchmark.py --category bfcl_multiple --retrieve msgbatch_01AbCd...
+    python scripts/translate_benchmark.py --category bfcl_multiple --retrieve batch_01AbCd...
 
     # Preview the first prompt without calling the API:
     python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --dry-run
 
 Requirements:
-    pip install langasync langchain-anthropic langchain-openai
+    pip install openai langchain-openai
 Environment (multilingual-bfcl/.env):
-    ANTHROPIC_API_KEY=...
-    OPENAI_API_KEY=...   # only for --provider openai
+    AZURE_OPENAI_ENDPOINT=...
+    AZURE_OPENAI_API_KEY=...
+    AZURE_OPENAI_API_VERSION=...   # optional
+    AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
 from __future__ import annotations
@@ -53,6 +55,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 load_dotenv(PACKAGE_ROOT / ".env")
 
+from multilingual_bfcl.azure_client import ModelType  # noqa: E402
 from multilingual_bfcl.benchmark_builder import (  # noqa: E402
     retrieve_translation,
     translate_benchmark,
@@ -77,10 +80,12 @@ def main() -> None:
                         help="Translation scope: 'query' or 'full'.")
     parser.add_argument("--source", default="eng_base.json",
                         help="Input filename under data/benchmarks/<category>/.")
-    parser.add_argument("--provider", default="anthropic", choices=["anthropic", "openai"],
-                        help="LLM provider.")
     parser.add_argument("--model", default=DEFAULT_TRANSLATION_MODEL,
-                        help="Model name passed to the provider SDK.")
+                        help="Azure deployment name to translate with.")
+    parser.add_argument("--model-type", choices=[mt.value for mt in ModelType],
+                        default=ModelType.STANDARD.value,
+                        help="Deployment kind: 'standard' (temperature + max_tokens) or "
+                             "'reasoning' (no temperature, max_completion_tokens).")
     parser.add_argument("--limit", type=int, default=None,
                         help="Translate only the first N source entries (per locale).")
     parser.add_argument("--dry-run", action="store_true",
@@ -88,7 +93,7 @@ def main() -> None:
     parser.add_argument("--submit-only", action="store_true",
                         help="Submit the batch, print the batch ID, then exit. Use --retrieve later.")
     parser.add_argument("--retrieve", metavar="BATCH_ID", default=None,
-                        help="Retrieve a previously submitted Anthropic batch and write outputs.")
+                        help="Retrieve a previously submitted Azure batch and write outputs.")
     args = parser.parse_args()
 
     if args.submit_only and args.retrieve:
@@ -98,8 +103,6 @@ def main() -> None:
 
     # Retrieve-only path — no asyncio, selection read from the manifest.
     if args.retrieve:
-        if args.provider != "anthropic":
-            parser.error("--retrieve only supports --provider anthropic.")
         retrieve_translation(args.retrieve, args.category)
         return
 
@@ -111,8 +114,8 @@ def main() -> None:
         locales=args.locales,
         level=LocalizationLevel(args.level),
         source=args.source,
-        provider=args.provider,
         model_name=args.model,
+        model_type=ModelType(args.model_type),
         limit=args.limit,
         dry_run=args.dry_run,
         submit_only=args.submit_only,

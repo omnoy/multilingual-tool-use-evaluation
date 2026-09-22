@@ -76,6 +76,25 @@ def build(
 
 
 @app.command()
+def descriptors(
+    source: str = typer.Argument(..., help="Path to a built benchmark .jsonl (e.g. data/benchmarks/bfcl_multiple/he/he_translatable_full.jsonl)"),
+    suffix: str = typer.Option("langdesc", "--suffix", help="Suffix for the output filename (<stem>_<suffix>.jsonl)"),
+) -> None:
+    """Append a 'Language: <langs>.' descriptor to natural-language parameters.
+
+    Detects natural-language parameters from each entry's ground truth (numbers,
+    dates, booleans and enums are excluded) and annotates their descriptions with
+    the languages their value may appear in (English + the entry's locale). Writes
+    a new benchmark file alongside the source.
+    """
+    from pathlib import Path
+
+    from multilingual_bfcl.benchmark_builder import add_language_descriptors_file
+
+    add_language_descriptors_file(Path(source), suffix=suffix)
+
+
+@app.command()
 def locales() -> None:
     """List all supported locales."""
     from multilingual_bfcl.localization.locale_config import SUPPORTED_LOCALES

@@ -40,9 +40,8 @@ Usage:
     python scripts/translate_function_descriptions.py --dry-run
 
 Environment (multilingual-bfcl/.env):
-    AZURE_OPENAI_ENDPOINT=...
+    AZURE_OPENAI_ENDPOINT=...      # …/openai/v1 (or the resource root)
     AZURE_OPENAI_API_KEY=...
-    AZURE_OPENAI_API_VERSION=...   # optional
     AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
@@ -65,6 +64,7 @@ sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 load_dotenv(PACKAGE_ROOT / ".env")
 
 from multilingual_bfcl.azure_client import (  # noqa: E402
+    OPENAI_MODEL_TYPES,
     ModelType,
     build_chat_params,
     default_deployment,
@@ -362,7 +362,7 @@ def main() -> None:
                         help="Base benchmark filename under data/benchmarks/bfcl_multiple/.")
     parser.add_argument("--model", default=DEFAULT_MODEL,
                         help="Azure deployment name to translate with.")
-    parser.add_argument("--model-type", choices=[mt.value for mt in ModelType],
+    parser.add_argument("--model-type", choices=[mt.value for mt in OPENAI_MODEL_TYPES],
                         default=ModelType.STANDARD.value,
                         help="Deployment kind: 'standard' (temperature + max_tokens) or "
                              "'reasoning' (no temperature, max_completion_tokens).")

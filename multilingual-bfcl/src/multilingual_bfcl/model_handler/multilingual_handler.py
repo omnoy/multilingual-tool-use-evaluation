@@ -21,7 +21,7 @@ from multilingual_bfcl.localization.locale_config import Locale
 _LANG_PREFIX_TEMPLATE = (
     "The user will write in {language}. "
     "Understand the request in {language} and respond with the correct function call "
-    "exactly as specified in the tool definitions (which remain in English)."
+    "exactly as specified in the tool definitions."
 )
 
 

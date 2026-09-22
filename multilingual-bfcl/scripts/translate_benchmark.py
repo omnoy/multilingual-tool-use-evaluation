@@ -35,9 +35,8 @@ Usage:
 Requirements:
     pip install openai langchain-openai
 Environment (multilingual-bfcl/.env):
-    AZURE_OPENAI_ENDPOINT=...
+    AZURE_OPENAI_ENDPOINT=...      # …/openai/v1 (or the resource root)
     AZURE_OPENAI_API_KEY=...
-    AZURE_OPENAI_API_VERSION=...   # optional
     AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
@@ -55,7 +54,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 load_dotenv(PACKAGE_ROOT / ".env")
 
-from multilingual_bfcl.azure_client import ModelType  # noqa: E402
+from multilingual_bfcl.azure_client import OPENAI_MODEL_TYPES, ModelType  # noqa: E402
 from multilingual_bfcl.benchmark_builder import (  # noqa: E402
     retrieve_translation,
     translate_benchmark,
@@ -82,7 +81,7 @@ def main() -> None:
                         help="Input filename under data/benchmarks/<category>/.")
     parser.add_argument("--model", default=DEFAULT_TRANSLATION_MODEL,
                         help="Azure deployment name to translate with.")
-    parser.add_argument("--model-type", choices=[mt.value for mt in ModelType],
+    parser.add_argument("--model-type", choices=[mt.value for mt in OPENAI_MODEL_TYPES],
                         default=ModelType.STANDARD.value,
                         help="Deployment kind: 'standard' (temperature + max_tokens) or "
                              "'reasoning' (no temperature, max_completion_tokens).")

@@ -22,11 +22,12 @@ Attempt budgeting (two independent limits):
   --max-api-calls  a hard ceiling on the TOTAL number of model turns (API calls) for an
                    entry, so a model that only ever asks for clarification still stops.
 
-Scoring is BFCL's own AST checker, with one relaxation enabled by default: a response
-that contains the correct call AND extra (superfluous) calls still counts as a pass
-(each expected call must be matched by a distinct model call; extras are ignored).
-Pass --strict-call-count for standard BFCL behaviour (exact call count required).
-The statistics record success_with_extra_calls so the two can be compared.
+Scoring is BFCL's own AST checker, with one relaxation enabled by default: an attempt
+counts as a pass if ANY one of the model's calls matches a ground-truth call, whatever
+the number of calls (so a correct call alongside extra or wrong calls still passes, and
+the strict checker's "wrong_count" never fails an attempt). Pass --strict-call-count for
+standard BFCL behaviour (exact call count required). The statistics record
+success_with_extra_calls so the two can be compared.
 
 Why plain async and not the Batch API: each retry depends on the error returned for the
 previous attempt, so the turns within an entry are inherently sequential and cannot be
@@ -47,13 +48,16 @@ Outputs (under <output-dir>/<model>/<category>/<lang-dir>/<benchmark>/):
                                 #failed calls, tokens, estimated_cost_usd, ...)
   summary.json                  aggregate counts + total_estimated_cost_usd for the run
 
-The cost column is derived from the recorded token counts (per-token pricing set via
---price-input / --price-output). Pass --recompute-stats to rebuild statistics.csv + summary.json (including
-cost) from existing transcripts WITHOUT calling the API — useful after a pricing
-change or to add the cost column to runs done before it existed.
+The cost column is derived from the recorded token counts using per-1M-token prices
+from a CSV (model_prices.csv by default; override with --prices, or override the price
+for all models with --price-input/--price-output). A model absent from the CSV is
+unpriced (cost 0) and a warning is printed. Pass --recompute-stats to rebuild
+statistics.csv + summary.json (including cost) from existing transcripts WITHOUT calling
+the API — useful after editing prices or to add the cost column to older runs.
 
-A "model" here is an Azure deployment name. --model-type selects how request
-parameters are shaped ('standard' vs 'reasoning'); see azure_client.ModelType.
+A "model" here is an Azure deployment name. --model-type selects the route + how request
+parameters are shaped: 'standard'/'reasoning' use the OpenAI-compatible v1 route, and
+'claude' uses the Foundry /anthropic route (AnthropicFoundry client). See azure_client.ModelType.
 
 Usage:
     # Small sample (default 10 entries) against an Azure deployment:
@@ -68,6 +72,10 @@ Usage:
     python scripts/run_robustness_eval.py --benchmark he_translatable_query \
         --model o3 --model-type reasoning
 
+    # A Claude deployment via the Foundry /anthropic route:
+    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
+        --category bfcl_multiple --lang-dir he --model claude-opus-5 --model-type claude
+
     # Finish a run that stopped early (only runs entries missing a transcript), then
     # rebuild stats over the whole benchmark:
     python scripts/run_robustness_eval.py --benchmark he_translatable_full \
@@ -77,9 +85,8 @@ Usage:
     python scripts/run_robustness_eval.py --benchmark he_translatable_query --recompute-stats
 
 Environment (multilingual-bfcl/.env):
-    AZURE_OPENAI_ENDPOINT=...
+    AZURE_OPENAI_ENDPOINT=...      # …/openai/v1 (or the resource root)
     AZURE_OPENAI_API_KEY=...
-    AZURE_OPENAI_API_VERSION=...   # optional
     AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
@@ -115,37 +122,82 @@ from bfcl_eval.eval_checker.ast_eval.ast_checker import (  # noqa: E402
 )
 
 from multilingual_bfcl.azure_client import ModelType  # noqa: E402
+from multilingual_bfcl.model_handler.anthropic_foundry_handler import (  # noqa: E402
+    AnthropicFoundryFCHandler,
+)
 from multilingual_bfcl.model_handler.azure_openai_handler import (  # noqa: E402
     AzureOpenAIFCHandler,
 )
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
 
+# Any handler the harness drives (both expose the same BFCL FC methods plus the
+# extract_turn / apply_language_prefix format adapters run_entry relies on).
+FCHandler = AzureOpenAIFCHandler | AnthropicFoundryFCHandler
+
 # BFCL's checker looks the model up in MODEL_CONFIG_MAPPING (keyed by registry name)
 # to learn whether '.' in function names was rewritten to '_' for the API. Azure
-# deployments are not registered, so we clone a bundled OpenAI FC entry (which has
-# underscore_to_dot=True, matching the OpenAI-style tool schema) under the requested
-# name. Only the checker-relevant fields matter; the handler is built separately.
+# deployments are not registered, so we clone a bundled FC entry (both have
+# underscore_to_dot=True) under the requested name. Only the checker-relevant fields
+# matter; the handler is built separately. Use the OpenAI template for v1 deployments
+# and the Claude template for the /anthropic route.
 _TEMPLATE_OPENAI_FC_KEY = "gpt-4.1-2025-04-14-FC"
+_TEMPLATE_CLAUDE_FC_KEY = "claude-opus-4-5-20251101-FC"
 
 
-def ensure_model_config(registry_name: str, api_model_name: str) -> None:
+def ensure_model_config(
+    registry_name: str, api_model_name: str, template_key: str = _TEMPLATE_OPENAI_FC_KEY
+) -> None:
     """Register a ModelConfig for registry_name if BFCL doesn't already know it."""
     if registry_name in MODEL_CONFIG_MAPPING:
         return
-    template = MODEL_CONFIG_MAPPING[_TEMPLATE_OPENAI_FC_KEY]
+    template = MODEL_CONFIG_MAPPING[template_key]
     MODEL_CONFIG_MAPPING[registry_name] = dataclasses.replace(
         template, model_name=api_model_name, display_name=f"{registry_name} (cloned)"
     )
 
 
-# USD per 1M tokens (input, output), keyed by deployment-name substring. Azure
-# deployments are named freely, so this stays empty by default — set prices for the
-# cost column via --price-input / --price-output, or add substrings here.
+# USD per 1M tokens (input, output), keyed by deployment name. Loaded from a prices
+# CSV (model_prices.csv by default) at startup; see load_price_table / --prices.
 _PRICING_PER_MTOK: dict[str, tuple[float, float]] = {}
 
 # Populated from --price-input / --price-output when both are given; applies to any
 # deployment, taking precedence over the table above.
 _PRICE_OVERRIDE: tuple[float, float] | None = None
+
+# Default prices file (per-1M-token USD), alongside the package root.
+DEFAULT_PRICES_CSV = PACKAGE_ROOT / "model_prices.csv"
+
+
+def load_price_table(path: Path) -> dict[str, tuple[float, float]]:
+    """Parse a prices CSV into {model: (input_per_mtok, output_per_mtok)}.
+
+    Rows are `model,input,output`. Blank lines, a `model,...` header, and lines
+    starting with '#' are ignored. Missing file -> empty table (cost stays unpriced).
+    """
+    table: dict[str, tuple[float, float]] = {}
+    if not path.exists():
+        return table
+    with path.open(newline="", encoding="utf-8") as fh:
+        for row in csv.reader(fh):
+            if not row or row[0].lstrip().startswith("#"):
+                continue
+            if len(row) < 3 or row[0].strip().lower() == "model":
+                continue
+            try:
+                table[row[0].strip()] = (float(row[1]), float(row[2]))
+            except ValueError:
+                continue
+    return table
+
+
+def _lookup_price(model: str) -> tuple[float, float] | None:
+    """Exact match on the deployment name, else the longest listed substring of it."""
+    if model in _PRICING_PER_MTOK:
+        return _PRICING_PER_MTOK[model]
+    matches = [(k, v) for k, v in _PRICING_PER_MTOK.items() if k in model]
+    if not matches:
+        return None
+    return max(matches, key=lambda kv: len(kv[0]))[1]
 
 
 def estimated_cost_usd(model: str, input_tokens: int, output_tokens: int) -> float | None:
@@ -154,12 +206,10 @@ def estimated_cost_usd(model: str, input_tokens: int, output_tokens: int) -> flo
     Note: input_tokens already sums the (growing) context resent on each retry,
     so this reflects the real billed input across the conversation.
     """
-    if _PRICE_OVERRIDE is not None:
-        in_price, out_price = _PRICE_OVERRIDE
+    prices = _PRICE_OVERRIDE if _PRICE_OVERRIDE is not None else _lookup_price(model)
+    if prices is not None:
+        in_price, out_price = prices
         return input_tokens / 1e6 * in_price + output_tokens / 1e6 * out_price
-    for key, (in_price, out_price) in _PRICING_PER_MTOK.items():
-        if key in model:
-            return input_tokens / 1e6 * in_price + output_tokens / 1e6 * out_price
     return None
 
 
@@ -174,10 +224,12 @@ def evaluate_call(
     """Score a decoded model call list against ground truth.
 
     Runs BFCL's strict `ast_checker` first. When that fails *and* allow_extra_calls
-    is set, falls back to a subset match: every expected ground-truth call must be
-    satisfied by some distinct model call, reusing BFCL's own `simple_function_checker`
-    for param/type/value scoring so only the count constraint is relaxed. This lets a
-    model that emits the correct call plus extra calls count as a success.
+    is set, falls back to an "any-match" check: the attempt is valid if ANY one of the
+    model's calls matches ANY expected ground-truth call (via BFCL's own
+    `simple_function_checker` for name/param/type/value scoring). The number of calls
+    is not constrained, so a model that emits the correct call — alone or alongside
+    extra or wrong calls — passes, and the strict checker's `wrong_count` is never
+    surfaced.
 
     Returns: {valid, error_type, error, num_calls, num_expected, relaxed}
     where `relaxed` is True when the pass came only from the lenient fallback.
@@ -199,40 +251,32 @@ def evaluate_call(
             **base,
         }
 
-    # Lenient fallback: each expected call must match a distinct model call;
-    # any extra model calls are ignored.
-    if len(decoded) < len(ground_truth):
-        return {"valid": False, "error_type": strict.get("error_type"),
-                "error": strict.get("error"), **base}
-
-    matched: set[int] = set()
+    # Lenient fallback (default): valid if ANY model call matches ANY expected
+    # ground-truth call. Call count is ignored (so `wrong_count` never fails an attempt).
     for expected in ground_truth:
         func_name_expected = list(expected.keys())[0]
         description = find_description(func_descriptions, func_name_expected)
-        found = False
-        for idx, call in enumerate(decoded):
-            if idx in matched:
-                continue
+        for call in decoded:
             res = simple_function_checker(
                 description, call, expected, Language.PYTHON, registry_name
             )
             if res.get("valid"):
-                matched.add(idx)
-                found = True
-                break
-        if not found:
-            return {"valid": False, "error_type": strict.get("error_type"),
-                    "error": strict.get("error"), **base}
+                return {"valid": True, "error_type": None, "error": None,
+                        **{**base, "relaxed": True}}
 
-    return {"valid": True, "error_type": None, "error": None,
-            **{**base, "relaxed": True}}
+    return {"valid": False, "error_type": "no_matching_call",
+            "error": ["No model call matched a ground-truth call."], **base}
 
 
 DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks"
 
 # Generic, English, non-leaking rejection. It signals bad parameters without naming
 # which parameter is wrong or what the expected value is, so it cannot leak the answer.
-ERROR_TEMPLATE = (
+MULTIPLE_TOOL_CALL_ERROR_TEMPLATE = (
+    "400 Bad Request: w. "
+    "Please review the function definition and try again."
+)
+PARAMETER_VALUE_ERROR_TEMPLATE = (
     "400 Bad Request: invalid parameters for function '{name}'. "
     "Please review the function definition and try again."
 )
@@ -246,7 +290,7 @@ NO_CALL_FEEDBACK = (
 LANG_PREFIX_TEMPLATE = (
     "The user will write in {language}. "
     "Understand the request in {language} and respond with the correct function call "
-    "exactly as specified in the tool definitions (which remain in English)."
+    "exactly as specified in the tool definitions."
 )
 
 
@@ -300,9 +344,15 @@ class EntryResult:
     total_latency_s: float
     estimated_cost_usd: float | None = None
     error: str | None = None
+    query: Any = None
     ground_truth: Any = None
     attempts: list[Attempt] = field(default_factory=list)
     final_messages: Any = None
+    # The system prompt the model actually received (the language prefix, plus any
+    # entry-provided system content). None when no system prompt was set. Captured
+    # provider-agnostically: OpenAI keeps it as a system-role message, Claude in a
+    # separate `system` field, so it is not always visible in final_messages.
+    system_prompt: Any = None
 
 
 def _load_jsonl(path: Path) -> list[dict]:
@@ -332,24 +382,30 @@ def _locale_name(code: str) -> str:
     return code
 
 
+def _extract_system_prompt(inference_data: dict) -> Any:
+    """The effective system prompt the model received, whatever the provider stored it as.
+
+    Claude keeps it in a separate `system_prompt` field; OpenAI keeps it as a
+    system-role message in the message list. Returns None when neither is present.
+    """
+    system_prompt = inference_data.get("system_prompt")
+    if system_prompt:
+        return system_prompt
+    for msg in inference_data.get("message", []) or []:
+        if isinstance(msg, dict) and msg.get("role") == "system":
+            return msg.get("content")
+    return None
+
+
 def _json_default(obj: Any) -> Any:
-    # OpenAI SDK message/response objects are pydantic models.
+    # OpenAI / Anthropic SDK message/response objects are pydantic models.
     if hasattr(obj, "model_dump"):
         return obj.model_dump()
     return str(obj)
 
 
-def _safe_json_args(arguments: str) -> Any:
-    """OpenAI tool-call arguments arrive as a JSON string. Parse for logging, but keep
-    the raw string if the model emitted something unparseable."""
-    try:
-        return json.loads(arguments)
-    except (json.JSONDecodeError, TypeError):
-        return arguments
-
-
 async def run_entry(
-    handler: AzureOpenAIFCHandler,
+    handler: FCHandler,
     entry: dict,
     ground_truth: Any,
     benchmark: str,
@@ -387,6 +443,7 @@ async def run_entry(
         total_input_tokens=0,
         total_output_tokens=0,
         total_latency_s=0.0,
+        query=entry["messages"],
         ground_truth=ground_truth,
     )
 
@@ -402,15 +459,14 @@ async def run_entry(
             inference_data = handler._pre_query_processing_FC(inference_data, test_entry)
             inference_data = handler._compile_tools(inference_data, test_entry)
 
-            # OpenAI-style FC models carry no separate system prompt; when a language
-            # prefix is wanted we prepend it as a system message. inference_data["message"]
-            # is still empty at this point (set by _pre_query_processing_FC), so the system
-            # message lands before the first user turn added just below.
+            # Inject the language-awareness prefix. Where it lands is provider-specific
+            # (OpenAI: a system-role message; Claude: the separate `system` field), so
+            # each handler implements apply_language_prefix. This runs before the first
+            # user turn is added just below.
             if add_lang_prefix and entry.get("locale"):
                 language = _locale_name(entry["locale"])
-                inference_data["message"].insert(
-                    0,
-                    {"role": "system", "content": LANG_PREFIX_TEMPLATE.format(language=language)},
+                handler.apply_language_prefix(
+                    inference_data, LANG_PREFIX_TEMPLATE.format(language=language)
                 )
 
             first_turn = copy.deepcopy(test_entry["question"][0])
@@ -428,14 +484,7 @@ async def run_entry(
                 parsed = handler._parse_query_response_FC(api_response)
                 handler._add_assistant_message_FC(inference_data, parsed)
 
-                assistant = api_response.choices[0].message
-                texts = [assistant.content] if assistant.content else []
-                tool_calls = [
-                    {"name": tc.function.name,
-                     "arguments": _safe_json_args(tc.function.arguments),
-                     "id": tc.id}
-                    for tc in (assistant.tool_calls or [])
-                ]
+                texts, tool_calls = handler.extract_turn(api_response)
 
                 result.num_api_calls = api_calls
                 result.total_input_tokens += parsed["input_token"]
@@ -512,7 +561,7 @@ async def run_entry(
                 result.num_failed_calls += 1
                 result.final_error_type = error_type
                 execution_results = [
-                    ERROR_TEMPLATE.format(name=tc["name"]) for tc in tool_calls
+                    PARAMETER_VALUE_ERROR_TEMPLATE.format(name=tc["name"]) for tc in tool_calls
                 ]
                 feedback = " | ".join(execution_results)
                 retry = tool_call_attempts < max_tool_call_attempts and api_calls < max_api_calls
@@ -531,6 +580,7 @@ async def run_entry(
                     )
 
             result.final_messages = inference_data.get("message")
+            result.system_prompt = _extract_system_prompt(inference_data)
         except Exception as exc:  # keep one bad entry from killing the whole run
             result.error = f"{type(exc).__name__}: {exc}"
 
@@ -680,7 +730,7 @@ def recompute_stats(benchmark: str, args: argparse.Namespace) -> None:
 
 
 async def run_benchmark(
-    handler: AzureOpenAIFCHandler,
+    handler: FCHandler,
     benchmark: str,
     args: argparse.Namespace,
 ) -> None:
@@ -777,10 +827,19 @@ async def run_benchmark(
 
 
 async def main_async(args: argparse.Namespace) -> None:
-    # Set the per-token price override (used by the cost column) if both are given.
+    # Load the prices CSV for the cost column, then apply the ad-hoc override (if both
+    # flags are given, it wins over the table for every model).
+    global _PRICING_PER_MTOK, _PRICE_OVERRIDE
+    _PRICING_PER_MTOK = load_price_table(Path(args.prices))
     if args.price_input is not None and args.price_output is not None:
-        global _PRICE_OVERRIDE
         _PRICE_OVERRIDE = (args.price_input, args.price_output)
+    elif _PRICE_OVERRIDE is None and _lookup_price(args.model) is None:
+        print(
+            f"  ! no price for '{args.model}' in {args.prices} and no --price-input/"
+            "--price-output given; the cost column will be 0. Add a row to the CSV or "
+            "pass the price flags.",
+            file=sys.stderr,
+        )
 
     if args.recompute_stats:
         # Pure local recompute from saved transcripts — no model, no API key needed.
@@ -788,16 +847,30 @@ async def main_async(args: argparse.Namespace) -> None:
             recompute_stats(benchmark, args)
         return
 
+    model_type = ModelType(args.model_type)
     registry_name = f"{args.model}-FC"
-    ensure_model_config(registry_name, args.model)
-    handler = AzureOpenAIFCHandler(
-        model_name=registry_name,
-        temperature=args.temperature,
-        registry_name=registry_name,
-        is_fc_model=True,
-        model_type=ModelType(args.model_type),
-        max_tokens=args.max_tokens,
-    )
+    handler: FCHandler
+    if model_type == ModelType.CLAUDE:
+        # Foundry /anthropic route (native Anthropic message format).
+        ensure_model_config(registry_name, args.model, _TEMPLATE_CLAUDE_FC_KEY)
+        handler = AnthropicFoundryFCHandler(
+            model_name=registry_name,
+            temperature=args.temperature,
+            registry_name=registry_name,
+            is_fc_model=True,
+            max_tokens=args.max_tokens,
+        )
+    else:
+        # Foundry OpenAI-compatible v1 route (standard / reasoning param shaping).
+        ensure_model_config(registry_name, args.model, _TEMPLATE_OPENAI_FC_KEY)
+        handler = AzureOpenAIFCHandler(
+            model_name=registry_name,
+            temperature=args.temperature,
+            registry_name=registry_name,
+            is_fc_model=True,
+            model_type=model_type,
+            max_tokens=args.max_tokens,
+        )
     for benchmark in args.benchmark:
         await run_benchmark(handler, benchmark, args)
 
@@ -819,16 +892,21 @@ def main() -> None:
                         help="Azure deployment name (the harness appends the -FC registry suffix).")
     parser.add_argument("--model-type", choices=[mt.value for mt in ModelType],
                         default=ModelType.STANDARD.value,
-                        help="Deployment kind: 'standard' (temperature + max_tokens) or "
-                             "'reasoning' (no temperature, uses max_completion_tokens).")
+                        help="Deployment kind / route: 'standard' (v1 route, temperature + "
+                             "max_tokens), 'reasoning' (v1 route, no temperature, "
+                             "max_completion_tokens), or 'claude' (Foundry /anthropic route, "
+                             "AnthropicFoundry client, native Anthropic message format).")
     parser.add_argument("--max-tokens", type=int, default=8192,
                         help="Max tokens generated per model turn.")
+    parser.add_argument("--prices", default=str(DEFAULT_PRICES_CSV),
+                        help="CSV of per-1M-token prices (model,input_per_mtok,output_per_mtok) "
+                             "for the cost column.")
     parser.add_argument("--price-input", type=float, default=None,
-                        help="USD per 1M input tokens, for the cost column. "
-                             "Set together with --price-output.")
+                        help="USD per 1M input tokens, for the cost column. Overrides the "
+                             "prices CSV for all models. Set together with --price-output.")
     parser.add_argument("--price-output", type=float, default=None,
-                        help="USD per 1M output tokens, for the cost column. "
-                             "Set together with --price-input.")
+                        help="USD per 1M output tokens, for the cost column. Overrides the "
+                             "prices CSV for all models. Set together with --price-input.")
     parser.add_argument("--max-tool-call-attempts", type=int, default=5,
                         help="Max *tool-call* attempts per entry (turns that emit a function "
                              "call) before it is marked failed. Clarification turns do not "
@@ -859,6 +937,25 @@ def main() -> None:
                              "(including the cost column) from existing transcripts for the "
                              "given --benchmark/--model/--category/--lang-dir.")
     args = parser.parse_args()
+
+    # Route guard: Claude deployments are served on the Foundry /anthropic route
+    # (--model-type claude), NOT the OpenAI-compatible /openai/v1 route. Sending a
+    # Claude model to the v1 route returns a cryptic 404 "api_not_supported", so
+    # catch the obvious mismatch here with an actionable message.
+    model_is_claude = args.model.lower().startswith("claude")
+    type_is_claude = args.model_type == ModelType.CLAUDE.value
+    if model_is_claude and not type_is_claude:
+        parser.error(
+            f"'{args.model}' looks like a Claude deployment but --model-type is "
+            f"'{args.model_type}'. Claude models are served on the Foundry /anthropic "
+            "route; pass --model-type claude."
+        )
+    if type_is_claude and not model_is_claude:
+        print(
+            f"  ! --model-type claude with non-Claude deployment '{args.model}'; "
+            "this will call the /anthropic route with that model name.",
+            file=sys.stderr,
+        )
 
     # The total API-call ceiling must leave room for every tool-call attempt; otherwise
     # the ceiling would cut the run short before the tool-call budget is even spent.

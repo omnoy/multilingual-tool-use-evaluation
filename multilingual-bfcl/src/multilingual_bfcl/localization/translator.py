@@ -237,6 +237,90 @@ def collect_textual_value_contexts(
     return items
 
 
+# ---------------------------------------------------------------------------
+# Language descriptors — annotate natural-language parameters with the set of
+# languages their value may be given in (e.g. "Language: English, Hebrew.").
+# Detection is ground-truth driven: a parameter is natural-language if at least
+# one of its ground-truth values passes is_translatable_string (the "basic
+# regex" — not a number/bool/date) and the parameter is not an enum.
+# ---------------------------------------------------------------------------
+
+def natural_language_params(
+    functions: list[dict[str, Any]],
+    ground_truth: list[dict],
+) -> set[tuple[str, str]]:
+    """(func_name, param) pairs whose ground-truth value is natural-language text.
+
+    A param qualifies when at least one of its ground-truth values passes
+    is_translatable_string AND it is not declared as an enum in the function
+    schema (text enums are excluded — their values are fixed code tokens).
+    """
+    enum_params: set[tuple[str, str]] = set()
+    for func in functions:
+        name = func.get("name", "")
+        props = func.get("parameters", {}).get("properties", {})
+        for param, pdef in props.items():
+            if "enum" in pdef:
+                enum_params.add((name, param))
+
+    nl: set[tuple[str, str]] = set()
+    for call in ground_truth:
+        for func_name, params in call.items():
+            for param, value_list in params.items():
+                if (func_name, param) in enum_params:
+                    continue
+                if any(is_translatable_string(v) for v in value_list):
+                    nl.add((func_name, param))
+    return nl
+
+
+def add_language_descriptors_to_entry(
+    entry: dict[str, Any],
+    languages: str,
+    template: str = "Language: {languages}.",
+) -> int:
+    """Append a language descriptor to each natural-language parameter's description.
+
+    Natural-language params are detected from the entry's ground truth (see
+    natural_language_params). Because ground truth only references the *correct*
+    function, the descriptor is also propagated to any parameter in a sibling
+    (distractor) function that is structurally identical — same name and same
+    original description — so the annotation does not reveal which function is the
+    answer. Enums are never tagged. Mutates `entry` in place; returns the number
+    of parameter descriptions modified.
+    """
+    functions = entry.get("function", [])
+    ground_truth = entry.get("ground_truth", [])
+    nl = natural_language_params(functions, ground_truth)
+
+    # Signatures (param name, original description) of the natural-language params,
+    # used to tag structurally-identical params in distractor functions too.
+    signatures: set[tuple[str, str]] = set()
+    for func in functions:
+        name = func.get("name", "")
+        props = func.get("parameters", {}).get("properties", {})
+        for param, pdef in props.items():
+            if (name, param) in nl:
+                signatures.add((param, pdef.get("description", "")))
+
+    hint = template.format(languages=languages)
+    modified = 0
+    for func in functions:
+        name = func.get("name", "")
+        props = func.get("parameters", {}).get("properties", {})
+        for param, pdef in props.items():
+            if "enum" in pdef:
+                continue
+            desc = pdef.get("description", "")
+            if (name, param) not in nl and (param, desc) not in signatures:
+                continue
+            if hint in desc:  # idempotent — never double-append
+                continue
+            pdef["description"] = f"{desc} {hint}".strip()
+            modified += 1
+    return modified
+
+
 def build_input(
     test_case: dict[str, Any],
     answer: dict[str, Any] | None,

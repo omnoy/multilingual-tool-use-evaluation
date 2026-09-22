@@ -47,6 +47,7 @@ from multilingual_bfcl.localization.locale_config import get_locale
 from multilingual_bfcl.localization.translator import (
     DEFAULT_TRANSLATION_MODEL,
     LocalizationLevel,
+    add_language_descriptors_to_entry,
     apply_translation,
     build_input,
     build_prompt,
@@ -359,6 +360,57 @@ def _retrieve_and_write(
             print(f"[ERR] unit {idx} — {item.error}", file=sys.stderr)
 
     _write_outputs(category, source, level, units, raws)
+
+
+# ---------------------------------------------------------------------------
+# Language-descriptor benchmark — post-process a built benchmark file, appending
+# a "Language: <langs>." hint to every natural-language parameter description.
+# ---------------------------------------------------------------------------
+
+def _entry_languages(entry: dict[str, Any]) -> str:
+    """The languages a value may appear in for this entry: English + its locale.
+
+    English is the canonical/base language of the source data; the entry's own
+    locale (from its `locale` field) is the translation target. An English-only
+    entry yields just "English".
+    """
+    locale_code = entry.get("locale", "en")
+    try:
+        locale = get_locale(locale_code)
+    except ValueError:
+        return "English"
+    return "English" if locale.code == "en" else f"English, {locale.name}"
+
+
+def add_language_descriptors_file(source: Path, suffix: str = "langdesc") -> Path:
+    """Read a built benchmark .jsonl, append language descriptors, write a new file.
+
+    The output is written next to the source as `<stem>_<suffix><ext>` (e.g.
+    he_translatable_full.jsonl -> he_translatable_full_lang_desc.jsonl), preserving
+    input order. Returns the output path.
+    """
+    if not source.exists():
+        sys.exit(f"ERROR: {source} not found.")
+
+    entries = load_jsonl(source)
+    total_modified = 0
+    tagged_entries = 0
+    for entry in entries:
+        n = add_language_descriptors_to_entry(entry, _entry_languages(entry))
+        total_modified += n
+        if n:
+            tagged_entries += 1
+
+    out = source.with_name(f"{source.stem}_{suffix}{source.suffix}")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with open(out, "w", encoding="utf-8") as f:
+        for entry in entries:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+    print(f"[done] {len(entries)} entries -> {out}")
+    print(f"       {total_modified} parameter description(s) tagged "
+          f"across {tagged_entries} entrie(s).")
+    return out
 
 
 # ---------------------------------------------------------------------------

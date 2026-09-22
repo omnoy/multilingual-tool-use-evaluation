@@ -2,9 +2,11 @@
 Azure OpenAI function-calling handler for the robustness harness.
 
 Subclasses BFCL's OpenAICompletionsHandler (chat.completions + OpenAI-style
-`tools`/`tool_calls`) but points the client at Azure and adapts request parameters:
+`tools`/`tool_calls`) but points the client at Azure AI Foundry and adapts request
+parameters:
 
-  - The client is AzureOpenAI (endpoint/key/version from the environment).
+  - The client is a plain OpenAI client aimed at the Foundry v1 endpoint (no
+    api-version); endpoint/key come from the environment via make_sync_client().
   - `model` is the Azure **deployment name** (the harness registers the handler under
     "<deployment>-FC"; we strip that suffix for the API call).
   - Reasoning deployments omit `temperature` and send `max_completion_tokens`; standard
@@ -78,3 +80,24 @@ class AzureOpenAIFCHandler(OpenAICompletionsHandler):
             kwargs["tools"] = tools
 
         return self.generate_with_backoff(**kwargs)
+
+    # --- Format adapters used by the robustness harness (see run_robustness_eval) ---
+
+    def extract_turn(self, api_response) -> tuple[list[str], list[dict]]:
+        """Pull assistant text + tool calls out of an OpenAI chat.completions response."""
+        import json
+
+        message = api_response.choices[0].message
+        texts = [message.content] if message.content else []
+        tool_calls = []
+        for tc in (message.tool_calls or []):
+            try:
+                arguments = json.loads(tc.function.arguments)
+            except (json.JSONDecodeError, TypeError):
+                arguments = tc.function.arguments  # keep raw if unparseable
+            tool_calls.append({"name": tc.function.name, "arguments": arguments, "id": tc.id})
+        return texts, tool_calls
+
+    def apply_language_prefix(self, inference_data: dict, text: str) -> None:
+        """OpenAI FC has no separate system field — prepend a system-role message."""
+        inference_data["message"].insert(0, {"role": "system", "content": text})

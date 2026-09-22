@@ -1,0 +1,442 @@
+{
+  "id": "multiple_139_he",
+  "source_id": "multiple_139",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "claude-opus-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 13561,
+  "total_output_tokens": 1482,
+  "total_latency_s": 27.05681824684143,
+  "estimated_cost_usd": 0.104855,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא פרטים על תביעות פטנטים הקשורות לחברת 'אפל אינק.' משנת 2010."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuit_details.find": {
+        "company_name": [
+          "אפל אינק."
+        ],
+        "year": [
+          2010
+        ],
+        "case_type": [
+          "פטנט"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple Inc.",
+            "year": 2010,
+            "case_type": "Patent"
+          },
+          "id": "toolu_01246RRHpzpWRAaKB39nMJfw"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple Inc.",
+            "year": 2010,
+            "case_type": "Patent"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "input_tokens": 1196,
+      "output_tokens": 108,
+      "latency_s": 2.4283785820007324,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "נסה שוב עם שם החברה בפורמט מעט שונה:"
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple Inc",
+            "year": 2010,
+            "case_type": "Patent"
+          },
+          "id": "toolu_01GQ3A4oEPtVRSGz7VW9odEA"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple Inc",
+            "year": 2010,
+            "case_type": "Patent"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "input_tokens": 1349,
+      "output_tokens": 176,
+      "latency_s": 3.3049776554107666,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple",
+            "year": 2010
+          },
+          "id": "toolu_018ssropZJ47Uiih35P6Ppq7"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "input_tokens": 1570,
+      "output_tokens": 171,
+      "latency_s": 3.020190715789795,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "מצטער, לא הצלחתי לאחזר את המידע.\n\nניסיתי לקרוא לפונקציה `lawsuit_details_find` שלוש פעמים בווריאציות שונות:\n1. `company_name: \"Apple Inc.\"`, `year: 2010`, `case_type: \"Patent\"`\n2. `company_name: \"Apple Inc\"` (ללא נקודה), אותם שאר הפרמטרים\n3. `company_name: \"Apple\"`, `year: 2010`, ללא `case_type` כלל (כדי לבדוק אם הפרמטר האופציונלי הוא הבעיה)\n\nבכל שלוש הפעמים השירות החזיר את אותה שגיאה: `400 Bad Request: invalid parameters`. הפרמטרים ששלחתי תואמים להגדרת הפונקציה (שם חברה כמחרוזת, שנה כמספר שלם, וסוג תביעה מתוך הערכים המוצעים), ולכן נראה שמדובר בתקלה בצד השירות ולא בקלט שגוי.\n\nאפשרויות להמשך:\n- אם ידוע לך שם רשום מדויק אחר של החברה במאגר (למשל ניסוח מסוים), אנסה איתו.\n- אפשר לנסות שנה אחרת כדי לבדוק אם הבעיה ספציפית ל-2010.\n- לחלופין, כדאי לנסות שוב מאוחר יותר.\n\nאיך תעדיף להמשיך?"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1786,
+      "output_tokens": 520,
+      "latency_s": 8.10157299041748,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple Inc.",
+            "year": 2010,
+            "case_type": "Patent"
+          },
+          "id": "toolu_013Ac2VzGgG8Y9pAgcZbbt61"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple Inc.",
+            "year": 2010,
+            "case_type": "Patent"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "input_tokens": 2336,
+      "output_tokens": 108,
+      "latency_s": 2.7057576179504395,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "ניסיתי שוב לקרוא ל-`lawsuit_details_find` עם `company_name: \"Apple Inc.\"`, `year: 2010`, `case_type: \"Patent\"` — והשירות שוב החזיר שגיאת `400 Bad Request: invalid parameters`.\n\nזו הקריאה הרביעית שנכשלת (ניסיתי גם \"Apple Inc\" ללא נקודה, וגם \"Apple\" ללא פרמטר `case_type`). הפרמטרים תואמים להגדרת הפונקציה, ולכן נראה שהתקלה היא בצד השירות ואין בידי דרך לאחזר את פרטי תביעות הפטנטים של אפל משנת 2010 כרגע.\n\nאם תרצה, אנסה שנה אחרת או ניסוח אחר של שם החברה — או שכדאי פשוט לנסות שוב מאוחר יותר."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2489,
+      "output_tokens": 316,
+      "latency_s": 4.98628044128418,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple Inc.",
+            "year": 2010
+          },
+          "id": "toolu_01GUcrUTMCCspitDWAPARSqu"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple Inc.",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2835,
+      "output_tokens": 83,
+      "latency_s": 2.509660243988037,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "מצא פרטים על תביעות פטנטים הקשורות לחברת 'אפל אינק.' משנת 2010."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01246RRHpzpWRAaKB39nMJfw",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company_name": "Apple Inc.",
+            "year": 2010,
+            "case_type": "Patent"
+          },
+          "name": "lawsuit_details_find",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01246RRHpzpWRAaKB39nMJfw"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS3QIKjgEIEhgCKkAeeUVEE4IxLwx2lnm5N3mNv0i5A7uHKRuorT2mSlgHIVHC8H1zP4tDwdbaSHK1OTuZSKFusCTMBpsqUQtqX1fOMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCoAf6LydUGEgw+BwybaFhX4pWiPeUaDPH5hItGvYN4FoiyeiIwu0bxsaraaHQzEABDmBX3NGQrDYcx9BwILfAirU+dkVXzNSBacFP1KSAE17BoSJjhKnxRYXCpLKKVCIeiAyY7UN6E1mRO42cHs7jtNb9uHn2qUmBHx2YVJ8la2lMtvGX9U1+p9cXCkR8cIYIwCSThzm0jTxJJ0gLQ1rqko8cgEJNUMi7L6gIPZn1C/MDNsbNjB50GTBB7VIFrgrjXS1Ciz3rOkZyksMEBq+jLvpOqGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "נסה שוב עם שם החברה בפורמט מעט שונה:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01GQ3A4oEPtVRSGz7VW9odEA",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company_name": "Apple Inc",
+            "year": 2010,
+            "case_type": "Patent"
+          },
+          "name": "lawsuit_details_find",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01GQ3A4oEPtVRSGz7VW9odEA"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS0QMKjgEIEhgCKkDBizZ0R60f49mdBIkcltNafGxBsrIaZDy1khYWwsWBKhVJxaNhRH9M87rssXdJDJr0Kmbdyp+iiBn1rERjaAuzMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCoAYKMydUGEgzKKMFoZefzCSH3zBUaDEu9AFaTWnCYDpNSfCIw0abFiQxogx8AeHkaUQdDYsMrRfQ52Dcddab8mSwxq0AVg0+KToIYIidaQNOysXksKu8BqVIVeG1IDWCUTThXgWLXlWXE7AEJp2Gu6WcI/fPsb59Wu37ORLOcxs1dXfMju/NqhvgLdfb68NhEb2flCbNH1xCve7uNEvKwy8jvbXqYOY7r67YkztE6l5dRsEHEZAR2FAwSqymfPu4/6t3eW7N5/RAp2aFnLkboasjSor/GQo/OvtFHrODlHGgG0ioxzyq+JJC9RuXM9QHlBWdwqy/nQxMhCHAg4xxdySi8tf9fTJQ1prnKPgYdO2Zluk6xrNC2KJovQuBH21QUFKpQvqUmWEb7K0gtgS7Mgr3or1zCo3VjGG24IWu0flYfULk6sSoYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_018ssropZJ47Uiih35P6Ppq7",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company_name": "Apple",
+            "year": 2010
+          },
+          "name": "lawsuit_details_find",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_018ssropZJ47Uiih35P6Ppq7"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "מצטער, לא הצלחתי לאחזר את המידע.\n\nניסיתי לקרוא לפונקציה `lawsuit_details_find` שלוש פעמים בווריאציות שונות:\n1. `company_name: \"Apple Inc.\"`, `year: 2010`, `case_type: \"Patent\"`\n2. `company_name: \"Apple Inc\"` (ללא נקודה), אותם שאר הפרמטרים\n3. `company_name: \"Apple\"`, `year: 2010`, ללא `case_type` כלל (כדי לבדוק אם הפרמטר האופציונלי הוא הבעיה)\n\nבכל שלוש הפעמים השירות החזיר את אותה שגיאה: `400 Bad Request: invalid parameters`. הפרמטרים ששלחתי תואמים להגדרת הפונקציה (שם חברה כמחרוזת, שנה כמספר שלם, וסוג תביעה מתוך הערכים המוצעים), ולכן נראה שמדובר בתקלה בצד השירות ולא בקלט שגוי.\n\nאפשרויות להמשך:\n- אם ידוע לך שם רשום מדויק אחר של החברה במאגר (למשל ניסוח מסוים), אנסה איתו.\n- אפשר לנסות שנה אחרת כדי לבדוק אם הבעיה ספציפית ל-2010.\n- לחלופין, כדאי לנסות שוב מאוחר יותר.\n\nאיך תעדיף להמשיך?",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_013Ac2VzGgG8Y9pAgcZbbt61",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company_name": "Apple Inc.",
+            "year": 2010,
+            "case_type": "Patent"
+          },
+          "name": "lawsuit_details_find",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_013Ac2VzGgG8Y9pAgcZbbt61"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "ניסיתי שוב לקרוא ל-`lawsuit_details_find` עם `company_name: \"Apple Inc.\"`, `year: 2010`, `case_type: \"Patent\"` — והשירות שוב החזיר שגיאת `400 Bad Request: invalid parameters`.\n\nזו הקריאה הרביעית שנכשלת (ניסיתי גם \"Apple Inc\" ללא נקודה, וגם \"Apple\" ללא פרמטר `case_type`). הפרמטרים תואמים להגדרת הפונקציה, ולכן נראה שהתקלה היא בצד השירות ואין בידי דרך לאחזר את פרטי תביעות הפטנטים של אפל משנת 2010 כרגע.\n\nאם תרצה, אנסה שנה אחרת או ניסוח אחר של שם החברה — או שכדאי פשוט לנסות שוב מאוחר יותר.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01GUcrUTMCCspitDWAPARSqu",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company_name": "Apple Inc.",
+            "year": 2010
+          },
+          "name": "lawsuit_details_find",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ]
+}

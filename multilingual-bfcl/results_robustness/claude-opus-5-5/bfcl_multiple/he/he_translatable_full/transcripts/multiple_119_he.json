@@ -1,0 +1,637 @@
+{
+  "id": "multiple_119_he",
+  "source_id": "multiple_119",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "claude-opus-5-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 15683,
+  "total_output_tokens": 1950,
+  "total_latency_s": 24.73402452468872,
+  "estimated_cost_usd": 0.10173199999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא רשומות במסד הנתונים בטבלת המשתמשים שבהן הגיל גדול מ-25 והמקצוע הוא 'מהנדס'."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "database.query": {
+        "table": [
+          "משתמש"
+        ],
+        "conditions": [
+          [
+            {
+              "field": [
+                "age"
+              ],
+              "operation": [
+                ">"
+              ],
+              "value": [
+                "25"
+              ]
+            },
+            {
+              "field": [
+                "job"
+              ],
+              "operation": [
+                "="
+              ],
+              "value": [
+                "engineer"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          },
+          "id": "toolu_01W26odqF9jCiVDDMK1yiwoN"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 1278,
+      "output_tokens": 272,
+      "latency_s": 3.1991052627563477,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "id": "toolu_01WsqjSRvWgHddeU4j9gbbkR"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 1608,
+      "output_tokens": 189,
+      "latency_s": 2.82122802734375,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "עדיין לא הצלחתי לשלוף את הרשומות. ניסיתי פעמיים לחפש בטבלת המשתמשים משתמשים בני יותר מ-25 שהמקצוע שלהם 'מהנדס', ובשתי הפעמים המערכת החזירה שגיאה שהפרמטרים לא תקינים.\n\n- **ניסיון ראשון:** טבלה `user`, השדות `age` ו-`job`, והערך 'מהנדס' בעברית.\n- **ניסיון שני:** טבלה `users`, אותם שדות, והערך 'engineer' באנגלית.\n\nהודעת השגיאה לא אומרת מה בדיוק לא תקין. לכן אני לא יודע אם הבעיה בשם הטבלה, בשמות השדות או בערך. ניחשתי את השמות האלה, כי אין לי גישה למבנה מסד הנתונים.\n\nכדי לנסות שוב, אני צריך ממך את הפרטים האלה:\n1. השם המדויק של טבלת המשתמשים.\n2. השמות המדויקים של השדות של הגיל ושל המקצוע (למשל `age`, `occupation`, `profession`).\n3. איך המקצוע שמור בטבלה: 'מהנדס' בעברית, 'engineer' באנגלית או קוד אחר."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1836,
+      "output_tokens": 469,
+      "latency_s": 5.936231374740601,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          },
+          "id": "toolu_01CiHgmDtas22ZF1Fh2bffbq"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 2337,
+      "output_tokens": 180,
+      "latency_s": 2.4914886951446533,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "id": "toolu_0118WKBGiw37fWxCcHV5CyTf"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 2556,
+      "output_tokens": 134,
+      "latency_s": 1.9279353618621826,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "עדיין לא הצלחתי לשלוף את הרשומות. עד עכשיו ניסיתי ארבע פעמים לחפש משתמשים בני יותר מ-25 שהמקצוע שלהם 'מהנדס', וכל הניסיונות נכשלו עם אותה שגיאה, שהפרמטרים לא תקינים:\n\n| ניסיון | טבלה | שדה המקצוע | ערך המקצוע |\n|---|---|---|---|\n| 1 | `user` | `job` | 'מהנדס' |\n| 2 | `users` | `job` | 'engineer' |\n| 3 | `users` | `job` | 'מהנדס' |\n| 4 | `user` | `occupation` | 'engineer' |\n\nבכל הניסיונות תנאי הגיל היה `age > 25`. הודעת השגיאה לא אומרת מה לא תקין, ואין לי גישה למבנה מסד הנתונים. לכן כל השמות שניסיתי היו ניחושים. גם ייתכן שהבעיה בכלל לא בשמות אלא בכלי או במסד הנתונים עצמו.\n\nכדי לנסות שוב, אני צריך ממך:\n1. את השם המדויק של טבלת המשתמשים.\n2. את השמות המדויקים של השדות של הגיל ושל המקצוע.\n3. איך המקצוע שמור בטבלה: 'מהנדס' בעברית, 'engineer' באנגלית או קוד אחר.\n\nאם השמות האלה נכונים, כדאי לבדוק אם יש בעיה בחיבור למסד הנתונים."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2729,
+      "output_tokens": 578,
+      "latency_s": 5.976857900619507,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "id": "toolu_01AaijMR9J1qjEAAkmeggQPR"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 3339,
+      "output_tokens": 128,
+      "latency_s": 2.3811779022216797,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "מצא רשומות במסד הנתונים בטבלת המשתמשים שבהן הגיל גדול מ-25 והמקצוע הוא 'מהנדס'."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQS/gYKEAgSGAI4AUIIdGhpbmtpbmcSDEBiU4iBZpF1TrB8BxoMWoc+3dcqpHNLYaOEIjAqg6+bjc1IUYn9zDVova7zCF8sFDVH3N0gVkmZqLTreIHReO6UrX0VbuVav7ovcQwqmwaXzRdMEWtOc0HSdAtX1A92J3aOayKug1eVwOgH9sJda5MrUH8pen8m2rxuE9M9gBkOTkSGBVDstNyGBJqFfdk4R3j5b/1rZeT4x8knv87GpzJ7/sOAqADe8sAKySk+dGGbL8Wnfh9v6Na3yn5QnDADvWgqHsiE20Xfjdfk3IeIB+a6beRQ/4kxU17dJ+LPekUVisVQjtk9G0goVgyuvjj54D0NXX6A54Cljy1fGX2NdmspmiUlTHLC94VfnR3IeVD4OejtdJ51PyfeUZdl3w8nIGoGUw8Csbe+bVIxCqNRJFioOQsH/n18d4P17GVBzmWPw4qZJbn8Yu7xOD596AS2ME/OI1HtHiMYud53Aeu8QdQwyEQrkUTTRVGFgyRnSkvibmwsMz/N743K50hywu4LUDWhEsuNR/oFGR87gbL0UmbuH05mMRxxNrmm4GfYswLutTO++u4LuvuEu7rO49Jj7a9IkStc6jUjtcOhwVwhv7kNA7Dm2iKQX8F2nIVy8edEeEqHVOJ3zIsmETLnVpUCItPFSHBmtOf0MvKw+OpKj1O7g6GUdXcsB1VzbMBSpagI7Ck0GSy2UI72xiWiwr5FumR4WZteo8EnTyD2+lwNX+AWVDltc6eOk/0M+nd3wxHBrqM+MFZS2DpxE7VGVddRNvddxEAg4rle2/jxbwEL5icA/eSdZBbPAkDY6ugLWH6aLPtf5VGkzPIdBHl/STv67oZ7YjByJig5BOgmhQZjQ+mo9weplyH9e7be9Ne88EJQo0161qd3E1uCqa6LOws43kf8q4jdby6KUKWGAatb/yEc4mMv+/+0yXXG3rhBdRJsvhqdol6J099Vg/9brj3rsXXuhwPKWsttDqCbc3+8AV3lbL2mo3Ds00banTjJCOI+/HTw9Yy9a6BGp82lBss2Vny6cRqdJy3UMunhyr2w0DuH4WYmXKTGt3mzIkSGpqrIZBNNGXoFi5YJ+325ce5g3RMjrEdoyYg/QFlHktqaCPrt2ibRP6D/Pc2apdso0bUDwtqpRJs0hfh+x6Ipjz0b8e9I4l1qm8copwIYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01W26odqF9jCiVDDMK1yiwoN",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01W26odqF9jCiVDDMK1yiwoN"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQShAYKEAgSGAI4AUIIdGhpbmtpbmcSDNdIIPHaxsWcla/upxoMg9bqSffBfuWQE7M9IjA8Q4IvLjuqEZfMMnd96lzGHmAwxXco3SJTlbFaZI4mebXrTM/BDLT4cAWwkykZwWUqoQUvb0QMZKsCwkQ77TU2BmDAJKB3G4u4YdP3e6YGQAs7zSsqE3HTxNT9zIOB/NO9PBCYttUQ5wt6y4fSOCmPw7JnLZg9Vx/+KPoUTSEUkMExv74ErQIfI5hyga3YhCy3zMvu7K448KdIGG1neNsIHBPbQhM632LVMx29g6O+2JD57xn/pdDsPnbubEsNQp1DVWv1sS4+P0iRf0X6q782dwuNYHsGpnux9n3yiBexdBvtPeiQmkqmEFmFOKm2HEBeW9cT+T0Y+MbzIA6eV5elSf7aR1DZHTv73cUIEY4OVzoki+C51+luZgxoLwBUbUTLryrCGtaA4Q1eHJFrLPDv5pmhglwM8+sO7vI1muGvh2wfZiq9/IF3UpfmId9eIkMX7l4rs/I1Y44qP4igwesbnZPL+zOc+iiVN8FeJ0nfrDsikrA8Mljz5WQNCS5HTvuzC6FWkW7xN2PXC3wue9cjU7k/YVvGRpxB4RqtlyFw2fqczgeii1l63Mt0r0/5LGQqkL5AC0TimCNpLJLF15LZIodAew5TlU67bO897AJIF2t1BrQtAxvDOAbpjrfVbg1NVmX7siDDnzO5yAa85eHhiYfsiAehy9CF+5xpbci9T7gm9Wl38hjUPNqvQPTp5feNv6KWpS0yVsC6twbvv3NBiEflkzQzg1552NqbEVj4wUsEdnICGAMkzX9pwmTv1StEF/MXpZ6OdZ2gC0HRgafXLDV/wfIcTXdL7GA0lYTCRBkfYe0iB8nSvnFhEGWLypOKqtyAXU0EbIb6jaLW9a3tKte1A5TcuyUYVmAqQIb6gv7Eel32iXQFXGQ77X/iY3+KZ7Ev95y2TI7WxXExRWh/v2ZWJ2U/ZfNRxEqCkcq1UduaLUujbsv6ZCIEsBXipzzJGCj8GAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01WsqjSRvWgHddeU4j9gbbkR",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01WsqjSRvWgHddeU4j9gbbkR"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "עדיין לא הצלחתי לשלוף את הרשומות. ניסיתי פעמיים לחפש בטבלת המשתמשים משתמשים בני יותר מ-25 שהמקצוע שלהם 'מהנדס', ובשתי הפעמים המערכת החזירה שגיאה שהפרמטרים לא תקינים.\n\n- **ניסיון ראשון:** טבלה `user`, השדות `age` ו-`job`, והערך 'מהנדס' בעברית.\n- **ניסיון שני:** טבלה `users`, אותם שדות, והערך 'engineer' באנגלית.\n\nהודעת השגיאה לא אומרת מה בדיוק לא תקין. לכן אני לא יודע אם הבעיה בשם הטבלה, בשמות השדות או בערך. ניחשתי את השמות האלה, כי אין לי גישה למבנה מסד הנתונים.\n\nכדי לנסות שוב, אני צריך ממך את הפרטים האלה:\n1. השם המדויק של טבלת המשתמשים.\n2. השמות המדויקים של השדות של הגיל ושל המקצוע (למשל `age`, `occupation`, `profession`).\n3. איך המקצוע שמור בטבלה: 'מהנדס' בעברית, 'engineer' באנגלית או קוד אחר.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSyAUKEAgSGAI4AUIIdGhpbmtpbmcSDLHltdSHsj47AOF/thoMfLH3bBm6YcVuQ4IjIjA6psJIihTYIOYGLjUOReAfWxBftGCnLYeRhIDReJuVp6MxDgGfDe0FG5s0/F2AP1sq5QS1DADs8V2bmVvKno6N/LK5Lbm09CZeV/UvkSf17r0H2ayGPujS9olxjTBeOvM8QOleSc5zjydCaB04CZAOfO+sYy3eZlXTX1z++kxoXmgOI8i9PIIApuMcOjxosMcOymbpPDCt9Sn9BqoxW2KI8VDe7pnyuscmlkXTLFpKaBSAwD4qQEbwhfHJhbxkQQayDUzn88iO/hDRcAAwkzRTeGCXf12E2mgJwLFdOeHg2Q8tfEqbthBcs64N0+tJ++pbZ59L5TZYYA5MBMvk+xfjdOTbggsWWPRNeUQyVdplY0Cb/5/6OlJyNvC4qx8cFRiTaL5jiaxF0MTczVYjaJCt9yFPlMWeNpzr+ybwXe8P6ZPJd149loqE67PllWnJ7m2avEYQxfUuLBXXuayXfjNbGqcUsOviENaeyFHUKSrHBYCQ5uHeRPtgA3UM//S5bXounBIhtr1bGCVsc4gL0e1+hszQzr/JuoogoJ//RRs9fVrn4/epl67dCbdJRG31Gi3LwM/LXXYHXZnF8llYe7N+HeNLTCjrgIYefSmtrG/aFCgOuaq2V+unv6RkKaX2HIi06fTe0rhOhOlL9UgQDGMH9KW9NMcf2u0zc70MOv58haIV1MfvWHvrJdcKw/iRtKKwo8RpBAsaVUmDdNadvr9mZg5UPAHrRG2siSTbgxzURjOolVpnfnjbkzfehsmLfMc7752A/7sF29/1v26EqRqEq1eGpQAEaGlze68u7kACuSEpt69SgnQml8w2BKN3nofIebeIl/jKM1Wdz81EZBwQYMvzmVeNUPdh+H6r0UFUyoSwIlUbk0X/GAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01CiHgmDtas22ZF1Fh2bffbq",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "מהנדס"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01CiHgmDtas22ZF1Fh2bffbq"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSjwUKEAgSGAI4AUIIdGhpbmtpbmcSDCt1d6TE7T9oFFgZ7BoMhgHzRLc5VbPFBzZbIjCQx1/F3jl1ZmB2fK9pVzYSFphwCOebkGQ890O8ixToNcmnevuWnRkZBPQ+zL9/uF0qrASNKlEOpZPFwblzgsd8nvBH9LJ7rWJFhbS65Uu+cN238P8UEYU4f5WyITdiNJoH5wz3J1SYYvDHZglkJRBc6LxS2m20ctgjCajt5zpBCqgxa1hMG6zjOCVe5+ydJwgPduYA2XrKSqwKzWiX/RJZospi0rWuUD+l4qWM3tZLFHHvwzw0s9Cg+OEaqtVNQO8Tdc5IZ/zw1FLeccY+NwMHRxKB/b5JzMd86f8H8F3RQazTfs5P2CtQ3ves2S3l4vnHL9PbR+al7nyYnn5o+qq9J5Zq32iSTIimGZ2yQ07F5WJKw2zhkzQ+emfir7VJEENnAsDUSZR2+hGLjDhFxTMcHCIeUa+lDQeKB0s0Bahh7nFAKcQnxAfOsBEiRkdXsQw7hRHL+seOlhncF/b5oxpvKbA71pXczhQKIzWIVjuPwTPxJI78NGY7ZNi/Gx0u9yxj8wZc+SV7tc8uhMpPozcWHidEYgmCWjyQhvXB+htZdmhjm/wnKcfV2BV5GP6/YkGHCklKdMFCrQRN3//gdmMtdQXDlG5szCGIyo4jXCOCFeOdYid2nn3hF7ynKbKsg8Kyz5bwKlte5U3Ekw9/aECMSNvIgBEiNbgGge7WVwB2ZRmjP8+xakUdGqBovl+zukIL9gYaekhs81M+DvU/Q79nHS3t5H3ng8a3IZaNS/GxNBojUTAWWsI15nHCZftQZWAiogPLiu1mOUUiePVMKkSP1rAyUWI5Rumf662RJEIJGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_0118WKBGiw37fWxCcHV5CyTf",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_0118WKBGiw37fWxCcHV5CyTf"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSnAUKEAgSGAI4AUIIdGhpbmtpbmcSDF97jfW1rIjMZ4uZWxoMXOgqZKD3oX4WIYXKIjBEYV/WdQWFm7YLW4KGdBAywoBxwQkNaOYwu5+FhW3NTffd7NzrSsknV2yDddnHGTUquQT+EEhdaOqyw8VZSXB6UL39ot+H5Llk6CSF8oeTmjIm4CLfXaIbDUmiyeljL6vR8TwV0gLmi0y9C4iaegr0HPEtEn/gmxRprezzM4JXx1w9jW5VmRAcQggjvqpAL1qJAJkd1cqCk5fy0rjhWDtSy6xwR32puI5dNWM9ICHTKJyeUyqv4mEtgst7K9ynuC5l3VecciyxeFkkRRS7kVd1QIWelmDI5EUJJRhb0AcAkSIgIuHJ4E29Wbd+/xKZPyuCrCJ9WZvNNrsN7zVnqAa+Ci/dZ4vg29+zVoYtNMbwAmijs3nmXhW+OUlSSl9sLvJ2gYhmSjyxY2oIKbKM0MrB12r3jQK9ncxSyFjOxpGEwP8DBOZij8I9VR64RX7EZtTIJwQ5kSdCPLwHOgDYvlWMxxjrR/BGcV2/AHcqhbjSJr9lb8TTj5jqbcErTSIYNwZnxYnzjOdddpWlLRXgQgzXyD+vlR2By9vAvvjK5XrgP2uEQ0sZfN6l6HgfDQGJ0SryLQIW1lvlyw2kjqznnC8QwKhIHo1zxw50Ml+g0CjG+vY1bQUnCBKokBEMBuv3Tdyrx0s9gedWfzbtct9aCTib/o3Dn8nK1v6scQKrhynfWMMC9q3Y5py6HXKTbWduMdbuUsaHJf93scIlbSxYtoI8+xQJ9uHipfOAoXVaZLDwwTd+3BendvPQf4ZTb6sARXzN5adjjDR2NQOaX5cwQguicZjQnyu194e/VteWQrOuiHMsjKOTNgpEKlsm8xgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "עדיין לא הצלחתי לשלוף את הרשומות. עד עכשיו ניסיתי ארבע פעמים לחפש משתמשים בני יותר מ-25 שהמקצוע שלהם 'מהנדס', וכל הניסיונות נכשלו עם אותה שגיאה, שהפרמטרים לא תקינים:\n\n| ניסיון | טבלה | שדה המקצוע | ערך המקצוע |\n|---|---|---|---|\n| 1 | `user` | `job` | 'מהנדס' |\n| 2 | `users` | `job` | 'engineer' |\n| 3 | `users` | `job` | 'מהנדס' |\n| 4 | `user` | `occupation` | 'engineer' |\n\nבכל הניסיונות תנאי הגיל היה `age > 25`. הודעת השגיאה לא אומרת מה לא תקין, ואין לי גישה למבנה מסד הנתונים. לכן כל השמות שניסיתי היו ניחושים. גם ייתכן שהבעיה בכלל לא בשמות אלא בכלי או במסד הנתונים עצמו.\n\nכדי לנסות שוב, אני צריך ממך:\n1. את השם המדויק של טבלת המשתמשים.\n2. את השמות המדויקים של השדות של הגיל ושל המקצוע.\n3. איך המקצוע שמור בטבלה: 'מהנדס' בעברית, 'engineer' באנגלית או קוד אחר.\n\nאם השמות האלה נכונים, כדאי לבדוק אם יש בעיה בחיבור למסד הנתונים.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSmAUKEAgSGAI4AUIIdGhpbmtpbmcSDEo0/WrSrMv/j8dyqhoMTnJh6fEg6VhghqeXIjB/WdLDPTJniONpbXKybUqnpsoN5Y8IVNegCaADYbNoZLQ+3aNuhYxBc/rABZ9KgL4qtQQhUdb5B1lxvwFl8BnptL2wQzAOE+vSEVSRuh55FbJpPVzzS0zPqBWIaUDrAG+i4FJK0CmPS7DtM1Wo46oQn0VKjr7RwRkxf/bIcsJS+7eULdcpdjvpo4UqGJrYNI2NTAwYgwBEecyt5xkr3q0adRuJhntWUO5p+xoG7xfbDXLfqX88bedjzrAYON/bNVDg/2gesPzZhbbKRiu4MJKlrZFqgbo2gIIwdlo+dQBQrX5FC8sE0qCJXg7pzQ98pTiHSvRoWgGdHJLSksaYQhoHhsaEcCT1Uck1T8jnmmG6UUWtaHK5NZiGbKp4YbmbmXk+WhUdF5nhTTpW3PCJCG2C+sQt85EIiHVWz3pNuSBhdzt2mhiq9qX6RQZwnoqc9xa06Za9mvc4VNkdWUj3LW+VZ0ox2vIcufpeKIjINW/+6Iy/vYuARdfgG1nZ9Im33Iai7q+1X+rKUosOgYyPwAebrBnvzapRpIdier/t6bN8GOtVeSZ3BonibYVaiaivyPQ2LAARGsSCVWmHd5cFzt2+breftkZWXofhLvAkeMbF8XaKsjbxlQ7PX7PNNtUgYp6jtIRbU5rapYYAE25bmneWF4b1Cg6DPReki8KrkAU8f5LKspCn8rTJZliRKWPo++4Gkm6WTEX2Yv/ioBNQed8j7Y+KbVynxyB9Mecd933PQjdc5yR3HFGcZ6Iaw7RrHk7k7ZxOFtpScMEmMzCFr4hLVuSfH0o/G5kbHNJ3IT89BjhOyqVacL7IGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01AaijMR9J1qjEAAkmeggQPR",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

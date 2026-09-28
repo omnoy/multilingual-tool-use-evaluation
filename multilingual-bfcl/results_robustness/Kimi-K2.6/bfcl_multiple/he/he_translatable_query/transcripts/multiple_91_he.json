@@ -1,0 +1,107 @@
+{
+  "id": "multiple_91_he",
+  "source_id": "multiple_91",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 224,
+  "total_output_tokens": 665,
+  "total_latency_s": 5.722273588180542,
+  "estimated_cost_usd": 0.0028728,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "האם אוכל למצוא מתכון בישול טוב לפאי תפוחים עם פחות מ-5 מרכיבים?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "apple pie",
+          "apple"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          },
+          "id": "functions.recipe_find:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 224,
+      "output_tokens": 665,
+      "latency_s": 5.722273588180542,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "האם אוכל למצוא מתכון בישול טוב לפאי תפוחים עם פחות מ-5 מרכיבים?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_find:0",
+          "function": {
+            "arguments": "{\"mainIngredient\":\"apple\",\"ingredientLimit\":4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking if they can find a good apple pie recipe with less than 5 ingredients. They are writing in Hebrew.\n\nI need to use the `recipe_find` function with:\n- mainIngredient: \"apples\" (since it's apple pie)\n- ingredientLimit: 5 (since they want less than 5 ingredients, but the parameter is \"Max number of ingredients\" so 5 is appropriate since less than 5 means max 4 or 5 depending on interpretation, but typically if they say \"less than 5\" I should probably use 4? Actually, looking at the parameter description: \"Max number of ingredients the recipe should use.\" If they want less than 5, the max should be 4. But wait, the function might be inclusive. Let me check - if they want \"less than 5\", the maximum number is 4. However, in many recipe APIs, \"less than 5 ingredients\" might accept 5 as the limit. Let me be precise: \"less than 5\" means < 5, so maximum 4. But actually, looking at the user's request \"פחות מ-5\" means strictly less than 5, so ingredientLimit should be 4.\n\nWait, actually I should check if \"apple pie\" could be considered with main ingredient as \"apples\" or \"apple\". I'll use \"apple\" as it's the standard ingredient name.\n\nActually, looking again at the parameter: \"Max number of ingredients the recipe should use.\" If the user says \"less than 5\", I should set ingredientLimit to 4, because 4 is less than 5. But wait - sometimes APIs interpret this differently. Let me think... If I want recipes with max 4 ingredients, I pass 4. That would satisfy \"less than 5\".\n\nHowever, let me reconsider. The user might consider 5 as the upper bound because sometimes people say \"less than 5\" but mean \"up to 5\". But the Hebrew \"פחות מ-5\" literally means strictly less than 5. So I'll use 4 to be accurate.\n\nActually, I'll use 5 to be safe? No, let's be accurate. \"פחות מ-5\" = less than 5. So max ingredients = 4.\n\nWait, I just need to make the function call. Let me check: mainIngredient could be \"apple\" and ingredientLimit should be 4.\n\nActually, looking at common usage, if someone says \"recipe with less than 5 ingredients\", setting max to 5 might return recipes with exactly 5, which wouldn't satisfy \"less than 5\". So 4 is safer. But maybe I should just use 5 since the parameter is inclusive maximum and \"less than 5 ingredients\" in casual speech might include 5? No, I'll use 4 to be precise.\n\nLet me reconsider the mainIngredient. The user said \"פאי תפוחים\" which is apple pie. The main ingredient is apples, or \"apple\".\n\nI'll call recipe_find with mainIngredient=\"apple\" and ingredientLimit=4."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

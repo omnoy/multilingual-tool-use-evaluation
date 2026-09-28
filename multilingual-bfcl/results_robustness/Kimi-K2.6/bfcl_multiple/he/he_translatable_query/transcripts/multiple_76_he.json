@@ -1,0 +1,114 @@
+{
+  "id": "multiple_76_he",
+  "source_id": "multiple_76",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 294,
+  "total_output_tokens": 524,
+  "total_latency_s": 3.424107074737549,
+  "estimated_cost_usd": 0.0023753000000000003,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "אני רוצה להזמין פסל ברונזה מותאם אישית של סוס. אילו אפשרויות חומרים זמינות?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture.create_custom": {
+        "item": [
+          "horse",
+          "Horse"
+        ],
+        "material": [
+          "Bronze",
+          "bronze"
+        ],
+        "size": [
+          "",
+          12
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "אשמח לעזור להזמין עבורך פסל מותאם אישית של סוס מברונזה. להלן הקריאה להזמנה:\n\nהאפשרויות הזמינות לחומרים הן: ברונזה (Bronze), שיש (Marble), טרקוטה (Terracotta), עץ (Wood) ואבן (Stone). מאחר שהבעת העדפה ספציפית לברונזה, אבצע את ההזמנה עם החומר הזה."
+      ],
+      "tool_calls": [
+        {
+          "name": "sculpture_create_custom",
+          "arguments": {
+            "item": "horse",
+            "material": "Bronze"
+          },
+          "id": "functions.sculpture_create_custom:0"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_create_custom": {
+            "item": "horse",
+            "material": "Bronze"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 294,
+      "output_tokens": 524,
+      "latency_s": 3.424107074737549,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "אני רוצה להזמין פסל ברונזה מותאם אישית של סוס. אילו אפשרויות חומרים זמינות?"
+    },
+    {
+      "content": "אשמח לעזור להזמין עבורך פסל מותאם אישית של סוס מברונזה. להלן הקריאה להזמנה:\n\nהאפשרויות הזמינות לחומרים הן: ברונזה (Bronze), שיש (Marble), טרקוטה (Terracotta), עץ (Wood) ואבן (Stone). מאחר שהבעת העדפה ספציפית לברונזה, אבצע את ההזמנה עם החומר הזה.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sculpture_create_custom:0",
+          "function": {
+            "arguments": "{\"item\":\"horse\",\"material\":\"Bronze\"}",
+            "name": "sculpture_create_custom"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"I want to order a custom bronze sculpture of a horse. What material options are available?\"\n\nThey seem to want to order a custom bronze sculpture of a horse. Since the material is already specified as bronze, I should call the sculpture_create_custom function with:\n- item: \"horse\" (or maybe the Hebrew translation \"סוס\"? Looking at the function description, it says e.g. \"horse\" so English seems expected for the subject/item parameter)\n- material: \"Bronze\"\n\nHowever, they also ask \"What material options are available?\" This could be a question before ordering, but since they explicitly state they want bronze, I should proceed with the order and perhaps mention the available materials in the response.\n\nWait, looking at the function definition, the material enum is: [\"Bronze\", \"Marble\", \"Terracotta\", \"Wood\", \"Stone\"]. I can mention these in my response text but I should make the function call since they said they want to order a bronze horse sculpture.\n\nActually, let me reconsider. They might just be asking what materials are available, but they did say \"I want to order...\". I should make the function call for the bronze horse sculpture since that's explicitly stated, and then mention the other available materials in the response.\n\nThe function call should be:\nsculpture_create_custom(item=\"horse\", material=\"Bronze\")\n\nI need to respond with the function call and some explanatory text in Hebrew about the available material options.\n\nWait, the instructions say: \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nSo I should provide the function call and respond in Hebrew. Let me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

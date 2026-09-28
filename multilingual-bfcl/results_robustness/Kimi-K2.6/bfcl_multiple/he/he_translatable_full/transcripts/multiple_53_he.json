@@ -1,0 +1,196 @@
+{
+  "id": "multiple_53_he",
+  "source_id": "multiple_53",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1119,
+  "total_output_tokens": 732,
+  "total_latency_s": 3.9797661304473877,
+  "estimated_cost_usd": 0.0039910499999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חזה את מחירי הבתים ל-5 השנים הבאות על סמך שיעורי הריבית ושיעורי האבטלה."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "linear_regression": {
+        "independent_var": [
+          [
+            "interest rates",
+            "unemployment rates"
+          ],
+          [
+            "interest_rate",
+            "unemployment_rate"
+          ],
+          [
+            "interest rate",
+            "unemployment rate"
+          ]
+        ],
+        "dependent_var": [
+          "house_price",
+          "מחיר בית"
+        ],
+        "forecast_period": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "linear_regression",
+          "arguments": {
+            "dependent_var": "House_Prices",
+            "independent_var": [
+              "Interest_Rates",
+              "Unemployment_Rates"
+            ],
+            "forecast_period": 5
+          },
+          "id": "functions.linear_regression:0"
+        }
+      ],
+      "decoded": [
+        {
+          "linear_regression": {
+            "dependent_var": "House_Prices",
+            "independent_var": [
+              "Interest_Rates",
+              "Unemployment_Rates"
+            ],
+            "forecast_period": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'linear_regression'. Please review the function definition and try again.",
+      "input_tokens": 268,
+      "output_tokens": 543,
+      "latency_s": 2.850375175476074,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "linear_regression",
+          "arguments": {
+            "dependent_var": "House_Price",
+            "independent_var": [
+              "Interest_Rate",
+              "Unemployment_Rate"
+            ],
+            "forecast_period": 5
+          },
+          "id": "functions.linear_regression:1"
+        }
+      ],
+      "decoded": [
+        {
+          "linear_regression": {
+            "dependent_var": "House_Price",
+            "independent_var": [
+              "Interest_Rate",
+              "Unemployment_Rate"
+            ],
+            "forecast_period": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 851,
+      "output_tokens": 189,
+      "latency_s": 1.1293909549713135,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חזה את מחירי הבתים ל-5 השנים הבאות על סמך שיעורי הריבית ושיעורי האבטלה."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.linear_regression:0",
+          "function": {
+            "arguments": "{\"dependent_var\": \"House_Prices\", \"independent_var\": [\"Interest_Rates\", \"Unemployment_Rates\"], \"forecast_period\": 5}",
+            "name": "linear_regression"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to forecast house prices for the next 5 years based on interest rates and unemployment rates. I need to use one of the regression functions. The user didn't specify linear vs random forest, but I can choose one. Linear regression is a good standard choice. \n\nDependent variable: \"house prices\" (or similar - based on the function I need to provide the exact name. Looking at the functions, they take strings for variable names. The user mentioned \"מחירי הבתים\" = house prices, \"שיעורי הריבית\" = interest rates, \"שיעורי האבטלה\" = unemployment rates.\n\nI'll use linear_regression with:\n- dependent_var: something like \"House_Prices\" or \"house_prices\". But I should use a reasonable English variable name since these are typically dataset columns. \"House_Prices\" seems appropriate.\n- independent_var: [\"Interest_Rates\", \"Unemployment_Rates\"] \n- forecast_period: 5\n\nWait, I should check if there's any indication of what the exact column names are. The user is speaking generally in Hebrew. I'll use standard English variable names. \"House_Prices\", \"Interest_Rates\", \"Unemployment_Rate\" (maybe singular is better? Or plural?). I'll go with \"House_Prices\", \"Interest_Rates\", \"Unemployment_Rates\" to match the plural used in Hebrew.\n\nActually, looking at common datasets, it might be \"House Price\", \"Interest Rate\", \"Unemployment Rate\". But since these are free text and the tool might map them internally, I'll use snake_case or capitalized versions. I'll use: \"House_Prices\", \"Interest_Rates\", \"Unemployment_Rates\".\n\nActually, let me use the exact translation but in a standard naming convention:\n- dependent_var: \"House_Prices\"\n- independent_var: [\"Interest_Rates\", \"Unemployment_Rates\"]\n- forecast_period: 5\n\nOr I could use Random Forest for potentially better accuracy. But the user didn't specify, so Linear Regression is a safe default. I'll provide linear regression.\n\nFunction call:\n{\n  \"dependent_var\": \"House_Prices\",\n  \"independent_var\": [\"Interest_Rates\", \"Unemployment_Rates\"],\n  \"forecast_period\": 5\n}\n\nThe function definition says \"forecast_period\" is \"The number of years to forecast the prices. Default 1\". So 5 is correct."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'linear_regression'. Please review the function definition and try again.",
+      "tool_call_id": "functions.linear_regression:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.linear_regression:1",
+          "function": {
+            "arguments": "{\"dependent_var\": \"House_Price\", \"independent_var\": [\"Interest_Rate\", \"Unemployment_Rate\"], \"forecast_period\": 5}",
+            "name": "linear_regression"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. This likely means the variable names I provided do not match the expected column names in the underlying dataset. Since I don't know the exact column names, I should try again with more standard/common names, or perhaps the tool expects specific names.\n\nCommon names might be:\n- \"House_Price\" or \"Median_House_Price\" or \"Price\"\n- \"Interest_Rate\" \n- \"Unemployment_Rate\"\n\nLet me try with singular forms: \"House_Price\", \"Interest_Rate\", \"Unemployment_Rate\".\n\nIf that doesn't work, I might need to inform the user that I need the exact dataset column names. But let me try again."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

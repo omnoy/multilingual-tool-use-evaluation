@@ -1,0 +1,190 @@
+{
+  "id": "multiple_93_he",
+  "source_id": "multiple_93",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 2195,
+  "total_output_tokens": 75,
+  "total_latency_s": 88.79401993751526,
+  "estimated_cost_usd": 0.00484,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "הזמן חדר דה לוקס לשני לילות במלון מריוט בניו יורק והוסף ארוחת בוקר כשירות נוסף"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel.book": {
+        "location": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק"
+        ],
+        "roomType": [
+          "דה לוקס",
+          "דה לוקס"
+        ],
+        "nights": [
+          2
+        ],
+        "additional_services": [
+          [
+            "breakfast"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "New York",
+            "roomType": "deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call-ddd4d4b9-f765-411c-b2e2-155d3f9fcf13-0"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "New York",
+            "roomType": "deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 447,
+      "output_tokens": 35,
+      "latency_s": 34.75589156150818,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "ניו יורק",
+            "roomType": "דה לוקס",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call-430112a9-09e3-41a4-92b4-996342c64f96-1"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "ניו יורק",
+            "roomType": "דה לוקס",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1748,
+      "output_tokens": 40,
+      "latency_s": 54.03812837600708,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "הזמן חדר דה לוקס לשני לילות במלון מריוט בניו יורק והוסף ארוחת בוקר כשירות נוסף"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-ddd4d4b9-f765-411c-b2e2-155d3f9fcf13-0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"roomType\":\"deluxe\",\"nights\":2,\"additional_services\":[\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "call-ddd4d4b9-f765-411c-b2e2-155d3f9fcf13-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-430112a9-09e3-41a4-92b4-996342c64f96-1",
+          "function": {
+            "arguments": "{\"location\":\"ניו יורק\",\"roomType\":\"דה לוקס\",\"nights\":2,\"additional_services\":[\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

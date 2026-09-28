@@ -1,0 +1,127 @@
+{
+  "id": "multiple_147_he",
+  "source_id": "multiple_147",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 353,
+  "total_output_tokens": 222,
+  "total_latency_s": 1.4426648616790771,
+  "estimated_cost_usd": 0.00122335,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תביא לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "map_service.get_directions": {
+        "start": [
+          "New York",
+          "New York, NY",
+          "NYC"
+        ],
+        "end": [
+          "Los Angeles",
+          "LA"
+        ],
+        "avoid": [
+          [
+            "highways",
+            "tolls"
+          ],
+          [
+            "tolls",
+            "highways"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "functions.map_service_get_directions:0"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 353,
+      "output_tokens": 222,
+      "latency_s": 1.4426648616790771,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תביא לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.map_service_get_directions:0",
+          "function": {
+            "arguments": "{\"start\":\"New York\",\"end\":\"Los Angeles\",\"avoid\":[\"highways\",\"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for directions from New York to Los Angeles while avoiding highways and tolls. This maps to the `map_service_get_directions` function.\n\nRequired parameters:\n- start: \"ניו יורק\" or \"New York\" - I'll use English for location names since mapping services typically expect English, but the function description doesn't specify locale requirements. I'll use \"New York\" as it's more standard for APIs.\n- end: \"לוס אנג'לס\" or \"Los Angeles\" - similarly, \"Los Angeles\".\n\nOptional parameters:\n- avoid: [\"highways\", \"tolls\"] (the user said to avoid highways - \"כבישים מהירים\" and tolls - \"כבישי אגרה\")\n\nI should call the function with:\n- start: \"New York\"\n- end: \"Los Angeles\"\n- avoid: [\"highways\", \"tolls\"]"
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

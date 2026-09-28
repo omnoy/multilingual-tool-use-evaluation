@@ -1,0 +1,103 @@
+{
+  "id": "multiple_91",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 172,
+  "total_output_tokens": 162,
+  "total_latency_s": 1.925386905670166,
+  "estimated_cost_usd": 0.0008114,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Can I find a good cooking recipe for apple pie using less than 5 ingredients?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "apple pie",
+          "apple"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          },
+          "id": "functions.recipe_find:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 172,
+      "output_tokens": 162,
+      "latency_s": 1.925386905670166,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Can I find a good cooking recipe for apple pie using less than 5 ingredients?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_find:0",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"apple\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking about a recipe for apple pie with less than 5 ingredients. This fits the `recipe_find` function. The main ingredient would be \"apple\" (or \"apple pie\" but let's stick to apple as the main ingredient). The ingredientLimit should be less than 5, so I'll use 4 (since \"less than 5\" means max 4). Actually, looking at the parameter description for ingredientLimit: \"Max number of ingredients the recipe should use.\" So if they want less than 5, I should set ingredientLimit to 4.\n\nLet me call recipe_find with mainIngredient=\"apple\" and ingredientLimit=4."
+    }
+  ],
+  "system_prompt": null
+}

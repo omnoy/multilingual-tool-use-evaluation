@@ -1,0 +1,120 @@
+{
+  "id": "multiple_92_he",
+  "source_id": "multiple_92",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 321,
+  "total_output_tokens": 217,
+  "total_latency_s": 1.3770995140075684,
+  "estimated_cost_usd": 0.0011729499999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תביא לי רשימה של מאכלים צמחוניים ונטולי גלוטן הזמינים ב-Walmart ליד Denver."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "walmart.vegan_products": {
+        "location": [
+          "Denver, CO",
+          "Denver"
+        ],
+        "categories": [
+          [
+            "vegan",
+            "gluten-free"
+          ],
+          [
+            "gluten-free",
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "walmart_vegan_products",
+          "arguments": {
+            "location": "Denver, CO",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          },
+          "id": "functions.walmart_vegan_products:0"
+        }
+      ],
+      "decoded": [
+        {
+          "walmart_vegan_products": {
+            "location": "Denver, CO",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 321,
+      "output_tokens": 217,
+      "latency_s": 1.3770995140075684,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תביא לי רשימה של מאכלים צמחוניים ונטולי גלוטן הזמינים ב-Walmart ליד Denver."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.walmart_vegan_products:0",
+          "function": {
+            "arguments": "{\"location\":\"Denver, CO\",\"categories\":[\"vegan\",\"gluten-free\"]}",
+            "name": "walmart_vegan_products"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew for a list of vegan and gluten-free foods available at Walmart near Denver.\n\nBreaking down the request:\n- Store: Walmart\n- Location: Denver (the user said \"ליד Denver\" which means \"near Denver\", but the functions expect a city and state format like \"Denver, CO\")\n- Categories: vegan and gluten-free (צמחוניים = vegan, נטולי גלוטן = gluten-free)\n\nI need to call the walmart_vegan_products function with:\n- location: \"Denver, CO\" \n- categories: [\"vegan\", \"gluten-free\"]\n\nLet me check the parameters:\n- location: required string, example \"Denver, CO\"\n- categories: optional array of strings, enum [\"vegan\", \"gluten-free\"]\n\nSince the user wants both vegan and gluten-free, I should include both in the categories array."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

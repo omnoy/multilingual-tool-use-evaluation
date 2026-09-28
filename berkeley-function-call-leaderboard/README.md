@@ -115,11 +115,11 @@ When `BFCL_PROJECT_ROOT` is set:
 
 - The `result/` folder (containing model responses) will be created at `$BFCL_PROJECT_ROOT/result/`
 - The `score/` folder (containing evaluation results) will be created at `$BFCL_PROJECT_ROOT/score/`
-- The library will look for the `.env` configuration file at `$BFCL_PROJECT_ROOT/.env` (see [Setting up Environment Variables](#setting-up-environment-variables))
+- The library will look for the `../multilingual-bfcl/.env` configuration file at `$BFCL_PROJECT_ROOT/.env` (see [Setting up Environment Variables](#setting-up-environment-variables))
 
 ### Setting up Environment Variables
 
-We store API keys and other configuration variables (separate from the `BFCL_PROJECT_ROOT` variable mentioned above) in a `.env` file. A sample `.env.example` file is distributed with the package.
+We store API keys and other configuration variables (separate from the `BFCL_PROJECT_ROOT` variable mentioned above) in a `../multilingual-bfcl/.env` file. A sample `.env.example` file is distributed with the package.
 
 **For editable installations:**
 
@@ -135,13 +135,13 @@ cp $(python -c "import bfcl_eval; print(bfcl_eval.__path__[0])")/.env.example $B
 # Fill in necessary values in `.env`
 ```
 
-If you are running any proprietary models, make sure the model API keys are included in your `.env` file. Models like GPT, Claude, Mistral, Gemini, Nova, will require them.
+If you are running any proprietary models, make sure the model API keys are included in your `../multilingual-bfcl/.env` file. Models like GPT, Claude, Mistral, Gemini, Nova, will require them.
 
-The library looks for the `.env` file in the project root, i.e. `$BFCL_PROJECT_ROOT/.env`.
+The library looks for the `../multilingual-bfcl/.env` file in the project root, i.e. `$BFCL_PROJECT_ROOT/.env`.
 
 #### Configuring SerpAPI for Web Search Category
 
-For the `web_search` test category, we use the [SerpAPI](https://serpapi.com/) service to perform web search. You need to sign up for an API key and add it to your `.env` file. You can also switch to other web search APIs by changing the `search_engine_query` function in `bfcl_eval/eval_checker/multi_turn_eval/func_source_code/web_search.py`.
+For the `web_search` test category, we use the [SerpAPI](https://serpapi.com/) service to perform web search. You need to sign up for an API key and add it to your `../multilingual-bfcl/.env` file. You can also switch to other web search APIs by changing the `search_engine_query` function in `bfcl_eval/eval_checker/multi_turn_eval/func_source_code/web_search.py`.
 
 ---
 
@@ -170,7 +170,7 @@ bfcl generate --model MODEL_NAME --run-ids   # --test-category will be ignored
 
 When this flag is set the generation pipeline reads a JSON file named
 `test_case_ids_to_generate.json` located in the *project root* (the same
-place where `.env` lives). The file should map each test category to a list of
+place where `../multilingual-bfcl/.env` lives). The file should map each test category to a list of
 IDs to run:
 
 ```json
@@ -244,7 +244,7 @@ If you have a server already running (e.g., vLLM in a SLURM cluster), you can by
 bfcl generate --model MODEL_NAME --test-category TEST_CATEGORY --skip-server-setup
 ```
 
-In addition, you should specify the endpoint and port used by the local server. By default, the endpoint is `localhost` and the port is `1053`. These can be overridden by the `LOCAL_SERVER_ENDPOINT` and `LOCAL_SERVER_PORT` environment variables in the `.env` file:
+In addition, you should specify the endpoint and port used by the local server. By default, the endpoint is `localhost` and the port is `1053`. These can be overridden by the `LOCAL_SERVER_ENDPOINT` and `LOCAL_SERVER_PORT` environment variables in the `../multilingual-bfcl/.env` file:
 
 ```bash
 LOCAL_SERVER_ENDPOINT=localhost
@@ -315,7 +315,7 @@ If you'd like to log evaluation results to WandB artifacts:
 pip install -e.[wandb]
 ```
 
-Mkae sure you also set `WANDB_BFCL_PROJECT=ENTITY:PROJECT` in `.env`.
+Mkae sure you also set `WANDB_BFCL_PROJECT=ENTITY:PROJECT` in `../multilingual-bfcl/.env`.
 
 #### (Alternate) Script Execution for Evaluation
 

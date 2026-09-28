@@ -1,0 +1,106 @@
+{
+  "id": "multiple_45_he",
+  "source_id": "multiple_45",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 201,
+  "total_output_tokens": 248,
+  "total_latency_s": 6.3749377727508545,
+  "estimated_cost_usd": 0.00118295,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חשב לפני כמה שנים היה עידן הקרח?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "geology.get_era": {
+        "era_name": [
+          "Ice age"
+        ],
+        "calculate_years_ago": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geology_get_era",
+          "arguments": {
+            "era_name": "Ice age",
+            "calculate_years_ago": true
+          },
+          "id": "functions.geology_get_era:0"
+        }
+      ],
+      "decoded": [
+        {
+          "geology_get_era": {
+            "era_name": "Ice age",
+            "calculate_years_ago": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 201,
+      "output_tokens": 248,
+      "latency_s": 6.3749377727508545,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חשב לפני כמה שנים היה עידן הקרח?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geology_get_era:0",
+          "function": {
+            "arguments": "{\"era_name\": \"Ice age\", \"calculate_years_ago\": true}",
+            "name": "geology_get_era"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking: \"Calculate how many years ago was the Ice Age?\" or more literally \"Calculate before how many years was the Ice Age?\"\n\nI need to use the geology_get_era function with:\n- era_name: \"Ice age\" (or should it be in Hebrew? The function description says \"e.g Ice age\" so probably English is fine, but let me check if Hebrew would work. Since the parameter is the name of the geological era and the example is in English, I should probably use \"Ice age\" or maybe \"ice age\". The user wrote \"עידן הקרח\" which means Ice Age. I'll use \"Ice age\" as per the example.)\n- calculate_years_ago: true (since they explicitly asked for the calculation in years ago)\n\nActually, looking at the function name: geology_get_era, parameter era_name. The user specifically asked \"חשב לפני כמה שנים\" which means \"calculate how many years ago\". So I must set calculate_years_ago to true."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

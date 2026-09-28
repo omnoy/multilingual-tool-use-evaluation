@@ -1,0 +1,111 @@
+{
+  "id": "multiple_186_he",
+  "source_id": "multiple_186",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 260,
+  "total_output_tokens": 285,
+  "total_latency_s": 1.5723321437835693,
+  "estimated_cost_usd": 0.001387,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי מתכון טבעוני לבראוניז שזמן ההכנה שלו הוא פחות מ-30 דקות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_recipe": {
+        "dietary_restrictions": [
+          "vegan"
+        ],
+        "recipe_type": [
+          "dessert"
+        ],
+        "time": [
+          30
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_recipe",
+          "arguments": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "dessert",
+            "time": 30
+          },
+          "id": "functions.find_recipe:0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_recipe": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "dessert",
+            "time": 30
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 260,
+      "output_tokens": 285,
+      "latency_s": 1.5723321437835693,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי מתכון טבעוני לבראוניז שזמן ההכנה שלו הוא פחות מ-30 דקות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_recipe:0",
+          "function": {
+            "arguments": "{\"dietary_restrictions\": \"vegan\", \"recipe_type\": \"dessert\", \"time\": 30}",
+            "name": "find_recipe"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for a vegan brownie recipe that takes less than 30 minutes to prepare. This matches the `find_recipe` function.\n\nParameters:\n- dietary_restrictions: \"vegan\" (or in Hebrew \"טבעוני\") - but the function expects English based on the examples\n- recipe_type: \"dessert\" (brownies are a dessert) - or I could be more specific, but the examples show general categories. Actually, looking at the examples: \"dessert\", \"main course\", \"breakfast\" - so \"dessert\" is appropriate, though I could perhaps say \"brownies\". The parameter description says \"Type of the recipe. E.g. dessert, main course, breakfast.\" so \"dessert\" is safer, but \"brownie\" or \"brownies\" could also work. Let me use \"brownies\" to be more specific since that's what the user asked for.\n- time: 30 (minutes)\n\nWait, the user said \"less than 30 minutes\" so time limit is 30 minutes.\n\nLet me check: dietary_restrictions should be \"vegan\" in English since the function examples are in English."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,114 @@
+{
+  "id": "multiple_17",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 280,
+  "total_output_tokens": 240,
+  "total_latency_s": 1.465876579284668,
+  "estimated_cost_usd": 0.001226,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Find the conversion rate from Euro to Dollar at January 1, 2022"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "currency_conversion.get_rate": {
+        "from_currency": [
+          "EUR",
+          "Euro"
+        ],
+        "to_currency": [
+          "Dollar",
+          "USD"
+        ],
+        "date": [
+          "2022-01-01",
+          "01/01/2022",
+          "1/1/2022",
+          "Jan.1,2022",
+          "January 1, 2022",
+          "2022-1-1"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "currency_conversion_get_rate",
+          "arguments": {
+            "from_currency": "EUR",
+            "to_currency": "USD",
+            "date": "2022-01-01"
+          },
+          "id": "functions.currency_conversion_get_rate:0"
+        }
+      ],
+      "decoded": [
+        {
+          "currency_conversion_get_rate": {
+            "from_currency": "EUR",
+            "to_currency": "USD",
+            "date": "2022-01-01"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 280,
+      "output_tokens": 240,
+      "latency_s": 1.465876579284668,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Find the conversion rate from Euro to Dollar at January 1, 2022"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.currency_conversion_get_rate:0",
+          "function": {
+            "arguments": "{\"from_currency\": \"EUR\", \"to_currency\": \"USD\", \"date\": \"2022-01-01\"}",
+            "name": "currency_conversion_get_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find the conversion rate from Euro to Dollar on January 1, 2022. I need to use the `currency_conversion_get_rate` function. \n\nThe parameters are:\n- from_currency: \"EUR\" (Euro)\n- to_currency: \"USD\" (Dollar/US Dollar)\n- date: \"2022-01-01\" or similar format? The description says \"Default is the current date\" and the example shows strings like \"today\", but I should use a standard date format. Let me check if there's any specific format mentioned. It says \"The date at which the conversion rate applies. Default is the current date.\" It doesn't specify the exact format, but typically ISO 8601 format (YYYY-MM-DD) is safest. I'll use \"2022-01-01\".\n\nWait, the function schema shows date as a string with format (take a look - no explicit format mentioned, just type string). I'll provide \"2022-01-01\"."
+    }
+  ],
+  "system_prompt": null
+}

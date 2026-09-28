@@ -1,0 +1,124 @@
+{
+  "id": "multiple_80_he",
+  "source_id": "multiple_80",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 346,
+  "total_output_tokens": 192,
+  "total_latency_s": 2.072751522064209,
+  "estimated_cost_usd": 0.0010967,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא חנות גיטרות מקומית שגם מציעה שיעורי כינור בנאשוויל."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "music_shop.find_nearby": {
+        "location": [
+          "Nashville, TN",
+          "Nashville"
+        ],
+        "services": [
+          [
+            "Violin Lessons"
+          ]
+        ],
+        "instruments": [
+          [
+            "Guitars"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "music_shop_find_nearby",
+          "arguments": {
+            "location": "Nashville, TN",
+            "instruments": [
+              "Guitars"
+            ],
+            "services": [
+              "Violin Lessons"
+            ]
+          },
+          "id": "functions.music_shop_find_nearby:0"
+        }
+      ],
+      "decoded": [
+        {
+          "music_shop_find_nearby": {
+            "location": "Nashville, TN",
+            "instruments": [
+              "Guitars"
+            ],
+            "services": [
+              "Violin Lessons"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 346,
+      "output_tokens": 192,
+      "latency_s": 2.072751522064209,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא חנות גיטרות מקומית שגם מציעה שיעורי כינור בנאשוויל."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.music_shop_find_nearby:0",
+          "function": {
+            "arguments": "{\"location\":\"Nashville, TN\",\"instruments\":[\"Guitars\"],\"services\":[\"Violin Lessons\"]}",
+            "name": "music_shop_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to find a local guitar shop that also offers violin lessons in Nashville.\n\nLet me break down the request:\n- Location: Nashville (the user said \"נאשוויל\" which is Nashville in Hebrew). I should format it as \"Nashville, TN\" since the location parameter expects city and state.\n- Instruments: Guitars (\"גיטרות\")\n- Services: Violin Lessons (\"שיעורי כינור\")\n\nI need to use the music_shop_find_nearby function.\n\nParameters:\n- location: \"Nashville, TN\" (since Nashville is in Tennessee, and the tool example shows \"Nashville, TN\")\n- instruments: [\"Guitars\"]\n- services: [\"Violin Lessons\"]"
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

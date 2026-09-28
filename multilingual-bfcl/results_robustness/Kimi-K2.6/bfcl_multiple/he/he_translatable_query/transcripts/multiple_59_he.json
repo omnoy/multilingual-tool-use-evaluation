@@ -1,0 +1,123 @@
+{
+  "id": "multiple_59_he",
+  "source_id": "multiple_59",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 235,
+  "total_output_tokens": 175,
+  "total_latency_s": 1.2831990718841553,
+  "estimated_cost_usd": 0.00092325,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא עורכי דין המתמחים במשפט פלילי בקרבתי בניו יורק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawyer_finder": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "NY",
+          "New York City",
+          "NYC"
+        ],
+        "specialization": [
+          [
+            "Criminal Law"
+          ],
+          [
+            "criminal law"
+          ]
+        ],
+        "experience": [
+          "",
+          1
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_finder",
+          "arguments": {
+            "location": "New York",
+            "specialization": [
+              "criminal law"
+            ]
+          },
+          "id": "functions.lawyer_finder:0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_finder": {
+            "location": "New York",
+            "specialization": [
+              "criminal law"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 235,
+      "output_tokens": 175,
+      "latency_s": 1.2831990718841553,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא עורכי דין המתמחים במשפט פלילי בקרבתי בניו יורק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawyer_finder:0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"specialization\":[\"criminal law\"]}",
+            "name": "lawyer_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking to find lawyers specializing in criminal law near them in New York. The request is in Hebrew.\n\nI need to use the `lawyer_finder` function with:\n- location: \"New York\" (the user mentioned ניו יורק / New York)\n- specialization: [\"criminal law\"] or similar (the user said משפט פלילי / criminal law)\n- experience is optional and defaults to 1, so I don't need to include it unless specified\n\nLet me map the parameters correctly:\n- location: \"New York\"\n- specialization: Criminal law in English would be \"criminal law\"\n\nSince the user said \"in my vicinity in New York\", the location is New York."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,165 @@
+{
+  "id": "multiple_157_he",
+  "source_id": "multiple_157",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1162,
+  "total_output_tokens": 1080,
+  "total_latency_s": 6.857399225234985,
+  "estimated_cost_usd": 0.005423900000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהי ההתייחסות המוקדמת ביותר לישוע המשיח בהיסטוריה מתוך התיעוד ההיסטורי?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_earliest_reference": {
+        "name": [
+          "Jesus Christ"
+        ],
+        "source": [
+          "historical records"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_earliest_reference",
+          "arguments": {
+            "name": "ישוע המשיח",
+            "source": "historical records"
+          },
+          "id": "functions.get_earliest_reference:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_earliest_reference": {
+            "name": "ישוע המשיח",
+            "source": "historical records"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_earliest_reference'. Please review the function definition and try again.",
+      "input_tokens": 242,
+      "output_tokens": 631,
+      "latency_s": 4.513879299163818,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_earliest_reference",
+          "arguments": {
+            "name": "Jesus Christ",
+            "source": "historical records"
+          },
+          "id": "functions.get_earliest_reference:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_earliest_reference": {
+            "name": "Jesus Christ",
+            "source": "historical records"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 920,
+      "output_tokens": 449,
+      "latency_s": 2.343519926071167,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהי ההתייחסות המוקדמת ביותר לישוע המשיח בהיסטוריה מתוך התיעוד ההיסטורי?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_earliest_reference:0",
+          "function": {
+            "arguments": "{\"name\":\"ישוע המשיח\",\"source\":\"historical records\"}",
+            "name": "get_earliest_reference"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What is the earliest historical reference to Jesus Christ in historical records?\"\n\nThey want the earliest historical reference to a person named Yeshua HaMashiach (Jesus Christ) from historical records.\n\nI have the function `get_earliest_reference` which:\n- name: the name of the person\n- source: optional, default is 'scriptures', but can be 'historical records'\n\nSince the user specifically asks for \"התיעוד ההיסטורי\" (historical records), I should explicitly pass source: \"historical records\".\n\nThe person's name is \"ישוע המשיח\" or \"Jesus Christ\". Let me pass the name. Since the Hebrew name is used in the question, I should probably use that, but the function likely expects a recognized name. I'll pass \"ישוע המשיח\" or maybe just use \"Jesus Christ\" to be safe? The question is in Hebrew and refers to \"ישוע המשיח\". I'll pass \"ישוע המשיח\" as the name parameter, but I should consider whether the function expects English.\n\nActually, looking at the tool, it just says \"The name of the person.\" It doesn't specify language. Since the user wrote in Hebrew about \"ישוע המשיח\", I'll pass that. But to maximize chances of correct retrieval, perhaps I should pass \"Jesus Christ\"? \n\nHowever, the system prompt says \"respond with the correct function call exactly as specified\". I should pass the name as given in the user's context. But the user asked about \"ישוע המשיח\" which is Jesus Christ. I think passing \"ישוע המשיח\" is appropriate. Or I could pass \"Jesus Christ\" since it's a historical figure. Given the flexibility, I'll pass \"Jesus Christ\" because the tool might be built with English names in its dataset, but I want to honor the Hebrew context.\n\nWait, actually, to be most accurate to the user's request: they said \"לישוע המשיח\" (to Jesus Christ). I'll pass name=\"ישוע המשיח\". But if that fails, maybe English would have been better. Since there's no way to know the backend implementation, but typically these demo tools accept any string and match it. I'll use \"Jesus Christ\" because it's the standard name in historical records, but I could also justify \"ישוע המשיח\". \n\nActually, looking at the instruction: \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nI think the safest is to use the Hebrew name since the user specifically asked about that figure. But to be even safer, maybe I should use the name exactly as the user referred: \"ישוע המשיח\". And source: \"historical records\" because the user asked \"מתוך התיעוד ההיסטורי\".\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_earliest_reference'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_earliest_reference:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_earliest_reference:1",
+          "function": {
+            "arguments": "{\"name\": \"Jesus Christ\", \"source\": \"historical records\"}",
+            "name": "get_earliest_reference"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. This suggests that the parameter I passed might not be valid. Looking at the schema again:\n\n```json\n{\n  \"description\": \"Retrieve the earliest historical reference of a person.\",\n  \"name\": \"get_earliest_reference\",\n  \"parameters\": {\n    \"properties\": {\n      \"name\": {\n        \"description\": \"The name of the person.\",\n        \"type\": \"string\"\n      },\n      \"source\": {\n        \"default\": \"scriptures\",\n        \"description\": \"Source to fetch the reference. Default is 'scriptures'\",\n        \"enum\": [\"scriptures\", \"historical records\"],\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"name\"],\n    \"type\": \"object\"\n  }\n}\n```\n\nWait, the 'source' enum values are `\"scriptures\"` and `\"historical records\"`. The space in `\"historical records\"` might be problematic if I didn't pass it exactly? But I did pass `\"historical records\"`. \n\nActually, looking more carefully at the schema, the enum values are:\n- `\"scriptures\"`\n- `\"historical records\"`\n\nWhich is exactly what I passed. So why 400?\n\nMaybe the issue is with the Hebrew name? The backend might not accept Unicode/Hebrew characters, or the validation expects a known English name. Let me try with `\"Jesus Christ\"` and source `\"historical records\"`.\n\nActually, 400 Bad Request for invalid parameters usually means schema validation failed. Could it be that the enum value in the schema is `\"historical records\"` but maybe the backend expects something else? Or maybe the `source` parameter must be one of the enum values, but there was some encoding issue with the space? No, I passed it correctly.\n\nAnother possibility: maybe the `source` parameter enum in the actual implementation is different? But it's explicitly defined. \n\nOr maybe the issue is that the name field cannot be Hebrew. Let me try again with `\"Jesus Christ\"` and `\"historical records\"`."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

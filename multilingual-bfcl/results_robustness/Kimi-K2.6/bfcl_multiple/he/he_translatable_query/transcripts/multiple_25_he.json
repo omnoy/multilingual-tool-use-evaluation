@@ -1,0 +1,114 @@
+{
+  "id": "multiple_25_he",
+  "source_id": "multiple_25",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 369,
+  "total_output_tokens": 284,
+  "total_latency_s": 1.8824684619903564,
+  "estimated_cost_usd": 0.0014865500000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו מחיר המכירה הזול ביותר עבור המשחק 'Assassins Creed Valhalla' ב-PlayStation Store בארצות הברית?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "video_games.store_price": {
+        "game_title": [
+          "Assassins Creed Valhalla"
+        ],
+        "platform": [
+          "PlayStation",
+          "PS"
+        ],
+        "region": [
+          "United States",
+          "US",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "video_games_store_price",
+          "arguments": {
+            "game_title": "Assassins Creed Valhalla",
+            "platform": "PlayStation",
+            "region": "United States"
+          },
+          "id": "functions.video_games_store_price:0"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_store_price": {
+            "game_title": "Assassins Creed Valhalla",
+            "platform": "PlayStation",
+            "region": "United States"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 369,
+      "output_tokens": 284,
+      "latency_s": 1.8824684619903564,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו מחיר המכירה הזול ביותר עבור המשחק 'Assassins Creed Valhalla' ב-PlayStation Store בארצות הברית?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.video_games_store_price:0",
+          "function": {
+            "arguments": "{\"game_title\":\"Assassins Creed Valhalla\",\"platform\":\"PlayStation\",\"region\":\"United States\"}",
+            "name": "video_games_store_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What is the lowest selling price for the game 'Assassins Creed Valhalla' on the PlayStation Store in the United States?\"\n\nI need to fetch the selling price of the game. The function `video_games_store_price` can do this. Let me check the parameters:\n- game_title: \"Assassins Creed Valhalla\"\n- platform: \"PlayStation\" (or should it be \"PlayStation Store\"? The description says \"The gaming platform e.g. PlayStation, Xbox, Nintendo Switch\", so \"PlayStation\" is correct)\n- region: \"United States\" (since the user mentioned ארצות הברית which is United States)\n\nWait, the user asks for the \"lowest selling price\" (הזול ביותר). The function `video_games_store_price` fetches the selling price. There's also a function `video_games_on_sale` to check if it's on sale. But the user is asking for the price, so `video_games_store_price` is the right one. It should return the current selling price, which would be the sale price if on sale.\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

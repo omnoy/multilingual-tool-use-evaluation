@@ -159,10 +159,10 @@ For model names containing `{...}`, multiple versions are available. For example
 ## Additional Requirements for Certain Models
 
 - **Gemini Models:**
-  For `Gemini` models, we use the Google AI Studio API for inference. Ensure you have set the `GOOGLE_API_KEY` in your `.env` file.
+  For `Gemini` models, we use the Google AI Studio API for inference. Ensure you have set the `GOOGLE_API_KEY` in your `../multilingual-bfcl/.env` file.
 
 - **Nova Models (AWS Bedrock):**
-  For `Nova` models, set your `AWS_SSO_PROFILE_NAME` in your `.env` file after completing the [AWS SSO token provider setup](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html). Make sure the necessary AWS Bedrock permissions are granted in the `us-east-1` region.
+  For `Nova` models, set your `AWS_SSO_PROFILE_NAME` in your `../multilingual-bfcl/.env` file after completing the [AWS SSO token provider setup](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html). Make sure the necessary AWS Bedrock permissions are granted in the `us-east-1` region.
 
 ---
 

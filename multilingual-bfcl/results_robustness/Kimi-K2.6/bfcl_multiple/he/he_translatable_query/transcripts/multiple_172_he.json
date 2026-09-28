@@ -1,0 +1,109 @@
+{
+  "id": "multiple_172_he",
+  "source_id": "multiple_172",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 464,
+  "total_output_tokens": 393,
+  "total_latency_s": 2.1533985137939453,
+  "estimated_cost_usd": 0.0020128,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי את הפרופיל המפורט של שחקן הכדורסל לברון ג'יימס"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sports_db.find_athlete": {
+        "name": [
+          "Lebron James"
+        ],
+        "sport": [
+          "Basketball"
+        ],
+        "team": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_db_find_athlete",
+          "arguments": {
+            "name": "LeBron James",
+            "sport": "Basketball"
+          },
+          "id": "functions.sports_db_find_athlete:0"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_db_find_athlete": {
+            "name": "LeBron James",
+            "sport": "Basketball"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 464,
+      "output_tokens": 393,
+      "latency_s": 2.1533985137939453,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי את הפרופיל המפורט של שחקן הכדורסל לברון ג'יימס"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sports_db_find_athlete:0",
+          "function": {
+            "arguments": "{\"name\":\"LeBron James\",\"sport\":\"Basketball\"}",
+            "name": "sports_db_find_athlete"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking me to find detailed profile information for basketball player LeBron James in Hebrew.\n\nLooking at the available functions, I have `sports_db_find_athlete` which can find profile information of a sports athlete based on their full name.\n\nParameters needed:\n- name (required): The full name of the athlete. \"LeBron James\" (or \"לברון ג'יימס\" but since it's a database lookup and names are usually stored in English, I should probably use the English name, though the function definition doesn't specify language. I'll use \"LeBron James\" to be safe, but actually looking at the request, the user wrote \"לברון ג'יימס\". However, sports databases typically use English names. I should probably use \"LeBron James\" as it's the standard full name.)\n- sport (required): \"Basketball\" (since the user specified כדורסל/basketball)\n- team (optional): Default is '', so I can leave it out.\n\nWait, the user said \"לברון ג'יימס\" in Hebrew. Should I pass the Hebrew name or English name? The function description says \"The full name of the athlete\" but doesn't specify the language. Since this is a sports database function and typically these systems work with English names, I think I should pass \"LeBron James\". But it might also accept Hebrew. To be safest and most accurate, I'll pass \"LeBron James\" as that's his actual full name in the database.\n\nActually, looking at it again - I should just make the function call. The instruction says to respond with the correct function call exactly as specified.\n\nArguments:\n- name: \"LeBron James\"\n- sport: \"Basketball\"\n\nLet me format the function call properly."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

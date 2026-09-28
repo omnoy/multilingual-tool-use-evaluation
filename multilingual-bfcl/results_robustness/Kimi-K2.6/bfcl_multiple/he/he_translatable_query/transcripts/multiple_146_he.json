@@ -1,0 +1,112 @@
+{
+  "id": "multiple_146_he",
+  "source_id": "multiple_146",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 255,
+  "total_output_tokens": 121,
+  "total_latency_s": 1.1520884037017822,
+  "estimated_cost_usd": 0.00072625,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא מסעדות בקרבתי ברדיוס של 10 מייל שמציעות מטבח סיני בסיאטל."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          "Chinese"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "cuisine": "Chinese",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          },
+          "id": "functions.restaurant_find_nearby:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "cuisine": "Chinese",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 255,
+      "output_tokens": 121,
+      "latency_s": 1.1520884037017822,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא מסעדות בקרבתי ברדיוס של 10 מייל שמציעות מטבח סיני בסיאטל."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_nearby:0",
+          "function": {
+            "arguments": "{\"cuisine\": \"Chinese\", \"location\": \"Seattle, WA\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find Chinese restaurants within 10 miles in Seattle. I need to use the `restaurant_find_nearby` function.\n\nParameters:\n- cuisine: \"Chinese\" (or \"סיני\" but since the function likely expects English, I should use \"Chinese\")\n- location: \"Seattle, WA\"\n- max_distance: 10 (miles)\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

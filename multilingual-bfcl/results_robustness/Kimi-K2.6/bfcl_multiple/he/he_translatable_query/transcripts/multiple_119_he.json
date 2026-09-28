@@ -1,0 +1,151 @@
+{
+  "id": "multiple_119_he",
+  "source_id": "multiple_119",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 481,
+  "total_output_tokens": 142,
+  "total_latency_s": 1.8714797496795654,
+  "estimated_cost_usd": 0.00102495,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא רשומות במסד הנתונים בטבלת user שבהן age גדול מ-25 וה-job הוא 'engineer'."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "database.query": {
+        "table": [
+          "user"
+        ],
+        "conditions": [
+          [
+            {
+              "field": [
+                "age"
+              ],
+              "operation": [
+                ">"
+              ],
+              "value": [
+                "25"
+              ]
+            },
+            {
+              "field": [
+                "job"
+              ],
+              "operation": [
+                "="
+              ],
+              "value": [
+                "engineer"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          },
+          "id": "functions.database_query:0"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "engineer"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 481,
+      "output_tokens": 142,
+      "latency_s": 1.8714797496795654,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא רשומות במסד הנתונים בטבלת user שבהן age גדול מ-25 וה-job הוא 'engineer'."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.database_query:0",
+          "function": {
+            "arguments": "{\"table\":\"user\",\"conditions\":[{\"field\":\"age\",\"operation\":\">\",\"value\":\"25\"},{\"field\":\"job\",\"operation\":\"=\",\"value\":\"engineer\"}]}",
+            "name": "database_query"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants me to query a database table called 'user' where age is greater than 25 and job equals 'engineer'.\n\nI need to use the `database_query` function.\n- table: \"user\"\n- conditions: array of condition objects\n  - first condition: field=\"age\", operation=\">\", value=\"25\"\n  - second condition: field=\"job\", operation=\"=\", value=\"engineer\"\n\nThe parameters need to be passed correctly according to the schema."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

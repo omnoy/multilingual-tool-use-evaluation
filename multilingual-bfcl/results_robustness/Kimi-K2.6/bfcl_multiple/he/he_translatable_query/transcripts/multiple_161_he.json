@@ -1,0 +1,124 @@
+{
+  "id": "multiple_161_he",
+  "source_id": "multiple_161",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 405,
+  "total_output_tokens": 534,
+  "total_latency_s": 2.9970059394836426,
+  "estimated_cost_usd": 0.00252075,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את תערוכת הפיסול המודרני המדורגת הכי גבוה שמתקיימת בניו יורק בחודש הקרוב."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_exhibition": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "NYC",
+          "NY"
+        ],
+        "art_form": [
+          "sculpture",
+          "modern sculpture"
+        ],
+        "month": [
+          "upcoming",
+          "next month",
+          "upcoming month",
+          "next",
+          ""
+        ],
+        "user_ratings": [
+          "high",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "location": "New York, NY",
+            "art_form": "sculpture",
+            "user_ratings": "high"
+          },
+          "id": "functions.find_exhibition:0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "location": "New York, NY",
+            "art_form": "sculpture",
+            "user_ratings": "high"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 405,
+      "output_tokens": 534,
+      "latency_s": 2.9970059394836426,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את תערוכת הפיסול המודרני המדורגת הכי גבוה שמתקיימת בניו יורק בחודש הקרוב."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_exhibition:0",
+          "function": {
+            "arguments": "{\"location\":\"New York, NY\",\"art_form\":\"sculpture\",\"user_ratings\":\"high\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Find the highest-rated modern sculpture exhibition taking place in New York next month.\"\n\nI need to use the `find_exhibition` function. Let me check the parameters:\n- location: \"New York, NY\" or \"New York\" (the example says e.g., \"New York, NY\")\n- art_form: \"sculpture\" \n- month: \"next month\" or the actual upcoming month. Since the user says \"next month\" and the default returns upcoming events if not specified, but the user specifically asked for \"next month\". However, the month parameter expects a string like the name of the month. Since I don't know the current date, I should probably pass something or use default? The user specifically said \"next month\". But since I don't have the current date context, maybe I should use the default which returns upcoming events? Or should I try to interpret \"next month\" as a specific month? Since I cannot determine what the current month is, and the parameter asks for the month as a string, I might need to omit it and let the default handle upcoming events, or I should note that I need the current date.\n\nWait, looking at the function description: \"Default value will return upcoming events.\" So if I don't specify month, it returns upcoming events. But the user specifically asks for \"in the next month\". Since I cannot determine the exact current date from the context, using the default might be the best approach to get upcoming events, though it won't strictly filter to only next month.\n\nActually, I should try to specify \"next month\" but the parameter type is string for month. Maybe I can pass it as is and see? But typically these APIs expect month names like \"January\", \"February\", etc.\n\nGiven the ambiguity, and since the default returns upcoming events (which would include next month), I'll use:\n- location: \"New York, NY\"\n- art_form: \"sculpture\"\n- user_ratings: \"high\" (default is 'high', but the user asks for highest-rated, so keeping it as \"high\" makes sense. Actually the user asked for the \"highest-rated\" - the options are only low/average/high. \"high\" is the best.)\n\nActually the user said \"המדורגת הכי גבוה\" which means highest rated. So user_ratings should be \"high\".\n\nLet me make the call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

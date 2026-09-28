@@ -1,0 +1,142 @@
+{
+  "id": "multiple_180_he",
+  "source_id": "multiple_180",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 2271,
+  "total_output_tokens": 57,
+  "total_latency_s": 28.4292995929718,
+  "estimated_cost_usd": 0.004884,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "שלוף את סטטיסטיקות השחקן של 'זלדה' ב-Switch עבור המשתמש 'סם'."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "game_stats.fetch_player_statistics": {
+        "game": [
+          "זלדה"
+        ],
+        "username": [
+          "סם"
+        ],
+        "platform": [
+          "Switch",
+          "נינטנדו סוויץ'"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "invoke tool game_stats_fetch_player_statistics with game is זלדה username is סם platform is Switch"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 741,
+      "output_tokens": 24,
+      "latency_s": 21.221644639968872,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "game_stats_fetch_player_statistics",
+          "arguments": {
+            "game": "זלדה",
+            "username": "סם",
+            "platform": "Switch"
+          },
+          "id": "call-d4a313de-c915-47b1-804d-655badcd9eb8-0"
+        }
+      ],
+      "decoded": [
+        {
+          "game_stats_fetch_player_statistics": {
+            "game": "זלדה",
+            "username": "סם",
+            "platform": "Switch"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1530,
+      "output_tokens": 33,
+      "latency_s": 7.20765495300293,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "שלוף את סטטיסטיקות השחקן של 'זלדה' ב-Switch עבור המשתמש 'סם'."
+    },
+    {
+      "content": "invoke tool game_stats_fetch_player_statistics with game is זלדה username is סם platform is Switch",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-d4a313de-c915-47b1-804d-655badcd9eb8-0",
+          "function": {
+            "arguments": "{\"game\":\"זלדה\",\"username\":\"סם\",\"platform\":\"Switch\"}",
+            "name": "game_stats_fetch_player_statistics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

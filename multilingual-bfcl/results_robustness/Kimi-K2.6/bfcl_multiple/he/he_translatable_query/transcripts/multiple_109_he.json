@@ -1,0 +1,164 @@
+{
+  "id": "multiple_109_he",
+  "source_id": "multiple_109",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1107,
+  "total_output_tokens": 568,
+  "total_latency_s": 5.463805198669434,
+  "estimated_cost_usd": 0.00332365,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהם שמות החלבונים הנמצאים בקרום הפלזמה?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "plasma membrane"
+        ],
+        "include_description": [
+          false,
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane",
+            "include_description": true
+          },
+          "id": "functions.cellbio_get_proteins:0"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane",
+            "include_description": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "input_tokens": 360,
+      "output_tokens": 343,
+      "latency_s": 1.9802117347717285,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane"
+          },
+          "id": "functions.cellbio_get_proteins:1"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 747,
+      "output_tokens": 225,
+      "latency_s": 3.483593463897705,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהם שמות החלבונים הנמצאים בקרום הפלזמה?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.cellbio_get_proteins:0",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\", \"include_description\": true}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What are the names of the proteins found in the plasma membrane?\"\n\nThis maps to the function `cellbio_get_proteins` with `cell_compartment` being \"plasma membrane\". Since the user asked for names of proteins, I should probably also set `include_description` to true to give more context, but the parameter is optional and defaults to false. Let me check the Hebrew request again - \"מהם שמות החלבונים הנמצאים בקרום הפלזמה?\" - they want the names. Setting include_description to true would be helpful but not strictly necessary. However, given they ask \"what are the names\" and the parameter allows for brief descriptions, it might be better to include descriptions for completeness. Actually, I'll stick to the simplest interpretation unless it seems necessary. Let me provide the most helpful response by including descriptions.\n\nWait, let me re-read the instructions: \"respond with the correct function call exactly as specified in the tool definitions.\" So I should output the function call.\n\nParameters:\n- cell_compartment: \"plasma membrane\" \n- include_description: true (optional, default false). I'll set it to true to be more helpful since they asked what are the proteins.\n\nActually, looking at the parameter description, \"Set true if you want a brief description of each protein.\" The user is asking \"what are the names of the proteins\" so names alone might suffice, but brief descriptions would be valuable. I'll go with include_description: true."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "tool_call_id": "functions.cellbio_get_proteins:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.cellbio_get_proteins:1",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request for invalid parameters. Let me reconsider the parameter value. The user asked for \"קרום הפלזמה\" which is \"plasma membrane\". Maybe the function expects a specific format for the compartment name. Let me try without include_description first, or maybe \"plasma membrane\" is not the exact expected term. The parameter description says \"The specific cell compartment.\" Common terms might include \"Plasma membrane\", \"plasma membrane\", \"Cell membrane\", etc. Let me try with just \"plasma membrane\" and include_description set to false or omitted, since that was an optional parameter anyway. Or maybe I should try \"Plasma membrane\" with capital P.\n\nActually, wait - could the issue be that \"plasma membrane\" is correct but the system rejected it for some other reason? Or perhaps the expected term is \"cell membrane\"? Let me try again with \"plasma membrane\" without the include_description parameter, using defaults."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,134 @@
+{
+  "id": "multiple_191_he",
+  "source_id": "multiple_191",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 473,
+  "total_output_tokens": 346,
+  "total_latency_s": 1.6914646625518799,
+  "estimated_cost_usd": 0.00183335,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "הזמן חדר יוקרה במלון Hotel Paradise בלאס וגאס, עם נוף לעיר למשך 3 ימים החל מ-12 במאי 2022."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "Hotel Paradise"
+        ],
+        "location": [
+          "Las Vegas",
+          "Las Vegas, NV",
+          "LV"
+        ],
+        "room_type": [
+          "luxury",
+          "Luxury"
+        ],
+        "start_date": [
+          "05-12-2022",
+          "2022-05-12",
+          "12/05/2022",
+          "May.12,2022",
+          "May 12, 2022"
+        ],
+        "stay_duration": [
+          3
+        ],
+        "view": [
+          "city",
+          "city view"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hotel Paradise",
+            "location": "Las Vegas",
+            "room_type": "Luxury",
+            "start_date": "05-12-2022",
+            "stay_duration": 3,
+            "view": "City view"
+          },
+          "id": "functions.book_hotel:0"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hotel Paradise",
+            "location": "Las Vegas",
+            "room_type": "Luxury",
+            "start_date": "05-12-2022",
+            "stay_duration": 3,
+            "view": "City view"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 473,
+      "output_tokens": 346,
+      "latency_s": 1.6914646625518799,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "הזמן חדר יוקרה במלון Hotel Paradise בלאס וגאס, עם נוף לעיר למשך 3 ימים החל מ-12 במאי 2022."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.book_hotel:0",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hotel Paradise\", \"location\": \"Las Vegas\", \"room_type\": \"Luxury\", \"start_date\": \"05-12-2022\", \"stay_duration\": 3, \"view\": \"City view\"}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to book a luxury room at Hotel Paradise in Las Vegas with a city view for 3 days starting from May 12, 2022.\n\nI need to use the `book_hotel` function with these parameters:\n- hotel_name: \"Hotel Paradise\"\n- location: \"Las Vegas\" (or \"לאס וגאס\" but the function likely expects English, so I'll use \"Las Vegas\")\n- room_type: \"luxury\" or \"luxury room\" - in Hebrew they said \"יוקרה\" so I should translate to English. The function expects room_type as a string, so \"Luxury\" or \"Luxury Room\"\n- start_date: \"05-12-2022\" (MM-DD-YYYY format)\n- stay_duration: 3\n- view: \"city\" or \"city view\" - they said \"נוף לעיר\"\n\nLet me check the function parameters:\n- hotel_name (required, string): \"Hotel Paradise\"\n- location (required, string): \"Las Vegas\"\n- room_type (required, string): \"Luxury\"\n- start_date (required, string, MM-DD-YYYY): \"05-12-2022\"\n- stay_duration (required, integer): 3\n- view (optional, string): \"City view\"\n\nI should provide the parameters in English as expected by the function."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

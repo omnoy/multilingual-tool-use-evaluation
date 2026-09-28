@@ -1,0 +1,118 @@
+{
+  "id": "multiple_185_he",
+  "source_id": "multiple_185",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 279,
+  "total_output_tokens": 154,
+  "total_latency_s": 1.1951181888580322,
+  "estimated_cost_usd": 0.00088105,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מסעדת הסושי הקרובה ביותר עם מרפסת בבוסטון."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant_search.find_closest": {
+        "location": [
+          "Boston",
+          "Boston, MA"
+        ],
+        "cuisine": [
+          "Sushi"
+        ],
+        "amenities": [
+          [
+            "Patio"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston, MA",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston, MA",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 279,
+      "output_tokens": 154,
+      "latency_s": 1.1951181888580322,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מסעדת הסושי הקרובה ביותר עם מרפסת בבוסטון."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:0",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston, MA\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Find the closest sushi restaurant with a patio in Boston.\"\n\nI need to use the `restaurant_search_find_closest` function.\nParameters:\n- cuisine: \"Sushi\"\n- location: \"Boston, MA\" (the user said Boston, and the example in the schema shows \"Boston, MA\")\n- amenities: [\"Patio\"] (the user specifically asked for a patio, which is \"מרפסת\" in Hebrew)\n\nAll required parameters are provided or can be inferred. Let me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

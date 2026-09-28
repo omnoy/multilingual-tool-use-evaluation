@@ -1,0 +1,125 @@
+{
+  "id": "multiple_93_he",
+  "source_id": "multiple_93",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 309,
+  "total_output_tokens": 168,
+  "total_latency_s": 1.1898488998413086,
+  "estimated_cost_usd": 0.0009655499999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "הזמן חדר דלוקס לשני לילות במלון Marriott בניו יורק והוסף ארוחת בוקר כשירות נוסף"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel.book": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "NYC"
+        ],
+        "roomType": [
+          "deluxe",
+          "Deluxe"
+        ],
+        "nights": [
+          2
+        ],
+        "additional_services": [
+          [
+            "breakfast"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "New York",
+            "roomType": "Deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "functions.hotel_book:0"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "New York",
+            "roomType": "Deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 309,
+      "output_tokens": 168,
+      "latency_s": 1.1898488998413086,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "הזמן חדר דלוקס לשני לילות במלון Marriott בניו יורק והוסף ארוחת בוקר כשירות נוסף"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_book:0",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"roomType\": \"Deluxe\", \"nights\": 2, \"additional_services\": [\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to book a hotel room. Let me extract the details:\n- Location: New York (ניו יורק)\n- Room type: Deluxe (דלוקס)\n- Number of nights: 2 (שני לילות)\n- Additional services: Breakfast (ארוחת בוקר)\n\nThe hotel name \"Marriott\" isn't a parameter in the function, just the location. So I'll use:\n- location: \"New York\"\n- roomType: \"Deluxe\" \n- nights: 2\n- additional_services: [\"breakfast\"]\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

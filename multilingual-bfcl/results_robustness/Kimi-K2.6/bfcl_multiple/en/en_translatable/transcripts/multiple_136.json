@@ -1,0 +1,179 @@
+{
+  "id": "multiple_136",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 788,
+  "total_output_tokens": 576,
+  "total_latency_s": 3.3968505859375,
+  "estimated_cost_usd": 0.0030526,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Provide me the official crime rate of violent crime in San Francisco in 2020."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_crime_rate": {
+        "city": [
+          "San Francisco",
+          "San Francisco, CA",
+          "SF"
+        ],
+        "state": [
+          "California",
+          "CA"
+        ],
+        "type": [
+          "violent",
+          "Violent"
+        ],
+        "year": [
+          2020
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_crime_rate",
+          "arguments": {
+            "city": "San Francisco",
+            "state": "California",
+            "type": "violent crime",
+            "year": 2020
+          },
+          "id": "functions.get_crime_rate:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_crime_rate": {
+            "city": "San Francisco",
+            "state": "California",
+            "type": "violent crime",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_crime_rate'. Please review the function definition and try again.",
+      "input_tokens": 215,
+      "output_tokens": 316,
+      "latency_s": 1.7704219818115234,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_crime_rate",
+          "arguments": {
+            "city": "San Francisco",
+            "state": "CA",
+            "type": "violent",
+            "year": 2020
+          },
+          "id": "functions.get_crime_rate:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_crime_rate": {
+            "city": "San Francisco",
+            "state": "CA",
+            "type": "violent",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 573,
+      "output_tokens": 260,
+      "latency_s": 1.6264286041259766,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Provide me the official crime rate of violent crime in San Francisco in 2020."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_crime_rate:0",
+          "function": {
+            "arguments": "{\"city\": \"San Francisco\", \"state\": \"California\", \"type\": \"violent crime\", \"year\": 2020}",
+            "name": "get_crime_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the official crime rate of violent crime in San Francisco in 2020. I have a function `get_crime_rate` that can retrieve this information. Let me check the parameters:\n\n- city: \"San Francisco\" (required)\n- state: \"California\" (required, since San Francisco is in California)\n- type: \"violent crime\" or similar (optional, but the user specifically asked for violent crime)\n- year: 2020 (optional, defaults to 2024, but user wants 2020)\n\nI need to provide the state parameter. San Francisco is in California. For the type, I should specify something related to violent crime. The parameter description says \"The type of crime. Default ''\" so I should pass a relevant string like \"violent crime\" or \"violent\". Let me pass \"violent\" or \"violent crime\" - I'll use \"violent\" to be safe and concise, though \"violent crime\" is also clear.\n\nWait, I should check if there are any constraints on the type parameter values. The schema doesn't specify enum values, so I'll pass \"violent crime\" since that's what the user asked for.\n\nParameters:\n- city: \"San Francisco\"\n- state: \"California\"\n- type: \"violent crime\"\n- year: 2020"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_crime_rate'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_crime_rate:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_crime_rate:1",
+          "function": {
+            "arguments": "{\"city\": \"San Francisco\", \"state\": \"CA\", \"type\": \"violent\", \"year\": 2020}",
+            "name": "get_crime_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. This might be because the type parameter expects a specific format or value that I didn't match. Let me try again. Since I don't know the exact expected enum values for the type parameter, I could try with \"violent\" (shorter/simpler), or perhaps the state needs to be \"CA\" instead of \"California\"? Or maybe San Francisco is treated specially?\n\nLet me try with state abbreviation \"CA\" or full name? The parameter says \"The state where the city is located.\" Usually full names work, but maybe it wants abbreviation. Let me try \"California\" again but with type as \"violent\" or maybe empty/default? But the user specifically wants violent crime.\n\nActually, looking at the error, it's \"invalid parameters\". Common issues:\n1. State name format (maybe needs to be \"CA\")\n2. Type might need to be a specific code or empty\n3. Year is 2020, maybe data not available?\n\nLet me try with state: \"CA\" and type: \"violent\"."
+    }
+  ],
+  "system_prompt": null
+}

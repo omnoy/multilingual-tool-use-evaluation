@@ -1,0 +1,255 @@
+{
+  "id": "multiple_93",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2883,
+  "total_output_tokens": 2505,
+  "total_latency_s": 13.532430648803711,
+  "estimated_cost_usd": 0.012758849999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Book a deluxe room for 2 nights at the Marriott hotel in New York and add breakfast as an extra service"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel.book": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "NYC"
+        ],
+        "roomType": [
+          "deluxe",
+          "Deluxe"
+        ],
+        "nights": [
+          2
+        ],
+        "additional_services": [
+          [
+            "breakfast"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "Marriott hotel in New York",
+            "roomType": "deluxe room",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "functions.hotel_book:0"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "Marriott hotel in New York",
+            "roomType": "deluxe room",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 258,
+      "output_tokens": 633,
+      "latency_s": 3.633043050765991,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "additional_services": [
+              "breakfast"
+            ],
+            "location": "New York",
+            "nights": 2,
+            "roomType": "deluxe room"
+          },
+          "id": "functions.hotel_book:1"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "additional_services": [
+              "breakfast"
+            ],
+            "location": "New York",
+            "nights": 2,
+            "roomType": "deluxe room"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 937,
+      "output_tokens": 712,
+      "latency_s": 3.6190383434295654,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "additional_services": [
+              "breakfast"
+            ],
+            "location": "New York",
+            "nights": 2,
+            "roomType": "deluxe"
+          },
+          "id": "functions.hotel_book:2"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "additional_services": [
+              "breakfast"
+            ],
+            "location": "New York",
+            "nights": 2,
+            "roomType": "deluxe"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1688,
+      "output_tokens": 1160,
+      "latency_s": 6.280349254608154,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Book a deluxe room for 2 nights at the Marriott hotel in New York and add breakfast as an extra service"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_book:0",
+          "function": {
+            "arguments": "{\"location\":\"Marriott hotel in New York\",\"roomType\":\"deluxe room\",\"nights\":2,\"additional_services\":[\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to book a hotel room with the following details:\n- Room type: Deluxe room\n- Nights: 2\n- Location: Marriott hotel in New York\n- Additional service: Breakfast\n\nLooking at the `hotel_book` function, it requires:\n- location (string): \"Marriott hotel in New York\" or just \"New York\" - I'll use \"Marriott hotel in New York\" to be specific, or actually looking at the parameter it's just the location. Let me use \"New York\" as the location since that's the city, though the user mentioned Marriott specifically. The parameter description says \"Location of the hotel\" so I could put \"Marriott hotel in New York\".\n- roomType (string): \"deluxe room\" or \"Deluxe room\"\n- nights (number): 2\n- additional_services (array, optional): [\"breakfast\"]\n\nWait, looking at the location parameter - should I include \"Marriott hotel in New York\" or just \"New York\"? The user specifically said \"Marriott hotel in New York\". I'll use \"Marriott hotel in New York\" as the location to be precise, or actually, typically the location field might just want the city/area. But since the user specifically mentioned Marriott, I think \"New York\" as the city location is what the function expects, but to be safe and accurate to the user's request, I should probably specify the hotel name too. Actually, looking at typical API designs, the location might be the city. But since the user said \"Marriott hotel in New York\", I'll use \"New York\" as the primary location. Hmm, but they specifically want Marriott.\n\nActually, I think the most accurate approach is to use \"New York\" or \"Marriott hotel in New York\". Since the user explicitly states the hotel name in the location, I'll pass \"Marriott hotel in New York\" to be faithful to the request, though the parameter is just \"Location of the hotel.\"\n\nLet me reconsider. The parameter is called \"location\" not \"hotel_name\". So maybe I should just use \"New York\" and the system will figure out the hotel? But the user specifically asked for Marriott. \n\nLooking at the function again:\n- location: Location of the hotel.\n- roomType: Type of the room to be booked.\n- nights: Number of nights\n- additional_services: array of enums\n\nI'll use \"Marriott hotel in New York\" for location since that captures both the specific hotel and location.\n\nWait, I think \"New York\" would be more appropriate for the location parameter, but since the user mentioned Marriott, maybe I should include it. Actually, to be safe and helpful, I'll include the full description \"Marriott hotel in New York\".\n\nRoom type: \"deluxe room\" (user said \"deluxe room\")\n\nAdditional services: [\"breakfast\"]\n\nLet me make the call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "functions.hotel_book:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_book:1",
+          "function": {
+            "arguments": "{\"additional_services\": [\"breakfast\"], \"location\": \"New York\", \"nights\": 2, \"roomType\": \"deluxe room\"}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the parameters.\n\nLooking at the function schema again:\n- location: string\n- roomType: string\n- nights: number\n- additional_services: array of enum [\"breakfast\", \"parking\", \"spa\"]\n\nWait, I passed \"Marriott hotel in New York\" as location. Maybe the system doesn't like the specific hotel name in the location field? Or maybe the room type needs to be capitalized or formatted differently?\n\nActually, looking more carefully at the parameter descriptions:\n- roomType: Type of the room to be booked. (e.g., \"deluxe\", \"standard\", \"suite\"?)\n- location: Location of the hotel. (e.g., city name?)\n\nMaybe \"deluxe room\" should just be \"deluxe\" or \"Deluxe\"?\nAnd maybe location should just be \"New York\"?\n\nLet me try with location as \"New York\" and roomType as perhaps something else. Actually, looking at the room type enum or expected values - it's just a string so any string should work.\n\nCommon issues:\n1. The room type might not be recognized as \"deluxe room\" but rather \"Deluxe\" \n2. The location might need to be a simpler city name like \"New York\"\n\nLet me try location: \"New York\" and roomType: \"Deluxe\" or \"deluxe\". But the user said \"deluxe room\". Let me try both changes or just the location.\n\nActually, I should just try again with cleaner parameters. Since I got a 400 error, maybe the API doesn't recognize \"Marriott hotel in New York\" and wants just \"New York\". I'll try that. And maybe roomType should be exactly \"deluxe\" or \"Deluxe Room\".\n\nWait, I should think about what caused the 400. The parameters I used:\n- location: \"Marriott hotel in New York\" \n- roomType: \"deluxe room\"\n- nights: 2\n- additional_services: [\"breakfast\"]\n\nThe additional_services enum is [\"breakfast\", \"parking\", \"spa\"]. I used \"breakfast\" correctly.\nNights is a number, I used 2.\nRoom type is a string. \nLocation is a string.\n\nHmm, maybe the system interpreted my parameters wrong? Or maybe the location needs to exactly match known locations? Or maybe room type needs to be capitalized \"Deluxe Room\"?\n\nActually, wait. Could it be that the additional_services parameter name is wrong? No, it's \"additional_services\" in the schema.\n\nLet me try: \n- location: \"New York\"\n- roomType: \"deluxe room\" (or maybe \"Deluxe Room\"?)\n- nights: 2\n- additional_services: [\"breakfast\"]\n\nOr maybe the roomType isn't \"deluxe room\" but needs to be just \"deluxe\" or another variant. But the schema says it's just a string.\n\nLet me try with \"New York\" as location first, since that's the most likely issue - specific hotel names might not be valid locations in this system.\n\nActually, I should inform the user about the issue, but let me try one more time with \"New York\" as the location since that's a cleaner location parameter."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "functions.hotel_book:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_book:2",
+          "function": {
+            "arguments": "{\"additional_services\": [\"breakfast\"], \"location\": \"New York\", \"nights\": 2, \"roomType\": \"deluxe\"}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "It failed again. Let me reconsider the parameters.\n\nMaybe the room type needs to be exactly matching what the API expects. The user said \"deluxe room\" - maybe it should be \"Deluxe\" or \"deluxe\" without \"room\"? Or maybe the location parameter needs to include the hotel name and my second attempt was wrong for removing it?\n\nActually, maybe the API requires the location to be a specific format, or the room type to be one of a few specific strings. Since I don't have the exact enum values for roomType (it's defined as just string in the schema), maybe I should describe the issue to the user and suggest that the parameters might need to match a specific format.\n\nWait, let me look at the function definition again very carefully:\n\n```\n\"hotel_book\": {\n  \"parameters\": {\n    \"properties\": {\n      \"additional_services\": {\n        \"items\": {\n          \"enum\": [\"breakfast\", \"parking\", \"spa\"],\n          \"type\": \"string\"\n        },\n        \"type\": \"array\"\n      },\n      \"location\": {\n        \"description\": \"Location of the hotel.\",\n        \"type\": \"string\"\n      },\n      \"nights\": {\n        \"type\": \"number\"\n      },\n      \"roomType\": {\n        \"description\": \"Type of the room to be booked.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"location\", \"roomType\", \"nights\"]\n  }\n}\n```\n\nWait, I think I need to check if the parameters are passed correctly. The function definition has:\n- location\n- roomType  \n- nights\n- additional_services (optional)\n\nMy second call:\n- location: \"New York\"\n- roomType: \"deluxe room\"\n- nights: 2\n- additional_services: [\"breakfast\"]\n\nMaybe the issue is that I'm passing \"deluxe room\" and the backend expects just \"deluxe\"? Or maybe the location needs to be more specific? \n\nAlternatively, maybe the function doesn't actually support the hotel name in the location, and the system couldn't find a specific hotel. But the error says \"invalid parameters\" which usually means schema validation, not business logic.\n\nHmm, could it be that \"roomType\" should be \"room_type\"? No, the schema clearly says \"roomType\".\n\nCould it be that \"nights\" should be an integer? I passed a number (2).\n\nMaybe the location parameter doesn't accept \"New York\" because it's expecting something like \"New York, NY\" or a specific hotel name? \n\nOr wait - could the issue be that I need to call it with the proper JSON where nights is not just a number but the system is picky? Unlikely.\n\nActually, maybe I should try a different room type. Like \"Deluxe\" (capitalized) without \"room\"? Or \"standard\"? No, I should use what the user asked.\n\nLet me try \"Deluxe\" as roomType instead of \"deluxe room\".\n\nActually, I just realized - maybe the problem is that I can't actually book at a specific hotel like Marriott through this generic function? But the parameter is just location.\n\nLet me try one more time with slightly different formatting. Maybe the room type should be one word like \"deluxe\" or is case-sensitive \"Deluxe\".\n\nI'll try:\n- location: \"New York\"\n- roomType: \"Deluxe Room\"\n- nights: 2\n- additional_services: [\"breakfast\"]\n\nIf this fails, I'll explain to the user that there seems to be a technical issue with the booking system.\n\nActually, thinking about the first error vs the second error - both returned 400. Usually, if the schema was the problem, the function wouldn't have been called at all and I'd get a different error from the system. So maybe the 400 is coming from the underlying API, meaning my parameters passed schema validation but failed business rules.\n\nPossible business rule failures:\n- Location not recognized (neither \"Marriott hotel in New York\" nor \"New York\")\n- Room type not available (\"deluxe room\" not found)\n- Number of nights invalid\n- Service not available\n\nSince the user specifically wants Marriott in New York, maybe I need to just say \"Marriott\" or include \"Manhattan\"? Or maybe the system doesn't have Marriott in its database.\n\nLet me try \"Marriott\" as the location, or maybe I should ask the user. But actually, as an AI, I should try my best.\n\nLet me try roomType: \"deluxe\" instead of \"deluxe room\".\n\nActually, let me reconsider whether the hotel_book function can even handle specific hotel chains. The parameter is \"location\" - this might mean the system books generic hotels by location, not specific brands. But the user explicitly asked for Marriott. I should probably proceed with the requested parameters.\n\nWait, let me check if there's a constrain on the roomType. The schema says string, but maybe the API only accepts specific values like \"single\", \"double\", \"suite\", \"deluxe\" and rejects \"deluxe room\" because that's not an exact match.\n\nLet me try with \"deluxe\" only.\n\nActually, I should also consider that maybe the location needs to be a specific string like \"New York, NY\" or a zip code or neighborhood.\n\nLet me try one more variation:\n- location: \"New York\"\n- roomType: \"deluxe\"\n- nights: 2\n- additional_services: [\"breakfast\"]"
+    }
+  ],
+  "system_prompt": null
+}

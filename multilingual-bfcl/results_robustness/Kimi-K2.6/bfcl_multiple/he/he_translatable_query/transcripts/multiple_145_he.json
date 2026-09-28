@@ -1,0 +1,116 @@
+{
+  "id": "multiple_145_he",
+  "source_id": "multiple_145",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 386,
+  "total_output_tokens": 501,
+  "total_latency_s": 3.7286672592163086,
+  "estimated_cost_usd": 0.0023707,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה CO2 מיוצר מדי שנה על ידי מכונית המונעת בגז שנוסעת 12,000 מייל בשנה עם יעילות דלק של 20 mpg?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calculate_emissions": {
+        "distance": [
+          12000
+        ],
+        "fuel_type": [
+          "gas",
+          "gasoline"
+        ],
+        "fuel_efficiency": [
+          20
+        ],
+        "efficiency_reduction": [
+          "",
+          0.0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_efficiency": 20,
+            "fuel_type": "gasoline"
+          },
+          "id": "functions.calculate_emissions:0"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_efficiency": 20,
+            "fuel_type": "gasoline"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 386,
+      "output_tokens": 501,
+      "latency_s": 3.7286672592163086,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה CO2 מיוצר מדי שנה על ידי מכונית המונעת בגז שנוסעת 12,000 מייל בשנה עם יעילות דלק של 20 mpg?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calculate_emissions:0",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_efficiency\": 20, \"fuel_type\": \"gasoline\"}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew about annual CO2 emissions from a vehicle that runs on gasoline (גז means gas/gasoline in this context), travels 12,000 miles per year, with fuel efficiency of 20 mpg.\n\nI need to use the calculate_emissions function with:\n- distance: 12000\n- fuel_efficiency: 20\n- fuel_type: I need to specify the fuel type. The user said \"גז\" which in the context of cars usually means gasoline. The function might accept things like \"gasoline\", \"petrol\", \"diesel\", etc. I should probably use \"gasoline\" as it's the most standard English term for what Israelis call \"benzine\" or sometimes \"gas\" in a car context. Actually, looking at the function description, it says \"Type of fuel used by the vehicle.\" and the examples typically use things like \"gasoline\", \"diesel\", \"petrol\". I'll use \"gasoline\".\n\nWait, let me double check - the user wrote \"מונעת בגז\" (powered by gas). In some contexts \"gas\" could mean LPG (liquefied petroleum gas), but usually when people refer to standard cars and say \"gas\" they mean gasoline. However, given the Hebrew word \"גז\" - in Israel this could mean LPG. But more commonly, Israelis say \"בנזין\" for gasoline. That said, in the context of interacting with an English API, \"gasoline\" is the safest interpretation for a car. However, LPG is also called gas. \n\nActually, since the function just needs a string for fuel_type, and the user said \"גז\", I should probably use \"gasoline\" as that's the most common car fuel referred to as \"gas\". But I could use \"gas\" as well. Let me think about what the function expects - it doesn't specify valid values, so I'll use \"gasoline\" as it's unambiguous.\n\nRequired parameters:\n- distance: 12000 (number)\n- fuel_efficiency: 20 (number)\n- fuel_type: \"gasoline\" (string)\n\nefficiency_reduction is optional and defaults to 0, so I can leave it out.\n\nLet me construct the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

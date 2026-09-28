@@ -1,0 +1,111 @@
+{
+  "id": "multiple_112_he",
+  "source_id": "multiple_112",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 238,
+  "total_output_tokens": 245,
+  "total_latency_s": 2.46639347076416,
+  "estimated_cost_usd": 0.0012060999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חזה את גידול היער בפארק הלאומי ילוסטון ל-5 השנים הבאות כולל השפעה אנושית."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "forest_growth_forecast": {
+        "location": [
+          "Yellowstone National Park"
+        ],
+        "years": [
+          5
+        ],
+        "include_human_impact": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "Yellowstone National Park",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "functions.forest_growth_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "Yellowstone National Park",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 238,
+      "output_tokens": 245,
+      "latency_s": 2.46639347076416,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חזה את גידול היער בפארק הלאומי ילוסטון ל-5 השנים הבאות כולל השפעה אנושית."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.forest_growth_forecast:0",
+          "function": {
+            "arguments": "{\"location\":\"Yellowstone National Park\",\"years\":5,\"include_human_impact\":true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants a forest growth forecast for Yellowstone National Park for the next 5 years, including the impact of human activities.\n\nLooking at the available functions, I have `forest_growth_forecast` which takes:\n- location (required): string\n- years (required): number\n- include_human_impact (optional): boolean, defaults to false\n\nThe user explicitly requests to include human impact (\"כולל השפעה אנושית\"), so I should set include_human_impact to true.\n\nThe location is \"פארק הלאומי ילוסטרון\" (Yellowstone National Park). I should probably provide this in English as \"Yellowstone National Park\" since the function likely expects English location names, or I could provide the Hebrew name. Let me think - usually location-based APIs work better with English names, especially for well-known US national parks. I'll use \"Yellowstone National Park\" to be safe.\n\nyears: 5\ninclude_human_impact: true\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

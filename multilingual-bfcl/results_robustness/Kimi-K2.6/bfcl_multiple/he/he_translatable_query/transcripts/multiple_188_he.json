@@ -1,0 +1,135 @@
+{
+  "id": "multiple_188_he",
+  "source_id": "multiple_188",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 444,
+  "total_output_tokens": 188,
+  "total_latency_s": 2.010165214538574,
+  "estimated_cost_usd": 0.0011738,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את חנות המכולת הקרובה ביותר לברקלי בעלת דירוג של לפחות 4.5 כוכבים, שמוכרת עגבניות וגם מזון לחיות מחמד."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "grocery_store.find_best": {
+        "my_location": [
+          "Berkeley",
+          "Berkeley,California",
+          "Berkeley,CA",
+          "Berkeley, CA"
+        ],
+        "rating": [
+          4.5
+        ],
+        "products": [
+          [
+            "tomatoes",
+            "pet food"
+          ],
+          [
+            "pet food",
+            "tomatoes"
+          ],
+          [
+            "Tomatoes",
+            "Pet food"
+          ],
+          [
+            "Pet food",
+            "Tomatoes"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "grocery_store_find_best",
+          "arguments": {
+            "my_location": "Berkeley",
+            "products": [
+              "tomatoes",
+              "pet food"
+            ],
+            "rating": 4.5
+          },
+          "id": "functions.grocery_store_find_best:0"
+        }
+      ],
+      "decoded": [
+        {
+          "grocery_store_find_best": {
+            "my_location": "Berkeley",
+            "products": [
+              "tomatoes",
+              "pet food"
+            ],
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 444,
+      "output_tokens": 188,
+      "latency_s": 2.010165214538574,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את חנות המכולת הקרובה ביותר לברקלי בעלת דירוג של לפחות 4.5 כוכבים, שמוכרת עגבניות וגם מזון לחיות מחמד."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.grocery_store_find_best:0",
+          "function": {
+            "arguments": "{\"my_location\":\"Berkeley\",\"products\":[\"tomatoes\",\"pet food\"],\"rating\":4.5}",
+            "name": "grocery_store_find_best"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to find the closest grocery store to Berkeley with at least 4.5 stars rating that sells tomatoes and pet food.\n\nI need to use the `grocery_store_find_best` function.\n\nParameters:\n- `my_location`: \"Berkeley\" (the user said \"ברקלי\" which is Berkeley)\n- `products`: [\"tomatoes\", \"pet food\"] (the user said \"עגבניות\" = tomatoes, \"מזון לחיות מחמד\" = pet food)\n- `rating`: 4.5 (the user said \"לפחות 4.5 כוכבים\" = at least 4.5 stars)\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

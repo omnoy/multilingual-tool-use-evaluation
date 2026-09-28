@@ -1,0 +1,112 @@
+{
+  "id": "multiple_54_he",
+  "source_id": "multiple_54",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 244,
+  "total_output_tokens": 530,
+  "total_latency_s": 3.2187020778656006,
+  "estimated_cost_usd": 0.0023518,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את תשלומי הדיבידנד ההיסטוריים של Apple Inc בחמש השנים האחרונות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.dividend_data": {
+        "company": [
+          "Apple Inc",
+          "Apple",
+          "Apple Inc."
+        ],
+        "years": [
+          5
+        ],
+        "frequency": [
+          "",
+          "annually"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Apple Inc",
+            "years": 5
+          },
+          "id": "functions.corporate_finance_dividend_data:0"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Apple Inc",
+            "years": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 244,
+      "output_tokens": 530,
+      "latency_s": 3.2187020778656006,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את תשלומי הדיבידנד ההיסטוריים של Apple Inc בחמש השנים האחרונות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.corporate_finance_dividend_data:0",
+          "function": {
+            "arguments": "{\"company\": \"Apple Inc\", \"years\": 5}",
+            "name": "corporate_finance_dividend_data"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for historical dividend payments of Apple Inc. for the last five years, written in Hebrew.\n\nLooking at the available functions:\n1. `corporate_finance_dividend_data` - Get historical dividend data of a specific company within a particular duration.\n2. `stock_market_data` - Retrieve stock market data for a specific company and time frame.\n\nFor dividend data, I should use `corporate_finance_dividend_data`.\n\nRequired parameters:\n- `company`: The company name is \"Apple Inc\" or just \"Apple\". I'll use \"Apple Inc\" as specified by the user.\n- `years`: 5 (five years)\n\nOptional parameters:\n- `frequency`: Default is annually, but Apple pays quarterly dividends. However, the default is \"annually\" and the user didn't specify, so I could leave it as default. But actually, Apple typically pays quarterly dividends. Since the user didn't specify a frequency explicitly, I should probably not specify it and let it use the default, or I could consider what's most useful. Actually, looking at the user's request, they just said \"dividend payments\" without specifying frequency. I'll leave the frequency as default (annually) since it's not explicitly requested, but wait - Apple is known for quarterly dividends. However, the parameter definition says \"Default annually\", and without explicit user request for quarterly, I should use default or just provide what's asked. \n\nActually, on second thought, \"frequency\" is optional with a default of \"annually\". The user asked for dividend payments over the last 5 years without specifying frequency. I should call the function with just the required parameters or specify frequency if it makes more sense. Since the user just wants historical dividend data, the most common interpretation would be to get all dividend payments. But the function requires frequency... wait no, it has a default value.\n\nLet me provide the function call with company=\"Apple Inc\" and years=5. I won't specify frequency since it has a default and the user didn't specify. Actually, looking more carefully: should I use \"Apple\" or \"Apple Inc\"? The user specifically mentioned \"Apple Inc\", so I'll use that exactly.\n\nWait, I should probably check if I need to specify frequency as \"quarterly\" since Apple pays quarterly. But the instruction says to respond with the correct function call exactly as specified. The user didn't specify quarterly vs annually. Default is annually.\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

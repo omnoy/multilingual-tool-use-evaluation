@@ -1,0 +1,164 @@
+{
+  "id": "multiple_196_he",
+  "source_id": "multiple_196",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1293,
+  "total_output_tokens": 701,
+  "total_latency_s": 6.137359619140625,
+  "estimated_cost_usd": 0.0040323500000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהם השמות של החלבונים הנמצאים בקרום הפלזמה?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "plasma membrane"
+        ],
+        "include_description": [
+          "",
+          false
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane",
+            "include_description": true
+          },
+          "id": "functions.cellbio_get_proteins:0"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane",
+            "include_description": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "input_tokens": 435,
+      "output_tokens": 379,
+      "latency_s": 3.8144760131835938,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane"
+          },
+          "id": "functions.cellbio_get_proteins:1"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 858,
+      "output_tokens": 322,
+      "latency_s": 2.3228836059570312,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהם השמות של החלבונים הנמצאים בקרום הפלזמה?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.cellbio_get_proteins:0",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\", \"include_description\": true}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What are the names of the proteins found in the plasma membrane?\" \n\nI have a function called `cellbio_get_proteins` that gets the list of proteins in a specific cell compartment. The parameter `cell_compartment` is required. The user is asking about the plasma membrane, which is \"plasma membrane\" or \"cell membrane\" in English.\n\nI need to call the function with `cell_compartment` set to \"plasma membrane\". I should also consider setting `include_description` to true since the user asked \"what are the names\" but might benefit from descriptions, though the parameter is not required. Actually, the user specifically asked for names, so I could leave it as default false, but descriptions might be helpful. However, since the user asked specifically for names, I'll just use the default or maybe set to true to be more helpful. Wait, looking at the parameter, include_description has no explicit default in the JSON but the description says \"Default: 'false'\". \n\nActually, the safest is to just provide the cell_compartment. But if I want to be helpful, I can include descriptions. However, since the user didn't explicitly ask for descriptions, and the tool schema doesn't mark include_description as required, I can just provide cell_compartment: \"plasma membrane\".\n\nWait, I should check if \"plasma membrane\" is the exact term expected by the API. Since the function description says \"The specific cell compartment\", and common terms include \"plasma membrane\", \"nucleus\", \"mitochondria\", etc. \"plasma membrane\" is the standard biological term.\n\nI'll call the function with cell_compartment: \"plasma membrane\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "tool_call_id": "functions.cellbio_get_proteins:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.cellbio_get_proteins:1",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. This might mean that \"plasma membrane\" is not the exact expected term, or maybe the API expects a different format. Let me try without the include_description parameter, or try a different term. Actually, the schema says include_description has type boolean, but I passed true (not string). The default description says \"Default: 'false'\" which is confusing because it quotes the boolean. But the type is boolean according to the schema. Wait, looking at the schema again:\n\n\"include_description\": {\"type\": \"boolean\", \"default\": \"false\", \"description\": \"Set true if you want a brief description of each protein.\"}\n\nThe default value is given as a string \"false\" but the type is boolean. This might be a schema issue. But my call should still be valid since I passed a boolean.\n\nMaybe the term \"plasma membrane\" is not recognized. Common alternatives: \"plasma membrane\", \"cell membrane\", \"Plasma membrane\" (capitalization?). Or maybe the function expects \"cell membrane\". Let me retry with \"cell membrane\". Or just \"plasma membrane\" without include_description to see if that parameter is the issue.\n\nActually, looking at the error, it says invalid parameters. Let me try with the string version of true? No, the schema clearly says boolean.\n\nMaybe the Hebrew term? No, the schema is in English.\n\nLet me try without include_description first."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

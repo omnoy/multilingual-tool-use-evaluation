@@ -1,0 +1,169 @@
+{
+  "id": "multiple_88_he",
+  "source_id": "multiple_88",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 998,
+  "total_output_tokens": 551,
+  "total_latency_s": 3.5904879570007324,
+  "estimated_cost_usd": 0.0031520999999999997,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי את מספר השחקנים הפעילים במשחק 'וורלד אוף וורקראפט' בשנת 2020."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "video_games.get_player_count": {
+        "game_title": [
+          "וורלד אוף וורקראפט"
+        ],
+        "year": [
+          2020
+        ],
+        "platform": [
+          "",
+          "מחשב אישי"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "video_games_get_player_count",
+          "arguments": {
+            "game_title": "World of Warcraft",
+            "year": 2020
+          },
+          "id": "functions.video_games_get_player_count:0"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_get_player_count": {
+            "game_title": "World of Warcraft",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'video_games_get_player_count'. Please review the function definition and try again.",
+      "input_tokens": 261,
+      "output_tokens": 430,
+      "latency_s": 2.411104679107666,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "video_games_get_player_count",
+          "arguments": {
+            "game_title": "וורלד אוף וורקראפט",
+            "year": 2020
+          },
+          "id": "functions.video_games_get_player_count:1"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_get_player_count": {
+            "game_title": "וורלד אוף וורקראפט",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 737,
+      "output_tokens": 121,
+      "latency_s": 1.1793832778930664,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי את מספר השחקנים הפעילים במשחק 'וורלד אוף וורקראפט' בשנת 2020."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.video_games_get_player_count:0",
+          "function": {
+            "arguments": "{\"game_title\": \"World of Warcraft\", \"year\": 2020}",
+            "name": "video_games_get_player_count"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the number of active players for the game 'World of Warcraft' in the year 2020. The game title is written in Hebrew as 'וורלד אוף וורקראפט' which translates to 'World of Warcraft'. \n\nI need to use the function `video_games_get_player_count` with:\n- game_title: \"World of Warcraft\" (I should use the English title since that's the standard name of the game, or I could try the Hebrew transliteration. But typically these APIs expect English titles. Let me use the English title \"World of Warcraft\" to be safe, though the parameter description doesn't specify language. Actually, looking at the context, it's safer to provide the English title since it's an international game name.)\n- year: 2020\n- platform: optional, default is empty\n\nActually, wait. The user wrote the title in Hebrew. Should I pass it in Hebrew or English? The function parameter just says \"The title of the video game.\" without specifying language. However, 'וורלד אוף וורקראפט' is just the Hebrew transliteration of \"World of Warcraft\". It's safer to pass the English title since most video game databases use English titles. But I should consider that maybe the API accepts Hebrew. Given the instruction says \"respond with the correct function call exactly as specified\", and the user asked in Hebrew, I think passing the Hebrew name might actually be what the API expects if it's localized. But no, typically game APIs expect English. \n\nActually, looking at the instruction again: \"Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nThe most accurate approach is to translate the game title to English since \"World of Warcraft\" is the canonical name. I'll use \"World of Warcraft\" and year 2020.\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'video_games_get_player_count'. Please review the function definition and try again.",
+      "tool_call_id": "functions.video_games_get_player_count:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.video_games_get_player_count:1",
+          "function": {
+            "arguments": "{\"game_title\": \"וורלד אוף וורקראפט\", \"year\": 2020}",
+            "name": "video_games_get_player_count"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. This could be because the game title was expected in Hebrew, or there's an issue with the parameter format. Let me try with the Hebrew name as provided by the user: \"וורלד אוף וורקראפט\". Alternatively, it could be that the API expects exactly what the user wrote. Let me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

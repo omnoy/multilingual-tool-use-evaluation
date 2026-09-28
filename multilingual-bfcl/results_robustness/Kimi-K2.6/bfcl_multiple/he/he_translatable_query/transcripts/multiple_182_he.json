@@ -1,0 +1,109 @@
+{
+  "id": "multiple_182_he",
+  "source_id": "multiple_182",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 503,
+  "total_output_tokens": 338,
+  "total_latency_s": 2.107623815536499,
+  "estimated_cost_usd": 0.0018298499999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי משחק מרובה משתתפים עם דירוג מעל 4.5 ותואם ל-Windows 10."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "multiplayer_game_finder": {
+        "platform": [
+          "Windows 10"
+        ],
+        "rating": [
+          4.5
+        ],
+        "genre": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "multiplayer_game_finder",
+          "arguments": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          },
+          "id": "functions.multiplayer_game_finder:0"
+        }
+      ],
+      "decoded": [
+        {
+          "multiplayer_game_finder": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 503,
+      "output_tokens": 338,
+      "latency_s": 2.107623815536499,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי משחק מרובה משתתפים עם דירוג מעל 4.5 ותואם ל-Windows 10."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.multiplayer_game_finder:0",
+          "function": {
+            "arguments": "{\"platform\":\"Windows 10\",\"rating\":4.5}",
+            "name": "multiplayer_game_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to find a multiplayer game with a rating above 4.5 that is compatible with Windows 10.\n\nLooking at the available functions, `multiplayer_game_finder` seems appropriate:\n- platform: \"Windows 10\"\n- rating: 4.5 (float)\n- genre is optional\n\nThe user wants rating \"above 4.5\". The parameter description says \"Desired minimum game rating on a 5.0 scale.\" Since they want above 4.5, I should use 4.5 as the minimum (or slightly higher like 4.5). Actually, since the function takes a minimum rating and the user said \"above 4.5\", using 4.5 should return games with rating >= 4.5. But the user specifically said \"above\" (מעל). I should probably use something slightly above like 4.5, but since it's a float and the function is defined with minimum rating, 4.5 is the standard parameter to use. Actually, let me just use 4.5 as specified - that would be the safe choice.\n\nWait, the function description says: \"Desired minimum game rating on a 5.0 scale. This is a float type value.\" So if I pass 4.5, it should return games with rating at least 4.5, which satisfies \"above 4.5\" or at least meets it. I'll use 4.5.\n\ngenre is optional so I don't need to include it."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

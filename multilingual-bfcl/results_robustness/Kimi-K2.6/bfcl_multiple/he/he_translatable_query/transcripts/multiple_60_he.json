@@ -1,0 +1,166 @@
+{
+  "id": "multiple_60_he",
+  "source_id": "multiple_60",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 721,
+  "total_output_tokens": 174,
+  "total_latency_s": 1.628028392791748,
+  "estimated_cost_usd": 0.00138095,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה תהיה הלחות והטמפרטורה בעיר ניו יורק בעוד 7 ימים?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "humidity_temperature_forecast": {
+        "location": [
+          "New York City",
+          "NYC"
+        ],
+        "days": [
+          7
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "New York",
+            "days": 7
+          },
+          "id": "functions.humidity_temperature_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "New York",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'humidity_temperature_forecast'. Please review the function definition and try again.",
+      "input_tokens": 283,
+      "output_tokens": 107,
+      "latency_s": 0.8305637836456299,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "New York City",
+            "days": 7
+          },
+          "id": "functions.humidity_temperature_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "New York City",
+            "days": 7
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 438,
+      "output_tokens": 67,
+      "latency_s": 0.7974646091461182,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה תהיה הלחות והטמפרטורה בעיר ניו יורק בעוד 7 ימים?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.humidity_temperature_forecast:0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"days\":7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What will be the humidity and temperature in New York City in 7 days?\"\n\nI need to use the `humidity_temperature_forecast` function with:\n- location: \"New York\" (or \"New York City\" - I'll use \"New York\" as it's the standard city name)\n- days: 7\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'humidity_temperature_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.humidity_temperature_forecast:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.humidity_temperature_forecast:1",
+          "function": {
+            "arguments": "{\"location\":\"New York City\",\"days\":7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me try with \"New York City\" instead of \"New York\", or perhaps the API expects a different format. Let me try again."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

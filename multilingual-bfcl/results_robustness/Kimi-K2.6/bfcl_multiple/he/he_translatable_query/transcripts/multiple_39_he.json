@@ -1,0 +1,115 @@
+{
+  "id": "multiple_39_he",
+  "source_id": "multiple_39",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 252,
+  "total_output_tokens": 216,
+  "total_latency_s": 1.2453207969665527,
+  "estimated_cost_usd": 0.0011034,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא נסיעה מניו יורק לפילדלפיה בעלות מקסימלית של $50"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "ride_hailing.get_rides": {
+        "source": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "NYC",
+          "NY"
+        ],
+        "destination": [
+          "Philadelphia"
+        ],
+        "max_cost": [
+          50
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          },
+          "id": "functions.ride_hailing_get_rides:0"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 252,
+      "output_tokens": 216,
+      "latency_s": 1.2453207969665527,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא נסיעה מניו יורק לפילדלפיה בעלות מקסימלית של $50"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.ride_hailing_get_rides:0",
+          "function": {
+            "arguments": "{\"source\": \"New York\", \"destination\": \"Philadelphia\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking to find a ride from New York to Philadelphia with a maximum cost of $50.\n\nThe function `ride_hailing_get_rides` has the following parameters:\n- source (required): The starting point of the journey - \"ניו יורק\" or in English \"New York\"\n- destination (required): The endpoint of the journey - \"פילדלפיה\" or in English \"Philadelphia\"\n- max_cost (optional): The maximum cost of the ride - $50\n\nI should call the function with:\n- source: \"New York\" (or \"ניו יורק\" - but typically these APIs expect English place names)\n- destination: \"Philadelphia\" (or \"פילדלפיה\")\n- max_cost: 50\n\nI'll use the English names for locations as they are standard in ride-hailing APIs."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

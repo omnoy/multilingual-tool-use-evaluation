@@ -1,0 +1,199 @@
+{
+  "id": "multiple_8_he",
+  "source_id": "multiple_8",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 2026,
+  "total_output_tokens": 109,
+  "total_latency_s": 60.39384150505066,
+  "estimated_cost_usd": 0.004706,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא וילה עם 3 חדרי שינה למכירה בתקציב של 300,000 עד 400,000 דולר בסן דייגו."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "realestate.find_properties": {
+        "location": [
+          "סן דייגו",
+          "סן דייגו",
+          "סן דייגו, קליפורניה",
+          "קליפורניה"
+        ],
+        "propertyType": [
+          "וילה"
+        ],
+        "bedrooms": [
+          3
+        ],
+        "budget": [
+          {
+            "min": [
+              300000
+            ],
+            "max": [
+              400000
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, CA",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call-e8452b11-306f-4b43-bac5-e53f9d4925cb-0"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, CA",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "input_tokens": 511,
+      "output_tokens": 49,
+      "latency_s": 32.68838334083557,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "סן דייגו, קליפורניה",
+            "propertyType": "וילה",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000.0,
+              "max": 400000.0
+            }
+          },
+          "id": "call-0e7926bf-c579-44e3-981d-f21edb5d58cc-1"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "סן דייגו, קליפורניה",
+            "propertyType": "וילה",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000.0,
+              "max": 400000.0
+            }
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1515,
+      "output_tokens": 60,
+      "latency_s": 27.705458164215088,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא וילה עם 3 חדרי שינה למכירה בתקציב של 300,000 עד 400,000 דולר בסן דייגו."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-e8452b11-306f-4b43-bac5-e53f9d4925cb-0",
+          "function": {
+            "arguments": "{\"location\":\"San Diego, CA\",\"propertyType\":\"villa\",\"bedrooms\":3,\"budget\":{\"min\":300000,\"max\":400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "tool_call_id": "call-e8452b11-306f-4b43-bac5-e53f9d4925cb-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-0e7926bf-c579-44e3-981d-f21edb5d58cc-1",
+          "function": {
+            "arguments": "{\"location\":\"סן דייגו, קליפורניה\",\"propertyType\":\"וילה\",\"bedrooms\":3,\"budget\":{\"min\":300000.0,\"max\":400000.0}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

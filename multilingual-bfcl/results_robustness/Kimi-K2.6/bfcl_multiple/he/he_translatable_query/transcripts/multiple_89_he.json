@@ -1,0 +1,125 @@
+{
+  "id": "multiple_89_he",
+  "source_id": "multiple_89",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 372,
+  "total_output_tokens": 378,
+  "total_latency_s": 2.1181037425994873,
+  "estimated_cost_usd": 0.0018654000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא מתכון צהריים בריא עם פחות מ-500 קלוריות שמשתמש בעוף ופטריות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "lunch",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "functions.recipe_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 372,
+      "output_tokens": 378,
+      "latency_s": 2.1181037425994873,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא מתכון צהריים בריא עם פחות מ-500 קלוריות שמשתמש בעוף ופטריות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:0",
+          "function": {
+            "arguments": "{\"ingredients\": [\"chicken\", \"mushrooms\"], \"calories\": 500, \"meal\": \"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for a healthy lunch recipe with less than 500 calories that uses chicken and mushrooms. This is in Hebrew.\n\nI need to use the `recipe_search` function with:\n- ingredients: [\"עוף\", \"פטריות\"] or in English? The tool definitions don't specify language for ingredients, but typically these systems expect English. However, the user wrote in Hebrew and the system says to understand the request in Hebrew. Let me check the parameter descriptions - they say \"A list of ingredients you want to use in the recipe.\" No specific language required. But since this is an API, it might expect English. Actually, looking at the context, I should probably use English ingredient names since most recipe APIs are in English. But wait - the system was trained to handle Hebrew input. Let me think... The ingredients parameter accepts strings. I'll use English translations to be safe: [\"chicken\", \"mushrooms\"].\n\nWait, actually the user wrote \"עוף\" which is chicken and \"פטריות\" which is mushrooms. But the function might expect English. However, the instructions don't specify I must translate. But for API compatibility, English is safer. Let me use [\"chicken\", \"mushrooms\"].\n\n- calories: 500\n- meal: \"lunch\" (since צהריים means lunch)\n\nActually, looking more carefully, I should probably just pass the Hebrew terms since the user provided them and there's no explicit instruction to translate. But API parameters are usually English. I'll use English names for ingredients to ensure the search works properly: \"chicken\" and \"mushrooms\".\n\nLet me make the call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

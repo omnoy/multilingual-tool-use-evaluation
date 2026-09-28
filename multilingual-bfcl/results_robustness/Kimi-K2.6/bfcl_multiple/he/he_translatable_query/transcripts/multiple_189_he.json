@@ -1,0 +1,122 @@
+{
+  "id": "multiple_189_he",
+  "source_id": "multiple_189",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 242,
+  "total_output_tokens": 256,
+  "total_latency_s": 1.7750880718231201,
+  "estimated_cost_usd": 0.0012538999999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "המר את השעה 3pm מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "3pm"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "New York",
+          "New York, NY",
+          "NY",
+          "NYC",
+          "Eastern Standard Time",
+          "EST"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "London",
+          "British Summer Time",
+          "BST",
+          "Greenwich Mean Time",
+          "GMT"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "3pm",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          },
+          "id": "functions.timezone_convert:0"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "3pm",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 242,
+      "output_tokens": 256,
+      "latency_s": 1.7750880718231201,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "המר את השעה 3pm מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:0",
+          "function": {
+            "arguments": "{\"time\": \"3pm\", \"from_timezone\": \"America/New_York\", \"to_timezone\": \"Europe/London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to convert 3pm from New York timezone to London timezone.\n\nNew York timezone: America/New_York or Eastern Time (ET)\nLondon timezone: Europe/London or Greenwich Mean Time (GMT) / British Summer Time (BST)\n\nThe function `timezone_convert` requires:\n- time: \"3pm\"\n- from_timezone: \"America/New_York\" (or \"ET\")\n- to_timezone: \"Europe/London\" (or \"GMT\")\n\nI should use standard IANA timezone identifiers where possible, or at least commonly understood timezone abbreviations. Let me use \"America/New_York\" and \"Europe/London\" as they are the most standard.\n\nWait, let me check the function definition again:\n- time: string, e.g. \"3pm\"\n- from_timezone: string, The time zone you want to convert from.\n- to_timezone: string, The time zone you want to convert to.\n\nI'll use:\n- time: \"3pm\"\n- from_timezone: \"America/New_York\"\n- to_timezone: \"Europe/London\""
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

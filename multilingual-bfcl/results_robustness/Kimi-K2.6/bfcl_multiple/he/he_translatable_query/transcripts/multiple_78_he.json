@@ -1,0 +1,148 @@
+{
+  "id": "multiple_78_he",
+  "source_id": "multiple_78",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 324,
+  "total_output_tokens": 237,
+  "total_latency_s": 1.5427870750427246,
+  "estimated_cost_usd": 0.0012558,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "השג לי מידע על מוזיאון הטבע בלונדון כולל שעות פעילות, תערוכות ונגישות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "museum_info": {
+        "museum": [
+          "Natural History Museum"
+        ],
+        "city": [
+          "London"
+        ],
+        "features": [
+          [
+            "timings",
+            "exhibitions",
+            "accessibility"
+          ],
+          [
+            "exhibitions",
+            "timings",
+            "accessibility"
+          ],
+          [
+            "exhibitions",
+            "accessibility",
+            "timings"
+          ],
+          [
+            "accessibility",
+            "timings",
+            "exhibitions"
+          ],
+          [
+            "accessibility",
+            "exhibitions",
+            "timings"
+          ],
+          [
+            "timings",
+            "accessibility",
+            "exhibitions"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "museum_info",
+          "arguments": {
+            "museum": "Natural History Museum",
+            "city": "London",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          },
+          "id": "functions.museum_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "museum_info": {
+            "museum": "Natural History Museum",
+            "city": "London",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 324,
+      "output_tokens": 237,
+      "latency_s": 1.5427870750427246,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "השג לי מידע על מוזיאון הטבע בלונדון כולל שעות פעילות, תערוכות ונגישות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.museum_info:0",
+          "function": {
+            "arguments": "{\"museum\":\"Natural History Museum\",\"city\":\"London\",\"features\":[\"timings\",\"exhibitions\",\"accessibility\"]}",
+            "name": "museum_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew for information about the Natural History Museum in London, including operating hours, exhibitions, and accessibility.\n\nLooking at the available tools, I have `museum_info` which can retrieve information about a specific museum. The parameters needed are:\n- `museum`: The name of the museum - this would be \"Natural History Museum\" \n- `city`: The city where the museum is located - \"London\"\n- `features`: An array of strings describing what features to get information on. The user wants:\n  - שעות פעילות (operating hours/timings) -> \"timings\"\n  - תערוכות (exhibitions) -> \"exhibitions\"\n  - נגישות (accessibility) -> \"accessibility\"\n\nSo I need to call `museum_info` with:\n- museum: \"Natural History Museum\"\n- city: \"London\"\n- features: [\"timings\", \"exhibitions\", \"accessibility\"]"
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

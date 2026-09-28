@@ -1,0 +1,194 @@
+{
+  "id": "multiple_190_he",
+  "source_id": "multiple_190",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1003,
+  "total_output_tokens": 919,
+  "total_latency_s": 5.475532293319702,
+  "estimated_cost_usd": 0.00462885,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "הזמן חדר ליחיד לשתי לילות במלון הילטון בשיקגו, החל מ-10 בדצמבר 2022."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "Hilton Hotel",
+          "Hilton"
+        ],
+        "location": [
+          "Chicago"
+        ],
+        "room_type": [
+          "single",
+          "Single"
+        ],
+        "start_date": [
+          "2022-12-10",
+          "10/12/2022",
+          "Dec.10,2022",
+          "10th December 2022",
+          "10 December 2022"
+        ],
+        "nights": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "Single room",
+            "nights": 2,
+            "start_date": "2022-12-10"
+          },
+          "id": "functions.book_hotel:0"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "Single room",
+            "nights": 2,
+            "start_date": "2022-12-10"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'book_hotel'. Please review the function definition and try again.",
+      "input_tokens": 333,
+      "output_tokens": 288,
+      "latency_s": 1.6768302917480469,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "מצטער, נראה שיש בעיה בפרמטרים. הנסה שוב עם פורמט אחר:"
+      ],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "Single",
+            "nights": 2,
+            "start_date": "2022-12-10"
+          },
+          "id": "functions.book_hotel:1"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "Single",
+            "nights": 2,
+            "start_date": "2022-12-10"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 670,
+      "output_tokens": 631,
+      "latency_s": 3.7987020015716553,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "הזמן חדר ליחיד לשתי לילות במלון הילטון בשיקגו, החל מ-10 בדצמבר 2022."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.book_hotel:0",
+          "function": {
+            "arguments": "{\"hotel_name\":\"Hilton\",\"location\":\"Chicago\",\"room_type\":\"Single room\",\"nights\":2,\"start_date\":\"2022-12-10\"}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to book a hotel room. Let me extract the details:\n- Hotel: Hilton (הילטון)\n- Location: Chicago (שיקגו)\n- Room type: Single room (חדר ליחיד)\n- Number of nights: 2 (שתי לילות)\n- Start date: December 10, 2022 (10 בדצמבר 2022)\n\nI need to use the book_hotel function with these parameters.\n\nLooking at the function definition:\n- hotel_name: string - \"Hilton\"\n- location: string - \"Chicago\"\n- room_type: string - \"Single room\" or \"Single\" - I'll use \"Single room\" to be clearer, or just \"Single\". The Hebrew says \"חדר ליחיד\" which means single room.\n- nights: number - 2\n- start_date: string - \"2022-12-10\" (the example shows YYYY-MM-DD format)\n\nLet me format the date properly. The user said \"10 בדצמבר 2022\" which is December 10, 2022. I should format it as \"2022-12-10\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'book_hotel'. Please review the function definition and try again.",
+      "tool_call_id": "functions.book_hotel:0"
+    },
+    {
+      "content": "מצטער, נראה שיש בעיה בפרמטרים. הנסה שוב עם פורמט אחר:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.book_hotel:1",
+          "function": {
+            "arguments": "{\"hotel_name\":\"Hilton\",\"location\":\"Chicago\",\"room_type\":\"Single\",\"nights\":2,\"start_date\":\"2022-12-10\"}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me check what might be wrong. \n\nThe parameters I used were:\n- hotel_name: \"Hilton\"\n- location: \"Chicago\"\n- room_type: \"Single room\"\n- nights: 2\n- start_date: \"2022-12-10\"\n\nWait, the error says invalid parameters. Let me reconsider. Maybe the room_type needs to be different? Or maybe the date format? \n\nActually, let me look at the schema again:\n- hotel_name: string\n- location: string\n- room_type: string\n- nights: number\n- start_date: string\n\nAll seem correct. Maybe I should try \"Single\" instead of \"Single room\"? Or maybe \"Standard\"?\n\nActually, Hebrew speakers might need the response in Hebrew, but the function parameters should be in English.\n\nLet me try again with potentially different values. \"Single\" for room_type might be more standard in hotel booking systems.\n\nActually, I wonder if the issue is that the function is just a mock/placeholder and might not actually accept real bookings, or perhaps I need to be more specific with the hotel name like \"Hilton Chicago\"?\n\nLet me try with room_type as \"Single\" or keep \"Single room\" but ensure everything else is correct.\n\nActually, the error was specifically about parameters. Let me just try again - sometimes these things work on second attempt, or maybe I should use a slightly different format. But actually, I think I should just report back to the user about what happened, or retry if I think I know what was wrong.\n\nWait, I should examine if there are any constraints I'm missing. The function doesn't specify enum values for room_type. Let me try \"Single\" instead of \"Single room\" - maybe the system expects a specific format. Or maybe use \"standard\"?\n\nActually, looking at it again, the function schema shows no specific format for the date. I used \"2022-12-10\" which is ISO format and should be fine.\n\nLet me try once more with a more specific hotel name or different room type. But honestly, without more information about what specifically was invalid, it's hard to say. However, tools sometimes expect certain values. \n\nActually, maybe I should not retry without good reason - the user might want to know what happened. But the instruction says \"respond with the correct function call exactly as specified in the tool definitions.\" So maybe I should try once more with slightly different common values.\n\nLet me try \"Hilton Chicago\" as hotel_name? No, location is separate.\n\nActually, I'll try again with the same parameters but maybe I should check if \"Single room\" vs \"Single\" matters. I'll try \"Single\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

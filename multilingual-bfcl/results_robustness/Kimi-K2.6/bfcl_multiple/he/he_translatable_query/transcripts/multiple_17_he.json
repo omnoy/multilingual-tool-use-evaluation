@@ -1,0 +1,118 @@
+{
+  "id": "multiple_17_he",
+  "source_id": "multiple_17",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 324,
+  "total_output_tokens": 257,
+  "total_latency_s": 2.324169158935547,
+  "estimated_cost_usd": 0.0013358,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את שער ההמרה מאירו לדולר בתאריך 1 בינואר 2022"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "currency_conversion.get_rate": {
+        "from_currency": [
+          "EUR",
+          "Euro"
+        ],
+        "to_currency": [
+          "Dollar",
+          "USD"
+        ],
+        "date": [
+          "2022-01-01",
+          "01/01/2022",
+          "1/1/2022",
+          "Jan.1,2022",
+          "January 1, 2022",
+          "2022-1-1"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "currency_conversion_get_rate",
+          "arguments": {
+            "from_currency": "EUR",
+            "to_currency": "USD",
+            "date": "2022-01-01"
+          },
+          "id": "functions.currency_conversion_get_rate:0"
+        }
+      ],
+      "decoded": [
+        {
+          "currency_conversion_get_rate": {
+            "from_currency": "EUR",
+            "to_currency": "USD",
+            "date": "2022-01-01"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 324,
+      "output_tokens": 257,
+      "latency_s": 2.324169158935547,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את שער ההמרה מאירו לדולר בתאריך 1 בינואר 2022"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.currency_conversion_get_rate:0",
+          "function": {
+            "arguments": "{\"from_currency\": \"EUR\", \"to_currency\": \"USD\", \"date\": \"2022-01-01\"}",
+            "name": "currency_conversion_get_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find the conversion rate from Euro to Dollar on January 1, 2022.\n\nI need to use the `currency_conversion_get_rate` function.\n- from_currency: \"EUR\" (Euro)\n- to_currency: \"USD\" (Dollar)\n- date: \"2022-01-01\" (January 1, 2022)\n\nWait, the user wrote in Hebrew \"מאירו לדולר\" which means \"from Euro to Dollar\". So from_currency is EUR, to_currency is USD.\n\nThe date parameter format isn't explicitly specified in the schema, but typically dates are in ISO format YYYY-MM-DD or possibly other formats. The description says \"Default is the current date\" and the example is \"today\". I should use \"2022-01-01\" as it's the standard format.\n\nActually, looking at the function description again: \"The date at which the conversion rate applies. Default is the current date.\" with default \"today\". I'll provide \"2022-01-01\".\n\nLet me call the function."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

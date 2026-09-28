@@ -1,0 +1,167 @@
+{
+  "id": "multiple_58_he",
+  "source_id": "multiple_58",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1070,
+  "total_output_tokens": 842,
+  "total_latency_s": 7.782190799713135,
+  "estimated_cost_usd": 0.0043844999999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חפש מומחים לדיני גירושין בלוס אנג'לס"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawyer.search": {
+        "location": [
+          "Los Angeles",
+          "Los Angeles, CA",
+          "LA"
+        ],
+        "expertise": [
+          "Divorce"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_search",
+          "arguments": {
+            "expertise": "Marriage",
+            "location": "Los Angeles, CA"
+          },
+          "id": "functions.lawyer_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_search": {
+            "expertise": "Marriage",
+            "location": "Los Angeles, CA"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawyer_search'. Please review the function definition and try again.",
+      "input_tokens": 220,
+      "output_tokens": 589,
+      "latency_s": 3.069911241531372,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_search",
+          "arguments": {
+            "expertise": "Divorce",
+            "location": "Los Angeles, CA"
+          },
+          "id": "functions.lawyer_search:1"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_search": {
+            "expertise": "Divorce",
+            "location": "Los Angeles, CA"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 850,
+      "output_tokens": 253,
+      "latency_s": 4.712279558181763,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חפש מומחים לדיני גירושין בלוס אנג'לס"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawyer_search:0",
+          "function": {
+            "arguments": "{\"expertise\": \"Marriage\", \"location\": \"Los Angeles, CA\"}",
+            "name": "lawyer_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to search for divorce law experts in Los Angeles. In Hebrew, \"דיני גירושין\" means divorce law, and \"לוס אנג'לס\" is Los Angeles.\n\nLooking at the available functions:\n1. doctor_search - for medical specializations, not relevant here\n2. lawyer_search - for legal experts, which is exactly what we need\n\nFor lawyer_search:\n- expertise: \"Marriage\" or \"Divorce\" - the description says 'Marriage', 'Criminal', 'Business' as examples. Since divorce falls under marriage law, I should probably use \"Marriage\" or \"Divorce\". Given the examples use broad categories, \"Marriage\" seems most appropriate, though \"Divorce\" is also clear. I'll use \"Marriage\" to align with the example style, but \"Divorce\" would also work. Actually, looking at the examples again: 'Marriage', 'Criminal', 'Business'. Since the user specifically asked for divorce law, I could use \"Divorce\" or \"Marriage\". Let me use \"Marriage\" since that's the closest to the examples provided for family law.\n- location: \"Los Angeles, CA\" - the user said \"לוס אנג'לס\" which is Los Angeles, and I need to add the state abbreviation CA.\n\nActually, let me reconsider the expertise parameter. The user specifically asked about divorce (גירושין). The most accurate English expertise would be \"Divorce\" or \"Marriage\". Since the function examples list 'Marriage', I'll use \"Marriage\" but \"Divorce\" might be more specific. Let me check if there's any standard. The function says \"Area of legal expertise. For example, 'Marriage', 'Criminal', 'Business'.\" Since divorce is a subset of marriage law, and 'Marriage' is explicitly given as an example, I should probably use \"Marriage\". However, to be more accurate to the user's request, \"Divorce\" is also reasonable. I'll go with \"Marriage\" since it's explicitly exemplified.\n\nWait, actually, I think \"Divorce\" is probably better understood as a legal expertise area in practice, but since the examples specifically mention 'Marriage', I'll provide \"Marriage\" to be safe, or I could do \"Divorce\". Let me just use \"Marriage\" as that matches the example pattern exactly for family law matters.\n\nActually, looking at this more carefully - in many legal contexts, divorce law is distinct or falls under family law. But since the example specifically says 'Marriage', I'll use \"Marriage\".\n\nLocation should be \"Los Angeles, CA\".\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawyer_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.lawyer_search:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawyer_search:1",
+          "function": {
+            "arguments": "{\"expertise\":\"Divorce\",\"location\":\"Los Angeles, CA\"}",
+            "name": "lawyer_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request error. Let me reconsider the parameters.\n\nMaybe the expertise should be \"Divorce\" instead of \"Marriage\"? Or perhaps the location format? The location should be \"e.g. Los Angeles, CA\" - that looks correct.\n\nWait, maybe the expertise value needs to be from a specific list, or perhaps I should try \"Divorce\" since that's what the user actually asked for. Let me try again with \"Divorce\".\n\nActually, looking at the error - it says \"invalid parameters\". Let me check if there's a constraint I missed. The function definition shows:\n- expertise: string, description says \"Area of legal expertise. For example, 'Marriage', 'Criminal', 'Business'.\"\n- location: string, description says \"The city and state, e.g. Los Angeles, CA\"\n\nBoth seem correct. Maybe the API expects a different casing or value. Let me try \"Divorce\" as it's more specific to what the user asked. Or maybe I should try \"Family\" law? Let me try \"Divorce\" first."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

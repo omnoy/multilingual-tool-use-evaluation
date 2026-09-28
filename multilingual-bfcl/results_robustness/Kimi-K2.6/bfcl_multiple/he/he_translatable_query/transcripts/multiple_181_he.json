@@ -1,0 +1,107 @@
+{
+  "id": "multiple_181_he",
+  "source_id": "multiple_181",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 448,
+  "total_output_tokens": 245,
+  "total_latency_s": 2.1358695030212402,
+  "estimated_cost_usd": 0.0014056,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תביא לי את הפרטים של המשחק האחרון ששיחקה ליברפול. כלול את הסטטיסטיקות שלו."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer.get_last_match": {
+        "team_name": [
+          "Liverpool F.C.",
+          "Liverpool"
+        ],
+        "include_stats": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_get_last_match",
+          "arguments": {
+            "team_name": "Liverpool",
+            "include_stats": true
+          },
+          "id": "functions.soccer_get_last_match:0"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_get_last_match": {
+            "team_name": "Liverpool",
+            "include_stats": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 448,
+      "output_tokens": 245,
+      "latency_s": 2.1358695030212402,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תביא לי את הפרטים של המשחק האחרון ששיחקה ליברפול. כלול את הסטטיסטיקות שלו."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.soccer_get_last_match:0",
+          "function": {
+            "arguments": "{\"team_name\": \"Liverpool\", \"include_stats\": true}",
+            "name": "soccer_get_last_match"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to get the details of the last match played by Liverpool (ליברפול), and to include statistics.\n\nLooking at the available functions, `soccer_get_last_match` is the right one. Its parameters:\n- team_name: string, required - should be \"Liverpool\" (the user wrote ליברפול but the function likely expects English name)\n- include_stats: boolean, optional, default false - the user specifically asks to include statistics, so I should set this to true.\n\nSo the function call should be:\nsoccer_get_last_match(team_name=\"Liverpool\", include_stats=true)\n\nWait, let me check if the tool names expect exact parameter structure. The function name is `soccer_get_last_match`.\n\nThe user said \"ליברפול\" which is Liverpool. I should use the English team name \"Liverpool\" as that's the standard name used in such APIs.\n\nI'll make the function call with:\n- team_name: \"Liverpool\"\n- include_stats: true"
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

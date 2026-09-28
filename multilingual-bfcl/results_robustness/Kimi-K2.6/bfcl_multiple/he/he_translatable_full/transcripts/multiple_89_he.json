@@ -1,0 +1,257 @@
+{
+  "id": "multiple_89_he",
+  "source_id": "multiple_89",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2741,
+  "total_output_tokens": 1274,
+  "total_latency_s": 11.629928827285767,
+  "estimated_cost_usd": 0.00769995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא מתכון בריא לארוחת צהריים מתחת ל-500 קלוריות שמשתמש בעוף ופטריות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "ארוחת צהריים",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "functions.recipe_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 375,
+      "output_tokens": 523,
+      "latency_s": 3.1169068813323975,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "עוף",
+              "פטריות"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "functions.recipe_search:1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "עוף",
+              "פטריות"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 943,
+      "output_tokens": 435,
+      "latency_s": 4.48357081413269,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          },
+          "id": "functions.recipe_search:2"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1423,
+      "output_tokens": 316,
+      "latency_s": 4.029451131820679,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא מתכון בריא לארוחת צהריים מתחת ל-500 קלוריות שמשתמש בעוף ופטריות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:0",
+          "function": {
+            "arguments": "{\"ingredients\":[\"chicken\",\"mushrooms\"],\"calories\":500,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for a healthy lunch recipe under 500 calories that uses chicken and mushrooms. This matches the `recipe_search` function.\n\nParameters needed:\n- ingredients: [\"עוף\", \"פטריות\"] (chicken, mushrooms) - but the function might expect English? The tool definition doesn't specify language for ingredients, but since the system prompt says \"respond with the correct function call exactly as specified\", I should probably use English ingredient names as that's the standard for most APIs, though the user wrote in Hebrew. Actually, looking at the tool definitions, they don't specify the language, but typically APIs expect English. However, the user asked in Hebrew. Let me check if there's any clue.\n\nActually, the instruction says \"Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\" The parameters should probably be in English since the schema descriptions are in English, but the ingredients themselves could be translated. I'll use English ingredients \"chicken\" and \"mushrooms\" to be safe, but actually, looking at the context, it might accept Hebrew. To be safe with API expectations, I'll use English terms for the ingredients since food APIs typically use English.\n\nWait, but should I translate? The user asked in Hebrew. The tool parameters descriptions are in English. I'll provide the function call with English ingredient names as that's the most likely expected format for a recipe API.\n\n- calories: 500\n- meal: \"lunch\" (optional, defaults to lunch, but since the user specifically said ארוחת צהריים (lunch), I can specify it explicitly or let it default. The user specifically said lunch so I'll specify \"lunch\")\n\nLet me construct the call:\n\ningredients: [\"chicken\", \"mushrooms\"]\ncalories: 500\nmeal: \"lunch\"\n\nActually I could use Hebrew but the schema doesn't restrict it. I'll use English to be safe.\n\nWait, looking again at the instructions: \"respond with the correct function call exactly as specified in the tool definitions.\" This means I should output the function call. Let me make sure.\n\nYes, I should call recipe_search with:\n- ingredients: [\"chicken\", \"mushrooms\"] or [\"עוף\", \"פטריות\"]\n- calories: 500\n- meal: \"lunch\"\n\nGiven that the API descriptions are in English, I'll use English ingredients."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_search:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:1",
+          "function": {
+            "arguments": "{\"ingredients\":[\"עוף\",\"פטריות\"],\"calories\":500,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters.\n\nMaybe the ingredients need to be in Hebrew? Or maybe the issue is something else. Let me check the schema again:\n\n```json\n{\n  \"ingredients\": {\n    \"description\": \"A list of ingredients you want to use in the recipe.\",\n    \"items\": {\"type\": \"string\"},\n    \"type\": \"array\"\n  },\n  \"calories\": {\n    \"description\": \"The maximum number of calories for the recipe.\",\n    \"type\": \"number\"\n  },\n  \"meal\": {\n    \"description\": \"Type of the meal for the recipe, it's optional and could be breakfast, lunch or dinner. Default 'lunch'\",\n    \"enum\": [\"breakfast\", \"lunch\", \"dinner\"],\n    \"type\": \"string\"\n  }\n}\n```\n\nThe schema looks correct. calories is 500 (number), ingredients is array of strings, meal is \"lunch\" (string in enum). This should be valid.\n\nWait, maybe the API expects the ingredients in Hebrew since the user interface is in Hebrew? Let me try with Hebrew ingredients. Or maybe the API just doesn't like something else.\n\nActually, looking at the error again: \"400 Bad Request: invalid parameters for function 'recipe_search'\" - this might be a simulated error from the function itself (e.g., no recipes found returned as 400), or it might actually be a parameter validation issue.\n\nBut wait, the instruction says I need to \"respond with the correct function call exactly as specified in the tool definitions.\" Maybe the issue is that the function itself returned an error, and I should try again? The user is asking me to find a recipe. Since the API returned 400, maybe I should try different parameters? Or maybe the ingredients should be in Hebrew.\n\nLet me try with Hebrew ingredients since the user asked in Hebrew and perhaps the backend expects Hebrew terms for this particular localized tool."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_search:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:2",
+          "function": {
+            "arguments": "{\"ingredients\": [\"chicken\",\"mushrooms\"], \"calories\": 500}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting 400. The parameters look perfectly valid according to the schema. Maybe the issue is that the function name requires exact casing? No, I used recipe_search correctly.\n\nWait, maybe I should look at whether the array formatting is correct or if there's an issue with the Hebrew characters in the system. But the first call used English and also failed.\n\nMaybe the tool expects calories as an integer without quotes (which I did), and the array format is correct. Could it be that the \"meal\" parameter is optional and by passing it I somehow triggered a validation error? No, it's explicitly allowed.\n\nCould it be that the function is actually not working in this environment and I should inform the user? But the instructions say to respond with the correct function call. I've already made two calls and both returned 400.\n\nActually, looking at the first response, it says \"Please review the function definition and try again.\" This suggests maybe I should try a different approach. But what could be wrong?\n\nMaybe the ingredients need to be provided differently? Like as a comma-separated string? No, the schema clearly says \"array\".\n\nWait - maybe the problem is that the API is down or there are no matching recipes, and the simulated environment returns 400 for \"not found\"? But the message says \"invalid parameters\".\n\nLet me think... Maybe I should try without the meal parameter since it's optional and defaults to lunch anyway?"
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

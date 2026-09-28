@@ -1,0 +1,109 @@
+{
+  "id": "multiple_83_he",
+  "source_id": "multiple_83",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 285,
+  "total_output_tokens": 231,
+  "total_latency_s": 1.3722927570343018,
+  "estimated_cost_usd": 0.00119475,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה שערים כבש ליונל מסי עבור ברצלונה עד היום?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "player_stats.get_all_time_goals": {
+        "player_name": [
+          "Lionel Messi"
+        ],
+        "team_name": [
+          "Barcelona"
+        ],
+        "competition": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "player_stats_get_all_time_goals",
+          "arguments": {
+            "player_name": "Lionel Messi",
+            "team_name": "Barcelona"
+          },
+          "id": "functions.player_stats_get_all_time_goals:0"
+        }
+      ],
+      "decoded": [
+        {
+          "player_stats_get_all_time_goals": {
+            "player_name": "Lionel Messi",
+            "team_name": "Barcelona"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 285,
+      "output_tokens": 231,
+      "latency_s": 1.3722927570343018,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה שערים כבש ליונל מסי עבור ברצלונה עד היום?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.player_stats_get_all_time_goals:0",
+          "function": {
+            "arguments": "{\"player_name\": \"Lionel Messi\", \"team_name\": \"Barcelona\"}",
+            "name": "player_stats_get_all_time_goals"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"How many goals has Lionel Messi scored for Barcelona to date?\"\n\nI need to use the `player_stats_get_all_time_goals` function.\nParameters:\n- player_name: \"Lionel Messi\" (or \"Leo Messi\", but \"Lionel Messi\" is the standard full name)\n- team_name: \"Barcelona\" (or \"Barcelona\" - the user wrote \"ברצלונה\" which is Barcelona)\n- competition: optional, default is empty string, so I should leave it out or use empty string to get all competitions.\n\nThe tool requires:\n- player_name (required): string\n- team_name (required): string\n- competition (optional): string, default ''\n\nI should call:\nplayer_stats_get_all_time_goals(player_name=\"Lionel Messi\", team_name=\"Barcelona\")\n\nNo need for competition since we want all-time goals across all competitions."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

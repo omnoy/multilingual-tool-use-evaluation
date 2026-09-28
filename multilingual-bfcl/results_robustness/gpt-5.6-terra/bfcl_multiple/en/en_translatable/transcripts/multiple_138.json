@@ -1,0 +1,132 @@
+{
+  "id": "multiple_138",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "gpt-5.6-terra",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 826,
+  "total_output_tokens": 207,
+  "total_latency_s": 3.7674241065979004,
+  "estimated_cost_usd": 0.004136,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "How to obtain the detailed case information of the R vs Adams legal case?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "legal_case.fetch": {
+        "case_id": [
+          "R vs Adams",
+          "R_vs_Adams"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "Use the legal-case lookup with the case’s database ID and request details:\n\n```json\n{\n  \"case_id\": \"<R_vs_Adams_case_ID>\",\n  \"details\": true\n}\n```\n\nThe case name alone (“R v Adams”) is not sufficient for this lookup, since multiple cases may share that title. Obtain the relevant case ID from your case index/search results first, then submit it with `details: true` to retrieve the full case information."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 350,
+      "output_tokens": 146,
+      "latency_s": 2.2807183265686035,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "legal_case_fetch",
+          "arguments": {
+            "case_id": "R vs Adams",
+            "details": true
+          },
+          "id": "call_PSmIsgZc7PgYjacOyljDQZxg"
+        }
+      ],
+      "decoded": [
+        {
+          "legal_case_fetch": {
+            "case_id": "R vs Adams",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 476,
+      "output_tokens": 61,
+      "latency_s": 1.4867057800292969,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "How to obtain the detailed case information of the R vs Adams legal case?"
+    },
+    {
+      "content": "Use the legal-case lookup with the case’s database ID and request details:\n\n```json\n{\n  \"case_id\": \"<R_vs_Adams_case_ID>\",\n  \"details\": true\n}\n```\n\nThe case name alone (“R v Adams”) is not sufficient for this lookup, since multiple cases may share that title. Obtain the relevant case ID from your case index/search results first, then submit it with `details: true` to retrieve the full case information.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": [],
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": null,
+      "refusal": null,
+      "role": "assistant",
+      "annotations": [],
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_PSmIsgZc7PgYjacOyljDQZxg",
+          "function": {
+            "arguments": "{\"case_id\":\"R vs Adams\",\"details\":true}",
+            "name": "legal_case_fetch"
+          },
+          "type": "function"
+        }
+      ]
+    }
+  ],
+  "system_prompt": null
+}

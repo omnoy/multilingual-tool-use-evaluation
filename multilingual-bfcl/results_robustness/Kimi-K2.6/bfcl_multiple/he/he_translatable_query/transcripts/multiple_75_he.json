@@ -1,0 +1,106 @@
+{
+  "id": "multiple_75_he",
+  "source_id": "multiple_75",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 305,
+  "total_output_tokens": 264,
+  "total_latency_s": 1.7593574523925781,
+  "estimated_cost_usd": 0.0013457500000000002,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "איזה צבע צבע הוא כרגע הפופולרי ביותר לחדרי מגורים?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "paint_color.trends": {
+        "room": [
+          "living room",
+          "Living room"
+        ],
+        "period": [
+          "",
+          "Daily"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "paint_color_trends",
+          "arguments": {
+            "room": "Living room"
+          },
+          "id": "functions.paint_color_trends:0"
+        }
+      ],
+      "decoded": [
+        {
+          "paint_color_trends": {
+            "room": "Living room"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 305,
+      "output_tokens": 264,
+      "latency_s": 1.7593574523925781,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "איזה צבע צבע הוא כרגע הפופולרי ביותר לחדרי מגורים?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.paint_color_trends:0",
+          "function": {
+            "arguments": "{\"room\": \"Living room\"}",
+            "name": "paint_color_trends"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What paint color is currently the most popular for living rooms?\"\n\nI need to use the `paint_color_trends` function. The required parameter is `room`, which should be \"Living room\" (or potentially in Hebrew, but the function definition says \"Type of the room e.g. Living room, Bathroom etc.\" so I should probably use English as is standard for function arguments unless the system handles Hebrew, but looking at the examples, they are in English).\n\nThe `period` parameter is optional and defaults to 'Daily', but the user is asking \"currently\" which suggests the current/most recent trend. The default \"Daily\" or perhaps I should specify something else? Actually, the question is general - \"currently the most popular\" - so I can just use the default period or specify \"Daily\" to get the most current data.\n\nLet me call `paint_color_trends` with room=\"Living room\".\n\nActually, looking at the room examples: \"Living room, Bathroom etc.\" - so \"Living room\" is the correct string.\n\nThe user wrote \"חדרי מגורים\" which is living rooms.\n\nI should make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

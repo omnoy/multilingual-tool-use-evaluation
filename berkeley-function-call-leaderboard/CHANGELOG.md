@@ -229,7 +229,7 @@ All notable changes to the Berkeley Function Calling Leaderboard will be documen
   - `gemini-exp-1206-FC`
   - `gemini-exp-1206`
 - [Dec 21, 2024] [#849](https://github.com/ShishirPatil/gorilla/pull/849): Use `N/A` in score report for unevaluated categories to distinguish from categories where the model actually scored a 0
-- [Dec 21, 2024] [#848](https://github.com/ShishirPatil/gorilla/pull/848): Improves behavior for generation and evaluation pipeline. When executable categories are involved and API keys are not provided in the `.env` file, instead of throwing an error, the affected categories will now be skipped. This enhancement provides a smoother experience for first-time users.
+- [Dec 21, 2024] [#848](https://github.com/ShishirPatil/gorilla/pull/848): Improves behavior for generation and evaluation pipeline. When executable categories are involved and API keys are not provided in the `../multilingual-bfcl/.env` file, instead of throwing an error, the affected categories will now be skipped. This enhancement provides a smoother experience for first-time users.
 - [Dec 21, 2024] [#847](https://github.com/ShishirPatil/gorilla/pull/847): Add new model `watt-ai/watt-tool-8B` and `watt-ai/watt-tool-70B` to the leaderboard.
 - [Dec 20, 2024] [#842](https://github.com/ShishirPatil/gorilla/pull/842): Add the following new models to the leaderboard:
   - `Qwen/Qwen2.5-0.5B-Instruct`
@@ -283,7 +283,7 @@ All notable changes to the Berkeley Function Calling Leaderboard will be documen
   - `claude-3-5-haiku-20241022-FC`
   - `claude-3-5-sonnet-20241022`
   - `claude-3-5-sonnet-20241022-FC`
-- [Nov 18, 2024] [#736](https://github.com/ShishirPatil/gorilla/pull/736): Add the option to additionally log the evaluation results to [WandB](https://github.com/wandb/wandb) artifacts. User can enable this feature by providing the entity and project name in `WANDB_BFCL_PROJECT` in the `.env` file.
+- [Nov 18, 2024] [#736](https://github.com/ShishirPatil/gorilla/pull/736): Add the option to additionally log the evaluation results to [WandB](https://github.com/wandb/wandb) artifacts. User can enable this feature by providing the entity and project name in `WANDB_BFCL_PROJECT` in the `../multilingual-bfcl/.env` file.
 - [Nov 18, 2024] [#768](https://github.com/ShishirPatil/gorilla/pull/768), [#770](https://github.com/ShishirPatil/gorilla/pull/770): Resolve issues in Gemini models (FC mode) related to handling scenarios with no tools available and cases where the model output is empty.
 - [Nov 17, 2024] [#767](https://github.com/ShishirPatil/gorilla/pull/767): Fix price and latency calculation. A merge conflict results in a duplicate line, and counting the input and output token for each entry multiple times.
 - [Nov 15, 2024] [#762](https://github.com/ShishirPatil/gorilla/pull/762): Supply `data_multi_turn.csv` for multi-turn evaluation results

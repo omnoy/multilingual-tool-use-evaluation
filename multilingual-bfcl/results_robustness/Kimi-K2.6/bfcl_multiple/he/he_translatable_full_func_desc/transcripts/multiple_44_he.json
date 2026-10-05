@@ -1,0 +1,165 @@
+{
+  "id": "multiple_44_he",
+  "source_id": "multiple_44",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1124,
+  "total_output_tokens": 562,
+  "total_latency_s": 3.983834981918335,
+  "estimated_cost_usd": 0.0033158,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה אשקול על מאדים אם המשקל שלי על כדור הארץ הוא 70 ק\"ג?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calculate.weight_in_space": {
+        "weight_earth_kg": [
+          70
+        ],
+        "planet": [
+          "מאדים"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_weight_in_space",
+          "arguments": {
+            "planet": "Mars",
+            "weight_earth_kg": 70
+          },
+          "id": "functions.calculate_weight_in_space:0"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_weight_in_space": {
+            "planet": "Mars",
+            "weight_earth_kg": 70
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calculate_weight_in_space'. Please review the function definition and try again.",
+      "input_tokens": 412,
+      "output_tokens": 255,
+      "latency_s": 1.7850613594055176,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_weight_in_space",
+          "arguments": {
+            "planet": "מאדים",
+            "weight_earth_kg": 70
+          },
+          "id": "functions.calculate_weight_in_space:1"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_weight_in_space": {
+            "planet": "מאדים",
+            "weight_earth_kg": 70
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 712,
+      "output_tokens": 307,
+      "latency_s": 2.1987736225128174,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה אשקול על מאדים אם המשקל שלי על כדור הארץ הוא 70 ק\"ג?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calculate_weight_in_space:0",
+          "function": {
+            "arguments": "{\"planet\":\"Mars\",\"weight_earth_kg\":70}",
+            "name": "calculate_weight_in_space"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking \"How much would I weigh on Mars if my weight on Earth is 70 kg?\" This is in Hebrew. I need to use the calculate_weight_in_space function with planet=\"Mars\" and weight_earth_kg=70.\n\nThe function parameter \"planet\" is described as: \"כוכב הלכת שעליו ברצונך לדעת את המשקל שלך.\" which means \"The planet on which you want to know your weight.\"\n\nI should call the function with planet=\"Mars\" and weight_earth_kg=70.\n\nWait, I need to check if I should respond in Hebrew since the user wrote in Hebrew. The instructions say \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nSo I should make the function call, and I can also provide a brief Hebrew response if needed, but the main thing is the function call. Actually, looking at the instructions, it seems I should make the function call. Let me just make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calculate_weight_in_space'. Please review the function definition and try again.",
+      "tool_call_id": "functions.calculate_weight_in_space:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calculate_weight_in_space:1",
+          "function": {
+            "arguments": "{\"planet\": \"מאדים\", \"weight_earth_kg\": 70}",
+            "name": "calculate_weight_in_space"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check the function definition again.\n\nThe function calculate_weight_in_space has:\n- weight_earth_kg: number - \"המשקל שלך על כדור הארץ בקילוגרמים.\"\n- planet: string - \"כוכב הלכת שעליו ברצונך לדעת את המשקל שלך.\"\n\nI used \"Mars\" as the planet name. Maybe it expects the Hebrew name? Or maybe it expects a specific case? The parameter description is in Hebrew, but the valid values aren't specified. Let me try with \"Mars\" again - wait, maybe the API expects lowercase? Or maybe a different name?\n\nActually, looking at the tool definition, there's no enum specified for planet, it's just a string. But maybe the backend service expects specific planet names. Common names might be: Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Moon (sometimes). But in Hebrew: מאדים, etc.\n\nWait, let me re-read the instructions: \"respond with the correct function call exactly as specified in the tool definitions.\"\n\nI did make the correct function call. But it failed. Maybe I should try with the Hebrew name \"מאדים\"? Let me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

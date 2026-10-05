@@ -1,0 +1,166 @@
+{
+  "id": "multiple_72_he",
+  "source_id": "multiple_72",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 941,
+  "total_output_tokens": 479,
+  "total_latency_s": 7.9321815967559814,
+  "estimated_cost_usd": 0.00280995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה הייתה האוכלוסייה של קליפורניה בשנת 1970?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "us_history.population_by_state_year": {
+        "state": [
+          "קליפורניה",
+          "CA"
+        ],
+        "year": [
+          1970
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "California",
+            "year": 1970
+          },
+          "id": "functions.us_history_population_by_state_year:0"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "California",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "input_tokens": 398,
+      "output_tokens": 94,
+      "latency_s": 0.8348078727722168,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "קליפורניה",
+            "year": 1970
+          },
+          "id": "functions.us_history_population_by_state_year:1"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "קליפורניה",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 543,
+      "output_tokens": 385,
+      "latency_s": 7.097373723983765,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה הייתה האוכלוסייה של קליפורניה בשנת 1970?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.us_history_population_by_state_year:0",
+          "function": {
+            "arguments": "{\"state\":\"California\",\"year\":1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the population of California in 1970, in Hebrew. I need to use the `us_history_population_by_state_year` function.\n\nParameters:\n- state: \"California\" (the function expects English state names based on the definitions)\n- year: 1970\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "tool_call_id": "functions.us_history_population_by_state_year:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.us_history_population_by_state_year:1",
+          "function": {
+            "arguments": "{\"state\":\"קליפורניה\",\"year\":1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me check the parameters again. The state should be \"California\" and year should be 1970. \n\nLooking at the function definition:\n- state: string, required - \"המדינה בארצות הברית שעבורה יש לאחזר את נתוני האוכלוסייה\"\n- year: number, required - \"השנה שעבורה יש לאחזר את נתוני האוכלוסייה\"\n\nMaybe the state name needs to be in Hebrew? But typically these APIs expect English. Let me check if maybe I should try with Hebrew state name or if there's an issue with the year format.\n\nActually, looking at the function name \"us_history_population_by_state_year\", this might be an API that expects specific formatting. Let me try again - maybe I need to check if the parameter types are correct. I passed an integer 1970 and string \"California\". That seems correct.\n\nWait, perhaps the function expects different values. Or maybe the API is just returning an error because it genuinely doesn't support it. But the instruction says to respond with the correct function call exactly as specified. \n\nLet me reconsider - maybe the state parameter should be passed differently or maybe I need to wrap the year in a specific way. But the schema says `year` is type `number`.\n\nActually, the error says \"invalid parameters\" which could mean the API backend rejected it, not necessarily that my JSON was malformed. My JSON was valid. Since the user asked in Hebrew, maybe the API expects Hebrew state names? Let me try with the Hebrew name \"קליפורניה\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -27,23 +27,25 @@ Output file depends on the selection:
 
 Usage:
     # Submit and wait for results — all classifications (default):
-    python scripts/classify_benchmark.py --category bfcl_multiple
+    python scripts/classify_benchmark.py --category bfcl_multiple --model gpt-5.6-terra
 
     # Only classify translatable_params:
-    python scripts/classify_benchmark.py --category bfcl_multiple --translatable_params
+    python scripts/classify_benchmark.py --category bfcl_multiple --translatable_params --model gpt-5.6-terra
 
     # Only classify localizability (translatable_params is auto-included):
-    python scripts/classify_benchmark.py --category bfcl_multiple --localizable
+    python scripts/classify_benchmark.py --category bfcl_multiple --localizable --model gpt-5.6-terra
 
     # Submit only — print the batch ID and exit immediately:
-    python scripts/classify_benchmark.py --category bfcl_multiple --submit-only
+    python scripts/classify_benchmark.py --category bfcl_multiple --submit-only --model gpt-5.6-terra
 
     # Retrieve results for a previously submitted batch:
     python scripts/classify_benchmark.py --category bfcl_multiple --retrieve batch_01AbCdEf...
 
-    # Other options:
-    python scripts/classify_benchmark.py --category bfcl_multiple --model gpt-4o
-    python scripts/classify_benchmark.py --category bfcl_multiple --dry-run
+    # Preview without calling the API:
+    python scripts/classify_benchmark.py --category bfcl_multiple --dry-run --model gpt-5.6-terra
+
+--model is required (except with --retrieve); there is no default, to prevent
+accidental runs.
 
 Requirements:
     pip install openai langchain-openai
@@ -51,7 +53,6 @@ Requirements:
 Environment variables (put in multilingual-bfcl/.env):
     AZURE_OPENAI_ENDPOINT=...      # …/openai/v1 (or the resource root)
     AZURE_OPENAI_API_KEY=...
-    AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
 from __future__ import annotations
@@ -89,7 +90,6 @@ from multilingual_bfcl.azure_client import (  # noqa: E402
     OPENAI_MODEL_TYPES,
     ModelType,
     build_chat_params,
-    default_deployment,
     make_sync_client,
 )
 
@@ -687,8 +687,9 @@ def main() -> None:
     )
     parser.add_argument(
         "--model",
-        default=default_deployment() or "gpt-4o",
-        help="Azure deployment name to classify with (defaults to AZURE_OPENAI_DEPLOYMENT).",
+        default=None,
+        help="Azure deployment name to classify with. Required unless --retrieve "
+             "(no default, to prevent accidental runs).",
     )
     parser.add_argument(
         "--model-type",
@@ -733,6 +734,8 @@ def main() -> None:
         parser.error("--submit-only and --retrieve are mutually exclusive.")
     if args.retrieve and args.dry_run:
         parser.error("--dry-run has no effect with --retrieve.")
+    if not args.retrieve and not args.model:
+        parser.error("--model is required unless using --retrieve.")
 
     # Retrieve-only path — no asyncio needed. The classification selection is read
     # from the manifest, so the --translatable_params / --localizable flags are ignored.

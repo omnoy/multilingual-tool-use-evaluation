@@ -1,0 +1,224 @@
+{
+  "id": "multiple_64_he",
+  "source_id": "multiple_64",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2259,
+  "total_output_tokens": 906,
+  "total_latency_s": 6.391186952590942,
+  "estimated_cost_usd": 0.0057700500000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תן לי את מדד ה-UV עבור טוקיו למחר, 01 ביוני 2023."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "uv_index.get_future": {
+        "location": [
+          "טוקיו"
+        ],
+        "date": [
+          "06-01-2023"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "location": "Tokyo",
+            "date": "06-01-2023"
+          },
+          "id": "functions.uv_index_get_future:0"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "location": "Tokyo",
+            "date": "06-01-2023"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "input_tokens": 434,
+      "output_tokens": 229,
+      "latency_s": 1.4947407245635986,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "date": "06-01-2023",
+            "location": "Tokyo"
+          },
+          "id": "functions.uv_index_get_future:1"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "date": "06-01-2023",
+            "location": "Tokyo"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "input_tokens": 706,
+      "output_tokens": 370,
+      "latency_s": 2.688528537750244,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "date": "06-01-2023",
+            "location": "טוקיו"
+          },
+          "id": "functions.uv_index_get_future:2"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "date": "06-01-2023",
+            "location": "טוקיו"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1119,
+      "output_tokens": 307,
+      "latency_s": 2.2079176902770996,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תן לי את מדד ה-UV עבור טוקיו למחר, 01 ביוני 2023."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.uv_index_get_future:0",
+          "function": {
+            "arguments": "{\"location\": \"Tokyo\", \"date\": \"06-01-2023\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the UV index for Tokyo for tomorrow, June 1st, 2023.\n\nLooking at the available functions, I have `uv_index_get_future` which retrieves UV index data for a location and date.\n\nParameters needed:\n- location: \"Tokyo\" (or \"טוקיו\" - but location names in English are typically safer for APIs unless specified otherwise; though since the user wrote in Hebrew, I should probably use \"Tokyo\" as it's the standard name)\n- date: format should be mm-dd-yyyy. June 1, 2023 would be \"06-01-2023\"\n\nWait, the user said \" למחר, 01 ביוני 2023\" which means \"tomorrow, June 1st, 2023\". So the date is June 1, 2023.\n\nFormat: mm-dd-yyyy → 06-01-2023\n\nLet me call the function."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "tool_call_id": "functions.uv_index_get_future:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.uv_index_get_future:1",
+          "function": {
+            "arguments": "{\"date\": \"06-01-2023\", \"location\": \"Tokyo\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. Let me check the parameters again.\n\nFunction definition:\n```\n\"uv_index_get_future\": {\n  \"parameters\": {\n    \"properties\": {\n      \"date\": {\n        \"description\": \"התאריך עבור מדד הקרינה האולטרה סגולה, בפורמט mm-dd-yyyy.\",\n        \"type\": \"string\"\n      },\n      \"location\": {\n        \"description\": \"המיקום שעבורו יש לאחזר את מדד הקרינה האולטרה סגולה.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"location\", \"date\"]\n  }\n}\n```\n\nThe format for the date should be exactly mm-dd-yyyy. I used \"06-01-2023\" which is in that format. The location is \"Tokyo\".\n\nWait, the error says invalid parameters. Let me try with different location format or perhaps the date format? The user asked in Hebrew but the location name should be standard. Maybe I should try \"טוקיו\"? Or maybe the API requires a specific city name format?\n\nActually, looking at other functions, the date format for rainfall is mm/dd/yyyy and for snowfall is mm-dd-yyyy. For UV it says mm-dd-yyyy. My input looks correct.\n\nLet me try again with same parameters to see if it was a transient error, or perhaps I need to use a different location string. Actually, in many weather APIs, the location needs to be in English. Let me just retry with the same."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "tool_call_id": "functions.uv_index_get_future:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.uv_index_get_future:2",
+          "function": {
+            "arguments": "{\"date\":\"06-01-2023\",\"location\":\"טוקיו\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got another 400 error. Let me reconsider.\n\nCould the date be in a different format despite the description? Maybe it needs to be \"01-06-2023\" (dd-mm-yyyy)? But the description clearly says mm-dd-yyyy.\n\nOr maybe the location needs more specificity like \"Tokyo, Japan\"? Or perhaps the API doesn't support this historical/future date (June 1, 2023 is in the past relative to current time, though it says \"future\" in the function name)?\n\nWait, the function is named `uv_index_get_future` but the user asked for a date that is in the past (June 2023). However, the tool should still handle it if it's in the parameters.\n\nActually, since I don't have more information about what makes the parameters invalid, and I already tried twice with the correct format according to the schema, maybe I should inform the user that there was an error retrieving the data.\n\nBut wait - let me look more carefully. The user asked for \"01 ביוני 2023\" which is June 1st, 2023. The format required is mm-dd-yyyy, so 06-01-2023.\n\nPerhaps the location parameter needs to be \"טוקיו\" since the user interface is in Hebrew? Some APIs are localized. Let me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

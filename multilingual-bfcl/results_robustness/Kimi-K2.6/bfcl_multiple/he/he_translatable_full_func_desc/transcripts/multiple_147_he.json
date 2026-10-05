@@ -1,0 +1,196 @@
+{
+  "id": "multiple_147_he",
+  "source_id": "multiple_147",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1662,
+  "total_output_tokens": 1678,
+  "total_latency_s": 17.124743223190308,
+  "estimated_cost_usd": 0.0082909,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "השג לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "map_service.get_directions": {
+        "start": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק סיטי"
+        ],
+        "end": [
+          "לוס אנג'לס",
+          "אל איי"
+        ],
+        "avoid": [
+          [
+            "highways",
+            "tolls"
+          ],
+          [
+            "tolls",
+            "highways"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "functions.map_service_get_directions:0"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+      "input_tokens": 503,
+      "output_tokens": 606,
+      "latency_s": 3.743152379989624,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "נסה שוב נראה כי הייתה שגיאה. אנסה להעביר את שמות הערים בעברית:"
+      ],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "ניו יורק",
+            "end": "לוס אנג'לס",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "functions.map_service_get_directions:1"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "ניו יורק",
+            "end": "לוס אנג'לס",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1159,
+      "output_tokens": 1072,
+      "latency_s": 13.381590843200684,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "השג לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.map_service_get_directions:0",
+          "function": {
+            "arguments": "{\"start\":\"New York\",\"end\":\"Los Angeles\",\"avoid\":[\"highways\",\"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants directions from New York to Los Angeles, avoiding highways and tolls.\n\nI need to use the `map_service_get_directions` function.\n- start: \"New York\" (or \"ניו יורק\" but the function probably expects English location names since it's a generic map service. However, the user's instructions are in Hebrew. I should probably use the English names \"New York\" and \"Los Angeles\" since these are proper nouns and map services typically work better with English names, but technically I can use the Hebrew names too. Let me check if there's any preference. Since the tool definition doesn't specify language, and these are major cities, I'll use the English transliterations or the Hebrew names. Actually, to be safe and standard, I'll use \"New York\" and \"Los Angeles\" as they are universally recognized. Or I can use the Hebrew names as written by the user. Let me think... The user wrote \"ניו יורק\" and \"לוס אנג'לס\". I should probably pass those exact strings or the English equivalents. Since the system instruction says \"Understand the request in Hebrew and respond with the correct function call\", and the tool expects strings, I can use the Hebrew names. However, map services usually work with English. But since I don't have explicit instructions, I'll use the Hebrew names as given by the user, or perhaps English is safer. Actually, looking at the function parameters: they are just strings. I'll provide them in a way that is most likely to work. For major US cities, English is definitely better. But the user asked in Hebrew. I'll compromise and use \"New York\" and \"Los Angeles\" because they are the standard names in the map service context. Wait, actually, I should just follow the user's request literally. The user said \"ניו יורק\" and \"לוס אנג'לס\". If the map service supports Hebrew, great. If not, it's more likely to support English. Let me use the English names to ensure the function works properly. Or I can note that I'm using the English names. Actually, the tool doesn't require me to explain, just call it. I'll use \"New York\" and \"Los Angeles\".\n\nParameters:\n- start: \"New York\"\n- end: \"Los Angeles\"\n- avoid: [\"highways\", \"tolls\"]\n\nThis matches the user's request to avoid highways (כבישים מהירים) and tolls (כבישי אגרה).\n\nLet me make sure the array values are exactly as specified in the enum: \"tolls\" and \"highways\". Yes.\n\nThe user wrote in Hebrew, so the system prompt says \"respond with the correct function call exactly as specified\". So I should just make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+      "tool_call_id": "functions.map_service_get_directions:0"
+    },
+    {
+      "content": "נסה שוב נראה כי הייתה שגיאה. אנסה להעביר את שמות הערים בעברית:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.map_service_get_directions:1",
+          "function": {
+            "arguments": "{\"start\":\"ניו יורק\",\"end\":\"לוס אנג'לס\",\"avoid\":[\"highways\",\"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the function definition again.\n\n```json\n{\n  \"description\": \"אחזר הנחיות ניווט ממיקום התחלה למיקום סיום, כולל אפשרויות להעדפות מסלול.\",\n  \"name\": \"map_service_get_directions\",\n  \"parameters\": {\n    \"properties\": {\n      \"avoid\": {\n        \"description\": \"מאפייני מסלול שיש להימנע מהם. ברירת המחדל היא מערך ריק.\",\n        \"items\": {\n          \"enum\": [\"tolls\", \"highways\", \"ferries\"],\n          \"type\": \"string\"\n        },\n        \"type\": \"array\"\n      },\n      \"end\": {\n        \"description\": \"מיקום הסיום של המסלול.\",\n        \"type\": \"string\"\n      },\n      \"start\": {\n        \"description\": \"מיקום ההתחלה של המסלול.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"start\", \"end\"],\n    \"type\": \"object\"\n  }\n}\n```\n\nRequired: [\"start\", \"end\"]\n\nI provided:\n- start: \"New York\"\n- end: \"Los Angeles\"\n- avoid: [\"highways\", \"tolls\"]\n\nWait, maybe the issue is that the function call format was wrong? No, the format was correct.\n\nMaybe the navigator backend only supports specific cities or the request failed because of something else? But the tool response says \"invalid parameters for function\". \n\nOr maybe I should not include any whitespace or something? Let me check the encoding.\n\nActually, the response says \"400 Bad Request: invalid parameters for function\". Maybe the API expects the parameters to be named differently or there's a bug in the mock. But looking at my call, it seems correct.\n\nWait, could it be because I used English city names and the backend expects Hebrew? Let me try Hebrew names. Or maybe the backend expects coordinates? But the schema says string for location.\n\nLet me try again with the exact Hebrew names provided by the user: \"ניו יורק\" and \"לוס אנג'לס\".\n\nActually, re-reading the error: \"Please review the function definition and try again.\" Maybe the function was called with wrong JSON formatting? I had `{\"start\": \"New York\", \"end\": \"Los Angeles\", \"avoid\": [\"highways\", \"tolls\"]}`. This seems correct.\n\nMaybe the issue is that \"avoid\" should be passed differently? The type is array, and I passed an array. That seems correct.\n\nIt's also possible that this is a simulated error in the tool for testing purposes, or perhaps the backend only accepts a subset. Let me try without the \"avoid\" parameter to see if that works, then I can add it back. But I shouldn't do multiple calls without reason.\n\nActually, wait. Maybe the parameter names need to match exactly, and maybe there was an invisible character issue? No, I typed them manually.\n\nLet me try with Hebrew city names as the user wrote them. It's possible the parameter validation failed because of unsupported location strings? Not likely \"invalid parameters\" though; that usually means schema mismatch.\n\nAnother thought: The tool description is in Hebrew but the parameter keys are English. The enum values are English. Maybe the API is strict about string types. My JSON was valid.\n\nLet me try one more time with the exact same request but maybe \"New York, NY\" or something? No.\n\nActually, I realize I should look carefully at the user's message again: \"השג לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה.\"\n\nI should make the function call again. Since the first one failed with 400, maybe I need to adjust something. But there's nothing wrong with the parameters based on the schema.\n\nWait - maybe the `avoid` array should contain items formatted differently? The enum is `[\"tolls\", \"highways\", \"ferries\"]`. I used `[\"highways\", \"tolls\"]`. That should be valid.\n\nCould the issue be that the tool expects start and end to be encoded differently, like with underscores or something? No, the description says strings.\n\nOne more idea: Perhaps the tool simulated an error because of the route itself (impossible to avoid highways entirely between NY and LA)? But that would likely be an empty result or specific error message, not \"invalid parameters\".\n\nLet me try the call again but with Hebrew city names, just in case the validation is locale-specific."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

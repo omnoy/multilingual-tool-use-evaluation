@@ -1,0 +1,169 @@
+{
+  "id": "multiple_118_he",
+  "source_id": "multiple_118",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1770,
+  "total_output_tokens": 912,
+  "total_latency_s": 7.300608396530151,
+  "estimated_cost_usd": 0.0053295,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את כל הסרטים בכיכובו של לאונרדו דיקפריו בשנת 2010 ממסד הנתונים של IMDB."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "imdb.find_movies_by_actor": {
+        "actor_name": [
+          "לאונרדו דיקפריו"
+        ],
+        "year": [
+          2010
+        ],
+        "category": [
+          "",
+          "הכל"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          },
+          "id": "functions.imdb_find_movies_by_actor:0"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "input_tokens": 636,
+      "output_tokens": 448,
+      "latency_s": 3.2238614559173584,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "לאונרדו דיקפריו",
+            "year": 2010
+          },
+          "id": "functions.imdb_find_movies_by_actor:1"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "לאונרדו דיקפריו",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1134,
+      "output_tokens": 464,
+      "latency_s": 4.076746940612793,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את כל הסרטים בכיכובו של לאונרדו דיקפריו בשנת 2010 ממסד הנתונים של IMDB."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.imdb_find_movies_by_actor:0",
+          "function": {
+            "arguments": "{\"actor_name\":\"Leonardo DiCaprio\",\"year\":2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking to find all movies starring Leonardo DiCaprio in 2010 from the IMDB database.\n\nLooking at the available functions, I have `imdb_find_movies_by_actor` which is perfect for this request.\n\nThe parameters required are:\n- actor_name: \"לאונרדו דיקפריו\" (Leonardo DiCaprio in Hebrew)\n- year: 2010\n- category: optional, defaults to 'all'\n\nI should call this function with:\n- actor_name: \"לאונרדו דיקפריו\" or should I use the English name? The function description says \"שם השחקן\" (actor's name). Since it's an IMDB database, it might accept Hebrew names, but typically these databases work better with English names. However, the user specifically wrote in Hebrew and the instruction says to respond with the correct function call. I should probably use the Hebrew name as provided by the user, but let me think - IMDB is an English database. \n\nActually, looking at the function description and the fact that it's an IMDB database, it's safer to use the English name \"Leonardo DiCaprio\" since that's how he would be listed in IMDB. But the user wrote in Hebrew. The parameter is just a string for the actor's name. I'll use the English name since IMDB is an international English database, but the Hebrew name might also work. \n\nWait, the user said \"לאונרדו דיקפריו\" which is the Hebrew spelling. But for IMDB which is an English database, using the English name \"Leonardo DiCaprio\" would be more appropriate and likely to return results. However, since the system instruction says to understand the request in Hebrew and respond with the correct function call, and the parameter accepts any actor name string, I should probably use the English name for better results since it's an IMDB (English) database.\n\nLet me use \"Leonardo DiCaprio\" for the actor_name and 2010 for the year."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "tool_call_id": "functions.imdb_find_movies_by_actor:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.imdb_find_movies_by_actor:1",
+          "function": {
+            "arguments": "{\"actor_name\": \"לאונרדו דיקפריו\", \"year\": 2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me check the parameters again. \n\nThe function definition requires:\n- actor_name (string): שם השחקן\n- year (number): השנה הספציפית לחיפוש בה\n- category (string, optional): הקטגוריה של הסרט\n\nMy parameters were:\n- actor_name: \"Leonardo DiCaprio\"\n- year: 2010\n\nWait, I need to make sure the JSON is properly formatted. The year should be a number, not a string. In my call, I used 2010 which is a number. \n\nLet me try again with the same parameters but maybe I should check if the function name or parameter structure is correct. Actually, looking at the function definition again:\n\n```\n{\n  \"description\": \"מחפש במסד הנתונים כדי למצוא את כל הסרטים של שחקן מסוים בתוך שנה מסוימת.\",\n  \"name\": \"imdb_find_movies_by_actor\",\n  \"parameters\": {\n    \"properties\": {\n      \"actor_name\": {\"description\": \"שם השחקן.\", \"type\": \"string\"},\n      \"category\": {\"description\": \"הקטגוריה של הסרט (לדוגמה Drama, Comedy וכו'). פרמטר זה הוא אופציונלי. ברירת המחדל היא 'all'.\", \"type\": \"string\"},\n      \"year\": {\"description\": \"השנה הספציפית לחיפוש בה.\", \"type\": \"integer\"}\n    },\n    \"required\": [\"actor_name\", \"year\"],\n    \"title\": \"imdb_find_movies_by_actor\",\n    \"type\": \"object\"\n  }\n}\n```\n\nSo actor_name is string, year is integer. I used them correctly. Maybe the API expects the Hebrew name? Or maybe there's an issue with the tool execution itself. Let me try with the Hebrew name as the user specified."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

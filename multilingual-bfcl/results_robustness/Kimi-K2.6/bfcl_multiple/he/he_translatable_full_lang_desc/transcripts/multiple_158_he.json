@@ -1,0 +1,166 @@
+{
+  "id": "multiple_158_he",
+  "source_id": "multiple_158",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1169,
+  "total_output_tokens": 600,
+  "total_latency_s": 10.984660863876343,
+  "estimated_cost_usd": 0.0035105499999999994,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "קבל את הביוגרפיה והתרומות המרכזיות של האפיפיור אינוקנטיוס השלישי."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religious_history.get_papal_biography": {
+        "papal_name": [
+          "אינוקנטיוס השלישי",
+          "האפיפיור אינוקנטיוס השלישי"
+        ],
+        "include_contributions": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religious_history_get_papal_biography",
+          "arguments": {
+            "papal_name": "Innocent III",
+            "include_contributions": true
+          },
+          "id": "functions.religious_history_get_papal_biography:0"
+        }
+      ],
+      "decoded": [
+        {
+          "religious_history_get_papal_biography": {
+            "papal_name": "Innocent III",
+            "include_contributions": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religious_history_get_papal_biography'. Please review the function definition and try again.",
+      "input_tokens": 461,
+      "output_tokens": 194,
+      "latency_s": 8.15548038482666,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religious_history_get_papal_biography",
+          "arguments": {
+            "papal_name": "אינוקנטיוס השלישי",
+            "include_contributions": true
+          },
+          "id": "functions.religious_history_get_papal_biography:1"
+        }
+      ],
+      "decoded": [
+        {
+          "religious_history_get_papal_biography": {
+            "papal_name": "אינוקנטיוס השלישי",
+            "include_contributions": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 708,
+      "output_tokens": 406,
+      "latency_s": 2.8291804790496826,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "קבל את הביוגרפיה והתרומות המרכזיות של האפיפיור אינוקנטיוס השלישי."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religious_history_get_papal_biography:0",
+          "function": {
+            "arguments": "{\"papal_name\":\"Innocent III\",\"include_contributions\":true}",
+            "name": "religious_history_get_papal_biography"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to get the biography and main contributions of Pope Innocent III.\nThe request translates to: \"Get the biography and main contributions of Pope Innocent III.\"\n\nLooking at the available functions, I have:\n- `religious_history_get_papal_biography` which requires `papal_name` (string, language: English or Hebrew) and `include_contributions` (boolean, default false).\n\nThe papal name should be \"Innocent III\" in English (or perhaps \"Innocent III\" is standard). The user specifically asks for contributions, so `include_contributions` should be true.\n\nLet me make the function call with:\n- `papal_name`: \"Innocent III\"\n- `include_contributions`: true"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religious_history_get_papal_biography'. Please review the function definition and try again.",
+      "tool_call_id": "functions.religious_history_get_papal_biography:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religious_history_get_papal_biography:1",
+          "function": {
+            "arguments": "{\"papal_name\": \"אינוקנטיוס השלישי\", \"include_contributions\": true}",
+            "name": "religious_history_get_papal_biography"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 error. Let me reconsider the parameter format. The papal name might need to be formatted differently. The user mentioned \"אינוקנטיוס השלישי\" which is Innocent III in Hebrew. The parameter description says \"Language: English, Hebrew.\" Let me try with the Hebrew name, or perhaps I need to check if the parameter names or values are correct.\n\nWait, looking at the function definition again:\n```\n\"parameters\": {\n  \"description\": \"Retrieve the biography and main religious and historical contributions of a Pope based on his papal name.\", \n  \"properties\": {\n    \"include_contributions\": {\n      \"default\": false, \n      \"description\": \"Include main contributions of the Pope in the response if true.\", \n      \"type\": \"boolean\"\n    }, \n    \"papal_name\": {\n      \"description\": \"The papal name of the Pope. Language: English, Hebrew.\", \n      \"type\": \"string\"\n    }\n  }, \n  \"required\": [\"include_contributions\", \"papal_name\"], \n  \"title\": \"religious_history_get_papal_biography_params\", \n  \"type\": \"object\"\n}\n```\n\nBoth parameters are required. I provided both. Let me try the Hebrew name \"אינוקנטיוס השלישי\" or perhaps the expected format is exactly as standard papal names are written. Or maybe the issue was with the JSON formatting? No, it looked correct.\n\nActually, let me check if maybe the include_contributions needs to be passed without quotes as a boolean? In the previous call, I passed it correctly as a JSON boolean `true`.\n\nLet me try with the Hebrew name as specified in the user's query."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

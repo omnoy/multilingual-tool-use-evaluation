@@ -11,7 +11,7 @@ the pure pieces the batch driver needs:
   - build_prompt()/render_messages(): the prompt template and the OpenAI-style
                               message list handed to the Azure Batch API
   - parse_translation()     : parse the model's JSON reply
-  - apply_translation()     : reassemble a translated test_case + possible_answer entry
+  - apply_translation()     : reassemble a translated test_case (with inline ground_truth)
 
 LocalizationLevel controls scope:
   - QUERY : Only the user-facing query is translated. Ground-truth parameter
@@ -31,12 +31,7 @@ import sys
 from enum import Enum
 from typing import Any
 
-from multilingual_bfcl.azure_client import default_deployment
 from multilingual_bfcl.localization.locale_config import Locale
-
-# Default deployment for translation. A "model" here is an Azure deployment name;
-# it defaults to AZURE_OPENAI_DEPLOYMENT and can be overridden on the command line.
-DEFAULT_TRANSLATION_MODEL = default_deployment() or "gpt-4o"
 
 
 class LocalizationLevel(str, Enum):
@@ -239,69 +234,77 @@ def collect_textual_value_contexts(
 
 # ---------------------------------------------------------------------------
 # Language descriptors — annotate natural-language parameters with the set of
-# languages their value may be given in (e.g. "Language: English, Hebrew.").
-# Detection is ground-truth driven: a parameter is natural-language if at least
-# one of its ground-truth values passes is_translatable_string (the "basic
-# regex" — not a number/bool/date) and the parameter is not an enum.
+# languages their value may be given in (e.g. "Languages: English, Hebrew.").
+#
+# Detection combines two signals so that distractor functions — which are never
+# referenced by the ground truth — are covered as well as the correct one:
+#   - Ground truth refines: a parameter present in the entry's ground truth is
+#     natural-language iff at least one of its GT values passes is_translatable_string
+#     (the "basic regex" — not a number/bool/date). This correctly skips a
+#     string-typed param whose actual value is really a number/date/code.
+#   - Schema fallback: a parameter NOT in the ground truth (i.e. living only in a
+#     distractor function) is natural-language iff its schema type is a string, or
+#     an array/list of strings.
+# Enums (including array-item enums) are never tagged.
 # ---------------------------------------------------------------------------
 
-def natural_language_params(
-    functions: list[dict[str, Any]],
-    ground_truth: list[dict],
-) -> set[tuple[str, str]]:
-    """(func_name, param) pairs whose ground-truth value is natural-language text.
+def _has_enum(pdef: dict[str, Any]) -> bool:
+    """True if the parameter (or, for arrays, its items) is constrained to an enum."""
+    if "enum" in pdef:
+        return True
+    items = pdef.get("items")
+    return isinstance(items, dict) and "enum" in items
 
-    A param qualifies when at least one of its ground-truth values passes
-    is_translatable_string AND it is not declared as an enum in the function
-    schema (text enums are excluded — their values are fixed code tokens).
+
+def _is_textual_schema(pdef: dict[str, Any]) -> bool:
+    """True if the schema type is a string, or an array/list whose items are strings."""
+    ptype = pdef.get("type")
+    if ptype == "string":
+        return True
+    if ptype in ("array", "list"):
+        items = pdef.get("items")
+        return isinstance(items, dict) and items.get("type") == "string"
+    return False
+
+
+def is_natural_language_param(
+    pdef: dict[str, Any],
+    gt_values: list | None,
+) -> bool:
+    """Whether a parameter should carry a language descriptor.
+
+    `gt_values` is the parameter's ground-truth value list, or None when the
+    parameter does not appear in the ground truth (a distractor param). Enums are
+    always rejected; otherwise ground truth decides when present, and the schema
+    type is the fallback when it is absent.
     """
-    enum_params: set[tuple[str, str]] = set()
-    for func in functions:
-        name = func.get("name", "")
-        props = func.get("parameters", {}).get("properties", {})
-        for param, pdef in props.items():
-            if "enum" in pdef:
-                enum_params.add((name, param))
-
-    nl: set[tuple[str, str]] = set()
-    for call in ground_truth:
-        for func_name, params in call.items():
-            for param, value_list in params.items():
-                if (func_name, param) in enum_params:
-                    continue
-                if any(is_translatable_string(v) for v in value_list):
-                    nl.add((func_name, param))
-    return nl
+    if _has_enum(pdef):
+        return False
+    if gt_values is not None:
+        return any(is_translatable_string(v) for v in gt_values)
+    return _is_textual_schema(pdef)
 
 
 def add_language_descriptors_to_entry(
     entry: dict[str, Any],
     languages: str,
-    template: str = "Language: {languages}.",
+    template: str = "Languages: {languages}.",
 ) -> int:
     """Append a language descriptor to each natural-language parameter's description.
 
-    Natural-language params are detected from the entry's ground truth (see
-    natural_language_params). Because ground truth only references the *correct*
-    function, the descriptor is also propagated to any parameter in a sibling
-    (distractor) function that is structurally identical — same name and same
-    original description — so the annotation does not reveal which function is the
-    answer. Enums are never tagged. Mutates `entry` in place; returns the number
-    of parameter descriptions modified.
+    A parameter is natural-language per is_natural_language_param: ground truth
+    decides for params it references (the correct function), and the schema type is
+    the fallback for distractor-function params it does not. Enums are never tagged.
+    Mutates `entry` in place; returns the number of parameter descriptions modified.
     """
     functions = entry.get("function", [])
-    ground_truth = entry.get("ground_truth", [])
-    nl = natural_language_params(functions, ground_truth)
 
-    # Signatures (param name, original description) of the natural-language params,
-    # used to tag structurally-identical params in distractor functions too.
-    signatures: set[tuple[str, str]] = set()
-    for func in functions:
-        name = func.get("name", "")
-        props = func.get("parameters", {}).get("properties", {})
-        for param, pdef in props.items():
-            if (name, param) in nl:
-                signatures.add((param, pdef.get("description", "")))
+    # (func_name, param) -> ground-truth value list, used to refine detection.
+    gt_values: dict[tuple[str, str], list] = {}
+    for call in entry.get("ground_truth", []):
+        for func_name, params in call.items():
+            for param, value_list in params.items():
+                gt_values[(func_name, param)] = value_list
 
     hint = template.format(languages=languages)
     modified = 0
@@ -309,11 +312,9 @@ def add_language_descriptors_to_entry(
         name = func.get("name", "")
         props = func.get("parameters", {}).get("properties", {})
         for param, pdef in props.items():
-            if "enum" in pdef:
+            if not is_natural_language_param(pdef, gt_values.get((name, param))):
                 continue
             desc = pdef.get("description", "")
-            if (name, param) not in nl and (param, desc) not in signatures:
-                continue
             if hint in desc:  # idempotent — never double-append
                 continue
             pdef["description"] = f"{desc} {hint}".strip()
@@ -321,23 +322,27 @@ def add_language_descriptors_to_entry(
     return modified
 
 
+def messages_key(test_case: dict[str, Any]) -> str:
+    """Key holding the conversation turns: "messages" (current format) or legacy "question"."""
+    return "messages" if "messages" in test_case else "question"
+
+
 def build_input(
     test_case: dict[str, Any],
-    answer: dict[str, Any] | None,
     locale: Locale,
     level: LocalizationLevel,
 ) -> dict[str, str]:
     """Build the chain-input dict for one (test_case, locale) batch item.
 
     The payload mirrors the level: QUERY sends only {"queries": [...]}, while FULL
-    also sends {"values": [...]} with the textual ground-truth values.
+    also sends {"values": [...]} with the textual values of the entry's inline
+    `ground_truth`.
     """
-    queries = collect_query_texts(test_case.get("question", []))
+    queries = collect_query_texts(test_case.get(messages_key(test_case), []))
     payload_obj: dict[str, list] = {"queries": queries}
     if level == LocalizationLevel.FULL:
-        payload_obj["values"] = (
-            collect_textual_value_contexts(test_case, answer.get("ground_truth", []))
-            if answer is not None else []
+        payload_obj["values"] = collect_textual_value_contexts(
+            test_case, test_case.get("ground_truth", [])
         )
 
     payload = json.dumps(payload_obj, ensure_ascii=False)
@@ -385,7 +390,7 @@ def parse_translation(raw: str, entry_id: str) -> dict[str, list] | None:
 
 
 # ---------------------------------------------------------------------------
-# Reassembling translated test case + possible-answer entry
+# Reassembling the translated test case (ground truth travels inline)
 # ---------------------------------------------------------------------------
 
 def _suffixed_id(base_id: str, locale: Locale) -> str:
@@ -394,66 +399,63 @@ def _suffixed_id(base_id: str, locale: Locale) -> str:
 
 def apply_translation(
     test_case: dict[str, Any],
-    answer: dict[str, Any] | None,
     locale: Locale,
     level: LocalizationLevel,
     parsed: dict[str, list],
-) -> tuple[dict[str, Any], dict[str, Any] | None] | None:
-    """Build the translated (test_case_entry, possible_answer_entry).
+) -> dict[str, Any] | None:
+    """Build the translated test-case entry, including its `ground_truth`.
 
-    Returns None if the reply's item counts don't match what we sent (the caller
-    should treat that as a failed entry). possible_answer_entry is None when no
-    answer was provided.
+    QUERY keeps the ground truth unchanged; FULL substitutes the translated
+    textual values. Returns None if the reply's item counts don't match what we
+    sent (the caller should treat that as a failed entry).
     """
     queries = parsed["queries"]
     values = parsed["values"]
+    new_id = _suffixed_id(test_case["id"], locale)
+    mkey = messages_key(test_case)
 
-    expected_queries = collect_query_texts(test_case.get("question", []))
+    expected_queries = collect_query_texts(test_case.get(mkey, []))
     if len(queries) != len(expected_queries):
         print(
-            f"[WARN] {_suffixed_id(test_case['id'], locale)}: expected "
+            f"[WARN] {new_id}: expected "
             f"{len(expected_queries)} query string(s), got {len(queries)}.",
             file=sys.stderr,
         )
         return None
 
-    # --- translated question (function defs left untouched) ---
-    new_question = copy.deepcopy(test_case.get("question", []))
+    # --- translated messages (function defs left untouched) ---
+    new_messages = copy.deepcopy(test_case.get(mkey, []))
     qi = iter(queries)
-    for turn in new_question:
+    for turn in new_messages:
         for msg in turn:
             if msg.get("role") == "user":
                 msg["content"] = next(qi)
 
-    q_entry = copy.deepcopy(test_case)
-    q_entry["question"] = new_question
-    q_entry["source_id"] = test_case["id"]
-    q_entry["id"] = _suffixed_id(test_case["id"], locale)
-    q_entry["locale"] = locale.code
-    q_entry["localization_level"] = level.value
+    # --- ground truth (translated only for FULL) ---
+    ground_truth = copy.deepcopy(test_case.get("ground_truth", []))
+    if level == LocalizationLevel.FULL:
+        expected_values = collect_textual_values(ground_truth)
+        if len(values) != len(expected_values):
+            print(
+                f"[WARN] {new_id}: expected {len(expected_values)} "
+                f"value(s), got {len(values)}.",
+                file=sys.stderr,
+            )
+            return None
+        vi = iter(values)
+        for call in ground_truth:
+            for params in call.values():
+                for key, value_list in params.items():
+                    params[key] = [
+                        next(vi) if is_translatable_string(v) else v
+                        for v in value_list
+                    ]
 
-    # --- translated possible-answer entry ---
-    a_entry: dict[str, Any] | None = None
-    if answer is not None:
-        a_entry = copy.deepcopy(answer)
-        a_entry["id"] = _suffixed_id(answer["id"], locale)
-
-        if level == LocalizationLevel.FULL:
-            expected_values = collect_textual_values(answer.get("ground_truth", []))
-            if len(values) != len(expected_values):
-                print(
-                    f"[WARN] {a_entry['id']}: expected {len(expected_values)} "
-                    f"value(s), got {len(values)}.",
-                    file=sys.stderr,
-                )
-                return None
-            vi = iter(values)
-            for call in a_entry.get("ground_truth", []):
-                for params in call.values():
-                    for key, value_list in params.items():
-                        params[key] = [
-                            next(vi) if is_translatable_string(v) else v
-                            for v in value_list
-                        ]
-
-    return q_entry, a_entry
+    entry = {k: copy.deepcopy(v) for k, v in test_case.items() if k != "ground_truth"}
+    entry[mkey] = new_messages
+    entry["id"] = new_id
+    entry["source_id"] = test_case["id"]
+    entry["locale"] = locale.code
+    entry["localization_level"] = level.value
+    entry["ground_truth"] = ground_truth
+    return entry

@@ -1,0 +1,173 @@
+{
+  "id": "multiple_134_he",
+  "source_id": "multiple_134",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1805,
+  "total_output_tokens": 722,
+  "total_latency_s": 5.622190475463867,
+  "estimated_cost_usd": 0.00460275,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חפש פרטים של רישום פלילי חמור עבור מספר תיק CA123456 במחוז סן דייגו"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "crime_record.get_record": {
+        "case_number": [
+          "CA123456"
+        ],
+        "county": [
+          "סן דייגו",
+          "מחוז סן דייגו"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "functions.crime_record_get_record:0"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 745,
+      "output_tokens": 272,
+      "latency_s": 2.5482230186462402,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "סן דייגו",
+            "details": true
+          },
+          "id": "functions.crime_record_get_record:1"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "סן דייגו",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1060,
+      "output_tokens": 450,
+      "latency_s": 3.073967456817627,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חפש פרטים של רישום פלילי חמור עבור מספר תיק CA123456 במחוז סן דייגו"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.crime_record_get_record:0",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking to search for details of a serious criminal record for case number CA123456 in San Diego county.\n\nLooking at the available functions, I have `crime_record_get_record` which retrieves detailed records of serious crimes using a case number and specific location.\n\nThe parameters needed are:\n- case_number: \"CA123456\" (provided by user)\n- county: \"סן דייגו\" (San Diego - provided in Hebrew, but I should use the English name \"San Diego\" since county names in the US are typically in English and the system likely expects English names)\n- details: The user specifically asked for \"פרטים\" (details), so I should set this to true.\n\nWait, let me reconsider the county parameter. The user said \"מחוז סן דייגו\" which is San Diego county. Since this is a US location, I should probably provide it as \"San Diego\" in English for the system to recognize it properly.\n\nLet me make the function call with:\n- case_number: \"CA123456\"\n- county: \"San Diego\" \n- details: true (since the user asked for details)"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "functions.crime_record_get_record:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.crime_record_get_record:1",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"סן דייגו\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters.\n\nLooking at the function definition again:\n- case_number: string (required)\n- county: string (required) \n- details: boolean (optional, default false)\n\nThe user asked in Hebrew for details of a serious criminal record for case number CA123456 in San Diego county.\n\nMaybe the system expects the county in Hebrew? Or maybe \"San Diego County\" instead of just \"San Diego\"? Let me try with \"San Diego County\" or perhaps keep it as the user specified.\n\nActually, wait - could the issue be that I need to pass the parameters differently? Let me check the schema again.\n\n```\n\"properties\": {\n  \"case_number\": {\"description\": \"מספר התיק הקשור לפשע.\", \"type\": \"string\"},\n  \"county\": {\"description\": \"המחוז שבו התרחש הפשע.\", \"type\": \"string\"},\n  \"details\": {\"default\": false, \"description\": \"כדי לקבל דוח מפורט, הגדר כ-true. ברירת המחדל היא false.\", \"type\": \"boolean\"}\n},\n\"required\": [\"county\", \"case_number\"]\n```\n\nEverything looks correct. Maybe I should try without the details parameter first, or maybe with just \"San Diego\". Actually I already used \"San Diego\". \n\nHmm, maybe the case_number format is wrong? Or maybe the county needs to be in Hebrew \"סן דייגו\"?\n\nLet me try with Hebrew county name since the user wrote in Hebrew and perhaps the database expects the same language input. Or maybe try \"San Diego County\".\n\nActually, looking at the error again - it says \"invalid parameters\". This could mean the values themselves are not found in the database or the format is wrong. But as an AI assistant, I should try making the call. Let me try with the Hebrew county name as provided by the user."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

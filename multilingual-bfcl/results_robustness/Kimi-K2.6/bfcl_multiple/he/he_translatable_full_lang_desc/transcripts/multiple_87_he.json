@@ -1,0 +1,169 @@
+{
+  "id": "multiple_87_he",
+  "source_id": "multiple_87",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1102,
+  "total_output_tokens": 594,
+  "total_latency_s": 3.7085156440734863,
+  "estimated_cost_usd": 0.0034229,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את העדכון או הטלאי האחרון למשחק 'סייברפאנק 2077' בפלטפורמת אקסבוקס."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "games.update.find": {
+        "game": [
+          "סייברפאנק 2077"
+        ],
+        "platform": [
+          "אקסבוקס"
+        ],
+        "region": [
+          "",
+          "גלובלי"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "games_update_find",
+          "arguments": {
+            "game": "Cyberpunk 2077",
+            "platform": "Xbox"
+          },
+          "id": "functions.games_update_find:0"
+        }
+      ],
+      "decoded": [
+        {
+          "games_update_find": {
+            "game": "Cyberpunk 2077",
+            "platform": "Xbox"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'games_update_find'. Please review the function definition and try again.",
+      "input_tokens": 339,
+      "output_tokens": 384,
+      "latency_s": 2.264690399169922,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "games_update_find",
+          "arguments": {
+            "game": "סייברפאנק 2077",
+            "platform": "אקסבוקס"
+          },
+          "id": "functions.games_update_find:1"
+        }
+      ],
+      "decoded": [
+        {
+          "games_update_find": {
+            "game": "סייברפאנק 2077",
+            "platform": "אקסבוקס"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 763,
+      "output_tokens": 210,
+      "latency_s": 1.4438252449035645,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את העדכון או הטלאי האחרון למשחק 'סייברפאנק 2077' בפלטפורמת אקסבוקס."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.games_update_find:0",
+          "function": {
+            "arguments": "{\"game\": \"Cyberpunk 2077\", \"platform\": \"Xbox\"}",
+            "name": "games_update_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Find the latest update or patch for the game 'Cyberpunk 2077' on the Xbox platform.\"\n\nI need to use the `games_update_find` function with:\n- game: \"Cyberpunk 2077\" (or \"סייברפאנק 2077\" - but the function description says Language: English, Hebrew, so either should work. However, the parameter description says \"The name of the game. Language: English, Hebrew.\" I'll provide the English name to be safe, but the user wrote it in Hebrew. Looking at the tool definitions, it accepts Hebrew. But \"Cyberpunk 2077\" is the standard English name. Let me provide \"Cyberpunk 2077\" or maybe I should just pass what the user said? Actually, the function accepts English and Hebrew. I'll use the English name since it's more standard in game databases, but the Hebrew name should also work. Let me use \"Cyberpunk 2077\" to be safe.\n- platform: \"Xbox\"\n- region: not specified by user, so optional default 'global' will be used.\n\nActually, looking at the function description again: \"Find the latest updates or patches for a specific game on a specified gaming platform.\"\n\nSo I'll call:\ngames_update_find(game=\"Cyberpunk 2077\", platform=\"Xbox\")\n\nWait, the user said \"אקסבוקס\" which is Xbox in Hebrew. The platform parameter says Language: English, Hebrew. So \"Xbox\" or \"אקסבוקס\" should both work. I'll use \"Xbox\" as it's the standard platform identifier.\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'games_update_find'. Please review the function definition and try again.",
+      "tool_call_id": "functions.games_update_find:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.games_update_find:1",
+          "function": {
+            "arguments": "{\"game\": \"סייברפאנק 2077\", \"platform\": \"אקסבוקס\"}",
+            "name": "games_update_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters.\n\nLooking at the schema:\n- game: string, description mentions English, Hebrew\n- platform: string, description mentions English, Hebrew\n- region: optional string, description mentions English, Hebrew\n\nMaybe I should use the Hebrew names since the user asked in Hebrew and the system prompt says \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nWait, the tool definition says the parameters accept English and Hebrew. Let me try with the Hebrew names as the user provided them.\n\nGame: \"סייברפאנק 2077\"\nPlatform: \"אקסבוקס\"\n\nOr maybe I need to provide exactly what the user wrote? Let me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

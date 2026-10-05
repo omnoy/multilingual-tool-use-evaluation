@@ -1,0 +1,244 @@
+{
+  "id": "multiple_189_he",
+  "source_id": "multiple_189",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1830,
+  "total_output_tokens": 878,
+  "total_latency_s": 8.205374002456665,
+  "estimated_cost_usd": 0.0052505,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "המר את השעה 15:00 מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "15:00"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק",
+          "ניו יורק סיטי",
+          "שעון החוף המזרחי הסטנדרטי",
+          "EST"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "לונדון",
+          "שעון הקיץ הבריטי",
+          "BST",
+          "שעון גריניץ'",
+          "GMT"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "15:00",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          },
+          "id": "functions.timezone_convert:0"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "15:00",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 255,
+      "output_tokens": 395,
+      "latency_s": 3.692244529724121,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "3pm",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          },
+          "id": "functions.timezone_convert:1"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "3pm",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 689,
+      "output_tokens": 158,
+      "latency_s": 1.770137071609497,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "15:00",
+            "from_timezone": "ניו יורק",
+            "to_timezone": "לונדון"
+          },
+          "id": "functions.timezone_convert:2"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "15:00",
+            "from_timezone": "ניו יורק",
+            "to_timezone": "לונדון"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 886,
+      "output_tokens": 325,
+      "latency_s": 2.742992401123047,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "המר את השעה 15:00 מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:0",
+          "function": {
+            "arguments": "{\"time\": \"15:00\", \"from_timezone\": \"New York\", \"to_timezone\": \"London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to convert the time 15:00 from New York timezone to London timezone. The user wrote in Hebrew.\n\nI need to use the timezone_convert function.\n\nParameters:\n- time: \"15:00\" or \"3pm\" - the function examples show format like \"3pm\" but also accepts other formats. The user said 15:00 which is 3pm. I'll pass \"15:00\" or maybe \"3pm\". Actually the example says \"e.g. 3pm\" but 15:00 should also work since it's a standard time representation. To be safe, I could use \"3pm\" since it's explicitly shown in the examples, but the user literally said 15:00. I think passing \"15:00\" is reasonable. Actually, looking at the description: \"The local time you want to convert, e.g. 3pm\". This suggests string format. I'll pass \"15:00\".\n- from_timezone: \"New York\" (since the user said \"אזור הזמן של ניו יורק\" which means New York timezone). In English or Hebrew per the schema. The schema says Language: English, Hebrew. So I can write \"New York\".\n- to_timezone: \"London\" (since the user said \"אזור הזמן של לונדון\" which means London timezone). I'll write \"London\".\n\nWait, I should check if there are specific timezone strings expected. The schema says \"Language: English, Hebrew\". So city names in English or Hebrew should be fine. I'll use English city names as they are the standard.\n\nSo:\n- time: \"15:00\"\n- from_timezone: \"New York\"\n- to_timezone: \"London\""
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "tool_call_id": "functions.timezone_convert:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:1",
+          "function": {
+            "arguments": "{\"time\": \"3pm\", \"from_timezone\": \"New York\", \"to_timezone\": \"London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. This likely means the time format wasn't accepted. The example in the schema says \"e.g. 3pm\". Let me try with \"3pm\" instead of \"15:00\". Or maybe the timezone names need to be in a specific format like \"America/New_York\" and \"Europe/London\"? But the schema says \"Language: English, Hebrew\" which implies city names.\n\nLet me try with \"3pm\" for the time format. If that doesn't work, maybe the timezone names need to be different. But I'll try the time format first."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "tool_call_id": "functions.timezone_convert:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:2",
+          "function": {
+            "arguments": "{\"time\": \"15:00\", \"from_timezone\": \"ניו יורק\", \"to_timezone\": \"לונדון\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still a 400 error. Maybe the timezone names need to be in Hebrew? The schema says \"Language: English, Hebrew\". Let me try Hebrew names. \"ניו יורק\" and \"לונדון\". Or maybe the format is continent/city like \"America/New_York\". But the schema says English or Hebrew language. Let me try Hebrew city names.\n\nActually, let me reconsider. The schema says:\n- from_timezone: \"The time zone you want to convert from. Language: English, Hebrew.\"\n- to_timezone: \"The time zone you want to convert to. Language: English, Hebrew.\"\n\nThis might mean the names can be provided in English or Hebrew. But perhaps the function expects specific identifiers. However, given the description, I should try Hebrew since the user asked in Hebrew and maybe the function is tuned for that.\n\nLet me try:\n- time: \"15:00\"\n- from_timezone: \"ניו יורק\"\n- to_timezone: \"לונדון\"\n\nOr maybe with Hebrew time description? The time is numeric so 15:00 should be fine.\n\nAlternatively, maybe it needs timezone abbreviations like EST, GMT, etc.\n\nWait, the error says \"invalid parameters\". It might be that one of the parameters is not formatted correctly. Let me check the JSON. No, the JSON looks valid.\n\nLet me try Hebrew city names."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

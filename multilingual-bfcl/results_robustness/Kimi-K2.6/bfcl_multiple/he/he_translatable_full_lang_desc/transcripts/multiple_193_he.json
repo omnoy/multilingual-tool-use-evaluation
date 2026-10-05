@@ -1,0 +1,173 @@
+{
+  "id": "multiple_193_he",
+  "source_id": "multiple_193",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 922,
+  "total_output_tokens": 219,
+  "total_latency_s": 2.074066162109375,
+  "estimated_cost_usd": 0.0017518999999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי את מרחק וזמן הנסיעה ממגדל אייפל למוזיאון הלובר"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.get_distance_duration": {
+        "start_location": [
+          "מגדל אייפל"
+        ],
+        "end_location": [
+          "מוזיאון הלובר"
+        ],
+        "traffic": [
+          "",
+          false
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_get_distance_duration",
+          "arguments": {
+            "start_location": "Eiffel Tower",
+            "end_location": "Louvre Museum",
+            "traffic": false
+          },
+          "id": "functions.maps_get_distance_duration:0"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_get_distance_duration": {
+            "start_location": "Eiffel Tower",
+            "end_location": "Louvre Museum",
+            "traffic": false
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_get_distance_duration'. Please review the function definition and try again.",
+      "input_tokens": 395,
+      "output_tokens": 90,
+      "latency_s": 0.8332335948944092,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_get_distance_duration",
+          "arguments": {
+            "start_location": "מגדל אייפל",
+            "end_location": "מוזיאון הלובר",
+            "traffic": false
+          },
+          "id": "functions.maps_get_distance_duration:1"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_get_distance_duration": {
+            "start_location": "מגדל אייפל",
+            "end_location": "מוזיאון הלובר",
+            "traffic": false
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 527,
+      "output_tokens": 129,
+      "latency_s": 1.2408325672149658,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי את מרחק וזמן הנסיעה ממגדל אייפל למוזיאון הלובר"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.maps_get_distance_duration:0",
+          "function": {
+            "arguments": "{\"start_location\": \"Eiffel Tower\", \"end_location\": \"Louvre Museum\", \"traffic\": false}",
+            "name": "maps_get_distance_duration"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the travel distance and time from the Eiffel Tower to the Louvre Museum. I need to use the `maps_get_distance_duration` function. The start_location is \"Eiffel Tower\" and the end_location is \"Louvre Museum\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_get_distance_duration'. Please review the function definition and try again.",
+      "tool_call_id": "functions.maps_get_distance_duration:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.maps_get_distance_duration:1",
+          "function": {
+            "arguments": "{\"start_location\": \"מגדל אייפל\", \"end_location\": \"מוזיאון הלובר\", \"traffic\": false}",
+            "name": "maps_get_distance_duration"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Looking back at the function definition, it says the locations should be in English or Hebrew. I used English which should be fine. Let me try with Hebrew as the user requested in Hebrew or maybe more specific location names. Let me try in Hebrew: \"מגדל אייפל\" and \"מוזיאון הלובר\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,112 @@
+{
+  "id": "multiple_65_he",
+  "source_id": "multiple_65",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 349,
+  "total_output_tokens": 666,
+  "total_latency_s": 10.554841995239258,
+  "estimated_cost_usd": 0.00299555,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את המרחק בין העיר ניו יורק ללוס אנג'לס."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "geodistance.find": {
+        "origin": [
+          "העיר ניו יורק",
+          "ניו יורק"
+        ],
+        "destination": [
+          "לוס אנג'לס",
+          "אל-איי"
+        ],
+        "unit": [
+          "מיילים",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "ניו יורק",
+            "destination": "לוס אנג'לס"
+          },
+          "id": "functions.geodistance_find:0"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "ניו יורק",
+            "destination": "לוס אנג'לס"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 349,
+      "output_tokens": 666,
+      "latency_s": 10.554841995239258,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את המרחק בין העיר ניו יורק ללוס אנג'לס."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geodistance_find:0",
+          "function": {
+            "arguments": "{\"origin\":\"ניו יורק\",\"destination\":\"לוס אנג'לס\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find the distance between New York and Los Angeles. I need to use the `geodistance_find` function. \n\nLooking at the tool definition:\n- origin: city of departure (ניו יורק)\n- destination: destination city (לוס אנג'לס)\n- unit: optional, defaults to \"miles\"\n\nI should call this function with Hebrew city names if possible, but the system might expect English names. The description says \"עיר המוצא\" and \"עיר היעד\", and the examples in the tool don't specify language preference. However, typically these APIs work better with English names for international cities. But since the instructions say the user writes in Hebrew and I should understand the request in Hebrew and respond with the correct function call, I should probably just use the Hebrew names or transliterated English? \n\nActually, looking at the schema, there's no indication that Hebrew names won't work, but for New York and Los Angeles, these cities are widely known. I'll use the Hebrew names as provided by the user, or maybe the English names would be safer. Wait, the instructions say \"respond with the correct function call exactly as specified in the tool definitions.\" The parameters are defined as strings - they don't specify language. I'll provide the city names. Since the user said \"ניו יורק\" and \"לוס אנג'לס\", I'll pass those.\n\nActually, looking more carefully - the user's instruction is in Hebrew and asks to find the distance between New York and Los Angeles. The function expects string parameters. In most API implementations, English names work best, but the user specifically mentioned them in Hebrew. However, the system prompt doesn't say I need to translate. I'll use the Hebrew names as they were given, since these are proper nouns and the API might support them. But to be more accurate, maybe I should use English? \n\nWait, I should just make the function call. I'll use the English transliteration since this is almost certainly an API that expects English, but actually, I should try to use what the user provided. Let me reconsider - in many multilingual APIs, major cities work with their local names too.\n\nBut looking at the function description, it says \"Find the distance between two cities on Earth\" and parameter descriptions are in Hebrew. This suggests the API itself might be in Hebrew or supports Hebrew. I'll use the Hebrew names: \"ניו יורק\" and \"לוס אנג'לס\".\n\nNo wait, looking at standard practices, I think using English names \"New York\" and \"Los Angeles\" is safer. But the user wrote in Hebrew... The instruction says \"Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\" This means I can extract the entities and pass them to the function. Since New York is \"ניו יורק\" in Hebrew and Los Angeles is \"לוס אנג'לס\", I'll pass these.\n\nActually, I'll pass them in Hebrew since that's what was requested and the tool parameter descriptions are also in Hebrew."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

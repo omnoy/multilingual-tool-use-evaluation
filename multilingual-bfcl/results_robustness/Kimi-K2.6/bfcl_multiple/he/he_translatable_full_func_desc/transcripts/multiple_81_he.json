@@ -1,0 +1,183 @@
+{
+  "id": "multiple_81_he",
+  "source_id": "multiple_81",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1143,
+  "total_output_tokens": 1038,
+  "total_latency_s": 5.600259065628052,
+  "estimated_cost_usd": 0.0052378500000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "הזמן כרטיס להופעה הקרובה של אמינם בעיר ניו יורק, אני רוצה את זה עם גישה לקלעים."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.book_ticket": {
+        "artist": [
+          "אמינם"
+        ],
+        "location": [
+          "עיר ניו יורק",
+          "ניו יורק"
+        ],
+        "add_ons": [
+          [
+            "Backstage Pass"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "functions.concert_book_ticket:0"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 388,
+      "output_tokens": 320,
+      "latency_s": 2.1375439167022705,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "אמינם",
+            "location": "ניו יורק",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "functions.concert_book_ticket:1"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "אמינם",
+            "location": "ניו יורק",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 755,
+      "output_tokens": 718,
+      "latency_s": 3.4627151489257812,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "הזמן כרטיס להופעה הקרובה של אמינם בעיר ניו יורק, אני רוצה את זה עם גישה לקלעים."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.concert_book_ticket:0",
+          "function": {
+            "arguments": "{\"artist\":\"Eminem\",\"location\":\"New York\",\"add_ons\":[\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to book a ticket for an upcoming Eminem concert in New York City, with backstage access.\n\nLooking at the available functions:\n1. `concert_book_ticket` - this is the right function for a concert\n2. `festival_book_ticket` - this is for festivals, not relevant here\n\nFor `concert_book_ticket`:\n- `artist` (required): \"Eminem\" / \"אמינם\" - I should use the English name since function parameters usually expect standardized names, and the schema doesn't specify Hebrew. Actually, looking at the tool description, there's no restriction mentioned, but typically artist names are in English. However, since the user spoke in Hebrew, maybe I should use \"אמינם\"? But function parameters are usually better with English for international artists. Let me use \"Eminem\" as it's the standard name.\n- `location` (required): \"New York\" / \"ניו יורק\" - again, city names are typically in English. I'll use \"New York\".\n- `add_ons` (optional): The user wants backstage access. The enum includes \"Backstage Pass\", which matches \"גישה לקלעים\" (backstage access).\n\nSo the call should be:\n```\nconcert_book_ticket(artist=\"Eminem\", location=\"New York\", add_ons=[\"Backstage Pass\"])\n```"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "functions.concert_book_ticket:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.concert_book_ticket:1",
+          "function": {
+            "arguments": "{\"artist\": \"אמינם\", \"location\": \"ניו יורק\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters.\n\nLooking at the schema again:\n```\n\"properties\": {\n    \"add_ons\": {\n        \"description\": \"תוספות להופעה. ברירת המחדל היא מערך ריק\",\n        \"items\": {\n            \"enum\": [\"Backstage Pass\", \"VIP Seating\", \"Parking Pass\"],\n            \"type\": \"string\"\n        },\n        \"type\": \"array\"\n    },\n    \"artist\": {\n        \"description\": \"שם האמן של ההופעה.\",\n        \"type\": \"string\"\n    },\n    \"location\": {\n        \"description\": \"העיר שבה תתקיים ההופעה.\",\n        \"type\": \"string\"\n    }\n},\n\"required\": [\"location\", \"artist\"]\n```\n\nWait, the error might be because I need to use Hebrew parameter names? No, the function parameters are in English: artist, location, add_ons.\n\nOr maybe the values need to be in Hebrew? Let me check if the system expects Hebrew values since the function descriptions are in Hebrew.\n\nActually, let me look at the enum values - they're in English: \"Backstage Pass\", \"VIP Seating\", \"Parking Pass\". But maybe the artist and location should be in Hebrew since the interface is in Hebrew?\n\nLet me try with Hebrew values:\n- artist: \"אמינם\"\n- location: \"ניו יורק\"\n- add_ons: [\"Backstage Pass\"] (enum values are in English so these should stay as is)\n\nActually, looking at this more carefully - the parameter schema uses English keys, but the descriptions are in Hebrew. The enum values are in English. For artist and location, they're just strings without enum restrictions.\n\nMaybe the issue is something else? Let me just try again with the same parameters, or maybe try Hebrew names. Actually, since it said \"invalid parameters\", maybe there's a stricter validation. Let me try with \"New York City\" instead of \"New York\"? Or maybe the artist name needs to be exactly as expected?\n\nWait - looking at the error again: \"400 Bad Request: invalid parameters\". This suggests the parameters themselves might be malformed or there's a server-side validation issue.\n\nLet me re-read the schema carefully. \"required\": [\"location\", \"artist\"]. I provided both. The add_ons is an array of strings with specific enum values. I used [\"Backstage Pass\"] which matches the enum.\n\nMaybe the API expects the exact order of required fields? No, JSON doesn't care about order.\n\nLet me try with Hebrew values for the free-text fields:\n- artist: \"אמינם\"\n- location: \"ניו יורק\"\n\nActually, another thought - maybe the system expects the parameter names in Hebrew? No, the schema clearly defines the parameters as \"artist\", \"location\", \"add_ons\" in English.\n\nWait, I wonder if the function is a mock-up that only accepts specific values, and \"Eminem\" or \"New York\" isn't in the allowed set? But there are no enums for those fields.\n\nLet me just try again with Hebrew values for artist and location, keeping add_ons in English since it's an enum."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

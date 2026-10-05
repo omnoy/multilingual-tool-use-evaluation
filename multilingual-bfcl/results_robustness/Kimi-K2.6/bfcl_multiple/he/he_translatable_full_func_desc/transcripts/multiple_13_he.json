@@ -1,0 +1,112 @@
+{
+  "id": "multiple_13_he",
+  "source_id": "multiple_13",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 362,
+  "total_output_tokens": 329,
+  "total_latency_s": 1.6990602016448975,
+  "estimated_cost_usd": 0.0016599,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.revenue_forecast": {
+        "company": [
+          "XYZ"
+        ],
+        "product": [
+          "A",
+          "מוצר A"
+        ],
+        "sales_units_increase_percentage": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "functions.corporate_finance_revenue_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ",
+            "product": "A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 362,
+      "output_tokens": 329,
+      "latency_s": 1.6990602016448975,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.corporate_finance_revenue_forecast:0",
+          "function": {
+            "arguments": "{\"company\":\"XYZ\",\"product\":\"A\",\"sales_units_increase_percentage\":10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"How much revenue will company XYZ generate if we increase the sales units of product A by 10% while keeping the same price?\"\n\nThis requires using the `corporate_finance_revenue_forecast` function. Let's check the parameters:\n- company: \"XYZ\" (required)\n- product: \"A\" (required) \n- sales_units_increase_percentage: 10 (optional, defaults to 0 if not provided, but here we need 10)\n\nThe function description says: \"הערך את ההכנסה של חברה על ידי הכפלת יחידות המכירה של המוצר במחיר המכירה שלו.\"\n(Evaluate the revenue of a company by multiplying the sales units of the product by its selling price.)\n\nSo I need to call this function with:\n- company: \"XYZ\"\n- product: \"A\"\n- sales_units_increase_percentage: 10\n\nWait, I should verify if the product is literally \"A\" or if \"מוצר A\" means product A. Yes, the product parameter should be \"A\".\n\nActually, looking at the function description again: it says \"המוצר הנמכר על ידי החברה\" - the product sold by the company. The user says \"מוצר A\", so product = \"A\".\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

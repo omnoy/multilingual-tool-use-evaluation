@@ -1,0 +1,252 @@
+{
+  "id": "multiple_185_he",
+  "source_id": "multiple_185",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2520,
+  "total_output_tokens": 1317,
+  "total_latency_s": 6.937231540679932,
+  "estimated_cost_usd": 0.007662,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מסעדת הסושי הקרובה ביותר עם מרפסת בבוסטון."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant_search.find_closest": {
+        "location": [
+          "בוסטון",
+          "בוסטון, מסצ'וסטס"
+        ],
+        "cuisine": [
+          "סושי"
+        ],
+        "amenities": [
+          [
+            "Patio"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston, MA",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston, MA",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "input_tokens": 290,
+      "output_tokens": 360,
+      "latency_s": 1.6320948600769043,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "*נסיון נוסף עם עדכון הפרמטרים:*"
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "input_tokens": 696,
+      "output_tokens": 792,
+      "latency_s": 3.970578670501709,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "*נסיון נוסף עם ערכים בעברית, כפי שמותר בהגדרת הפונקציה:*"
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "סושי",
+            "location": "בוסטון",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:2"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "סושי",
+            "location": "בוסטון",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1534,
+      "output_tokens": 165,
+      "latency_s": 1.3345580101013184,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מסעדת הסושי הקרובה ביותר עם מרפסת בבוסטון."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:0",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston, MA\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to find the closest sushi restaurant with a patio in Boston.\n\nLet me break down the request:\n- \"מצא את\" = find\n- \"מסעדת הסושי הקרובה ביותר\" = the closest sushi restaurant\n- \"עם מרפסת\" = with a patio\n- \"בבוסטון\" = in Boston\n\nI need to use the `restaurant_search_find_closest` function with:\n- cuisine: \"Sushi\" (English, as specified in the schema)\n- location: \"Boston, MA\" (the schema gives \"Boston, MA\" as an example, and the user said \"בבוסטון\" which is Boston)\n- amenities: [\"Patio\"] (since they specifically asked for a patio)\n\nThe schema says for location: \"The city, for instance Boston, MA Language: English, Hebrew.\" So I can use \"Boston, MA\" or possibly Hebrew, but since English is the primary and the example is Boston, MA, I should use \"Boston, MA\".\n\nFor cuisine: \"Type of food like Sushi. Language: English, Hebrew.\" So I can use \"Sushi\".\n\nFor amenities: \"Preferred amenities in the restaurant. Default is empty array.\" The user wants \"מרפסת\" which is Patio. Looking at the enum values: [\"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\"]. So \"Patio\" is the correct value.\n\nLet me construct the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_search_find_closest:0"
+    },
+    {
+      "content": "*נסיון נוסף עם עדכון הפרמטרים:*",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:1",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the parameters.\n\nLooking at the schema again:\n```json\n{\n  \"cuisine\": {\n    \"description\": \"Type of food like Sushi. Language: English, Hebrew.\",\n    \"type\": \"string\"\n  },\n  \"location\": {\n    \"description\": \"The city, for instance Boston, MA Language: English, Hebrew.\",\n    \"type\": \"string\"\n  },\n  \"amenities\": {\n    \"default\": [],\n    \"description\": \"Preferred amenities in the restaurant. Default is empty array.\",\n    \"items\": {\"enum\": [\"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\"], \"type\": \"string\"},\n    \"type\": \"array\"\n  }\n}\n```\n\nWait, the schema says `type: array` for amenities but doesn't seem to have any obvious issues. However, the 400 error suggests invalid parameters. Let me think about what could be wrong.\n\nActually, looking closely at the instructions, the user asked in Hebrew but wants me to respond with the correct function call. The error suggests the parameters might be invalid. But the arguments look correct based on the schema.\n\nWait, maybe I need to check if Hebrew is allowed for the cuisine and location parameters. The descriptions say \"Language: English, Hebrew.\" So maybe I should try Hebrew values? But \"Sushi\" is the same in both, and \"Boston, MA\" is a proper noun. Actually, maybe the location should just be \"Boston\" without \"MA\"? Let me try with just \"Boston\".\n\nOr maybe the issue is with the amenities parameter name or structure. But it looks right.\n\nLet me try again with slightly different parameters. Maybe the function expects \"Sushi\" in Hebrew? No, sushi is sushi. Maybe location should be simple \"Boston\"? Let me try that.\n\nActually, looking at the error message \"invalid parameters\", perhaps I made a typo. Let me check... The function name is `restaurant_search_find_closest`. Parameters are `cuisine`, `location`, `amenities`. They all match.\n\nWait, maybe I should try Hebrew for the location since the description allows it. \"בוסטון\" or \"בוסטון, מאסצ'וסטס\". But usually proper nouns stay in English.\n\nLet me try with just \"Boston\" instead of \"Boston, MA\" since the schema says \"The city, for instance Boston, MA\". Maybe the function parser is strict about format. But \"Boston, MA\" is given as an example in the schema.\n\nHmm, the user said \"Please review the function definition and try again.\" Since the function call failed, I should probably just inform the user about the error or try to interpret what happened. But maybe I should try a different approach. Since the schema allows Hebrew for location and cuisine, and the user asked in Hebrew, maybe the function expects Hebrew values? But that doesn't make sense for \"Sushi\" (it's universal) and \"Boston\".\n\nActually, I think the issue might be that I'm not supposed to include the state abbreviation. Or maybe there's no restaurant found? But 400 means bad request, not \"not found\".\n\nLet me try without the comma: \"Boston MA\"? Or just \"Boston\".\n\nActually, looking more carefully at the error - maybe there's an issue with the amenities array format in my tool call. But I formatted it correctly as JSON array.\n\nI'll try once more with \"Boston\" (without MA) to see if that fixes it. If it doesn't, I'll explain the error to the user."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_search_find_closest:1"
+    },
+    {
+      "content": "*נסיון נוסף עם ערכים בעברית, כפי שמותר בהגדרת הפונקציה:*",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:2",
+          "function": {
+            "arguments": "{\"cuisine\": \"סושי\", \"location\": \"בוסטון\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function keeps returning 400 Bad Request. The parameters seem correct according to the schema. Let me reconsider what's happening.\n\nMaybe the problem is with the function system itself, or perhaps I need to use Hebrew values since the user asked in Hebrew and the schema explicitly says language can be English or Hebrew. Let me try with Hebrew values.\n\nCuisine: \"סושי\" \nLocation: \"בוסטון\"\n\nLet me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,172 @@
+{
+  "id": "multiple_104_he",
+  "source_id": "multiple_104",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1001,
+  "total_output_tokens": 326,
+  "total_latency_s": 4.702979803085327,
+  "estimated_cost_usd": 0.00225495,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מרחק הנסיעה הקצר ביותר בין העיר ניו יורק לוושינגטון הבירה."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_shortest_driving_distance": {
+        "origin": [
+          "העיר ניו יורק",
+          "ניו יורק"
+        ],
+        "destination": [
+          "וושינגטון הבירה",
+          "וושינגטון",
+          "וושינגטון"
+        ],
+        "unit": [
+          "",
+          "קילומטרים"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_shortest_driving_distance",
+          "arguments": {
+            "origin": "New York",
+            "destination": "Washington D.C."
+          },
+          "id": "functions.get_shortest_driving_distance:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_shortest_driving_distance": {
+            "origin": "New York",
+            "destination": "Washington D.C."
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_shortest_driving_distance'. Please review the function definition and try again.",
+      "input_tokens": 379,
+      "output_tokens": 197,
+      "latency_s": 1.2787129878997803,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_shortest_driving_distance",
+          "arguments": {
+            "origin": "ניו יורק",
+            "destination": "וושינגטון הבירה"
+          },
+          "id": "functions.get_shortest_driving_distance:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_shortest_driving_distance": {
+            "origin": "ניו יורק",
+            "destination": "וושינגטון הבירה"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 622,
+      "output_tokens": 129,
+      "latency_s": 3.424266815185547,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מרחק הנסיעה הקצר ביותר בין העיר ניו יורק לוושינגטון הבירה."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_shortest_driving_distance:0",
+          "function": {
+            "arguments": "{\"origin\": \"New York\", \"destination\": \"Washington D.C.\"}",
+            "name": "get_shortest_driving_distance"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the shortest driving distance between New York City and Washington D.C. in Hebrew. I need to use the `get_shortest_driving_distance` function. The origin is \"New York\" (or \"New York City\") and the destination is \"Washington D.C.\" (or \"Washington\"). The tool accepts English or Hebrew, so I can use English place names since they are universally recognized. Let me use \"New York\" and \"Washington D.C.\" or \"Washington\". Since the user said \"וושינגטון הבירה\" which means Washington the capital, I should use \"Washington D.C.\" or just \"Washington\". I'll use \"New York\" and \"Washington D.C.\" to be precise. The unit parameter is optional and defaults to kilometers, which is fine."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_shortest_driving_distance'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_shortest_driving_distance:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_shortest_driving_distance:1",
+          "function": {
+            "arguments": "{\"origin\": \"ניו יורק\", \"destination\": \"וושינגטון הבירה\"}",
+            "name": "get_shortest_driving_distance"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request error. Let me check the parameters. The origin and destination should be strings in English or Hebrew. Perhaps I need to use the Hebrew names as provided by the user? Let me try with Hebrew names: \"ניו יורק\" and \"וושינגטון הבירה\". Or maybe \"וושינגטון די. סי.\"? Let me try Hebrew names."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

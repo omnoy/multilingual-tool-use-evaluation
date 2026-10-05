@@ -12,14 +12,19 @@ Azure batch flow:
   4. Poll until status == "completed"
   5. Download the output (and error) files and map results back by custom_id.
 
+run_direct() sends the same request bodies as plain concurrent calls instead, for
+deployments that cannot run batches (full price, results returned immediately).
+
 `custom_id` is the caller's key back to its own bookkeeping (this project uses the
 batch-item index as a string, matching the old manifest format).
 """
 
 from __future__ import annotations
 
+import asyncio
 import io
 import json
+import sys
 from dataclasses import dataclass
 from typing import Any
 
@@ -36,6 +41,9 @@ class BatchItemResult:
     success: bool
     content: str | None = None
     error: str | None = None
+    # Billed token usage reported by the API (0 when the request produced no response).
+    input_tokens: int = 0
+    output_tokens: int = 0
 
 
 def build_chat_request(custom_id: str, body: dict[str, Any]) -> dict[str, Any]:
@@ -128,9 +136,13 @@ def collect_results(client, batch_id: str) -> dict[str, BatchItemResult]:
         err = obj.get("error")
         status_code = response.get("status_code")
         body = response.get("body") or {}
+        usage = body.get("usage") or {}
+        in_tok = usage.get("prompt_tokens", 0) or 0
+        out_tok = usage.get("completion_tokens", 0) or 0
         if err or (status_code is not None and status_code >= 400):
             msg = _error_message(err) or f"HTTP {status_code}"
-            results[cid] = BatchItemResult(cid, success=False, error=msg)
+            results[cid] = BatchItemResult(cid, success=False, error=msg,
+                                           input_tokens=in_tok, output_tokens=out_tok)
             continue
         try:
             content = body["choices"][0]["message"]["content"]
@@ -138,7 +150,8 @@ def collect_results(client, batch_id: str) -> dict[str, BatchItemResult]:
             content = None
         results[cid] = BatchItemResult(cid, success=content is not None,
                                        content=content,
-                                       error=None if content is not None else "empty response")
+                                       error=None if content is not None else "empty response",
+                                       input_tokens=in_tok, output_tokens=out_tok)
 
     # The error file lists requests that never produced a response.
     for obj in _iter_jsonl_file(client, getattr(batch, "error_file_id", None)):
@@ -148,6 +161,58 @@ def collect_results(client, batch_id: str) -> dict[str, BatchItemResult]:
         results[cid] = BatchItemResult(cid, success=False,
                                        error=_error_message(obj.get("error")) or "batch error")
 
+    return results
+
+
+async def run_direct(
+    requests: list[dict[str, Any]],
+    concurrency: int,
+    max_retries: int,
+) -> dict[str, BatchItemResult]:
+    """Send each request body as a plain chat.completions call; index results by position.
+
+    The fallback for deployments without a Global/Data Zone Batch SKU: the same
+    request bodies a batch would carry, sent as ordinary calls (`concurrency` in
+    flight, `max_retries` SDK retries each with backoff on 429/5xx). Returns the same
+    {custom_id: BatchItemResult} shape as collect_results(), keyed by list index, so
+    callers can share their result handling between the two paths.
+    """
+    from multilingual_bfcl.azure_client import make_async_client
+
+    client = make_async_client(max_retries=max_retries)
+    semaphore = asyncio.Semaphore(concurrency)
+    results: dict[str, BatchItemResult] = {}
+    done = 0
+
+    async def one(idx: int, params: dict[str, Any]) -> None:
+        nonlocal done
+        cid = str(idx)
+        async with semaphore:
+            try:
+                resp = await client.chat.completions.create(**params)
+            except Exception as exc:  # noqa: BLE001 — record and keep going
+                results[cid] = BatchItemResult(
+                    cid, success=False, error=f"{type(exc).__name__}: {exc}"
+                )
+            else:
+                usage = resp.usage
+                content = resp.choices[0].message.content if resp.choices else None
+                results[cid] = BatchItemResult(
+                    cid,
+                    success=content is not None,
+                    content=content,
+                    error=None if content is not None else "empty response",
+                    input_tokens=(usage.prompt_tokens or 0) if usage else 0,
+                    output_tokens=(usage.completion_tokens or 0) if usage else 0,
+                )
+        done += 1
+        if done % 25 == 0 or done == len(requests):
+            print(f"  {done}/{len(requests)} done", file=sys.stderr)
+
+    try:
+        await asyncio.gather(*(one(i, p) for i, p in enumerate(requests)))
+    finally:
+        await client.close()
     return results
 
 

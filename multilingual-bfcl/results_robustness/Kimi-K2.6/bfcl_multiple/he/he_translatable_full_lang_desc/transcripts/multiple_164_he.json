@@ -1,0 +1,172 @@
+{
+  "id": "multiple_164_he",
+  "source_id": "multiple_164",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1553,
+  "total_output_tokens": 820,
+  "total_latency_s": 5.045491933822632,
+  "estimated_cost_usd": 0.00475535,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו מחיר הקמעונאות של גיטרת פנדר אמריקן פרופשיונל II סטרטוקסטר בגימור עץ ורד?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "instrument_price.get": {
+        "brand": [
+          "פנדר"
+        ],
+        "model": [
+          "אמריקן פרופשיונל II סטרטוקסטר"
+        ],
+        "finish": [
+          "עץ ורד"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "instrument_price_get",
+          "arguments": {
+            "brand": "Fender",
+            "model": "American Professional II Stratocaster",
+            "finish": "Rosewood"
+          },
+          "id": "functions.instrument_price_get:0"
+        }
+      ],
+      "decoded": [
+        {
+          "instrument_price_get": {
+            "brand": "Fender",
+            "model": "American Professional II Stratocaster",
+            "finish": "Rosewood"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'instrument_price_get'. Please review the function definition and try again.",
+      "input_tokens": 483,
+      "output_tokens": 546,
+      "latency_s": 3.022972822189331,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "instrument_price_get",
+          "arguments": {
+            "brand": "פנדר",
+            "model": "אמריקן פרופשיונל II סטרטוקסטר",
+            "finish": "עץ ורד"
+          },
+          "id": "functions.instrument_price_get:1"
+        }
+      ],
+      "decoded": [
+        {
+          "instrument_price_get": {
+            "brand": "פנדר",
+            "model": "אמריקן פרופשיונל II סטרטוקסטר",
+            "finish": "עץ ורד"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1070,
+      "output_tokens": 274,
+      "latency_s": 2.022519111633301,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו מחיר הקמעונאות של גיטרת פנדר אמריקן פרופשיונל II סטרטוקסטר בגימור עץ ורד?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.instrument_price_get:0",
+          "function": {
+            "arguments": "{\"brand\": \"Fender\", \"model\": \"American Professional II Stratocaster\", \"finish\": \"Rosewood\"}",
+            "name": "instrument_price_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the retail price of a specific guitar in Hebrew. Let me identify the parameters:\n- Brand: Fender (פנדר)\n- Model: American Professional II Stratocaster (אמריקן פרופשיונל II סטרטוקסטר)\n- Finish: Rosewood (עץ ורד)\n\nHowever, looking at the function definition, the finish parameter should be \"The color or type of finish on the instrument\" - but the user specified \"עץ ורד\" which means rosewood. This seems to refer to the fretboard material rather than the finish color. But the function requires finish as a parameter.\n\nWait, let me reconsider. The user says \"גימור עץ ורד\" which literally translates to \"rosewood finish\" but rosewood is typically a fretboard material for Fender guitars. However, the function parameter says \"The color or type of finish on the instrument\" so I should pass what the user provided for finish since that's what they asked about.\n\nActually, for American Professional II Stratocaster, there isn't a finish called \"rosewood\" - rosewood refers to the fingerboard. But the user explicitly asks for \"גימור עץ ורד\" (rosewood finish). I should still make the function call with the exact brand, model, and finish the user specified, and let the function handle it.\n\nBrand: Fender (or פנדר - English is probably better since the function says Language: English, Hebrew)\nModel: American Professional II Stratocaster\nFinish: Rosewood (or עץ ורד)\n\nThe function accepts both English and Hebrew, so I can use either. Let me use English for the instrument details as that's more standard in product databases, but Hebrew should also work. Actually, let me provide it in the language the user specified since both are accepted.\n\nWait, the model name \"American Professional II Stratocaster\" in Hebrew was written as \"אמריקן פרופשיונל II סטרטוקסטר\". Let me keep it as is or transliterate? The function says Language: English, Hebrew. Either should work.\n\nLet me provide:\n- brand: \"Fender\" (or \"פנדר\")\n- model: \"American Professional II Stratocaster\" \n- finish: \"Rosewood\" (or \"עץ ורד\")\n\nI'll use English terms as they're more likely to match a product database exactly."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'instrument_price_get'. Please review the function definition and try again.",
+      "tool_call_id": "functions.instrument_price_get:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.instrument_price_get:1",
+          "function": {
+            "arguments": "{\"brand\": \"פנדר\", \"model\": \"אמריקן פרופשיונל II סטרטוקסטר\", \"finish\": \"עץ ורד\"}",
+            "name": "instrument_price_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. This might be because \"Rosewood\" is not considered a valid finish (since it's a fretboard material, not a finish color for the American Professional II Stratocaster). The user asked for \"עץ ורד\" (rosewood) in the context of finish, but for this guitar model, rosewood represents the fingerboard material rather than the body finish.\n\nHowever, since the user explicitly asked for this combination, maybe I should try with the Hebrew terms as they provided them. Or maybe I should think about what finishes and configurations actually exist. The American Professional II Stratocaster has various finishes like 3-Color Sunburst, Olympic White, Miami Blue, Dark Night, Mercury, Sienna Sunburst, etc. The fingerboard comes in either maple or rosewood.\n\nBut the function specifically asks for finish. The user said \"גימור עץ ורד\" which literally means \"rosewood finish.\" This is likely what they want me to query.\n\nLet me try with the Hebrew terms exactly as the user specified."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,168 @@
+{
+  "id": "multiple_63_he",
+  "source_id": "multiple_63",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 672,
+  "total_output_tokens": 293,
+  "total_latency_s": 2.198338031768799,
+  "estimated_cost_usd": 0.0018104,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה יהיה מדד איכות האוויר של ניו יורק לשבוע הקרוב?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "air_quality_forecast": {
+        "location": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "העיר ניו יורק",
+          "ניו יורק סיטי"
+        ],
+        "days": [
+          7
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality_forecast",
+          "arguments": {
+            "location": "New York",
+            "days": 7
+          },
+          "id": "functions.air_quality_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality_forecast": {
+            "location": "New York",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'air_quality_forecast'. Please review the function definition and try again.",
+      "input_tokens": 261,
+      "output_tokens": 108,
+      "latency_s": 0.7902963161468506,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality_forecast",
+          "arguments": {
+            "days": 7,
+            "location": "ניו יורק"
+          },
+          "id": "functions.air_quality_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality_forecast": {
+            "days": 7,
+            "location": "ניו יורק"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 411,
+      "output_tokens": 185,
+      "latency_s": 1.4080417156219482,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה יהיה מדד איכות האוויר של ניו יורק לשבוע הקרוב?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality_forecast:0",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"days\": 7}",
+            "name": "air_quality_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the air quality index of New York for the upcoming week. They are writing in Hebrew.\n\nI need to use the `air_quality_forecast` function.\n- location: New York (in English, as specified in the schema: \"Language: English, Hebrew\")\n- days: 7 (since they asked for the upcoming week)\n\nLet me call the function with these parameters."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'air_quality_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.air_quality_forecast:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality_forecast:1",
+          "function": {
+            "arguments": "{\"days\": 7, \"location\": \"ניו יורק\"}",
+            "name": "air_quality_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me review the parameters. The location should be a string, and days should be a number. I used \"New York\" and 7, which seem correct. Maybe the API only accepts Hebrew locations since the user asked in Hebrew? Wait, the spec says \"Language: English, Hebrew\" for the location parameter. Let me try again or perhaps the schema requires a specific format? Actually, looking at my call, it seems fine. But maybe there's an issue with the function itself or I need to try different parameters. Let me try again exactly as before, or maybe \"New York\" needs to be in Hebrew? The description says English or Hebrew. Let me try with \"ניו יורק\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

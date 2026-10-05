@@ -1,0 +1,122 @@
+{
+  "id": "multiple_189_he",
+  "source_id": "multiple_189",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 347,
+  "total_output_tokens": 232,
+  "total_latency_s": 1.8500313758850098,
+  "estimated_cost_usd": 0.00125765,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "המר את השעה 15:00 מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "15:00"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק",
+          "ניו יורק סיטי",
+          "שעון החוף המזרחי הסטנדרטי",
+          "EST"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "לונדון",
+          "שעון הקיץ הבריטי",
+          "BST",
+          "שעון גריניץ'",
+          "GMT"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "from_timezone": "America/New_York",
+            "time": "15:00",
+            "to_timezone": "Europe/London"
+          },
+          "id": "functions.timezone_convert:0"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "from_timezone": "America/New_York",
+            "time": "15:00",
+            "to_timezone": "Europe/London"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 347,
+      "output_tokens": 232,
+      "latency_s": 1.8500313758850098,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "המר את השעה 15:00 מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:0",
+          "function": {
+            "arguments": "{\"from_timezone\": \"America/New_York\", \"time\": \"15:00\", \"to_timezone\": \"Europe/London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to convert the time 15:00 from New York timezone to London timezone.\n\nI need to use the `timezone_convert` function with:\n- from_timezone: \"America/New_York\" or \"New York\" - the tool description says \"אזור הזמן\" so I should use standard timezone identifiers. Since the user said \"ניו יורק\", I'll use \"America/New_York\" or just \"EST/EDT\" - but actually standard IANA timezone identifiers are best. However, looking at the function description, it just says \"אזור הזמן\". I'll use \"America/New_York\" and \"Europe/London\" as these are standard.\n- time: \"15:00\"\n- to_timezone: \"Europe/London\"\n\nActually, the function examples show formats like \"3pm\", but \"15:00\" should also work fine. I'll use \"15:00\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

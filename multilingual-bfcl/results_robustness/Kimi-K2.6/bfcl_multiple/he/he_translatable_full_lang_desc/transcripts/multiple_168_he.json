@@ -1,0 +1,169 @@
+{
+  "id": "multiple_168_he",
+  "source_id": "multiple_168",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 949,
+  "total_output_tokens": 610,
+  "total_latency_s": 4.392772912979126,
+  "estimated_cost_usd": 0.00334155,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מילות השיר 'בוהמיאן רפסודי' של קווין."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_song_lyrics": {
+        "song_title": [
+          "בוהמיאן רפסודי"
+        ],
+        "artist_name": [
+          "קווין"
+        ],
+        "lang": [
+          "אנגלית",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_song_lyrics",
+          "arguments": {
+            "artist_name": "Queen",
+            "song_title": "Bohemian Rhapsody"
+          },
+          "id": "functions.get_song_lyrics:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_song_lyrics": {
+            "artist_name": "Queen",
+            "song_title": "Bohemian Rhapsody"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_song_lyrics'. Please review the function definition and try again.",
+      "input_tokens": 311,
+      "output_tokens": 281,
+      "latency_s": 1.9392738342285156,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_song_lyrics",
+          "arguments": {
+            "artist_name": "קווין",
+            "song_title": "בוהמיאן רפסודי"
+          },
+          "id": "functions.get_song_lyrics:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_song_lyrics": {
+            "artist_name": "קווין",
+            "song_title": "בוהמיאן רפסודי"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 638,
+      "output_tokens": 329,
+      "latency_s": 2.4534990787506104,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מילות השיר 'בוהמיאן רפסודי' של קווין."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_song_lyrics:0",
+          "function": {
+            "arguments": "{\"artist_name\": \"Queen\", \"song_title\": \"Bohemian Rhapsody\"}",
+            "name": "get_song_lyrics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find the lyrics of the song \"Bohemian Rhapsody\" by Queen. The user wrote in Hebrew:\n\"מצא את מילות השיר 'בוהמיאן רפסודי' של קווין.\"\n\nThis translates to: \"Find the lyrics of the song 'Bohemian Rhapsody' by Queen.\"\n\nI need to use the `get_song_lyrics` function with:\n- artist_name: \"Queen\"\n- song_title: \"Bohemian Rhapsody\"\n\nThe language parameter is optional and defaults to English. Since the user asked in Hebrew, I might consider whether they want Hebrew lyrics, but the function only supports English, French, Spanish, German, Italian. There's no Hebrew option listed. The default is English, so I'll just not specify lang or could specify English. But looking at the enum, there's no Hebrew, so I'll use the required parameters and not specify lang, letting it default to English, or I can explicitly set it to English.\n\nWait, let me check: the function says lang default is English. So Artist name: Queen, Song title: Bohemian Rhapsody. That's it.\n\nI should make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_song_lyrics'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_song_lyrics:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_song_lyrics:1",
+          "function": {
+            "arguments": "{\"artist_name\": \"קווין\", \"song_title\": \"בוהמיאן רפסודי\"}",
+            "name": "get_song_lyrics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters. The user asked for \"בוהמיאן רפסודי\" which is the Hebrew transliteration for \"Bohemian Rhapsody\", and \"קווין\" which is Queen in Hebrew.\n\nThe function definition says:\n- artist_name: The name of the artist who performed the song. Language: English, Hebrew.\n- song_title: The title of the song. Language: English, Hebrew.\n- lang: The language of the lyrics. Default is English. Options: English, French, Spanish, German, Italian.\n\nWait, maybe I should use the Hebrew names since the function accepts Hebrew for artist name and song title? Let me try with Hebrew:\n- artist_name: \"קווין\"\n- song_title: \"בוהמיאן רפסודי\"\n\nOr maybe the issue is that the song title should be in English? Let me try English first again to see if it was just a transient error, but actually, maybe the parameter names or JSON format was wrong? No, it looked correct.\n\nWait, looking back at the error: \"invalid parameters\". Perhaps the system expects Hebrew inputs since the user asked in Hebrew and the function supports Hebrew language for these fields? The documentation says \"Language: English, Hebrew\" for both artist_name and song_title.\n\nLet me try with Hebrew values."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

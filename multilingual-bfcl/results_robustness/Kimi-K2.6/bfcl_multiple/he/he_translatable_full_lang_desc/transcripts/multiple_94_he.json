@@ -1,0 +1,233 @@
+{
+  "id": "multiple_94_he",
+  "source_id": "multiple_94",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1924,
+  "total_output_tokens": 1017,
+  "total_latency_s": 6.050353050231934,
+  "estimated_cost_usd": 0.0058958,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "אני רוצה להזמין סוויטה עם מיטה זוגית בגודל קווין ל-3 לילות במלון הילטון ניו יורק. תוכל למצוא לי את התמחור?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel_room_pricing.get": {
+        "hotelName": [
+          "הילטון ניו יורק"
+        ],
+        "roomType": [
+          "סוויטה עם מיטה זוגית בגודל קווין"
+        ],
+        "nights": [
+          3
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_room_pricing_get",
+          "arguments": {
+            "hotelName": "Hilton New York",
+            "nights": 3,
+            "roomType": "Suite with queen size double bed"
+          },
+          "id": "functions.hotel_room_pricing_get:0"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_room_pricing_get": {
+            "hotelName": "Hilton New York",
+            "nights": 3,
+            "roomType": "Suite with queen size double bed"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_room_pricing_get'. Please review the function definition and try again.",
+      "input_tokens": 354,
+      "output_tokens": 210,
+      "latency_s": 1.3304355144500732,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_room_pricing_get",
+          "arguments": {
+            "hotelName": "Hilton New York",
+            "nights": 3,
+            "roomType": "Queen Suite"
+          },
+          "id": "functions.hotel_room_pricing_get:1"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_room_pricing_get": {
+            "hotelName": "Hilton New York",
+            "nights": 3,
+            "roomType": "Queen Suite"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_room_pricing_get'. Please review the function definition and try again.",
+      "input_tokens": 614,
+      "output_tokens": 292,
+      "latency_s": 1.9541592597961426,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_room_pricing_get",
+          "arguments": {
+            "hotelName": "הילטון ניו יורק",
+            "nights": 3,
+            "roomType": "סוויטה עם מיטה זוגית בגודל קווין"
+          },
+          "id": "functions.hotel_room_pricing_get:2"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_room_pricing_get": {
+            "hotelName": "הילטון ניו יורק",
+            "nights": 3,
+            "roomType": "סוויטה עם מיטה זוגית בגודל קווין"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 956,
+      "output_tokens": 515,
+      "latency_s": 2.7657582759857178,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "אני רוצה להזמין סוויטה עם מיטה זוגית בגודל קווין ל-3 לילות במלון הילטון ניו יורק. תוכל למצוא לי את התמחור?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_room_pricing_get:0",
+          "function": {
+            "arguments": "{\"hotelName\":\"Hilton New York\",\"nights\":3,\"roomType\":\"Suite with queen size double bed\"}",
+            "name": "hotel_room_pricing_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to book a suite with a queen-size double bed for 3 nights at Hilton New York and wants pricing information.\n\nLooking at the available functions, I have `hotel_room_pricing_get` which requires:\n- hotelName: string\n- nights: number\n- roomType: string\n\nFrom the request:\n- hotelName: \"Hilton New York\" (the user said \"הילטון ניו יורק\")\n- nights: 3\n- roomType: \"Suite with queen size double bed\" or similar. The user said \"סוויטה עם מיטה זוגית בגודל קווין\" which translates to \"Suite with queen size double bed\". I should provide this in English as the function specifies Language: English, Hebrew.\n\nLet me call the function with these parameters."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_room_pricing_get'. Please review the function definition and try again.",
+      "tool_call_id": "functions.hotel_room_pricing_get:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_room_pricing_get:1",
+          "function": {
+            "arguments": "{\"hotelName\":\"Hilton New York\",\"nights\":3,\"roomType\":\"Queen Suite\"}",
+            "name": "hotel_room_pricing_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. Let me think about what might be wrong.\n\nLooking at the function schema again:\n- hotelName: string, The name of the hotel e.g. Hilton New York Language: English, Hebrew.\n- nights: number, Number of nights to book the room for.\n- roomType: string, Type of the room to be booked. Language: English, Hebrew.\n\nThe values seem correct. Maybe \"Suite with queen size double bed\" isn't a valid room type format, or maybe the parameter names need to be exact? Wait, I used the exact parameter names.\n\nMaybe the issue is that the function expects specific room type naming? Or perhaps I should try a slightly different format. Let me try again with perhaps a simpler or more standard room type description.\n\nActually, maybe the issue is something else. But since I got a 400 error, let me try with the room type in Hebrew since the schema says Language: English, Hebrew. Wait, I did use English. Let me try \"Queen Suite\" or \"Suite with a queen bed\".\n\nOr maybe the parameter order? No, JSON doesn't care about order.\n\nLet me just try once more with a slightly different room type string. Maybe \"Queen Suite\" would work better."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_room_pricing_get'. Please review the function definition and try again.",
+      "tool_call_id": "functions.hotel_room_pricing_get:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_room_pricing_get:2",
+          "function": {
+            "arguments": "{\"hotelName\": \"הילטון ניו יורק\", \"nights\": 3, \"roomType\": \"סוויטה עם מיטה זוגית בגודל קווין\"}",
+            "name": "hotel_room_pricing_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function is still returning a 400 error. Let me reconsider what might be wrong.\n\nWait, maybe I need to check if there's an issue with how I'm calling it or if the function simply doesn't have this hotel/room combination in its database. But the error says \"invalid parameters\" not \"not found\".\n\nLet me look at the schema very carefully:\n```json\n{\n  \"hotelName\": {\"description\": \"The name of the hotel e.g. Hilton New York Language: English, Hebrew.\", \"type\": \"string\"},\n  \"nights\": {\"description\": \"Number of nights to book the room for.\", \"type\": \"number\"},\n  \"roomType\": {\"description\": \"Type of the room to be booked. Language: English, Hebrew.\", \"type\": \"string\"}\n}\n```\n\nRequired: [\"hotelName\", \"nights\", \"roomType\"]\n\nMy parameters match. Maybe \"Hilton New York\" needs to be exactly something else? Or maybe \"nights\" should be an integer (which 3 is).\n\nActually, thinking about it more - in many API simulations like this, sometimes the exact string values need to match predefined values in the backend. But I don't know what those are. I made valid function calls with the correct parameter types and reasonable values. The error might be a limitation of the simulated API.\n\nI should report back to the user that I attempted to get the pricing but encountered an error. I should explain what I tried and perhaps suggest they check directly with the hotel or that there might be a technical issue with the pricing system at the moment.\n\nWait, let me reconsider if I should try Hebrew for the room type. The description says \"Language: English, Hebrew.\" So maybe Hebrew works better? The user asked in Hebrew. Let me try:\n\nhotelName: \"הילטון ניו יורק\" (Hilton New York in Hebrew)\nroomType: \"סוויטה עם מיטה זוגית בגודל קווין\" (exactly what the user said)\n\nActually, the example says \"e.g. Hilton New York\" so English should work for the hotel name. But let me try Hebrew to see if that resolves the 400 error."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

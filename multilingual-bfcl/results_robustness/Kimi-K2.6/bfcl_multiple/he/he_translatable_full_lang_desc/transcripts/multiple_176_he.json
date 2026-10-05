@@ -1,0 +1,240 @@
+{
+  "id": "multiple_176_he",
+  "source_id": "multiple_176",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3097,
+  "total_output_tokens": 1014,
+  "total_latency_s": 10.565646171569824,
+  "estimated_cost_usd": 0.00699815,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תן לי את לוח המשחקים של מנצ'סטר יונייטד ל-6 המשחקים הבאים בליגת העל האנגלית."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sports_team.get_schedule": {
+        "team_name": [
+          "מנצ'סטר יונייטד",
+          "מאן יונייטד",
+          "מאן יו",
+          "MUFC"
+        ],
+        "num_of_games": [
+          6
+        ],
+        "league": [
+          "ליגת העל האנגלית",
+          "PL"
+        ],
+        "location": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_team_get_schedule",
+          "arguments": {
+            "team_name": "Manchester United",
+            "num_of_games": 6,
+            "league": "Premier League"
+          },
+          "id": "functions.sports_team_get_schedule:0"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_team_get_schedule": {
+            "team_name": "Manchester United",
+            "num_of_games": 6,
+            "league": "Premier League"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sports_team_get_schedule'. Please review the function definition and try again.",
+      "input_tokens": 619,
+      "output_tokens": 306,
+      "latency_s": 1.807605504989624,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_team_get_schedule",
+          "arguments": {
+            "team_name": "Manchester United",
+            "num_of_games": 6,
+            "league": "English Premier League"
+          },
+          "id": "functions.sports_team_get_schedule:1"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_team_get_schedule": {
+            "team_name": "Manchester United",
+            "num_of_games": 6,
+            "league": "English Premier League"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sports_team_get_schedule'. Please review the function definition and try again.",
+      "input_tokens": 969,
+      "output_tokens": 496,
+      "latency_s": 5.462620973587036,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_team_get_schedule",
+          "arguments": {
+            "team_name": "מנצ'סטר יונייטד",
+            "num_of_games": 6,
+            "league": "ליגת העל האנגלית"
+          },
+          "id": "functions.sports_team_get_schedule:2"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_team_get_schedule": {
+            "team_name": "מנצ'סטר יונייטד",
+            "num_of_games": 6,
+            "league": "ליגת העל האנגלית"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1509,
+      "output_tokens": 212,
+      "latency_s": 3.295419692993164,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תן לי את לוח המשחקים של מנצ'סטר יונייטד ל-6 המשחקים הבאים בליגת העל האנגלית."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sports_team_get_schedule:0",
+          "function": {
+            "arguments": "{\"team_name\": \"Manchester United\", \"num_of_games\": 6, \"league\": \"Premier League\"}",
+            "name": "sports_team_get_schedule"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the schedule of Manchester United for the next 6 games in the English Premier League. They wrote in Hebrew.\n\nI need to use the `sports_team_get_schedule` function with:\n- team_name: \"Manchester United\" (English, as supported by the function)\n- num_of_games: 6\n- league: \"Premier League\" or possibly \"English Premier League\" - since the team is Manchester United, the league would be the English Premier League. The function description mentions language can be English or Hebrew, but for the league name, I should use English or possibly Hebrew. Since the user said \"ליגת העל האנגלית\" which means \"English Premier League\". I should probably use \"Premier League\" or \"English Premier League\". I'll use \"Premier League\" as it's the standard name.\n\nLet me check the parameters:\n- team_name (required): \"Manchester United\"\n- num_of_games (required): 6\n- league (required): \"Premier League\"\n- location (optional): not specified, so I can omit it.\n\nThe function description says: \"Language: English, Hebrew\" for both team_name and league. So either should work, but standard English names are safer for sports teams and leagues."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sports_team_get_schedule'. Please review the function definition and try again.",
+      "tool_call_id": "functions.sports_team_get_schedule:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sports_team_get_schedule:1",
+          "function": {
+            "arguments": "{\"team_name\": \"Manchester United\", \"num_of_games\": 6, \"league\": \"English Premier League\"}",
+            "name": "sports_team_get_schedule"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. This could be because the parameter name in the function definition requires a specific format. Looking at the function definition again:\n\n```json\n{\n  \"description\": \"Fetches the schedule of the specified sports team for the specified number of games in the given league.\",\n  \"name\": \"sports_team_get_schedule\",\n  \"parameters\": {\n    \"description\": \"Parameters for fetching the schedule of a sports team\",\n    \"properties\": {\n      \"league\": {\n        \"description\": \"The name of the sports league. If not provided, the function will fetch the schedule for all games, regardless of the league. Language: English, Hebrew.\",\n        \"type\": \"string\"\n      },\n      \"location\": {\n        \"default\": \"\",\n        \"description\": \"Optional. The city or venue where games are to be held. If not provided, all venues will be considered. Default to ''.\",\n        \"type\": \"string\"\n      },\n      \"num_of_games\": {\n        \"description\": \"Number of games for which to fetch the schedule.\",\n        \"type\": \"number\"\n      },\n      \"team_name\": {\n        \"description\": \"The name of the sports team. Language: English, Hebrew.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"team_name\", \"num_of_games\", \"league\"]\n  }\n}\n```\n\nWait, the parameters I sent look correct. Maybe the league name needs to be different? Let me try again. Perhaps \"Premier League\" isn't recognized and it should be something else? Or maybe the tool requires specific parameter names exactly as defined.\n\nActually, looking back at what I sent, the JSON seems correct. Let me try with the Hebrew league name to see if that works better, or try without the league parameter? But the league is required.\n\nAlternatively, perhaps the tool expects \"EPL\" or \"English Premier League\"? Let me try \"English Premier League\". Or perhaps the team name should be in Hebrew?\n\nActually, I should just try again. Sometimes these tools fail due to backend issues. Let me try with Hebrew names since the user asked in Hebrew and the function mentions it supports Hebrew."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sports_team_get_schedule'. Please review the function definition and try again.",
+      "tool_call_id": "functions.sports_team_get_schedule:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sports_team_get_schedule:2",
+          "function": {
+            "arguments": "{\"team_name\": \"מנצ'סטר יונייטד\", \"num_of_games\": 6, \"league\": \"ליגת העל האנגלית\"}",
+            "name": "sports_team_get_schedule"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function keeps failing. Let me examine if I'm using the correct parameter structure. I notice that the schema requires `\"type\": \"object\"` and the parameters must be passed as an object with the correct properties.\n\nWait, I did pass it correctly. Let me check if the issue is with the `num_of_games` type - I passed a number (6), which is correct. The required fields are `team_name`, `num_of_games`, and `league`.\n\nMaybe the tool expects the team name in Hebrew? The description says \"Language: English, Hebrew\" - maybe I should try Hebrew.\n\nTeam: מנצ'סטר יונייטד\nLeague: ליגת העל האנגלית\n\nLet me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

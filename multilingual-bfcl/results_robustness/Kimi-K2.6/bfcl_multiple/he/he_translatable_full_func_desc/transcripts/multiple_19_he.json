@@ -1,0 +1,165 @@
+{
+  "id": "multiple_19_he",
+  "source_id": "multiple_19",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1059,
+  "total_output_tokens": 580,
+  "total_latency_s": 7.9088897705078125,
+  "estimated_cost_usd": 0.00332605,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהם שלושת הפילוגים הגדולים בהיסטוריה של הנצרות?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religion_history.get_schisms": {
+        "religion": [
+          "נצרות"
+        ],
+        "count": [
+          3
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_history_get_schisms",
+          "arguments": {
+            "religion": "Christianity",
+            "count": 3
+          },
+          "id": "functions.religion_history_get_schisms:0"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_history_get_schisms": {
+            "religion": "Christianity",
+            "count": 3
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religion_history_get_schisms'. Please review the function definition and try again.",
+      "input_tokens": 383,
+      "output_tokens": 244,
+      "latency_s": 1.704030990600586,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_history_get_schisms",
+          "arguments": {
+            "religion": "נצרות",
+            "count": 3
+          },
+          "id": "functions.religion_history_get_schisms:1"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_history_get_schisms": {
+            "religion": "נצרות",
+            "count": 3
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 676,
+      "output_tokens": 336,
+      "latency_s": 6.204858779907227,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהם שלושת הפילוגים הגדולים בהיסטוריה של הנצרות?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religion_history_get_schisms:0",
+          "function": {
+            "arguments": "{\"religion\": \"Christianity\", \"count\": 3}",
+            "name": "religion_history_get_schisms"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the three great schisms in the history of Christianity (in Hebrew).\n\nI need to use the `religion_history_get_schisms` function with:\n- religion: \"Christianity\" (or \"נצרות\" in Hebrew? The parameter expects a religion name, and based on the schema description it's likely expecting English names since this is a general API, but let me check - it says \"שם הדת שעבורה יש לאחזר את הפילוגים\" which means \"The name of the religion for which to retrieve schisms\". Usually these APIs expect English names. I'll use \"Christianity\".)\n- count: 3 (the user specifically asked for three)\n\nWait, the schema doesn't specify an enum for religion, so I should use the English name \"Christianity\" as that's standard for such APIs unless specified otherwise.\n\nThe function name is: `religion_history_get_schisms`\nArguments: \n- religion: \"Christianity\"\n- count: 3"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religion_history_get_schisms'. Please review the function definition and try again.",
+      "tool_call_id": "functions.religion_history_get_schisms:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religion_history_get_schisms:1",
+          "function": {
+            "arguments": "{\"religion\":\"נצרות\",\"count\":3}",
+            "name": "religion_history_get_schisms"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check the parameters again. The schema says:\n- religion: string, description \"שם הדת שעבורה יש לאחזר את הפילוגים\"\n- count: number, description \"מספר הפילוגים המובילים לאחזור\"\n\nBoth are required according to the schema (no default mentioned in required list? Actually, looking at the JSON schema, there is no \"required\" array shown, but both fields are described. Let me check if maybe the API expects the Hebrew name or maybe just one of them is required? Wait, in the schema provided:\n\n```\n\"properties\": {\n  \"count\": {\"description\": \"מספר הפילוגים המובילים לאחזור.\", \"type\": \"number\"}, \n  \"religion\": {\"description\": \"שם הדת שעבורה יש לאחזר את הפילוגים.\", \"type\": \"string\"}\n}\n```\n\nNo required array is shown, but both seem needed. Maybe the parameter name should be in Hebrew? No, the function definition specifies the parameter names in English: \"religion\" and \"count\".\n\nMaybe it needs the Hebrew name \"נצרות\" instead of \"Christianity\"? Let me try with Hebrew. Or maybe count should have a default? Let me try different values. Since it failed, I'll try with the Hebrew name for Christianity."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

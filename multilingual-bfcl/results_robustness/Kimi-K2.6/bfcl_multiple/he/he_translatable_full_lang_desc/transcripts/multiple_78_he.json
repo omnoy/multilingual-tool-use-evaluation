@@ -1,0 +1,217 @@
+{
+  "id": "multiple_78_he",
+  "source_id": "multiple_78",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 943,
+  "total_output_tokens": 587,
+  "total_latency_s": 3.3461802005767822,
+  "estimated_cost_usd": 0.00324385,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "השג לי מידע על מוזיאון הטבע בלונדון כולל שעות פעילות, תערוכות ונגישות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "museum_info": {
+        "museum": [
+          "מוזיאון הטבע"
+        ],
+        "city": [
+          "לונדון"
+        ],
+        "features": [
+          [
+            "timings",
+            "exhibitions",
+            "accessibility"
+          ],
+          [
+            "exhibitions",
+            "timings",
+            "accessibility"
+          ],
+          [
+            "exhibitions",
+            "accessibility",
+            "timings"
+          ],
+          [
+            "accessibility",
+            "timings",
+            "exhibitions"
+          ],
+          [
+            "accessibility",
+            "exhibitions",
+            "timings"
+          ],
+          [
+            "timings",
+            "accessibility",
+            "exhibitions"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "museum_info",
+          "arguments": {
+            "museum": "Natural History Museum",
+            "city": "London",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          },
+          "id": "functions.museum_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "museum_info": {
+            "museum": "Natural History Museum",
+            "city": "London",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'museum_info'. Please review the function definition and try again.",
+      "input_tokens": 336,
+      "output_tokens": 225,
+      "latency_s": 1.331181287765503,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "museum_info",
+          "arguments": {
+            "museum": "מוזיאון הטבע",
+            "city": "לונדון",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          },
+          "id": "functions.museum_info:1"
+        }
+      ],
+      "decoded": [
+        {
+          "museum_info": {
+            "museum": "מוזיאון הטבע",
+            "city": "לונדון",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 607,
+      "output_tokens": 362,
+      "latency_s": 2.0149989128112793,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "השג לי מידע על מוזיאון הטבע בלונדון כולל שעות פעילות, תערוכות ונגישות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.museum_info:0",
+          "function": {
+            "arguments": "{\"museum\":\"Natural History Museum\",\"city\":\"London\",\"features\":[\"timings\",\"exhibitions\",\"accessibility\"]}",
+            "name": "museum_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for information about the Natural History Museum in London (מוזיאון הטבע בלונדון), including hours (שעות פעילות), exhibitions (תערוכות), and accessibility (נגישות).\n\nI need to call the `museum_info` function.\n- museum: \"Natural History Museum\" (or possibly \"The Natural History Museum\" - but given the Hebrew name \"מוזיאון הטבע\", it's the Natural History Museum in London)\n- city: \"London\"\n- features: [\"timings\", \"exhibitions\", \"accessibility\"]\n\nThe function accepts features as an array of strings (enum). I should include:\n- \"timings\" for שעות פעילות\n- \"exhibitions\" for תערוכות\n- \"accessibility\" for נגישות\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'museum_info'. Please review the function definition and try again.",
+      "tool_call_id": "functions.museum_info:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.museum_info:1",
+          "function": {
+            "arguments": "{\"museum\": \"מוזיאון הטבע\", \"city\": \"לונדון\", \"features\": [\"timings\", \"exhibitions\", \"accessibility\"]}",
+            "name": "museum_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got a 400 error. Let me reconsider the parameters.\n\nThe user wrote in Hebrew. The tool description says \"Language: English, Hebrew\" for the city and museum parameters. So maybe I should try in Hebrew? Or perhaps \"Natural History Museum\" isn't the exact expected name. Let me try the Hebrew name for the museum.\n\nActually, looking at the parameter definitions again:\n- museum: The name of the museum. Language: English, Hebrew.\n- city: The city where the museum is located. Language: English, Hebrew.\n\nSo English should work. But maybe I need to be more specific or the exact name used in the system. Let me try \"Natural History Museum\" again but make sure the JSON is correct. Or perhaps try Hebrew: \"מוזיאון הטבע\" or \"Museum of Natural History\". \n\nWait, could it be that the function expects different casing or the exact formal name? Or perhaps it wants the museum name simply as \"Natural History Museum\" and city \"London\" but maybe the API expects the Hebrew names since the user asked in Hebrew? No, the description says English or Hebrew are both acceptable.\n\nLet me check if there are any syntax issues. The features array looks correct.\n\nPossible alternative names:\n- \"The Natural History Museum\"\n- \"Natural History Museum London\" \n- In Hebrew: \"מוזיאון הטבע\"\n\nLet me try with Hebrew names as instructed: \"מוזיאון הטבע\" and \"לונדון\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

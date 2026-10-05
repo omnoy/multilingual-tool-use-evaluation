@@ -57,7 +57,8 @@ the API — useful after editing prices or to add the cost column to older runs.
 
 A "model" here is an Azure deployment name. --model-type selects the route + how request
 parameters are shaped: 'standard'/'reasoning' use the OpenAI-compatible v1 route, and
-'claude' uses the Foundry /anthropic route (AnthropicFoundry client). See azure_client.ModelType.
+'responses' uses the v1 /responses route, and 'claude' uses the Foundry /anthropic route
+(AnthropicFoundry client). See azure_client.ModelType.
 
 Usage:
     # Small sample (default 10 entries) against an Azure deployment:
@@ -71,6 +72,10 @@ Usage:
     # A reasoning deployment (no temperature; uses max_completion_tokens):
     python scripts/run_robustness_eval.py --benchmark he_translatable_query \
         --model o3 --model-type reasoning
+
+    # A reasoning deployment that needs the /responses route for tools + reasoning:
+    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
+        --category bfcl_multiple --lang-dir he --model gpt-6-astra --model-type responses
 
     # A Claude deployment via the Foundry /anthropic route:
     python scripts/run_robustness_eval.py --benchmark he_translatable_query \
@@ -128,11 +133,14 @@ from multilingual_bfcl.model_handler.anthropic_foundry_handler import (  # noqa:
 from multilingual_bfcl.model_handler.azure_openai_handler import (  # noqa: E402
     AzureOpenAIFCHandler,
 )
+from multilingual_bfcl.model_handler.azure_responses_handler import (  # noqa: E402
+    AzureOpenAIResponsesFCHandler,
+)
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
 
 # Any handler the harness drives (both expose the same BFCL FC methods plus the
 # extract_turn / apply_language_prefix format adapters run_entry relies on).
-FCHandler = AzureOpenAIFCHandler | AnthropicFoundryFCHandler
+FCHandler = AzureOpenAIFCHandler | AzureOpenAIResponsesFCHandler | AnthropicFoundryFCHandler
 
 # BFCL's checker looks the model up in MODEL_CONFIG_MAPPING (keyed by registry name)
 # to learn whether '.' in function names was rewritten to '_' for the API. Azure
@@ -860,6 +868,17 @@ async def main_async(args: argparse.Namespace) -> None:
             is_fc_model=True,
             max_tokens=args.max_tokens,
         )
+    elif model_type == ModelType.RESPONSES:
+        # Foundry v1 /responses route (reasoning models that need tools + reasoning).
+        ensure_model_config(registry_name, args.model, _TEMPLATE_OPENAI_FC_KEY)
+        handler = AzureOpenAIResponsesFCHandler(
+            model_name=registry_name,
+            temperature=args.temperature,
+            registry_name=registry_name,
+            is_fc_model=True,
+            max_tokens=args.max_tokens,
+            reasoning_effort=args.reasoning_effort,
+        )
     else:
         # Foundry OpenAI-compatible v1 route (standard / reasoning param shaping).
         ensure_model_config(registry_name, args.model, _TEMPLATE_OPENAI_FC_KEY)
@@ -894,8 +913,15 @@ def main() -> None:
                         default=ModelType.STANDARD.value,
                         help="Deployment kind / route: 'standard' (v1 route, temperature + "
                              "max_tokens), 'reasoning' (v1 route, no temperature, "
-                             "max_completion_tokens), or 'claude' (Foundry /anthropic route, "
-                             "AnthropicFoundry client, native Anthropic message format).")
+                             "max_completion_tokens), 'responses' (v1 /responses route, for "
+                             "reasoning models that reject tools + reasoning_effort on "
+                             "chat/completions; no temperature), or 'claude' (Foundry "
+                             "/anthropic route, AnthropicFoundry client, native Anthropic "
+                             "message format).")
+    parser.add_argument("--reasoning-effort", default=None,
+                        choices=["none", "minimal", "low", "medium", "high", "xhigh"],
+                        help="Reasoning effort for --model-type responses. Omitted = the "
+                             "deployment's default.")
     parser.add_argument("--max-tokens", type=int, default=8192,
                         help="Max tokens generated per model turn.")
     parser.add_argument("--prices", default=str(DEFAULT_PRICES_CSV),

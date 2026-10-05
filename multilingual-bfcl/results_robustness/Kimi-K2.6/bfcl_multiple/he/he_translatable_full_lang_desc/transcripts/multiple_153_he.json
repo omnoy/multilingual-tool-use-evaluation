@@ -1,0 +1,165 @@
+{
+  "id": "multiple_153_he",
+  "source_id": "multiple_153",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 979,
+  "total_output_tokens": 553,
+  "total_latency_s": 4.790403842926025,
+  "estimated_cost_usd": 0.00314205,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מתי נחתמה אמנת ליסבון?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_event_date": {
+        "event": [
+          "אמנת ליסבון",
+          "חתימת אמנת ליסבון"
+        ],
+        "location": [
+          "",
+          "גלובלי",
+          "ליסבון",
+          "ליסבון, פורטוגל"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_event_date",
+          "arguments": {
+            "event": "Treaty of Lisbon"
+          },
+          "id": "functions.get_event_date:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_event_date": {
+            "event": "Treaty of Lisbon"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_event_date'. Please review the function definition and try again.",
+      "input_tokens": 335,
+      "output_tokens": 269,
+      "latency_s": 2.7650632858276367,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_event_date",
+          "arguments": {
+            "event": "אמנת ליסבון"
+          },
+          "id": "functions.get_event_date:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_event_date": {
+            "event": "אמנת ליסבון"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 644,
+      "output_tokens": 284,
+      "latency_s": 2.0253405570983887,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מתי נחתמה אמנת ליסבון?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_event_date:0",
+          "function": {
+            "arguments": "{\"event\": \"Treaty of Lisbon\"}",
+            "name": "get_event_date"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"When was the Lisbon Treaty signed?\" (מתי נחתמה אמנת ליסבון?)\n\nI need to use the `get_event_date` function to retrieve the date of this historical event. The event name is \"Treaty of Lisbon\" or \"Lisbon Treaty\" in English. Since the function accepts English or Hebrew, I can provide the event name. Let me use the English name \"Treaty of Lisbon\" as it's the standard international name.\n\nThe parameters are:\n- event: \"Treaty of Lisbon\" (required)\n- location: optional, but Lisbon is in Portugal, though the treaty was signed there. I could specify \"Lisbon\" or leave it blank.\n\nActually, the Lisbon Treaty was signed in Lisbon, Portugal. But the location parameter might not be necessary if the function defaults to global. I'll just provide the required \"event\" parameter.\n\nWait, I should check if I need to provide the Hebrew name. The function accepts English or Hebrew. Let me use the English name \"Treaty of Lisbon\" as it's most standard in databases. I could also try \"Lisbon Treaty\".\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_event_date'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_event_date:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_event_date:1",
+          "function": {
+            "arguments": "{\"event\": \"אמנת ליסבון\"}",
+            "name": "get_event_date"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. This might mean the parameter name or format is wrong. Let me re-check the function definition.\n\nFunction: get_event_date\nParameters:\n- event (required): string, name of historical event, English or Hebrew\n- location (optional): string, location where event took place, defaults to global\n\nWait, in the function definition shown:\n```\n\"get_event_date\": {\n  \"parameters\": {\n    \"properties\": {\n      \"event\": {\"description\": \"...\", \"type\": \"string\"},\n      \"location\": {\"description\": \"...\", \"type\": \"string\"}\n    },\n    \"required\": [\"event\"],\n    \"type\": \"object\"\n  }\n}\n```\n\nSo `event` is indeed the correct parameter name. Why did it fail? Maybe I need to provide the Hebrew name? Or maybe the API expects a specific format. Let me try with the Hebrew name: \"אמנת ליסבון\".\n\nActually, looking at the error again, it says \"invalid parameters\". Maybe I should try with location specified as \"Lisbon\" or \"ליסבון\". Or maybe the event name needs to be exact.\n\nLet me try in Hebrew first since the user asked in Hebrew and the function supports Hebrew."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

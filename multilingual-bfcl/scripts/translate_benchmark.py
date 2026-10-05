@@ -1,43 +1,46 @@
 """
 translate_benchmark.py — Batch translator for multilingual-bfcl benchmarks.
 
-Translates a local benchmark (data/benchmarks/<category>/<source>) into one or more
-locales using the Azure OpenAI Batch API, one batch item per (test case, locale).
-Mirrors scripts/classify_benchmark.py.
+Translates a local benchmark (data/benchmarks/<category>/<source>, default
+en/en_translatable.jsonl) into one or more locales using the Azure OpenAI Batch API,
+one batch item per (test case, locale). Each entry carries its own `ground_truth`,
+which is written (translated or not, per level) into the output entry.
 
 Levels:
   --level query   translate only the user query; ground truth unchanged.
   --level full    translate query + textual ground-truth parameter values
                   (function names, descriptions, enums, numbers stay in English).
-                  Requires possible_answer/<source> to exist.
 
 Outputs (under data/benchmarks/<category>/):
-  <locale>_<level>.json                  e.g. he_full.json
-  possible_answer/<locale>_<level>.json
-(For non-default sources the stem is preserved, e.g.
- eng_translatable.json -> he_translatable_full.json.)
+  <locale>/<locale>_translatable_<level>.jsonl   e.g. he/he_translatable_full.jsonl
 
 Usage:
     # Submit and wait for results:
-    python scripts/translate_benchmark.py --category bfcl_multiple --locales he zh-CN --level full
+    python scripts/translate_benchmark.py --category bfcl_multiple --locales he zh-CN --level full --model gpt-5.6-terra
 
     # Translate the translatable-only subset, query level:
     python scripts/translate_benchmark.py --category bfcl_multiple --locales he \
-        --source eng_translatable.json --level query
+        --source en/en_translatable.jsonl --level query --model gpt-5.6-terra
 
     # Submit only, then retrieve later:
-    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --submit-only
+    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --model gpt-5.6-terra --submit-only
     python scripts/translate_benchmark.py --category bfcl_multiple --retrieve batch_01AbCd...
 
-    # Preview the first prompt without calling the API:
-    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --dry-run
+    # No Batch-SKU deployment available? Send plain concurrent requests (full price):
+    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --model gpt-5.6-terra --no-batch
+
+    # Preview the first prompt and the cost estimate without calling the API:
+    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --model gpt-5.6-terra --dry-run
+
+Cost: an estimate (tiktoken-based) is printed before submitting, and the actual cost
+(from the API's reported token usage) after retrieval. Both use model_prices.csv list
+prices, with the Batch API discount applied unless --no-batch.
 
 Requirements:
     pip install openai langchain-openai
 Environment (multilingual-bfcl/.env):
     AZURE_OPENAI_ENDPOINT=...      # …/openai/v1 (or the resource root)
     AZURE_OPENAI_API_KEY=...
-    AZURE_OPENAI_DEPLOYMENT=...    # optional default for --model
 """
 
 from __future__ import annotations
@@ -56,13 +59,13 @@ load_dotenv(PACKAGE_ROOT / ".env")
 
 from multilingual_bfcl.azure_client import OPENAI_MODEL_TYPES, ModelType  # noqa: E402
 from multilingual_bfcl.benchmark_builder import (  # noqa: E402
+    DEFAULT_CONCURRENCY,
+    DEFAULT_MAX_RETRIES,
+    DEFAULT_SOURCE,
     retrieve_translation,
     translate_benchmark,
 )
-from multilingual_bfcl.localization.translator import (  # noqa: E402
-    DEFAULT_TRANSLATION_MODEL,
-    LocalizationLevel,
-)
+from multilingual_bfcl.localization.translator import LocalizationLevel  # noqa: E402
 
 
 def main() -> None:
@@ -77,10 +80,11 @@ def main() -> None:
     parser.add_argument("--level", choices=[lv.value for lv in LocalizationLevel],
                         default=LocalizationLevel.QUERY.value,
                         help="Translation scope: 'query' or 'full'.")
-    parser.add_argument("--source", default="eng_base.json",
-                        help="Input filename under data/benchmarks/<category>/.")
-    parser.add_argument("--model", default=DEFAULT_TRANSLATION_MODEL,
-                        help="Azure deployment name to translate with.")
+    parser.add_argument("--source", default=DEFAULT_SOURCE,
+                        help="Input .jsonl path relative to data/benchmarks/<category>/.")
+    parser.add_argument("--model", required=True,
+                        help="Azure deployment name to translate with (no default, "
+                             "to prevent accidental runs).")
     parser.add_argument("--model-type", choices=[mt.value for mt in OPENAI_MODEL_TYPES],
                         default=ModelType.STANDARD.value,
                         help="Deployment kind: 'standard' (temperature + max_tokens) or "
@@ -93,12 +97,22 @@ def main() -> None:
                         help="Submit the batch, print the batch ID, then exit. Use --retrieve later.")
     parser.add_argument("--retrieve", metavar="BATCH_ID", default=None,
                         help="Retrieve a previously submitted Azure batch and write outputs.")
+    parser.add_argument("--no-batch", action="store_true",
+                        help="Skip the Batch API: send plain concurrent chat.completions "
+                             "requests (for deployments without a Global/Data Zone Batch "
+                             "SKU). Full price, results written immediately.")
+    parser.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY,
+                        help="--no-batch only: max requests in flight.")
+    parser.add_argument("--max-retries", type=int, default=DEFAULT_MAX_RETRIES,
+                        help="--no-batch only: SDK retries per request (backoff on 429/5xx).")
     args = parser.parse_args()
 
     if args.submit_only and args.retrieve:
         parser.error("--submit-only and --retrieve are mutually exclusive.")
     if args.retrieve and args.dry_run:
         parser.error("--dry-run has no effect with --retrieve.")
+    if args.no_batch and (args.submit_only or args.retrieve):
+        parser.error("--no-batch cannot be combined with --submit-only or --retrieve.")
 
     # Retrieve-only path — no asyncio, selection read from the manifest.
     if args.retrieve:
@@ -118,6 +132,9 @@ def main() -> None:
         limit=args.limit,
         dry_run=args.dry_run,
         submit_only=args.submit_only,
+        use_batch=not args.no_batch,
+        concurrency=args.concurrency,
+        max_retries=args.max_retries,
     ))
 
 

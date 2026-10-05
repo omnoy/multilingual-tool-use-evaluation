@@ -40,14 +40,19 @@ class ModelType(str, Enum):
     differs by whether `temperature`/`max_completion_tokens` are sent). CLAUDE routes
     through the Foundry `/anthropic` route (native Anthropic message format) and is
     handled by AnthropicFoundryFCHandler — used only by the robustness eval.
+    RESPONSES routes through the v1 `/responses` endpoint (reasoning models that reject
+    tools + reasoning on chat/completions) and is handled by
+    AzureOpenAIResponsesFCHandler — also robustness-eval only.
     """
 
     STANDARD = "standard"
     REASONING = "reasoning"
     CLAUDE = "claude"
+    RESPONSES = "responses"
 
 
-# Param-shaping model types valid on the OpenAI v1 route (excludes CLAUDE).
+# Param-shaping model types valid for chat/completions on the v1 route
+# (excludes CLAUDE and RESPONSES).
 OPENAI_MODEL_TYPES = (ModelType.STANDARD, ModelType.REASONING)
 
 

@@ -1,0 +1,166 @@
+{
+  "id": "multiple_158_he",
+  "source_id": "multiple_158",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1609,
+  "total_output_tokens": 1025,
+  "total_latency_s": 8.765796899795532,
+  "estimated_cost_usd": 0.00562855,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "קבל את הביוגרפיה והתרומות המרכזיות של האפיפיור אינוקנטיוס השלישי."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religious_history.get_papal_biography": {
+        "papal_name": [
+          "אינוקנטיוס השלישי",
+          "האפיפיור אינוקנטיוס השלישי"
+        ],
+        "include_contributions": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religious_history_get_papal_biography",
+          "arguments": {
+            "papal_name": "Innocent III",
+            "include_contributions": true
+          },
+          "id": "functions.religious_history_get_papal_biography:0"
+        }
+      ],
+      "decoded": [
+        {
+          "religious_history_get_papal_biography": {
+            "papal_name": "Innocent III",
+            "include_contributions": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religious_history_get_papal_biography'. Please review the function definition and try again.",
+      "input_tokens": 645,
+      "output_tokens": 268,
+      "latency_s": 2.1364855766296387,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religious_history_get_papal_biography",
+          "arguments": {
+            "include_contributions": true,
+            "papal_name": "אינוקנטיוס השלישי"
+          },
+          "id": "functions.religious_history_get_papal_biography:1"
+        }
+      ],
+      "decoded": [
+        {
+          "religious_history_get_papal_biography": {
+            "include_contributions": true,
+            "papal_name": "אינוקנטיוס השלישי"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 964,
+      "output_tokens": 757,
+      "latency_s": 6.6293113231658936,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "קבל את הביוגרפיה והתרומות המרכזיות של האפיפיור אינוקנטיוס השלישי."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religious_history_get_papal_biography:0",
+          "function": {
+            "arguments": "{\"papal_name\": \"Innocent III\", \"include_contributions\": true}",
+            "name": "religious_history_get_papal_biography"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Get the biography and main contributions of Pope Innocent III.\"\n\nLooking at the available functions, I need to use `religious_history_get_papal_biography`.\n\nThe parameters are:\n- `papal_name`: The papal name of the pope. This should be \"Innocent III\" or the Hebrew equivalent. Since the function expects the papal name, and the user said \"אינוקנטיוס השלישי\" which is \"Innocent III\", I should provide it in English as that's the standard format for such databases. Actually, looking at the function description, it says \"השם האפיפיורי של האפיפיור\" (The papal name of the pope). I should probably use \"Innocent III\".\n- `include_contributions`: Boolean, default false. The user specifically asks for main contributions (\"התרומות המרכזיות\"), so I must set this to `true`.\n\nThe user wants both biography and contributions, so include_contributions should be true.\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religious_history_get_papal_biography'. Please review the function definition and try again.",
+      "tool_call_id": "functions.religious_history_get_papal_biography:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religious_history_get_papal_biography:1",
+          "function": {
+            "arguments": "{\"include_contributions\":true,\"papal_name\":\"אינוקנטיוס השלישי\"}",
+            "name": "religious_history_get_papal_biography"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check my parameters.\n\nI used:\n- `papal_name`: \"Innocent III\"\n- `include_contributions`: true\n\nWait, looking at the schema again:\n```json\n{\n  \"description\": \"אחזר את הביוגרפיה ואת התרומות הדתיות וההיסטוריות העיקריות של אפיפיור על סמך שמו האפיפיורי.\",\n  \"name\": \"religious_history_get_papal_biography\",\n  \"parameters\": {\n    \"description\": \"Schema for religious_history_get_papal_biography tool\",\n    \"properties\": {\n      \"include_contributions\": {\n        \"default\": false,\n        \"description\": \"כלול את התרומות העיקריות של האפיפיור בתגובה אם true.\",\n        \"type\": \"boolean\"\n      },\n      \"papal_name\": {\n        \"description\": \"השם האפיפיורי של האפיפיור.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"papal_name\", \"include_contributions\"],\n    \"title\": \"religious_history_get_papal_biography\",\n    \"type\": \"object\"\n  }\n}\n```\n\nBoth `papal_name` and `include_contributions` are required. I provided both. But maybe the papal name format is different - maybe just \"Innocent\" or a number in Roman numerals without space? Or maybe it needs Hebrew text?\n\nWait, the error says invalid parameters. Let me think... Maybe the issue is that I need to pass parameters in a different way? No, the format looks correct.\n\nPerhaps the API expects the papal name in a specific format. Let me try a different format. Maybe \"Pope Innocent III\"? Or maybe it's case sensitive? Or maybe it requires the number as a numeral? Or maybe the issue is with the boolean - perhaps it should be a string \"true\"? No, the schema says boolean type.\n\nLet me try again with exact same parameters, or maybe check if there was a typo in the function name... No, the function name is correct.\n\nActually, looking at the error again: \"400 Bad Request: invalid parameters\". This could mean the server didn't like \"Innocent III\" format. Maybe I should try \"Innocent 3\" or \"Innocent III\" with no space? Or maybe \"Innocentius III\"? \n\nWait, since the interface is in Hebrew maybe the database expects Hebrew input for papal_name? \"אינוקנטיוס השלישי\"?\n\nOr maybe it expects just the ordinal number without the name? No, that wouldn't make sense.\n\nLet me try \"Innocent III\" again? Or maybe try with Hebrew name. Let me try \"אינוקנטיוס השלישי\". If that doesn't work, maybe just \"Innocent\". \n\nActually, looking at function schemas, the required fields are `papal_name` and `include_contributions`. I did provide both. Could the error be from the backend not recognizing the pope? In that case it might be a data issue rather than a schema issue, but the error says \"invalid parameters\".\n\nLet me try with Hebrew name as that's the language of the interface and might be what the underlying system expects."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

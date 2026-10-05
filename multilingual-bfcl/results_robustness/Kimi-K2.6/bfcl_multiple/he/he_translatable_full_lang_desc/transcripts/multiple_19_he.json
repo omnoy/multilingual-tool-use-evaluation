@@ -1,0 +1,165 @@
+{
+  "id": "multiple_19_he",
+  "source_id": "multiple_19",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 765,
+  "total_output_tokens": 925,
+  "total_latency_s": 7.54866886138916,
+  "estimated_cost_usd": 0.00442675,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהם שלושת הפילוגים הגדולים בהיסטוריה של הנצרות?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religion_history.get_schisms": {
+        "religion": [
+          "נצרות"
+        ],
+        "count": [
+          3
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_history_get_schisms",
+          "arguments": {
+            "religion": "Christianity",
+            "count": 3
+          },
+          "id": "functions.religion_history_get_schisms:0"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_history_get_schisms": {
+            "religion": "Christianity",
+            "count": 3
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religion_history_get_schisms'. Please review the function definition and try again.",
+      "input_tokens": 282,
+      "output_tokens": 152,
+      "latency_s": 0.931445837020874,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_history_get_schisms",
+          "arguments": {
+            "religion": "נצרות",
+            "count": 3
+          },
+          "id": "functions.religion_history_get_schisms:1"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_history_get_schisms": {
+            "religion": "נצרות",
+            "count": 3
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 483,
+      "output_tokens": 773,
+      "latency_s": 6.617223024368286,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהם שלושת הפילוגים הגדולים בהיסטוריה של הנצרות?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religion_history_get_schisms:0",
+          "function": {
+            "arguments": "{\"religion\": \"Christianity\", \"count\": 3}",
+            "name": "religion_history_get_schisms"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What are the three great schisms in the history of Christianity?\"\n\nI need to call the `religion_history_get_schisms` function with:\n- religion: \"Christianity\" (English as specified in the schema)\n- count: 3 (since they asked for three schisms)\n\nThe parameter description says: \"Name of the religion for which to retrieve the schisms. Language: English, Hebrew.\" So I can use either English or Hebrew. I'll use \"Christianity\" to be safe and clear.\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religion_history_get_schisms'. Please review the function definition and try again.",
+      "tool_call_id": "functions.religion_history_get_schisms:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religion_history_get_schisms:1",
+          "function": {
+            "arguments": "{\"religion\": \"נצרות\", \"count\": 3}",
+            "name": "religion_history_get_schisms"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me check the parameters again.\n\nLooking at the schema:\n- religion: string, required. Description says \"Name of the religion for which to retrieve the schisms. Language: English, Hebrew.\"\n- count: number, required. The user asked for three (שלושת), so I set count to 3.\n\nWait, let me re-read the schema carefully. The description says \"Language: English, Hebrew\" for the religion parameter. Maybe it accepts Hebrew? Let me try with \"Christianity\" again, or maybe there's something else wrong.\n\nActually, let me check if I need to provide the parameters in a different format. The JSON I sent looks correct: `{\"religion\": \"Christianity\", \"count\": 3}`.\n\nMaybe the issue is that \"Christianity\" is not recognized, or maybe I should try Hebrew? But it says English, Hebrew is accepted.\n\nWait, could the issue be that the function expects a specific parameter format? Let me look again.\n\nActually, looking at the error, it might be that the system is strict about something. But my JSON seems valid.\n\nLet me try in Hebrew since the user asked in Hebrew and the description mentions Hebrew is accepted: \"נצרות\". But it says Language: English, Hebrew. Actually, looking at other parameters:\n- religion_history_get_councils: religion parameter description says \"Language: English, Hebrew\"\n- religion_history_get_reformations: same\n- religion_history_get_schisms: same\n\nLet me try with Christianity again exactly. Wait, maybe the parameter `count` needs to be in the schema but it said it required count which I provided.\n\nActually, I wonder if the tool name or something is wrong. No, the tool name is correct.\n\nLet me try again with the same parameters, maybe it was a temporary error. \n\nActually, I should look more carefully. The parameter description says: \"Name of the religion for which to retrieve the schisms. Language: English, Hebrew.\" This means I can specify the religion name in either English or Hebrew. Let me try \"נצרות\" since the user asked in Hebrew. Or maybe it wants specifically \"Christian\".\n\nWait, I should try once more with \"Christianity\". If that fails, I'll provide the answer based on general knowledge about the three major schisms in Christianity:\n1. The Great Schism of 1054 (East-West Schism) between Eastern Orthodox and Roman Catholic\n2. The Western Schism (1378-1417) ( also known as the Papal Schism) \n3. The Protestant Reformation/ schism (though technically the Reformation is often separate from schism)\n\nBut wait, the function is specifically `get_schisms`, and the user asked specifically about schisms (פילוגים). Let me try again. \n\nActually, maybe the error is because I need to format the JSON differently? No, what I did is standard.\n\nLet me try calling with the exact same parameters one more time. \n\nHmm, actually I already made the call and got an error. The system might not let me call again if there's an error? No, I can certainly try again. Let me try with a slightly different approach - maybe the count needs to be passed differently? No, it's a number.\n\nActually, I just realized - could the issue be that I need to pass parameters in a specific order or that one of them is considered invalid? \"Christianity\" should be valid.\n\nLet me try with the Hebrew word for Christianity: \"נצרות\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

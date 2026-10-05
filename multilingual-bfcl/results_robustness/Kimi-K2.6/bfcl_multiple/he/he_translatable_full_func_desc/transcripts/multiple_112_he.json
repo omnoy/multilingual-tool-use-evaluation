@@ -1,0 +1,204 @@
+{
+  "id": "multiple_112_he",
+  "source_id": "multiple_112",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1777,
+  "total_output_tokens": 1679,
+  "total_latency_s": 9.003373146057129,
+  "estimated_cost_usd": 0.008404149999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חזה את צמיחת היער בפארק הלאומי ילוסטון ל-5 השנים הבאות כולל השפעת האדם."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "forest_growth_forecast": {
+        "location": [
+          "פארק הלאומי ילוסטון"
+        ],
+        "years": [
+          5
+        ],
+        "include_human_impact": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "years": 5,
+            "location": "Yellowstone National Park",
+            "include_human_impact": true
+          },
+          "id": "functions.forest_growth_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "years": 5,
+            "location": "Yellowstone National Park",
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "input_tokens": 324,
+      "output_tokens": 573,
+      "latency_s": 2.9715347290039062,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "נראה כי הייתה בעיה בביצוע הבקשה:\n\n400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.\n\nאם תרצו, אנסה שוב עם הפרמטרים המתוקנים."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 946,
+      "output_tokens": 866,
+      "latency_s": 4.6142418384552,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "פארק הלאומי ילוסטון",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "functions.forest_growth_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "פארק הלאומי ילוסטון",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 507,
+      "output_tokens": 240,
+      "latency_s": 1.4175965785980225,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חזה את צמיחת היער בפארק הלאומי ילוסטון ל-5 השנים הבאות כולל השפעת האדם."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.forest_growth_forecast:0",
+          "function": {
+            "arguments": "{\"years\":5,\"location\":\"Yellowstone National Park\",\"include_human_impact\":true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking me to forecast forest growth in Yellowstone National Park for the next 5 years, including human impact.\n\nI need to use the `forest_growth_forecast` function with:\n- location: \"פארק הלאומי ילוסטון\" (Yellowstone National Park in Hebrew) or I could translate it to \"Yellowstone National Park\" if the function requires English. The tool description doesn't specify the language requirement, but looking at the tool definitions, they seem to be in English. However, the user wrote in Hebrew and the system says to understand the request in Hebrew. Let me use the Hebrew text since the parameter is just a string called \"location\" without explicit language constraints. But it's safer to use something clear. Actually, I should probably just pass what the user provided or a standard English name. Let me think... the function parameter is just \"location\" - I can use either. Since the user said \"פארק הלאומי ילוסטון\", I could pass that. But often location matching works better with English. Hmm. The instructions say to respond with the correct function call exactly as specified. Let me use a clear location string. Given the function appears international but the descriptions are translated, I'll provide the Hebrew name since that's what the user provided, or I could provide \"Yellowstone National Park\". Actually, let me just pass \"Yellowstone National Park\" because location APIs usually expect English. But then I'm not exactly responding to the user's language input... Actually, the function parameter just accepts a string. I'll use \"פארק הלאומי ילוסטון\" to match the user's request, OR I can note that Yellowstone is universally known. To be safe and accurate, I'll pass \"Yellowstone National Park\" since the location strings generally work better in English, but \"פארק הלאומי ילוסטון\" is also fine. You know what, since the user specifically said it in Hebrew and the system handles Hebrew, I'll pass \"פארק הלאומי ילוסטון\". Wait, actually, standard names often need to match a database. \"Yellowstone National Park\" is the most reliable.\n\nLet me check the parameters:\n- years: 5 (number)\n- location: \"Yellowstone National Park\" or \"פארק הלאומי ילוסטון\"\n- include_human_impact: true (boolean)\n\nThe user explicitly asks \"כולל השפעת האדם\" which means including human impact, so include_human_impact should be true.\n\nI will make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.forest_growth_forecast:0"
+    },
+    {
+      "content": "נראה כי הייתה בעיה בביצוע הבקשה:\n\n400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.\n\nאם תרצו, אנסה שוב עם הפרמטרים המתוקנים.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "There was an error in the function call. Let me review the function definition.\n\n```json\n{\n  \"description\": \"חוזה את צמיחת היער ב-N השנים הבאות בהתבסס על המגמות הנוכחיות.\",\n  \"name\": \"forest_growth_forecast\",\n  \"parameters\": {\n    \"description\": \"חוזה את צמיחת היער ב-N השנים הבאות בהתבסס על המגמות הנוכחיות.\",\n    \"properties\": {\n      \"include_human_impact\": {\n        \"description\": \"האם לכלול את השפעת הפעילויות האנושיות בתחזית. אם לא סופק, ברירת המחדל היא false.\",\n        \"type\": \"boolean\"\n      },\n      \"location\": {\n        \"description\": \"המיקום שבו ברצונך לחזות את צמיחת היער.\",\n        \"type\": \"string\"\n      },\n      \"years\": {\n        \"description\": \"מספר השנים לתחזית.\",\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\"location\", \"years\"],\n    \"type\": \"object\"\n  }\n}\n```\n\nMy parameters look correct:\n- years: 5 (number)\n- location: \"Yellowstone National Park\" (string)\n- include_human_impact: true (boolean)\n\nWait, maybe it didn't like the fact that I passed include_human_impact: true because in some JSON schemas, boolean values might need to be passed differently? No, true is valid JSON boolean.\n\nMaybe the issue is that I don't know the actual backend implementation and something else failed. But since I'm instructed to respond with the correct function call exactly as specified, and my parameters match the schema, maybe I should try again with exactly the same parameters? Or perhaps the error is from a simulated backend and that's fine.\n\nActually, maybe I need to reconsider how I formatted it. The user asked in Hebrew and I made a function call. The output shows a 400 error. Perhaps it's because the tool doesn't actually exist in the real world or the backend is just a simulation.\n\nWait, maybe I should try different parameter formatting? The JSON seems fine. The function definition says years is type number. That's fine.\n\nMaybe the backend requires Hebrew location? Or perhaps there's no actual backend for this tool and the error is expected? Since I'm an AI assistant and these are simulated tools, perhaps I should just make the function call. But the error already came back. \n\nActually, looking at the interaction, the function result was returned to me. Since the user just wants the function call, maybe I don't need to do anything else? But typically I should provide the result to the user. Since the result was an error, perhaps I should translate that to Hebrew and explain.\n\nWait, the system prompt says \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nIt says \"respond with the correct function call exactly as specified in the tool definitions.\" That usually means I should just output the function call. But the function call already happened! And it returned an error. Maybe I should try again? Or maybe respond with the error message to the user?\n\nActually, re-reading carefully: \"respond with the correct function call exactly as specified in the tool definitions.\" This could mean that in this context, my entire response should just be the function call (i.e., only use the tool). But I already used the tool. However, the tool returned an error.\n\nMaybe the tool call I made was correct and the error is just simulated. Perhaps I should inform the user.\n\nLet me provide the result to the user in Hebrew."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.forest_growth_forecast:1",
+          "function": {
+            "arguments": "{\"location\": \"פארק הלאומי ילוסטון\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants me to forecast forest growth in Yellowstone National Park for the next 5 years including human impact. \n\nThe function definition is:\n- name: forest_growth_forecast\n- parameters: \n  - location (required): המיקום שבו ברצונך לחזות את צמיחת היער (string)\n  - years (required): מספר השנים לתחזית (number)\n  - include_human_impact (optional): האם לכלול את השפעת הפעילויות האנושיות בתחזית. ברירת מחדל false.\n\nThe user said:\n- location: פארק הלאומי ילוסטון (Yellowstone National Park)\n- years: 5\n- include_human_impact: true (כולל השפעת האדם)\n\nI should call the function with these parameters."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

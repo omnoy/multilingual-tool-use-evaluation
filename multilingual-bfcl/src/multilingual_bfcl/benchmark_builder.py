@@ -1,16 +1,16 @@
 """
 Benchmark builder: batch-translates local BFCL benchmark files into target locales.
 
-This uses the Azure OpenAI Batch API — one batch item per (test case, locale) —
-mirroring scripts/classify_benchmark.py.
+By default this uses the Azure OpenAI Batch API — one batch item per (test case,
+locale) — mirroring scripts/classify_benchmark.py. With use_batch=False (CLI:
+--no-batch) the same requests are sent as ordinary concurrent chat.completions calls
+instead, for deployments without a Global/Data Zone Batch SKU (full price, no manifest).
 
-Input/output live under data/benchmarks/<category>/:
-  - source question file : <source>                 (e.g. eng_base.json, JSONL)
-  - source ground truth  : possible_answer/<source> (required for level=full)
-  - output question file : <locale>_<level>.json    (e.g. he_full.json)
-  - output ground truth  : possible_answer/<locale>_<level>.json
-
-`--source` chooses the input (e.g. eng_translatable.json → he_translatable_full.json).
+Input/output live under data/benchmarks/<category>/, one folder per locale.
+Each JSONL entry carries its own `ground_truth` (no separate possible_answer/):
+  - source file : <source>, relative to the category (default en/en_translatable.jsonl)
+  - output file : <locale>/<locale><rest>_<level>.jsonl
+                  (e.g. en/en_translatable.jsonl -> he/he_translatable_full.jsonl)
 
 Levels (see translator.LocalizationLevel):
   - query : translate only the user query; ground truth left unchanged.
@@ -31,8 +31,10 @@ from pathlib import Path
 from typing import Any
 
 from multilingual_bfcl.azure_batch import (
+    BatchItemResult,
     build_chat_request,
     collect_results,
+    run_direct,
     get_batch,
     is_finished,
     status_line,
@@ -44,8 +46,8 @@ from multilingual_bfcl.azure_client import (
     make_sync_client,
 )
 from multilingual_bfcl.localization.locale_config import get_locale
+from multilingual_bfcl.pricing import count_tokens, format_cost
 from multilingual_bfcl.localization.translator import (
-    DEFAULT_TRANSLATION_MODEL,
     LocalizationLevel,
     add_language_descriptors_to_entry,
     apply_translation,
@@ -57,12 +59,21 @@ from multilingual_bfcl.localization.translator import (
 
 # Cap on translation output tokens per batch item.
 _TRANSLATION_MAX_TOKENS = 4096
+# Rough output/payload token ratio for the pre-submit estimate: the reply re-emits the
+# payload's strings translated, and non-Latin scripts tokenize less compactly.
+_OUTPUT_TOKEN_RATIO = 1.5
 # Seconds between batch status polls while waiting for results.
 _POLL_INTERVAL_S = 30
+# Defaults for the direct (--no-batch) path: parallel requests, and SDK retries
+# (exponential backoff on 429 / 5xx / timeouts) per request.
+DEFAULT_CONCURRENCY = 8
+DEFAULT_MAX_RETRIES = 6
 
 # Root of the multilingual-bfcl package (two levels up from this file)
 _PACKAGE_ROOT = Path(__file__).parent.parent.parent
 _BENCHMARK_DIR = _PACKAGE_ROOT / "data" / "benchmarks"
+# Default source file, relative to data/benchmarks/<category>/.
+DEFAULT_SOURCE = "en/en_translatable.jsonl"
 
 
 # ---------------------------------------------------------------------------
@@ -82,25 +93,25 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def write_jsonl(records: list[dict[str, Any]], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    records.sort(key=lambda row: int(row["id"].split("_")[-2]))
     with open(path, "w", encoding="utf-8") as f:
         for rec in records:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
 
-def output_filename(source: str, locale_code: str, level: LocalizationLevel) -> str:
-    """Map a source filename to its translated counterpart.
+def output_path(category: str, source: str, locale_code: str, suffix: str) -> Path:
+    """Map a source file to its translated counterpart under <category>/<locale>/.
 
-    eng_base.json              -> <locale>_<level>.json
-    eng_translatable.json -> <locale>_translatable_<level>.json
-    anything else              -> <stem>_<locale>_<level>.json
+    en/en_translatable.jsonl -> <locale>/<locale>_translatable_<suffix>.jsonl
+    anything else            -> <locale>/<stem>_<locale>_<suffix>.jsonl
+
+    `suffix` names the condition, e.g. a LocalizationLevel value ("full") or "func_desc".
     """
     stem = Path(source).stem
-    lv = level.value
-    if stem.startswith("eng_base"):
-        rest = stem[len("eng_base"):]          # "" or "_translatable"
-        return f"{locale_code}{rest}_{lv}.json"
-    return f"{stem}_{locale_code}_{lv}.json"
+    if stem == "en" or stem.startswith("en_"):
+        name = f"{locale_code}{stem[len('en'):]}_{suffix}.jsonl"
+    else:
+        name = f"{stem}_{locale_code}_{suffix}.jsonl"
+    return _BENCHMARK_DIR / category / locale_code / name
 
 
 def manifest_path(category: str) -> Path:
@@ -128,14 +139,9 @@ def _write_outputs(
     raws: list[str | None],
 ) -> None:
     """Reassemble translated entries from raw model replies and write per-locale files."""
-    bench = _BENCHMARK_DIR / category
-    entries_by_id = {e["id"]: e for e in load_jsonl(bench / source)}
+    entries_by_id = {e["id"]: e for e in load_jsonl(_BENCHMARK_DIR / category / source)}
 
-    apath = bench / "possible_answer" / source
-    answers = {a["id"]: a for a in load_jsonl(apath)} if apath.exists() else {}
-
-    q_by_locale: dict[str, list] = defaultdict(list)
-    a_by_locale: dict[str, list] = defaultdict(list)
+    by_locale: dict[str, list] = defaultdict(list)
     n_fail = 0
 
     for unit, raw in zip(units, raws):
@@ -150,56 +156,62 @@ def _write_outputs(
             continue
 
         parsed = parse_translation(raw, sid) if raw is not None else None
-        result = (
-            apply_translation(entry, answers.get(eid), locale, level, parsed)
+        translated = (
+            apply_translation(entry, locale, level, parsed)
             if parsed is not None else None
         )
-        if result is None:
+        if translated is None:
             n_fail += 1
             continue
+        by_locale[locale.code].append(translated)
 
-        q_entry, a_entry = result
-        q_by_locale[locale.code].append(q_entry)
-        if a_entry is not None:
-            a_by_locale[locale.code].append(a_entry)
-
-    for locale_code, q_entries in q_by_locale.items():
-        q_entries.sort(key=_id_sort_key)
-        out_q = bench / output_filename(source, locale_code, level)
-        write_jsonl(q_entries, out_q)
-        print(f"[done] {len(q_entries)} entries -> {out_q}")
-
-        a_entries = a_by_locale.get(locale_code)
-        if a_entries:
-            a_entries.sort(key=_id_sort_key)
-            out_a = bench / "possible_answer" / output_filename(source, locale_code, level)
-            write_jsonl(a_entries, out_a)
-            print(f"[done] {len(a_entries)} answers -> {out_a}")
+    for locale_code, out_entries in by_locale.items():
+        out_entries.sort(key=_id_sort_key)
+        out = output_path(category, source, locale_code, level.value)
+        write_jsonl(out_entries, out)
+        print(f"[done] {len(out_entries)} entries -> {out}")
 
     if n_fail:
         print(f"  {n_fail} item(s) failed to translate — see warnings above.", file=sys.stderr)
 
 
 # ---------------------------------------------------------------------------
-# Submit (and optionally wait) — async, uses the Azure OpenAI Batch API
+# Submit (and optionally wait) — async, Azure OpenAI Batch API or direct calls
 # ---------------------------------------------------------------------------
+
+def estimate_cost(model_name: str, level: LocalizationLevel,
+                  inputs: list[dict[str, str]], *, batch: bool) -> str:
+    """Pre-submit token/cost estimate for the given items (batch-discounted if `batch`)."""
+    in_tok = out_tok = 0
+    for item in inputs:
+        in_tok += sum(count_tokens(m["content"]) for m in render_messages(level, item))
+        out_tok += int(count_tokens(item["payload"]) * _OUTPUT_TOKEN_RATIO)
+    return format_cost(model_name, in_tok, out_tok, batch=batch)
+
 
 async def translate_benchmark(
     category: str,
     locales: list[str],
+    model_name: str,
     level: LocalizationLevel = LocalizationLevel.QUERY,
-    source: str = "eng_base.json",
-    model_name: str = DEFAULT_TRANSLATION_MODEL,
+    source: str = DEFAULT_SOURCE,
     model_type: ModelType = ModelType.STANDARD,
     limit: int | None = None,
     dry_run: bool = False,
     submit_only: bool = False,
+    use_batch: bool = True,
+    concurrency: int = DEFAULT_CONCURRENCY,
+    max_retries: int = DEFAULT_MAX_RETRIES,
 ) -> str | None:
     """Submit an Azure translation batch (and wait for results unless submit_only).
 
-    `model_name` is the Azure deployment name. Returns the batch id (or None for
-    dry-run / nothing-to-do).
+    `model_name` is the Azure deployment name. With use_batch=False the requests are
+    sent directly (up to `concurrency` at a time, `max_retries` SDK retries each) and
+    the outputs written immediately; submit_only does not apply. Returns the batch id
+    (or None for direct runs / dry-run / nothing-to-do).
     """
+    if submit_only and not use_batch:
+        raise ValueError("submit_only requires the Batch API (use_batch=True).")
     bench = _BENCHMARK_DIR / category
     src_q = bench / source
     if not src_q.exists():
@@ -209,13 +221,6 @@ async def translate_benchmark(
     if limit is not None:
         entries = entries[:limit]
 
-    apath = bench / "possible_answer" / source
-    answers = {a["id"]: a for a in load_jsonl(apath)} if apath.exists() else {}
-    if level == LocalizationLevel.FULL and not apath.exists():
-        sys.exit(
-            f"ERROR: level=full needs ground truth, but {apath} not found."
-        )
-
     # Build one batch item per (locale, test case), in a deterministic order.
     units: list[dict[str, str]] = []
     inputs: list[dict[str, str]] = []
@@ -223,48 +228,58 @@ async def translate_benchmark(
     for locale_code in locales:
         locale = get_locale(locale_code)
         for entry in entries:
-            ans = answers.get(entry["id"])
-            if level == LocalizationLevel.FULL and ans is None:
+            if level == LocalizationLevel.FULL and "ground_truth" not in entry:
                 missing_gt += 1
                 continue
-            inputs.append(build_input(entry, ans, locale, level))
+            inputs.append(build_input(entry, locale, level))
             units.append({"id": entry["id"], "locale": locale_code})
 
     if missing_gt:
         print(f"[WARN] {missing_gt} entries have no ground truth and were skipped (level=full).",
               file=sys.stderr)
 
-    print(f"Source     : {src_q.name}")
+    print(f"Source     : {src_q.relative_to(bench)}")
     print(f"Locales    : {', '.join(locales)}")
     print(f"Level      : {level.value}")
     print(f"Batch items: {len(inputs)} ({len(entries)} entries × {len(locales)} locale(s))")
+    print(f"Deployment : {model_name}")
+    mode = "Batch API" if use_batch else f"direct (no batch), concurrency {concurrency}"
+    print(f"Mode       : {mode}")
+    if inputs:
+        print(f"Est. cost  : ~{estimate_cost(model_name, level, inputs, batch=use_batch)}")
 
     if dry_run:
         if inputs:
             print("\n--- DRY RUN: first prompt ---")
             for msg in render_messages(level, inputs[0]):
                 print(f"[{msg['role']}]\n{msg['content']}\n")
-        print(f"\n(Would submit {len(inputs)} items to Azure deployment {model_name!r})")
+        verb = "submit" if use_batch else "send"
+        print(f"\n(Would {verb} {len(inputs)} items to Azure deployment {model_name!r})")
         return None
 
     if not inputs:
         print("Nothing to translate.")
         return None
 
-    # Build one Batch API request per item; custom_id is the item index (string),
-    # matching the manifest's `units` order so retrieval maps results back positionally.
-    requests = [
-        build_chat_request(
-            idx,
-            build_chat_params(
-                model_name,
-                render_messages(level, item),
-                model_type=model_type,
-                max_tokens=_TRANSLATION_MAX_TOKENS,
-            ),
+    params = [
+        build_chat_params(
+            model_name,
+            render_messages(level, item),
+            model_type=model_type,
+            max_tokens=_TRANSLATION_MAX_TOKENS,
         )
-        for idx, item in enumerate(inputs)
+        for item in inputs
     ]
+
+    if not use_batch:
+        print(f"Sending {len(params)} requests directly to Azure deployment {model_name!r}...")
+        results = await run_direct(params, concurrency, max_retries)
+        _write_results(results, category, source, level, units, model_name, batch=False)
+        return None
+
+    # One Batch API request per item; custom_id is the item index (string), matching
+    # the manifest's `units` order so retrieval maps results back positionally.
+    requests = [build_chat_request(idx, p) for idx, p in enumerate(params)]
 
     client = make_sync_client()
     print(f"Submitting batch of {len(requests)} items to Azure deployment {model_name!r}...")
@@ -306,7 +321,7 @@ async def translate_benchmark(
         print(f"  {status_line(batch)} — checking again in {_POLL_INTERVAL_S}s", file=sys.stderr)
         await asyncio.sleep(_POLL_INTERVAL_S)
 
-    _retrieve_and_write(client, batch_id, category, source, level, units)
+    _retrieve_and_write(client, batch_id, category, source, level, units, model_name)
     return batch_id
 
 
@@ -327,9 +342,10 @@ def retrieve_translation(batch_id: str, category: str) -> None:
     units: list[dict[str, str]] = manifest["units"]
     source: str = manifest["source"]
     level = LocalizationLevel(manifest["level"])
+    model_name: str = manifest.get("model", "")
 
     client = make_sync_client()
-    _retrieve_and_write(client, batch_id, category, source, level, units)
+    _retrieve_and_write(client, batch_id, category, source, level, units, model_name)
 
 
 def _retrieve_and_write(
@@ -339,12 +355,28 @@ def _retrieve_and_write(
     source: str,
     level: LocalizationLevel,
     units: list[dict[str, str]],
+    model_name: str,
 ) -> None:
-    """Download a completed batch's results and write per-locale output files."""
+    """Download a completed batch's results, write per-locale output files, report cost."""
     print(f"Retrieving results for batch {batch_id!r}...")
     results = collect_results(client, batch_id)
+    _write_results(results, category, source, level, units, model_name, batch=True)
 
+
+def _write_results(
+    results: dict[str, BatchItemResult],
+    category: str,
+    source: str,
+    level: LocalizationLevel,
+    units: list[dict[str, str]],
+    model_name: str,
+    *,
+    batch: bool,
+) -> None:
+    """Map results (keyed by unit index) back to units, write outputs, report cost."""
     raws: list[str | None] = [None] * len(units)
+    in_tok = sum(item.input_tokens for item in results.values())
+    out_tok = sum(item.output_tokens for item in results.values())
     for cid, item in results.items():
         try:
             idx = int(cid)
@@ -360,6 +392,7 @@ def _retrieve_and_write(
             print(f"[ERR] unit {idx} — {item.error}", file=sys.stderr)
 
     _write_outputs(category, source, level, units, raws)
+    print(f"Cost       : {format_cost(model_name, in_tok, out_tok, batch=batch)}")
 
 
 # ---------------------------------------------------------------------------
@@ -436,7 +469,7 @@ def list_built_benchmarks() -> dict[str, list[str]]:
         return result
     for cat_dir in sorted(_BENCHMARK_DIR.iterdir()):
         if cat_dir.is_dir():
-            files = sorted(p.stem for p in cat_dir.glob("*.json"))
+            files = sorted(p.stem for p in cat_dir.glob("*/*.jsonl"))
             if files:
                 result[cat_dir.name] = files
     return result

@@ -1,0 +1,176 @@
+{
+  "id": "multiple_39_he",
+  "source_id": "multiple_39",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1268,
+  "total_output_tokens": 759,
+  "total_latency_s": 4.815159559249878,
+  "estimated_cost_usd": 0.0042406,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא נסיעה מניו יורק לפילדלפיה בעלות מקסימלית של 50 דולר"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "ride_hailing.get_rides": {
+        "source": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "העיר ניו יורק",
+          "ניו יורק",
+          "ניו יורק"
+        ],
+        "destination": [
+          "פילדלפיה"
+        ],
+        "max_cost": [
+          50
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          },
+          "id": "functions.ride_hailing_get_rides:0"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "input_tokens": 365,
+      "output_tokens": 491,
+      "latency_s": 3.281071662902832,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "ניו יורק",
+            "destination": "פילדלפיה",
+            "max_cost": 50
+          },
+          "id": "functions.ride_hailing_get_rides:1"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "ניו יורק",
+            "destination": "פילדלפיה",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 903,
+      "output_tokens": 268,
+      "latency_s": 1.534087896347046,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא נסיעה מניו יורק לפילדלפיה בעלות מקסימלית של 50 דולר"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.ride_hailing_get_rides:0",
+          "function": {
+            "arguments": "{\"source\": \"New York\", \"destination\": \"Philadelphia\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find a ride from New York to Philadelphia with a maximum cost of $50.\n\nI need to use the `ride_hailing_get_rides` function with:\n- source: \"ניו יורק\" (New York in Hebrew, but the function might expect English locations - looking at the parameters, they're just strings so I could pass either. However, since the user wrote in Hebrew but these are place names, I should probably use the Hebrew names or English. The API doesn't specify language requirements. I'll use the names as the user provided them: \"ניו יורק\" and \"פילדלפיה\", or perhaps common English names would work better for an API. Actually, looking at the instruction, I should respond with the correct function call. The user wrote in Hebrew and expects me to understand. Since the parameter is just a string, I'll pass the locations as provided by the user or in a standard format. Let me use the Hebrew names since that's what the user provided, or I could use English for major US cities since the cost is in dollars. Actually, the API likely expects the location names in English since these are US cities and the cost is in dollars. Let me use English for clarity.)\n\nWait, actually the user specifically wrote: מניו יורק לפילדלפיה. These are transliterated Hebrew names of US cities. The API takes string source and destination. I'll provide them as \"New York\" and \"Philadelphia\" for maximum compatibility, or I could keep them exactly as the user phrased them. Since the system instructions say \"respond with the correct function call\", and the user wrote Hebrew names, but these are geographical locations... Actually, I should just pass the Hebrew names. Or perhaps it's safer to use the English names since these are US cities. But the parameter description is in Hebrew and doesn't specify language. \n\nTo be safe and most accurate, I'll use the English names \"New York\" and \"Philadelphia\" since that's how they'd be represented in a ride-hailing database, and the max_cost is 50.\n\nLet me make the function call:\nsource: \"New York\"\ndestination: \"Philadelphia\"\nmax_cost: 50"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "tool_call_id": "functions.ride_hailing_get_rides:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.ride_hailing_get_rides:1",
+          "function": {
+            "arguments": "{\"source\": \"ניו יורק\", \"destination\": \"פילדלפיה\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me review the function definition again.\n\nFunction: ride_hailing_get_rides\nParameters:\n- source: string, \"The starting point of the journey\" (נקודת ההתחלה של המסע)\n- destination: string, \"The ending point of the journey\" (נקודת הסיום של המסע)\n- max_cost: number/float, \"The maximum cost of the ride. This field is optional. The default is 1000000\"\n\nI passed:\n- source: \"New York\"\n- destination: \"Philadelphia\"\n- max_cost: 50\n\nThis seems correct. But wait, maybe the API expects Hebrew parameters? Or maybe it failed for some other reason. Let me check if maybe I should pass the parameters in Hebrew since the user interface is in Hebrew, or perhaps the function itself has issues with those specific city names.\n\nActually, since I got a 400 Bad Request, maybe I should try with the Hebrew names as the user originally wrote them. Let me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

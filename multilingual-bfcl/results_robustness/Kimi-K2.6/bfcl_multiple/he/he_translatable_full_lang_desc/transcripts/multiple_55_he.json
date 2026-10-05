@@ -1,0 +1,170 @@
+{
+  "id": "multiple_55_he",
+  "source_id": "multiple_55",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 666,
+  "total_output_tokens": 273,
+  "total_latency_s": 2.1666135787963867,
+  "estimated_cost_usd": 0.0017247,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חזה את מחיר המניה של גוגל לשלושת הימים הבאים."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "stock_forecast": {
+        "company": [
+          "גוגל",
+          "GOOG"
+        ],
+        "days": [
+          3
+        ],
+        "model": [
+          "",
+          "רגרסיה"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "stock_forecast",
+          "arguments": {
+            "company": "Google",
+            "days": 3
+          },
+          "id": "functions.stock_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "stock_forecast": {
+            "company": "Google",
+            "days": 3
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'stock_forecast'. Please review the function definition and try again.",
+      "input_tokens": 234,
+      "output_tokens": 158,
+      "latency_s": 1.1194770336151123,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "stock_forecast",
+          "arguments": {
+            "company": "גוגל",
+            "days": 3
+          },
+          "id": "functions.stock_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "stock_forecast": {
+            "company": "גוגל",
+            "days": 3
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 432,
+      "output_tokens": 115,
+      "latency_s": 1.0471365451812744,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חזה את מחיר המניה של גוגל לשלושת הימים הבאים."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.stock_forecast:0",
+          "function": {
+            "arguments": "{\"company\": \"Google\", \"days\": 3}",
+            "name": "stock_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to predict Google's stock price for the next three days. The function `stock_forecast` requires:\n- company: \"Google\" (or \"גוגל\" - the definition says Language: English, Hebrew, but it's safer to use English as it's the company name, though Hebrew is also acceptable per the schema)\n- days: 3\n- model: optional, default is 'regression'\n\nI should call `stock_forecast` with company=\"Google\" and days=3. I'll use English for the company name to be safe, but the schema explicitly allows Hebrew too. Either should work. Let's use \"Google\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'stock_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.stock_forecast:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.stock_forecast:1",
+          "function": {
+            "arguments": "{\"company\": \"גוגל\", \"days\": 3}",
+            "name": "stock_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. Let me reconsider the parameters. The schema says:\n- company: string, description mentions Language: English, Hebrew.\n- days: number\n- model: optional string, default 'regression', description mentions Language: English, Hebrew.\n\nMaybe I need to use Hebrew as explicitly supported by the schema, or maybe there's an issue with the company name. Let me try with \"גוגל\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

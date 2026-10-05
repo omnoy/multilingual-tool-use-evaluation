@@ -1,0 +1,232 @@
+{
+  "id": "multiple_65_he",
+  "source_id": "multiple_65",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1906,
+  "total_output_tokens": 869,
+  "total_latency_s": 7.4831626415252686,
+  "estimated_cost_usd": 0.0052867,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את המרחק בין העיר ניו יורק ללוס אנג'לס."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "geodistance.find": {
+        "origin": [
+          "העיר ניו יורק",
+          "ניו יורק"
+        ],
+        "destination": [
+          "לוס אנג'לס",
+          "אל-איי"
+        ],
+        "unit": [
+          "מיילים",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "New York",
+            "destination": "Los Angeles"
+          },
+          "id": "functions.geodistance_find:0"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "New York",
+            "destination": "Los Angeles"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'geodistance_find'. Please review the function definition and try again.",
+      "input_tokens": 290,
+      "output_tokens": 211,
+      "latency_s": 1.4843742847442627,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "New York",
+            "destination": "Los Angeles",
+            "unit": "miles"
+          },
+          "id": "functions.geodistance_find:1"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "New York",
+            "destination": "Los Angeles",
+            "unit": "miles"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'geodistance_find'. Please review the function definition and try again.",
+      "input_tokens": 543,
+      "output_tokens": 488,
+      "latency_s": 4.275176286697388,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "ניו יורק",
+            "destination": "לוס אנג'לס"
+          },
+          "id": "functions.geodistance_find:2"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "ניו יורק",
+            "destination": "לוס אנג'לס"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1073,
+      "output_tokens": 170,
+      "latency_s": 1.7236120700836182,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את המרחק בין העיר ניו יורק ללוס אנג'לס."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geodistance_find:0",
+          "function": {
+            "arguments": "{\"origin\": \"New York\", \"destination\": \"Los Angeles\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Find the distance between New York and Los Angeles.\"\n\nI need to use the `geodistance_find` function to find the distance between these two cities.\n\nParameters:\n- origin: \"New York\" (English as specified in the tool definition)\n- destination: \"Los Angeles\" (English as specified in the tool definition)\n- unit: optional, default is \"miles\". Since the user didn't specify a unit, I can omit it or use the default. The user wrote in Hebrew but the tool expects English or Hebrew for the unit parameter. I'll just omit it since default is fine.\n\nWait, the schema says for origin and destination: \"Language: English, Hebrew.\" So I can use either. The examples show English. I'll use English for city names.\n\nLet me call the function with:\n- origin: \"New York\"\n- destination: \"Los Angeles\""
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'geodistance_find'. Please review the function definition and try again.",
+      "tool_call_id": "functions.geodistance_find:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geodistance_find:1",
+          "function": {
+            "arguments": "{\"origin\": \"New York\", \"destination\": \"Los Angeles\", \"unit\": \"miles\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check the parameters again.\n\nLooking at the schema:\n- origin: string, description says \"Language: English, Hebrew\"\n- destination: string, description says \"Language: English, Hebrew\"\n- unit: optional string, default \"miles\", \"Language: English, Hebrew\"\n\nWait, maybe the API expects the city names differently or perhaps both origin and destination need to be specified exactly as they expect. Or maybe there's an issue with the parameters.\n\nWait, I should check if origin and destination are required fields. They are required. I provided both. \n\nMaybe the issue is that I need to specify \"New York\" and \"Los Angeles\" in a different format? Or maybe the function doesn't support US cities? No, the error says invalid parameters.\n\nWait, let me re-read the schema. Maybe I missed something.\n\n```json\n{\n  \"origin\": {\n    \"description\": \"The originating city for the distance calculation. Language: English, Hebrew.\",\n    \"type\": \"string\"\n  },\n  \"destination\": {\n    \"description\": \"The destination city for the distance calculation. Language: English, Hebrew.\",\n    \"type\": \"string\"\n  },\n  \"unit\": {\n    \"default\": \"miles\",\n    \"description\": \"The unit of measure for the distance calculation. Language: English, Hebrew.\",\n    \"type\": \"string\"\n  }\n}\n```\n\nRequired: [\"destination\", \"origin\"]\n\nMaybe the service requires specific city names, but \"400 Bad Request: invalid parameters\" usually suggests a schema validation error. \n\nWait, could it be that the tool name or parameter names are wrong? No, I used exactly what was provided.\n\nMaybe the unit parameter default wasn't being applied properly and I need to explicitly provide it? Or maybe the Hebrew/English note means I should use Hebrew since the user asked in Hebrew?\n\nLet me try with Hebrew city names or explicitly adding the unit.\n\nActually, let me try with unit explicitly set to \"miles\" or try Hebrew names. Or perhaps the API expects \"New York City\" and \"Los Angeles\"? \n\nLet me try explicitly specifying the unit parameter. Maybe the default handling is broken on the backend."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'geodistance_find'. Please review the function definition and try again.",
+      "tool_call_id": "functions.geodistance_find:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geodistance_find:2",
+          "function": {
+            "arguments": "{\"origin\": \"ניו יורק\", \"destination\": \"לוס אנג'לס\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting a 400 error. Let me think about what could be wrong.\n\nCould the issue be that I need to use Hebrew names since the user asked in Hebrew? The description says \"Language: English, Hebrew\" for both origin and destination.\n\nLet me try:\n- origin: \"ניו יורק\"\n- destination: \"לוס אנג'לס\"\n- unit: \"miles\" or maybe \"קילומטרים\" or \"מיילים\"?\n\nActually, let me try Hebrew city names with the unit in Hebrew or English. Or maybe without unit.\n\nLet me try without unit first but with Hebrew names."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,257 @@
+{
+  "id": "multiple_89_he",
+  "source_id": "multiple_89",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2158,
+  "total_output_tokens": 1151,
+  "total_latency_s": 7.230149030685425,
+  "estimated_cost_usd": 0.0066541,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא מתכון בריא לארוחת צהריים מתחת ל-500 קלוריות שמשתמש בעוף ופטריות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "ארוחת צהריים",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "עוף",
+              "פטריות"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "functions.recipe_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "עוף",
+              "פטריות"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 381,
+      "output_tokens": 237,
+      "latency_s": 1.5977370738983154,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "functions.recipe_search:1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 663,
+      "output_tokens": 406,
+      "latency_s": 2.399611473083496,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          },
+          "id": "functions.recipe_search:2"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1114,
+      "output_tokens": 508,
+      "latency_s": 3.2328004837036133,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא מתכון בריא לארוחת צהריים מתחת ל-500 קלוריות שמשתמש בעוף ופטריות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:0",
+          "function": {
+            "arguments": "{\"ingredients\":[\"עוף\",\"פטריות\"],\"calories\":500,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to find a healthy recipe for lunch (ארוחת צהריים) under 500 calories that uses chicken (עוף) and mushrooms (פטריות).\n\nLooking at the available functions, I need to use `recipe_search` because the user wants a recipe.\n\nParameters needed:\n- ingredients: [\"עוף\", \"פטריות\"] (chicken and mushrooms)\n- calories: 500 (under 500 calories)\n- meal: \"lunch\" (since they specified ארוחת צהריים)\n\nThe function description says: \"Type of the meal for the recipe, it's optional and could be breakfast, lunch or dinner. Default 'lunch'\" - so I should pass \"lunch\" explicitly since they mentioned it, or I could rely on the default. But it's better to be explicit.\n\nThe ingredients are in Hebrew, and the function description says \"Language: English, Hebrew\" for ingredients.\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_search:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:1",
+          "function": {
+            "arguments": "{\"ingredients\":[\"chicken\",\"mushrooms\"],\"calories\":500,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check the parameters again.\n\nLooking at the function definition:\n- ingredients: array of strings\n- calories: number\n- meal: string enum [\"breakfast\", \"lunch\", \"dinner\"]\n\nWait, the user wrote in Hebrew. The function description says for ingredients: \"A list of ingredients you want to use in the recipe.\" and for meal: \"Type of the meal for the recipe, it's optional and could be breakfast, lunch or dinner.\"\n\nMaybe the issue is that I passed Hebrew strings for ingredients? But the description says \"Language: English, Hebrew\" so it should accept Hebrew.\n\nWait, looking more carefully at the error - it says invalid parameters. Maybe I need to check the exact schema requirements. Let me look again.\n\nActually, the \"Language: English, Hebrew\" note appears at the end of the meal parameter description, not ingredients. But that shouldn't matter.\n\nOr perhaps the API expects the ingredients in English? Let me try with English ingredient names instead.\n\nActually, the issue might be something else. Let me reconsider the parameters. The schema requires:\n- ingredients: array of strings\n- calories: number  \n- meal: string\n\nAll of these were provided correctly. Maybe the API doesn't actually accept Hebrew for ingredients despite the note? Let me try with English: [\"chicken\", \"mushrooms\"].\n\nActually, looking at the tool definition again, the note \"Language: English, Hebrew.\" appears at the very end of the meal parameter line. It might refer to the meal parameter only, or to the function overall.\n\nBut the user asked in Hebrew. Let me try translating the ingredients to English while keeping the request context. Or maybe the calorie value should be something else? No, 500 is correct.\n\nLet me try with English ingredients."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_search:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:2",
+          "function": {
+            "arguments": "{\"ingredients\": [\"chicken\", \"mushrooms\"], \"calories\": 500}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting 400 Bad Request. Let me think about what could be wrong.\n\nMaybe the issue is with the Hebrew text or encoding? But the second try was in English.\n\nLet me re-read the function definition very carefully:\n\n```\ntype recipe_search = (_: {\n // A list of ingredients you want to use in the recipe.\n ingredients: Array<string>,\n // The maximum number of calories for the recipe.\n calories: number,\n // Type of the meal for the recipe, it's optional and could be breakfast, lunch or dinner. Default 'lunch' Language: English, Hebrew.\n meal?: string\n}) => any;\n```\n\nWait... the meal parameter is listed as optional (`meal?: string`), but in the description it says \"Default 'lunch'\". However, in my first call I included it. In the second call I also included it.\n\nActually, looking at the JSON schema provided in the function definition:\n```\n\"meal\": {\"anyOf\": [{\"enum\": [\"breakfast\", \"lunch\", \"dinner\"], \"type\": \"string\"}], \"default\": \"lunch\", \"description\": \"Type of the meal for the recipe, it's optional and could be breakfast, lunch or dinner. Default 'lunch'\"}\n```\n\nWait, the schema says the enum is [\"breakfast\", \"lunch\", \"dinner\"]. But in the main parameter object, is it actually defined? Let me look again at the function definition provided by the user.\n\nActually, the function definition says:\n```\n\"properties\": {\"calories\": ..., \"ingredients\": ..., \"meal\": {...}}, \"required\": [\"ingredients\", \"calories\"]\n```\n\nAnd meal is described as: `\"anyOf\": [{\"enum\": [\"breakfast\", \"lunch\", \"dinner\"], \"type\": \"string\"}], \"default\": \"lunch\"`\n\nHmm, but there's a mismatch in what I see. The function definition block says:\n```\nmeal?: string\n```\n\nBut in the JSON schema details it mentions an enum. If the actual API expects the enum values but I made a typo or something... \"lunch\" is correct though.\n\nWait - maybe the system is extremely strict about the schema and there's an issue with how the parameters are structured? Or perhaps the API endpoint is broken?\n\nLet me try without the optional meal parameter, since it defaults to lunch anyway."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

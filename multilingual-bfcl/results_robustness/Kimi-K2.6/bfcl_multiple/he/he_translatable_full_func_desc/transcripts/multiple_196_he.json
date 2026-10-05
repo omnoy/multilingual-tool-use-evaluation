@@ -1,0 +1,162 @@
+{
+  "id": "multiple_196_he",
+  "source_id": "multiple_196",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1570,
+  "total_output_tokens": 583,
+  "total_latency_s": 4.8196775913238525,
+  "estimated_cost_usd": 0.0038234999999999996,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהם שמות החלבונים הנמצאים בקרום הפלזמה?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "קרום הפלזמה"
+        ],
+        "include_description": [
+          "",
+          false
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane"
+          },
+          "id": "functions.cellbio_get_proteins:0"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "input_tokens": 666,
+      "output_tokens": 194,
+      "latency_s": 1.5114266872406006,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "קרום הפלזמה"
+          },
+          "id": "functions.cellbio_get_proteins:1"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "קרום הפלזמה"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 904,
+      "output_tokens": 389,
+      "latency_s": 3.308250904083252,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהם שמות החלבונים הנמצאים בקרום הפלזמה?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.cellbio_get_proteins:0",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user asks in Hebrew: \"What are the names of the proteins found in the plasma membrane?\"\n\nI have the function `cellbio_get_proteins` which can retrieve proteins in a cell compartment.\n\nParameters:\n- `cell_compartment`: The specific cell compartment. In this case, the plasma membrane. In Hebrew, \"קרום הפלזמה\" is the plasma membrane. I need to provide this in English for the function call: \"plasma membrane\".\n- `include_description`: Optional, boolean. The user only asks for names (\"שמות החלבונים\"), so I should set this to `false` (the default). But I don't need to include it if not necessary, though it's fine to omit since default is false.\n\nI should call the function with `cell_compartment=\"plasma membrane\"`."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "tool_call_id": "functions.cellbio_get_proteins:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.cellbio_get_proteins:1",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"קרום הפלזמה\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. This likely means the parameter value \"plasma membrane\" was not recognized. I need to check what exact string the function expects for the plasma membrane. The parameter description says \"תא-המשנה התאי המסוים\" (The specific cell compartment). Common English terms might be expected. But maybe it expects a specific string format or a Hebrew term? However, the tool schema doesn't specify enum values. \n\nLet me try again with just \"plasma membrane\" - maybe there was an issue with the exact expected value? Or perhaps I should try \"Plasma membrane\"? Or maybe \"cell membrane\"? \n\nWait, looking at the function name `cellbio_get_proteins`, it might expect specific compartment names like \"nucleus\", \"mitochondria\", \"endoplasmic reticulum\", \"golgi apparatus\", \"lysosome\", \"peroxisome\", \"plasma membrane\", \"cytosol\", etc.\n\nLet me try \"plasma membrane\" again? But I got 400. Maybe I should try \"Plasma membrane\" with capital P? Or \"cell membrane\"? \n\nAlternatively, perhaps the backend expects \"Plasma membrane\" as two words but maybe it wants something else. Since I got an error, I should inform the user that I couldn't retrieve the information due to a technical issue. But before that, let me try another variation like \"cell membrane\" or maybe the function expects Hebrew input? The function description is in Hebrew (\"תא-המשנה התאי המסוים\"), so maybe it expects Hebrew compartment names like \"קרום התא\" or \"קרום פלזמה\". Let's try \"קרום הפלזמה\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

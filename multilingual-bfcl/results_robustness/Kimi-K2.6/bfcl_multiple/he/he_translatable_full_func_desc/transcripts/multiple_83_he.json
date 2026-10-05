@@ -1,0 +1,168 @@
+{
+  "id": "multiple_83_he",
+  "source_id": "multiple_83",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1565,
+  "total_output_tokens": 1274,
+  "total_latency_s": 7.23903489112854,
+  "estimated_cost_usd": 0.00658275,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה שערים כבש ליאונל מסי עבור ברצלונה עד היום?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "player_stats.get_all_time_goals": {
+        "player_name": [
+          "ליאונל מסי"
+        ],
+        "team_name": [
+          "ברצלונה"
+        ],
+        "competition": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "player_stats_get_all_time_goals",
+          "arguments": {
+            "player_name": "Lionel Messi",
+            "team_name": "Barcelona"
+          },
+          "id": "functions.player_stats_get_all_time_goals:0"
+        }
+      ],
+      "decoded": [
+        {
+          "player_stats_get_all_time_goals": {
+            "player_name": "Lionel Messi",
+            "team_name": "Barcelona"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'player_stats_get_all_time_goals'. Please review the function definition and try again.",
+      "input_tokens": 431,
+      "output_tokens": 655,
+      "latency_s": 3.78027606010437,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "player_stats_get_all_time_goals",
+          "arguments": {
+            "player_name": "ליאונל מסי",
+            "team_name": "ברצלונה"
+          },
+          "id": "functions.player_stats_get_all_time_goals:1"
+        }
+      ],
+      "decoded": [
+        {
+          "player_stats_get_all_time_goals": {
+            "player_name": "ליאונל מסי",
+            "team_name": "ברצלונה"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1134,
+      "output_tokens": 619,
+      "latency_s": 3.45875883102417,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה שערים כבש ליאונל מסי עבור ברצלונה עד היום?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.player_stats_get_all_time_goals:0",
+          "function": {
+            "arguments": "{\"player_name\": \"Lionel Messi\", \"team_name\": \"Barcelona\"}",
+            "name": "player_stats_get_all_time_goals"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"How many goals did Lionel Messi score for Barcelona to date?\"\n\nI need to use the function `player_stats_get_all_time_goals` with:\n- player_name: \"Lionel Messi\" (or \"ליאונל מסי\" but the function likely expects English names since this is a generic API. However, the user asked in Hebrew. The instructions say to respond with the correct function call exactly as specified. I should probably use the Hebrew name as given by the user, or the English name. Since the parameter doesn't specify language constraints, but typically these APIs work better with English, I should consider. Wait, the user specifically wrote \"ליאונל מסי\". But the tool parameter just says \"שם שחקן הכדורגל\" (name of the football player). It doesn't specify the language. However, looking at the system instruction: \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nI think I should use the most recognizable form. Since the user said \"ליאונל מסי\", I could use that, but usually player databases use English names. The prompt doesn't explicitly say I must translate. But to be safe and accurate for the API, English is probably better. However, the instruction says \"respond with the correct function call exactly as specified\". It doesn't say I need to translate the parameters. But function calls with Hebrew strings might not work if the backend expects English.\n\nActually, looking carefully, there is no strict rule here. But since the tool schema doesn't restrict the language, and the user provided the name in Hebrew, I can use the Hebrew name. However, standard practice in these tool-calling scenarios is that if the user provides a name in their language, and the API is likely international, using the original Hebrew might fail. But I have no explicit instruction to translate.\n\nWait, re-reading: \"Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nThis means I should output the function call. The \"exactly as specified\" refers to the format and parameter names. I think using \"Lionel Messi\" is the safer bet for an API that queries football stats, as the underlying database is almost certainly English-based. The user's question is understood in Hebrew, but the function argument should be the English name for it to work. If I put Hebrew, it will likely return nothing.\n\nBut also, Barcelona should be \"Barcelona\" or \"ברצלונה\". Again, English is safer.\n\nGiven the context of sports APIs, they almost universally use English/official club names. So I will use:\n- player_name: \"Lionel Messi\"\n- team_name: \"Barcelona\"\n\nI will not include competition as it's optional and the user didn't specify.\n\nSo the function call:\n{\"player_name\": \"Lionel Messi\", \"team_name\": \"Barcelona\"}"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'player_stats_get_all_time_goals'. Please review the function definition and try again.",
+      "tool_call_id": "functions.player_stats_get_all_time_goals:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.player_stats_get_all_time_goals:1",
+          "function": {
+            "arguments": "{\"player_name\": \"ליאונל מסי\", \"team_name\": \"ברצלונה\"}",
+            "name": "player_stats_get_all_time_goals"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. This could mean the parameters were invalid. Wait, looking at the schema, `competition` has a default of `''`. The required parameters are `player_name` and `team_name`. Both were provided as strings.\n\nPerhaps the function doesn't accept \"Barcelona\" but rather a specific name like \"FC Barcelona\" or perhaps it requires Hebrew names because the API was designed for Hebrew? Or maybe it requires the exact exact names.\n\nWait, the error says \"invalid parameters\". Let me check if I passed them correctly. The JSON was {\"player_name\": \"Lionel Messi\", \"team_name\": \"Barcelona\"}. That looks correct structurally.\n\nCould it be that the API expects Hebrew names because the tool descriptions are in Hebrew? The tools are described in Hebrew but that doesn't mean the parameters must be in Hebrew. However, maybe this is a local Israeli sports database? Unlikely for Barcelona and Messi, but possible.\n\nOr maybe \"Barcelona\" needs to be \"Barcelona FC\" or \"FC Barcelona\". Or \"Lionel Messi\" needs to be exactly as entered in their DB.\n\nAnother thought: Did I need to specify `competition`? It's optional with default '', so no.\n\nThe 400 error could also be a generic error from the simulated function if the name wasn't found? No, it says invalid parameters.\n\nLet me re-read the function definition:\n```\ntype player_stats_get_all_time_goals = (_: {\n // שם שחקן הכדורגל.\n player_name: string,\n // שם הקבוצה שעבורה שיחק השחקן.\n team_name: string,\n // התחרות שעבורה יש לשלוף את הסטטיסטיקות (אופציונלי). ברירת המחדל היא ''\n competition?: string\n}) => any;\n```\n\nRequired params: `player_name`, `team_name`.\n\nMaybe the simulated environment expects Hebrew names for teams and players? Let's try with Hebrew names, since the user asked in Hebrew and the tool interface is Hebrew. It's possible the mock backend is set up with Hebrew keys. Or maybe the backend is not case-sensitive but expects exact spellings.\n\nLet's try:\nplayer_name: \"ליאונל מסי\"\nteam_name: \"ברצלונה\"\n\nIf that fails too, maybe I need to try English with \"FC Barcelona\".\n\nActually, since the instructions say \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\" The function definitions specify Hebrew descriptions but do not constrain the parameter language. Since it's a 400, perhaps I should try with Hebrew as provided by the user.\n\nLet me try again with Hebrew names."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

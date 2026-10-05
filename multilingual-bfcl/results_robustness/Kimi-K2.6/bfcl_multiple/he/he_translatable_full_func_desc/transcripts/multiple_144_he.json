@@ -1,0 +1,228 @@
+{
+  "id": "multiple_144_he",
+  "source_id": "multiple_144",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2841,
+  "total_output_tokens": 1666,
+  "total_latency_s": 13.830867528915405,
+  "estimated_cost_usd": 0.00936295,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו מדד איכות האוויר בלונדון בתאריך 16/08/2022?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "air_quality": {
+        "location": [
+          "לונדון"
+        ],
+        "date": [
+          "2022-08-16",
+          "16/08/2022",
+          "16 באוגוסט, 2022",
+          "2022/08/16",
+          "16\\08\\2022"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality",
+          "arguments": {
+            "location": "London",
+            "date": "2022-08-16"
+          },
+          "id": "functions.air_quality:0"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality": {
+            "location": "London",
+            "date": "2022-08-16"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'air_quality'. Please review the function definition and try again.",
+      "input_tokens": 310,
+      "output_tokens": 820,
+      "latency_s": 6.11412501335144,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality",
+          "arguments": {
+            "date": "16/08/2022",
+            "location": "London"
+          },
+          "id": "functions.air_quality:1"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality": {
+            "date": "16/08/2022",
+            "location": "London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'air_quality'. Please review the function definition and try again.",
+      "input_tokens": 1171,
+      "output_tokens": 148,
+      "latency_s": 1.9380567073822021,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality",
+          "arguments": {
+            "date": "2022-08-16",
+            "location": "לונדון"
+          },
+          "id": "functions.air_quality:2"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality": {
+            "date": "2022-08-16",
+            "location": "לונדון"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1360,
+      "output_tokens": 698,
+      "latency_s": 5.778685808181763,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו מדד איכות האוויר בלונדון בתאריך 16/08/2022?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality:0",
+          "function": {
+            "arguments": "{\"location\":\"London\",\"date\":\"2022-08-16\"}",
+            "name": "air_quality"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "מדובר בשאלה על מדד איכות האוויר בלונדון בתאריך 16/08/2022. אני צריך להשתמש בפונקציה air_quality עם הפרמטרים:\n- location: \"London\"\n- date: \"16/08/2022\"\n\nצריך לבדוק אם הפורמט של התאריך מתאים. בדרך כלל פורמט ISO הוא yyyy-mm-dd, אבל כאן המשתמש כתב dd/mm/yyyy. אבל בכלי לא מוגדר פורמט ספציפי, אז אני אנסח את זה כפי שהמשתמש ביקש או בפורמט סטנדרטי. כיוון שאין הגבלה מדויקת ב-schema, אני אשלח את התאריך כפי שביקשו או בפורמט ISO. בואו נשתמש בפורמט \"2022-08-16\" כי הוא סטנדרטי יותר, אך גם \"16/08/2022\" עשוי לעבוד. למעשה, כיוון שהמשתמש כתב בפורמט ישראלי, אני אנסה לשלוח בפורמט ISO כדי למנוע בלבול.\n\nלמעשה, כיוון שהכלי צריך תאריך, ואין ציון פורמט, אני אשתמש בפורמט DD/MM/YYYY כפי שהמשתמש כתב, או שאני יכול להמיר ל-YYYY-MM-DD. הרבה APIs עובדים עם ISO. אבל כיוון שאין לי שליטה על ה-backend, אני אשלח כפי שהמשתמש כתב או בפורמט סביר. בואו נשלח כ-\"16/08/2022\" אם הכלי תומך, אבל עדיף ISO. \n\nחכה, schema אומר \"התאריך שעבורו ברצונך לקבל את מדד איכות האוויר\" - אין הגדרת פורמט. אני אשתמש ב-\"2022-08-16\" כי זה פורמט תאריך בינלאומי ופחות מבלבל. אבל גם \"16/08/2022\" בסדר. בואו נשתמש בפורמט שאולי הכלי מצפה לו. כיוון שהמשתמש כתב בפורמט ישראלי, אולי אעדיף להמיר ל-ISO למניעת אי-הבנות ב-month/day. אז אשלח \"2022-08-16\". \n\nאבל חכה, אולי אני צריך לשלוח בדיוק כפי שהמשתמש ביקש? לא, המכשיר צריך לעבד. אני אבחר ב-\"2022-08-16\". \n\nעכשיו location: \"London\". \n\nאז הקריאה תהיה:\nair_quality(location=\"London\", date=\"2022-08-16\")"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'air_quality'. Please review the function definition and try again.",
+      "tool_call_id": "functions.air_quality:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality:1",
+          "function": {
+            "arguments": "{\"date\":\"16/08/2022\",\"location\":\"London\"}",
+            "name": "air_quality"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "הפונקציה החזירה שגיאה 400 - פרמטרים לא תקינים. ייתכן שהבעיה היא בפורמט התאריך. בואו ננסה את הפורמט שהמשתמש כתב: \"16/08/2022\". אם גם זה לא יעבוד, אולי הבעיה היא במשהו אחר. בואו ננסה שוב עם הפורמט שהמשתמש ביקש."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'air_quality'. Please review the function definition and try again.",
+      "tool_call_id": "functions.air_quality:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality:2",
+          "function": {
+            "arguments": "{\"date\": \"2022-08-16\", \"location\": \"לונדון\"}",
+            "name": "air_quality"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "עדיין שגיאה 400. ייתכן שהבעיה היא בבקשה עצמה או בכתובת/תאריך. אולי הכלי דורש תאריך בפורמט mm/dd/yyyy? או אולי \"London\" צריך להיות בעברית? לא, location מאוד ספציפי. אולי צריך לשלוח תאריך מחרוזת בפורמט אחר לגמרי, או אולי התאריך חייב להיות \"today\" אם הוא לא תקין? לא, זה לא הגיוני. \n\nאולי הבעיה היא שהשם של העיר צריך להיות בעברית? \"לונדון\"? בואו ננסה. או אולי הפורמט הוא YYYY-MM-DD אבל היום לא יכול להיות בעבר? אולי הכלי תומך רק בתאריכים עתידיים או נוכחיים? הוא אמר \"ברירת המחדל היא היום\", אבל לא נאמר שאי אפשר לבקש תאריך עבר. אולי באמת לא ניתן לבקש תאריך עבר והכלי חוזר 400?\n\nאבל הוראת המערכת אומרת לי להשיב בקריאת פונקציה נכונה. אולי אני צריך פשוט לנסות location \"לונדון\"? בואו נבדוק. גם אם השרת יחזיר שגיאה, זה בסדר - המשימה היא להפעיל את הכלי הנכון. \n\nייתכן שהבעיה היא ששלחתי date בפורמט לא נכון לגמרי. בואו ננסה לשלוח רק את ה-location ו-date בפורמט DD-MM-YYYY. או אולי הפורמט הנכון הוא \"2022/08/16\". \n\nבואו ננסה location: \"לונדון\" ו-date: \"2022-08-16\". \n\nאם זה לא יעבוד, אולי הבעיה היא שהכלי לא קיים באמת או שיש בעיה טכנית. אבל אני צריך לנסות. \n\nאני יכול גם לנסות לשלוח date בפורמט mm/dd/yyyy: \"08/16/2022\". \n\nבואו ננסה כמה אפשרויות. למרות שזה יכול להיות מוגבל, אנסה location: \"לונדון\", date: \"2022-08-16\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,168 @@
+{
+  "id": "multiple_63_he",
+  "source_id": "multiple_63",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1098,
+  "total_output_tokens": 571,
+  "total_latency_s": 5.204622507095337,
+  "estimated_cost_usd": 0.0033271,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה יהיה מדד איכות האוויר של ניו יורק לשבוע הקרוב?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "air_quality_forecast": {
+        "location": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "העיר ניו יורק",
+          "ניו יורק סיטי"
+        ],
+        "days": [
+          7
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality_forecast",
+          "arguments": {
+            "location": "New York",
+            "days": 7
+          },
+          "id": "functions.air_quality_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality_forecast": {
+            "location": "New York",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'air_quality_forecast'. Please review the function definition and try again.",
+      "input_tokens": 375,
+      "output_tokens": 301,
+      "latency_s": 2.471374988555908,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality_forecast",
+          "arguments": {
+            "days": 7,
+            "location": "ניו יורק"
+          },
+          "id": "functions.air_quality_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality_forecast": {
+            "days": 7,
+            "location": "ניו יורק"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 723,
+      "output_tokens": 270,
+      "latency_s": 2.7332475185394287,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה יהיה מדד איכות האוויר של ניו יורק לשבוע הקרוב?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality_forecast:0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"days\":7}",
+            "name": "air_quality_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the air quality index for New York for the upcoming week. In Hebrew: \"מה יהיה מדד איכות האוויר של ניו יורק לשבוע הקרוב?\" which translates to \"What will be the air quality index of New York for the coming week?\"\n\nI need to use the `air_quality_forecast` function with:\n- location: \"New York\" (or \"ניו יורק\" - but the function likely expects English place names since it's a standard API; however the parameter description is in Hebrew but doesn't specify language. Usually city names in such APIs are in English. I'll use \"New York\" to be safe, though \"ניו יורק\" might also work. Actually, looking at the schema, it just says \"העיר שעבורה ברצונך לקבל את תחזית איכות האוויר\". I'll use \"New York\" since it's more standard for APIs.)\n- days: 7 (a week)\n\nWait, I should consider whether \"שבוע\" strictly means 7 days. Yes, a week is typically 7 days.\n\nFunction name: air_quality_forecast\nArguments: {\"location\": \"New York\", \"days\": 7}\n\nI must respond with the correct function call exactly as specified."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'air_quality_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.air_quality_forecast:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality_forecast:1",
+          "function": {
+            "arguments": "{\"days\": 7, \"location\": \"ניו יורק\"}",
+            "name": "air_quality_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. This could mean the parameters are invalid. Let me reconsider:\n\n1. Maybe the location should be in Hebrew? The user asked about \"ניו יורק\". Let me try with \"ניו יורק\".\n2. Maybe days should be a different limit? Some APIs cap at 5 days or similar, but 7 is standard for a week. Or maybe it needs to be within a specific range.\n3. Or maybe the API expects \"New York\" but the parameter name or structure was wrong? No, I used the exact schema.\n\nLet me try with Hebrew city name \"ניו יורק\" since the user asked in Hebrew and perhaps the API is localized. Or try 5 days? Actually the error says \"invalid parameters\" which is vague. Often in these simulated environments, if there's a strict validation, maybe it expects \"New York\" exactly or maybe the system wants Hebrew. \n\nLet me try Hebrew location. If that doesn't work, maybe try days: 5 (if the max is 5). But the user asked for a week, which is 7. Let me try Hebrew first."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

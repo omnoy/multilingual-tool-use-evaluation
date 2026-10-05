@@ -1,0 +1,173 @@
+{
+  "id": "multiple_16_he",
+  "source_id": "multiple_16",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1069,
+  "total_output_tokens": 491,
+  "total_latency_s": 2.8414952754974365,
+  "estimated_cost_usd": 0.00297955,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו גודל האוכלוסייה המינימלי הנדרש (Ne) לשמירה על המגוון הגנטי של אוכלוסיית נמרים בריים למשך 100 הדורות הבאים בהסתברות של 0.95?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "population_genetics.calculate_ne": {
+        "species": [
+          "נמר בר",
+          "נמר"
+        ],
+        "generations": [
+          100
+        ],
+        "probability": [
+          0.95
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "population_genetics_calculate_ne",
+          "arguments": {
+            "species": "leopard",
+            "generations": 100,
+            "probability": 0.95
+          },
+          "id": "functions.population_genetics_calculate_ne:0"
+        }
+      ],
+      "decoded": [
+        {
+          "population_genetics_calculate_ne": {
+            "species": "leopard",
+            "generations": 100,
+            "probability": 0.95
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'population_genetics_calculate_ne'. Please review the function definition and try again.",
+      "input_tokens": 406,
+      "output_tokens": 210,
+      "latency_s": 1.243539571762085,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "population_genetics_calculate_ne",
+          "arguments": {
+            "generations": 100,
+            "probability": 0.95,
+            "species": "נמר"
+          },
+          "id": "functions.population_genetics_calculate_ne:1"
+        }
+      ],
+      "decoded": [
+        {
+          "population_genetics_calculate_ne": {
+            "generations": 100,
+            "probability": 0.95,
+            "species": "נמר"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 663,
+      "output_tokens": 281,
+      "latency_s": 1.5979557037353516,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו גודל האוכלוסייה המינימלי הנדרש (Ne) לשמירה על המגוון הגנטי של אוכלוסיית נמרים בריים למשך 100 הדורות הבאים בהסתברות של 0.95?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.population_genetics_calculate_ne:0",
+          "function": {
+            "arguments": "{\"species\": \"leopard\", \"generations\": 100, \"probability\": 0.95}",
+            "name": "population_genetics_calculate_ne"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What is the minimum effective population size (Ne) required to maintain the genetic diversity of a wild leopard population for the next 100 generations with a probability of 0.95?\"\n\nI need to use the `population_genetics_calculate_ne` function.\n\nParameters:\n- species: \"leopard\" (or \"נמר\" in Hebrew, but the function says English or Hebrew, so either should work. To be safe, I'll use \"leopard\" or \"נמר\". Let me check the schema - it says \"Language: English, Hebrew\". So \"נמר\" or \"leopard\" should both work. I'll use \"leopard\" to be safe since it's an English-named function.)\n- generations: 100\n- probability: 0.95\n\nLet me call the function."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'population_genetics_calculate_ne'. Please review the function definition and try again.",
+      "tool_call_id": "functions.population_genetics_calculate_ne:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.population_genetics_calculate_ne:1",
+          "function": {
+            "arguments": "{\"generations\": 100, \"probability\": 0.95, \"species\": \"נמר\"}",
+            "name": "population_genetics_calculate_ne"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check the parameters again.\n\nLooking at the schema:\n- species: string - \"The species of wild animal. Language: English, Hebrew.\"\n- generations: integer - \"The number of generations for which to maintain the genetic diversity.\"\n- probability: number (float) - \"The probability of maintaining genetic diversity. This is a float type value.\"\n\nMy values:\n- species: \"leopard\"\n- generations: 100\n- probability: 0.95\n\nWait, the function description says probability is \"a float type value\". 0.95 is a float. Let me try with a different format or maybe the species needs to be more specific? Or maybe the probability needs to be passed differently? \n\nActually, looking more carefully at the schema, the probability parameter says \"This is a float type value.\" Maybe I need to ensure it's definitely interpreted as a float, but in JSON 0.95 is a number. \n\nWait, maybe the species needs to be in Hebrew since the user asked in Hebrew? The description says \"Language: English, Hebrew.\" \n\nLet me try \"נמר\" (leopard in Hebrew)."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,259 @@
+{
+  "id": "multiple_93_he",
+  "source_id": "multiple_93",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3316,
+  "total_output_tokens": 1995,
+  "total_latency_s": 12.780752420425415,
+  "estimated_cost_usd": 0.0111302,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "הזמן חדר דה לוקס לשני לילות במלון מריוט בניו יורק והוסף ארוחת בוקר כשירות נוסף"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel.book": {
+        "location": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק"
+        ],
+        "roomType": [
+          "דה לוקס",
+          "דה לוקס"
+        ],
+        "nights": [
+          2
+        ],
+        "additional_services": [
+          [
+            "breakfast"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "Marriott New York",
+            "roomType": "deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "functions.hotel_book:0"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "Marriott New York",
+            "roomType": "deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 420,
+      "output_tokens": 734,
+      "latency_s": 5.659081220626831,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "additional_services": [
+              "breakfast"
+            ],
+            "location": "New York",
+            "nights": 2,
+            "roomType": "Deluxe"
+          },
+          "id": "functions.hotel_book:1"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "additional_services": [
+              "breakfast"
+            ],
+            "location": "New York",
+            "nights": 2,
+            "roomType": "Deluxe"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 1200,
+      "output_tokens": 457,
+      "latency_s": 2.399559259414673,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "additional_services": [
+              "breakfast"
+            ],
+            "location": "ניו יורק",
+            "nights": 2,
+            "roomType": "דה לוקס"
+          },
+          "id": "functions.hotel_book:2"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "additional_services": [
+              "breakfast"
+            ],
+            "location": "ניו יורק",
+            "nights": 2,
+            "roomType": "דה לוקס"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1696,
+      "output_tokens": 804,
+      "latency_s": 4.722111940383911,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "הזמן חדר דה לוקס לשני לילות במלון מריוט בניו יורק והוסף ארוחת בוקר כשירות נוסף"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_book:0",
+          "function": {
+            "arguments": "{\"location\":\"Marriott New York\",\"roomType\":\"deluxe\",\"nights\":2,\"additional_services\":[\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to book a hotel room. Let me extract the details:\n- Room type: דה לוקס (deluxe) - so \"deluxe\"\n- Nights: שני לילות (2 nights) - so 2\n- Location: מלון מריוט בניו יורק (Marriott hotel in New York) - so \"New York\" or \"Marriott New York\". The parameter is \"location\" so I'll use \"Marriott New York\" or just \"New York\". Looking at the request \"מלון מריוט בניו יורק\", I should probably use \"Marriott New York\" or \"New York\". I'll use \"Marriott, New York\" or just \"New York\". Actually, the location field is the hotel location, so \"New York\" should suffice, but to be more specific I could say \"Marriott New York\". Let me use \"Marriott New York\" for clarity.\n- Additional services: ארוחת בוקר (breakfast) - so [\"breakfast\"]\n\nLet me check the function parameters:\n- location: string (required)\n- roomType: string (required) \n- nights: number (required)\n- additional_services: array, optional, items enum [\"breakfast\", \"parking\", \"spa\"]\n\nSo the call should be:\nhotel_book(location=\"Marriott New York\", roomType=\"deluxe\", nights=2, additional_services=[\"breakfast\"])\n\nOr should location be just \"New York\"? The user said \"Marriott hotel in New York\". The location parameter description is \"מיקום המלון\" (hotel location). I think \"Marriott New York\" or \"New York\" both work, but since they specifically mentioned Marriott, I'll include it to be precise. Actually, in many hotel booking systems, the location is the city. But since the tool asks for \"hotel location\" and the user specified the hotel name, let me provide \"Marriott New York\".\n\nWait, let me reconsider. The user said \"במלון מריוט בניו יורק\" which means \"at the Marriott hotel in New York\". The location field likely expects the city or area. But to be accurate to the user's request, I'll put \"Marriott New York\" or \"New York\". I'll go with \"New York\" since location usually means the city, but actually looking at similar tools, sometimes hotel name is included. However, \"Marriott\" is the hotel brand, so maybe \"New York\" is the location. I'll use \"New York\" as the primary location but mention Marriott... No, looking at the parameter again: \"מיקום המלון\" - hotel location. I think \"Marriott New York\" is fine.\n\nActually, to be safe and precise: the user is asking to book at \"Marriott in New York\". I'll use location=\"New York\" since that's the geographic location. The hotel brand might be inferred or not needed for this mock function. But if I want to be thorough, \"Marriott New York\" works too. I think either is acceptable, but I'll use \"Marriott New York\" to capture the full intent.\n\nRoom type: \"דה לוקס\" = \"deluxe\"\nNights: 2\nAdditional services: [\"breakfast\"]\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "functions.hotel_book:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_book:1",
+          "function": {
+            "arguments": "{\"additional_services\": [\"breakfast\"], \"location\": \"New York\", \"nights\": 2, \"roomType\": \"Deluxe\"}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters. Maybe the room type needs to be in Hebrew? Or maybe the location format is wrong?\n\nLooking at the function definition again:\n- location: string\n- roomType: string\n- nights: number\n- additional_services: array of enum [\"breakfast\", \"parking\", \"spa\"]\n\nThe values I sent seem correct. Maybe the API expects Hebrew room type? The user said \"דה לוקס\" which is Hebrew for deluxe. Maybe roomType should be \"דה לוקס\"? Or maybe \"Deluxe\"? \n\nWait, let me look at the error more carefully. It says \"invalid parameters\". Could it be that \"Marriott New York\" isn't recognized and it should just be \"New York\"? Or maybe roomType should be exactly as expected?\n\nSince I don't know the exact valid values for roomType, maybe I should try with Hebrew terms since the user interface was described in Hebrew. Let me try roomType=\"דה לוקס\". And maybe location=\"ניו יורק\"? Or \"New York\"?\n\nActually, the user wrote in Hebrew but the parameter values might need to be in English or Hebrew depending on the backend. Given that the enum values are in English (\"breakfast\", \"parking\", \"spa\"), maybe the backend expects English values. But room type could be anything.\n\nLet me try: location=\"New York\", roomType=\"Deluxe\" (capitalized).\n\nOr maybe location should be exactly \"New York\" without hotel name. Let me try again with location=\"New York\", roomType=\"Deluxe\".\n\nActually, looking at the additional_services parameter, I passed [\"breakfast\"]. That's correct according to the enum.\n\nHmm, maybe the issue is that the system doesn't know \"Marriott\"? Let me try with just \"New York\" for location. And maybe \"de luxe\" or \"deluxe\" for room type. I'll try location=\"New York\", roomType=\"Deluxe\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "functions.hotel_book:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_book:2",
+          "function": {
+            "arguments": "{\"additional_services\": [\"breakfast\"], \"location\": \"ניו יורק\", \"nights\": 2, \"roomType\": \"דה לוקס\"}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "It failed again. Let me think about what could be wrong. \n\nMaybe the additional_services array values need to match exactly, but \"breakfast\" is correct according to the enum.\n\nMaybe the room type needs to be in Hebrew since the system interface is in Hebrew? The user said \"דה לוקס\". Let me try roomType=\"דה לוקס\".\n\nOr maybe the location should be \"ניו יורק\" in Hebrew? The tool description is in Hebrew, so maybe it expects Hebrew values for location too? But the enum values for additional_services are in English... \n\nWait, maybe the function name or parameter names are case-sensitive? I used:\n- additional_services (correct)\n- location (correct)\n- nights (correct) \n- roomType (correct)\n\nMaybe the parameter names need to be exactly as specified, which they are.\n\nMaybe the issue is that additional_services isn't actually optional in practice, but I provided it.\n\nLet me try with Hebrew values:\nlocation: \"ניו יורק\"\nroomType: \"דה לוקס\"\n\nOr maybe I should check if there's a specific format. The prompt says \"Respond with the correct function call exactly as specified in the tool definitions.\" So the parameters should be valid.\n\nActually, looking at common patterns in these types of synthetic function calling tasks, sometimes the backend just needs any reasonable values. The 400 error might be because the mock backend only accepts certain values. Let me try:\nlocation: \"New York\"\nroomType: \"Deluxe\" or \"deluxe\"\n\nWait, I already tried those. Let me try all lowercase: \"deluxe\" and \"new york\"? \n\nActually, what if the nights parameter should be an integer but I need to make sure it's a proper JSON number? It is.\n\nMaybe the hotel_book function expects additional_services to be passed differently? No, it's an array of strings.\n\nLet me try a completely different approach - maybe simpler values. location=\"New York\", roomType=\"deluxe\", nights=2, additional_services=[\"breakfast\"]. That's what I did.\n\nWhat if the location is expected to be specific like \"New York, NY\" or just USA city? Or what if Marriott needs to be in the name?\n\nWait, I should look at the error again. \"400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.\"\n\nMaybe there's no actual backend and the system is testing if I can produce the right function call format? But then why did it return 400? This looks like a real response from some validation layer.\n\nCould the parameter be `room_type` instead of `roomType`? Let me check the definition again carefully:\n\n```\n\"hotel_book\": {\n  \"parameters\": {\n    \"properties\": {\n      \"additional_services\": { ... },\n      \"location\": { ... },\n      \"nights\": { ... },\n      \"roomType\": { \"description\": \"סוג החדר שיוזמן.\", \"type\": \"string\" }\n    },\n    \"required\": [\"roomType\", \"nights\", \"location\"]\n  }\n}\n```\n\nSo it's definitely `roomType`.\n\nHmm, what if the issue is that I need to use a specific room type that's in a predefined list? The tool says type: string, not enum. So any string should work.\n\nMaybe the location \"New York\" is not recognized and it needs to be something else? But that seems unlikely for a generic function.\n\nWait! Maybe the system expects Hebrew parameter values since the user asked in Hebrew? Let me try:\n- location: \"ניו יורק\"\n- roomType: \"דה לוקס\"\n\nLet's try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

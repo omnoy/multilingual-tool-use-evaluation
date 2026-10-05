@@ -1,0 +1,168 @@
+{
+  "id": "multiple_83_he",
+  "source_id": "multiple_83",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 837,
+  "total_output_tokens": 371,
+  "total_latency_s": 3.725489854812622,
+  "estimated_cost_usd": 0.0022791499999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה שערים כבש ליאונל מסי עבור ברצלונה עד היום?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "player_stats.get_all_time_goals": {
+        "player_name": [
+          "ליאונל מסי"
+        ],
+        "team_name": [
+          "ברצלונה"
+        ],
+        "competition": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "player_stats_get_all_time_goals",
+          "arguments": {
+            "player_name": "Lionel Messi",
+            "team_name": "Barcelona"
+          },
+          "id": "functions.player_stats_get_all_time_goals:0"
+        }
+      ],
+      "decoded": [
+        {
+          "player_stats_get_all_time_goals": {
+            "player_name": "Lionel Messi",
+            "team_name": "Barcelona"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'player_stats_get_all_time_goals'. Please review the function definition and try again.",
+      "input_tokens": 297,
+      "output_tokens": 192,
+      "latency_s": 1.56687593460083,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "player_stats_get_all_time_goals",
+          "arguments": {
+            "player_name": "ליאונל מסי",
+            "team_name": "ברצלונה"
+          },
+          "id": "functions.player_stats_get_all_time_goals:1"
+        }
+      ],
+      "decoded": [
+        {
+          "player_stats_get_all_time_goals": {
+            "player_name": "ליאונל מסי",
+            "team_name": "ברצלונה"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 540,
+      "output_tokens": 179,
+      "latency_s": 2.158613920211792,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה שערים כבש ליאונל מסי עבור ברצלונה עד היום?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.player_stats_get_all_time_goals:0",
+          "function": {
+            "arguments": "{\"player_name\":\"Lionel Messi\",\"team_name\":\"Barcelona\"}",
+            "name": "player_stats_get_all_time_goals"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"How many goals has Lionel Messi scored for Barcelona to date?\"\n\nThis requires using the `player_stats_get_all_time_goals` function with:\n- player_name: Lionel Messi / ליאונל מסי\n- team_name: Barcelona / ברצלונה\n\nThe function accepts English or Hebrew for these parameters. I'll use English for reliability, but Hebrew should also work. Let me use the exact names.\n\nParameters:\n- player_name: \"Lionel Messi\"\n- team_name: \"Barcelona\"\n- competition: default (empty string) - optional so I can omit it.\n\nActually the tool definitions show all parameters and competition has a default '', but player_name and team_name are required.\n\nLet me call the function."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'player_stats_get_all_time_goals'. Please review the function definition and try again.",
+      "tool_call_id": "functions.player_stats_get_all_time_goals:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.player_stats_get_all_time_goals:1",
+          "function": {
+            "arguments": "{\"player_name\":\"ליאונל מסי\",\"team_name\":\"ברצלונה\"}",
+            "name": "player_stats_get_all_time_goals"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. Let me check if maybe the parameter names need to match exactly or if I need to try Hebrew names. The function definition says:\n- player_name: string, Language: English, Hebrew\n- team_name: string, Language: English, Hebrew\n\nMaybe the backend expects Hebrew since the user asked in Hebrew? Or maybe I need to provide the competition parameter explicitly even though it has a default? Let me try with Hebrew names, or try adding competition as an empty string.\n\nActually, looking at the error \"invalid parameters\", maybe the API expects Hebrew names when the query is in Hebrew? Or maybe it wants the exact Hebrew transliteration. Let me try Hebrew."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

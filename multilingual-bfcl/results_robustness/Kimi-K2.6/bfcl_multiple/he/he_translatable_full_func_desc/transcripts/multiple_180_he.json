@@ -1,0 +1,112 @@
+{
+  "id": "multiple_180_he",
+  "source_id": "multiple_180",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 631,
+  "total_output_tokens": 520,
+  "total_latency_s": 3.0610501766204834,
+  "estimated_cost_usd": 0.00267945,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "שלוף את סטטיסטיקות השחקן של 'זלדה' ב-Switch עבור המשתמש 'סם'."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "game_stats.fetch_player_statistics": {
+        "game": [
+          "זלדה"
+        ],
+        "username": [
+          "סם"
+        ],
+        "platform": [
+          "Switch",
+          "נינטנדו סוויץ'"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "game_stats_fetch_player_statistics",
+          "arguments": {
+            "game": "זלדה",
+            "username": "סם",
+            "platform": "Switch"
+          },
+          "id": "functions.game_stats_fetch_player_statistics:0"
+        }
+      ],
+      "decoded": [
+        {
+          "game_stats_fetch_player_statistics": {
+            "game": "זלדה",
+            "username": "סם",
+            "platform": "Switch"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 631,
+      "output_tokens": 520,
+      "latency_s": 3.0610501766204834,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "שלוף את סטטיסטיקות השחקן של 'זלדה' ב-Switch עבור המשתמש 'סם'."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.game_stats_fetch_player_statistics:0",
+          "function": {
+            "arguments": "{\"game\": \"זלדה\", \"username\": \"סם\", \"platform\": \"Switch\"}",
+            "name": "game_stats_fetch_player_statistics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to fetch player statistics for a video game.\n- Game: 'זלדה' (Zelda)\n- Username: 'סם' (Sam)\n- Platform: Switch\n\nI need to use the `game_stats_fetch_player_statistics` function.\n\nParameters:\n- game: \"zelda\" or \"Zelda\" - but the user wrote 'זלדה' in Hebrew. The function expects the game name. I should probably use the Hebrew name as given by the user, or translate it. The function parameter description says \"שם משחק הווידאו\" (video game name). I should use \"זלדה\" or perhaps \"The Legend of Zelda\". But since the user explicitly wrote 'זלדה', I'll pass \"זלדה\" or maybe better to pass it in a standard format. Actually, looking at the parameter descriptions, it accepts string. I'll use the user's input: \"זלדה\".\n- username: \"סם\"\n- platform: \"Switch\"\n\nWait, the function's platform parameter default is \"PC\". I need to explicitly pass \"Switch\".\n\nLet me construct the function call.\n\n{\n  \"game\": \"זלדה\",\n  \"username\": \"סם\",\n  \"platform\": \"Switch\"\n}\n\nActually, should I transliterate the game name to English since it's a known game? The parameter is a string and doesn't specify language. But typically game APIs use English names. However, the user specifically said 'זלדה' which is Zelda in Hebrew. The safest approach is to pass exactly what the user said: \"זלדה\" for game and \"סם\" for username, and \"Switch\" for platform. But wait, wouldn't the system likely expect English names for game lookup? The instruction says to respond with the correct function call exactly as specified. There's no additional info suggesting translation is needed. The user input is in Hebrew. I will pass the values as provided by the user for the relevant fields.\n\nActually, re-reading: \"שלוף את סטטיסטיקות השחקן של 'זלדה' ב-Switch עבור המשתמש 'סם'.\" -> game: 'זלדה', username: 'סם', platform: Switch.\n\nLet me make the call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

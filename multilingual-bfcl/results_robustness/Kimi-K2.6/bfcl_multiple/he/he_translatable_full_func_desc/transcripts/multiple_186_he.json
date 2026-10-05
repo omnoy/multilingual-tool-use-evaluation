@@ -1,0 +1,111 @@
+{
+  "id": "multiple_186_he",
+  "source_id": "multiple_186",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 375,
+  "total_output_tokens": 702,
+  "total_latency_s": 4.457154273986816,
+  "estimated_cost_usd": 0.0031642500000000004,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי מתכון טבעוני לבראוניז שזמן ההכנה שלו פחות מ-30 דקות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_recipe": {
+        "dietary_restrictions": [
+          "טבעוני"
+        ],
+        "recipe_type": [
+          "קינוח"
+        ],
+        "time": [
+          30
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_recipe",
+          "arguments": {
+            "recipe_type": "קינוח",
+            "dietary_restrictions": "טבעוני",
+            "time": 30
+          },
+          "id": "functions.find_recipe:0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_recipe": {
+            "recipe_type": "קינוח",
+            "dietary_restrictions": "טבעוני",
+            "time": 30
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 375,
+      "output_tokens": 702,
+      "latency_s": 4.457154273986816,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי מתכון טבעוני לבראוניז שזמן ההכנה שלו פחות מ-30 דקות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_recipe:0",
+          "function": {
+            "arguments": "{\"recipe_type\": \"קינוח\", \"dietary_restrictions\": \"טבעוני\", \"time\": 30}",
+            "name": "find_recipe"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants a vegan brownie recipe that takes less than 30 minutes to prepare. I need to use the find_recipe function.\n\nParameters:\n- recipe_type: \"קינוח\" (dessert) or specifically \"בראוניז\" - I'll use \"בראוניז\" since it's more specific, or maybe it should be general type. Looking at the examples: \"קינוח, מנה עיקרית, ארוחת בוקר\". Brownies would fall under dessert.\n- dietary_restrictions: \"טבעוני\" (vegan)\n- time: should be less than 30, so I'll use 30 (as a number)\n\nActually, looking at the description for recipe_type: \"סוג המתכון. למשל קינוח, מנה עיקרית, ארוחת בוקר.\" - It might be safer to use \"קינוח\" but the user specifically asked for brownies. Let me check if there's flexibility. Since the function examples are general, I'll use \"קינוח\" but mention brownies... wait, the instructions say the user will write in Hebrew and I need to respond with the correct function call.\n\nActually, recipe_type should probably be \"קינוח\" or maybe even \"בראוניז\" if accepted. But to be safe and precise, let me think - the user asked for brownies specifically, but the parameter expects the type. I think either could work, but \"בראוניז\" is more specific to the request.\n\nWait, let me re-read the parameter: \"סוג המתכון. למשל קינוח, מנה עיקרית, ארוחת בוקר.\" - The examples are general categories. However, \"בראוניז\" is very specific. I think \"קינוח\" is the safer choice for recipe_type, but the user explicitly asked for brownies. The function might accept \"בראוניז\" as a recipe type. Let me provide what makes the most sense.\n\nActually, looking again at the user's request: \"מתכון טבעוני לבראוניז\" - vegan brownies recipe. I should probably put \"בראוניז\" in the recipe_type since that's the specific type they want, or \"קינוח\". To be most helpful, I'll use \"בראוניז\" because the user explicitly asked for that. If the system expects a broad category, it still might work, but \"קינוח\" is the standard category. \n\nYou know what, I'll go with \"בראוניז\" to match the user's request as closely as possible, but I'm a bit torn because the example shows general categories. Actually, desserts could be cookies, cakes, brownies, etc. I think \"בראוניז\" is fine since it's a type of recipe.\n\nWait, I should check: time parameter is \"מגבלת זמן בדקות להכנת הארוחה.\" - max time in minutes. The user said less than 30 minutes, so I'll pass 30.\n\ndietary_restrictions: \"טבעוני\"\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,177 @@
+{
+  "id": "multiple_145_he",
+  "source_id": "multiple_145",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1685,
+  "total_output_tokens": 751,
+  "total_latency_s": 5.138654947280884,
+  "estimated_cost_usd": 0.00460475,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה CO2 מיוצר מדי שנה על ידי מכונית המונעת בבנזין שנוסעת 12,000 מייל בשנה עם יעילות דלק של 20 מייל לגלון?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calculate_emissions": {
+        "distance": [
+          12000
+        ],
+        "fuel_type": [
+          "בנזין",
+          "בנזין"
+        ],
+        "fuel_efficiency": [
+          20
+        ],
+        "efficiency_reduction": [
+          "",
+          0.0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_type": "gasoline",
+            "fuel_efficiency": 20
+          },
+          "id": "functions.calculate_emissions:0"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_type": "gasoline",
+            "fuel_efficiency": 20
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calculate_emissions'. Please review the function definition and try again.",
+      "input_tokens": 575,
+      "output_tokens": 495,
+      "latency_s": 3.3933863639831543,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_type": "בנזין",
+            "fuel_efficiency": 20
+          },
+          "id": "functions.calculate_emissions:1"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_type": "בנזין",
+            "fuel_efficiency": 20
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1110,
+      "output_tokens": 256,
+      "latency_s": 1.7452685832977295,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה CO2 מיוצר מדי שנה על ידי מכונית המונעת בבנזין שנוסעת 12,000 מייל בשנה עם יעילות דלק של 20 מייל לגלון?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calculate_emissions:0",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_type\": \"gasoline\", \"fuel_efficiency\": 20}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the annual CO2 emissions from a gasoline car traveling 12,000 miles per year with a fuel efficiency of 20 miles per gallon.\n\nI need to use the `calculate_emissions` function with the following parameters:\n- distance: 12000 (miles)\n- fuel_type: \"gasoline\" or corresponding term - the function description is in Hebrew but the enum might need specific values. Let me check - the parameter says \"סוג הדלק שבו משתמש הרכב\" and the type is string. I'll use \"gasoline\" or \"בנזין\". Since the function definition doesn't specify enum values in the schema shown, but given it's a tool call, I should probably use an English value if that's what the backend expects, though the explanations are in Hebrew. Since \"בנזין\" is the Hebrew word for gasoline, but standard APIs usually expect English. However, looking at the function definition provided, there's no enum restriction shown, just `type: string`. I'll provide \"gasoline\" to be safe since it's a technical term, but actually the user wrote in Hebrew and the tool descriptions are in Hebrew. Let me think... Usually in these tasks, if the parameter type is string without enum, and the context is Hebrew, I might still need to use the appropriate value. I'll use \"gasoline\" as it's the standard fuel type identifier in most emission calculation APIs. Wait, but the user said \"בנזין\" which is gasoline in Hebrew. The function description is fully in Hebrew. Let me check if there's any hint. I'll use \"gasoline\" - it's safer for a backend system. Actually, looking at similar functions, they usually accept common English fuel types. But to be thorough and since no enum is specified, I could use either. Let me stick with the Hebrew term \"בנזין\" since the entire interface is localized. Actually, no - in most programming contexts, fuel types are identifiers like \"gasoline\", \"diesel\", \"electric\". I'll use \"gasoline\".\n- fuel_efficiency: 20\n- efficiency_reduction: optional, default 0\n\nThe question is specifically about annual emissions. So I'll call the function with these parameters."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calculate_emissions'. Please review the function definition and try again.",
+      "tool_call_id": "functions.calculate_emissions:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calculate_emissions:1",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_type\": \"בנזין\", \"fuel_efficiency\": 20}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. This likely means the fuel_type parameter expects a specific value or format that I didn't provide correctly. Since the function description is in Hebrew but the underlying API might expect specific English values, or perhaps the parameter name/structure is different.\n\nWait, looking at the function definition again:\n```\ntype calculate_emissions = (_: {\n  distance: number,\n  fuel_efficiency: number,\n  fuel_type: string,\n  efficiency_reduction?: number,\n}) => any;\n```\n\nThe parameters seem correct. But maybe the fuel_type needs a specific string. Common values might be \"petrol\", \"gasoline\", \"diesel\", etc. Or maybe it needs Hebrew.\n\nLet me try with \"בנזין\" since the entire tool description is in Hebrew. Or maybe the tool expects specific enum values not shown in the truncated schema? The schema shows `type: string` without enum.\n\nAlternatively, could the issue be that I need to pass the arguments differently? The JSON I passed looks correct.\n\nLet me try \"בנזין\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

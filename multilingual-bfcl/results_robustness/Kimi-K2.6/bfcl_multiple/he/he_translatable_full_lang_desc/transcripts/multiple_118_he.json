@@ -1,0 +1,169 @@
+{
+  "id": "multiple_118_he",
+  "source_id": "multiple_118",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 2075,
+  "total_output_tokens": 1669,
+  "total_latency_s": 8.441621780395508,
+  "estimated_cost_usd": 0.008647249999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את כל הסרטים בכיכובו של לאונרדו דיקפריו בשנת 2010 ממסד הנתונים של IMDB."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "imdb.find_movies_by_actor": {
+        "actor_name": [
+          "לאונרדו דיקפריו"
+        ],
+        "year": [
+          2010
+        ],
+        "category": [
+          "",
+          "הכל"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          },
+          "id": "functions.imdb_find_movies_by_actor:0"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "input_tokens": 448,
+      "output_tokens": 1132,
+      "latency_s": 5.645111083984375,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "לאונרדו דיקפריו",
+            "year": 2010
+          },
+          "id": "functions.imdb_find_movies_by_actor:1"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "לאונרדו דיקפריו",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1627,
+      "output_tokens": 537,
+      "latency_s": 2.796510696411133,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את כל הסרטים בכיכובו של לאונרדו דיקפריו בשנת 2010 ממסד הנתונים של IMDB."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.imdb_find_movies_by_actor:0",
+          "function": {
+            "arguments": "{\"actor_name\": \"Leonardo DiCaprio\", \"year\": 2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking me to find all movies starring Leonardo DiCaprio from 2010 in the IMDB database. The request is in Hebrew.\n\nI need to use the `imdb_find_movies_by_actor` function.\n- actor_name: \"Leonardo DiCaprio\" (or in Hebrew: לאונרדו דיקפריו, but the function says Language: English, Hebrew, so Hebrew should work. However, Leonardo DiCaprio is usually better recognized in English. Let me use the Hebrew name as provided by the user since the function supports Hebrew.)\n- year: 2010\n\nWait, looking at the parameter descriptions:\n- actor_name: \"The name of the actor. Language: English, Hebrew.\"\n- year: \"The specific year to search in.\"\n- category: optional, default is 'all'.\n\nThe user asked for \"כל הסרטים\" (all movies), so no specific category is needed.\n\nI'll use:\n- actor_name: \"לאונרדו דיקפריו\" (since Hebrew is explicitly supported)\n- year: 2010\n\nActually, to be safe and ensure better matching in the database, I might want to use the English name since IMDB is primarily English-based. But the function explicitly says it accepts Hebrew. The user wrote in Hebrew. I'll use the Hebrew name as provided. Or wait, the safest approach might be to use the English name because that's how it's spelled in IMDB. However, the prompt says the function accepts Hebrew. Let me use \"Leonardo DiCaprio\" to be safe with database matching, or I could use exactly what the user wrote: \"לאונרדו דיקפריו\". \n\nActually, looking at the instruction: \"The name of the actor. Language: English, Hebrew.\" This means both are accepted. Since the user wrote in Hebrew and provided the Hebrew spelling, I should probably use \"לאונרדו דיקפריו\". But in many cases, using the English name for international databases yields better results. However, since Hebrew is explicitly supported, I'll honor the user's language and use the Hebrew name, though \"Leonardo DiCaprio\" might be more robust.\n\nLet me reconsider - the instruction says to understand the request in Hebrew and respond with the correct function call. The user explicitly said \"לאונרדו דיקפריו\". I will use that.\n\nWait, actually, for maximum compatibility, maybe I should use the English name since IMDB is an English database. But the function specification says Hebrew is accepted. I'll go with the Hebrew name as provided by the user since the function explicitly supports it.\n\nActually, I just noticed: in the schema, actor_name type is string with description \"The name of the actor. Language: English, Hebrew.\"\n\nI'll use \"Leonardo DiCaprio\" because that's the standard IMDB spelling and will definitely match, whereas the Hebrew transliteration might have variations. But the user specifically said \"לאונרדו דיקפריו\". Hmm.\n\nI think the best approach is to use exactly what makes sense. Let me use \"Leonardo DiCaprio\" since it's the canonical name in IMDB, but honestly, since the user explicitly provided the name in Hebrew and the function supports Hebrew, using \"לאונרדו דיקפריו\" is also valid.\n\nTo be most helpful and accurate, I'll use \"Leonardo DiCaprio\" because:\n1. IMDB is primarily English\n2. The Hebrew spelling might vary (דיקפריו vs דיקאפריו, etc.)\n3. The function says English, Hebrew - both should work, but English is the native language of the database\n\nBut wait - looking at the user message again: \"מצא את כל הסרטים בכיכובו של לאונרדו דיקפריו בשנת 2010 ממסד הנתונים של IMDB.\"\n\nI think I'll use \"Leonardo DiCaprio\" for better database matching. Actually, I can also consider that the system might have been trained to use the English names for such international celebrities when querying English databases. \n\nHowever, looking at similar instructions for these types of problems, usually you should extract the parameter values as they appear or in their most standard form. Since the function explicitly supports Hebrew, and the user said \"לאונרדו דיקפריו\", I can pass that. But I also know that \"Leonardo DiCaprio\" is how his name appears in IMDB.\n\nLet me decide: I'll use \"Leonardo DiCaprio\" because it's the actual name used in IMDB and will produce the most accurate results. The fact that the user asked in Hebrew doesn't change the fact that the database query should use the canonical name. Besides, the user will understand the result regardless.\n\nActually, you know what? The function says \"Language: English, Hebrew.\" for the actor_name. This strongly suggests I can use either. To demonstrate that I understood the Hebrew input correctly while ensuring accurate database results, using the English name \"Leonardo DiCaprio\" is the safest bet.\n\nFinal decision:\n- actor_name: \"Leonardo DiCaprio\"\n- year: 2010\n\nNo category specified, which means default 'all' will be used - matching the user's request for \"כל הסרטים\" (all movies)."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "tool_call_id": "functions.imdb_find_movies_by_actor:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.imdb_find_movies_by_actor:1",
+          "function": {
+            "arguments": "{\"actor_name\":\"לאונרדו דיקפריו\",\"year\":2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. This might be because I used \"Leonardo DiCaprio\" and perhaps the function expects the Hebrew name, or there's an issue with the parameter format. Wait, let me look at the function definition again.\n\nThe function is:\n```\n{\n  \"description\": \"Searches the database to find all movies by a specific actor within a certain year.\",\n  \"name\": \"imdb_find_movies_by_actor\",\n  \"parameters\": {\n    \"description\": \"Searches the database to find all movies by a specific actor within a certain year.\",\n    \"properties\": {\n      \"actor_name\": {\n        \"description\": \"The name of the actor. Language: English, Hebrew.\",\n        \"type\": \"string\"\n      },\n      \"category\": {\n        \"description\": \"The category of the film (e.g. Drama, Comedy, etc). This parameter is optional. Default is 'all'. Language: English, Hebrew.\",\n        \"type\": \"string\"\n      },\n      \"year\": {\n        \"description\": \"The specific year to search in.\",\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\"actor_name\", \"year\"],\n    \"title\": \"imdb_find_movies_by_actor\",\n    \"type\": \"object\"\n  }\n}\n```\n\nWait, I passed year as 2010 which is a number. That should be fine. Let me try with the Hebrew name instead - \"לאונרדו דיקפריו\". Maybe the database/system expects Hebrew input since the user asked in Hebrew and the function documentation says Hebrew is supported. Or maybe I need to pass the year as a string? No, it says type: number.\n\nActually, looking more carefully, the previous tool call might have had some issue. Let me try again with the Hebrew name exactly as the user provided it.\n\nOr wait - maybe the actor_name field requires Hebrew? Some multilingual APIs have separate endpoints or behave differently. Let me try with \"לאונרדו דיקפריו\" and year 2010. \n\nActually, I just realized - could the error be because the system wanted the year as a string? The schema says \"type\": \"number\" for year. But in some implementations, strict typing matters. I passed it as a number (no quotes), which should be correct.\n\nLet me try with the Hebrew name since the user explicitly provided it and the function says Hebrew is supported."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

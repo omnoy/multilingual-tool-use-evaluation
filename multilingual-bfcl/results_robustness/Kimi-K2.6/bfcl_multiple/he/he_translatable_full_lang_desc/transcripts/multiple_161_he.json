@@ -1,0 +1,244 @@
+{
+  "id": "multiple_161_he",
+  "source_id": "multiple_161",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3770,
+  "total_output_tokens": 2048,
+  "total_latency_s": 17.098000049591064,
+  "estimated_cost_usd": 0.0117735,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את תערוכת הפיסול המודרני המדורגת ביותר שמתקיימת בניו יורק בחודש הקרוב."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_exhibition": {
+        "location": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "העיר ניו יורק",
+          "ניו יורק",
+          "ניו יורק"
+        ],
+        "art_form": [
+          "פיסול",
+          "פיסול מודרני"
+        ],
+        "month": [
+          "קרוב",
+          "החודש הבא",
+          "החודש הקרוב",
+          "הבא",
+          ""
+        ],
+        "user_ratings": [
+          "גבוה",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "location": "New York",
+            "art_form": "sculpture",
+            "user_ratings": "high"
+          },
+          "id": "functions.find_exhibition:0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "location": "New York",
+            "art_form": "sculpture",
+            "user_ratings": "high"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_exhibition'. Please review the function definition and try again.",
+      "input_tokens": 419,
+      "output_tokens": 821,
+      "latency_s": 4.6889119148254395,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "art_form": "sculpture",
+            "location": "New York, NY",
+            "user_ratings": "high"
+          },
+          "id": "functions.find_exhibition:1"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "art_form": "sculpture",
+            "location": "New York, NY",
+            "user_ratings": "high"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_exhibition'. Please review the function definition and try again.",
+      "input_tokens": 1285,
+      "output_tokens": 741,
+      "latency_s": 8.251046180725098,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "art_form": "פיסול",
+            "location": "ניו יורק"
+          },
+          "id": "functions.find_exhibition:2"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "art_form": "פיסול",
+            "location": "ניו יורק"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 2066,
+      "output_tokens": 486,
+      "latency_s": 4.158041954040527,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את תערוכת הפיסול המודרני המדורגת ביותר שמתקיימת בניו יורק בחודש הקרוב."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_exhibition:0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"art_form\":\"sculpture\",\"user_ratings\":\"high\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Find the highest-rated modern sculpture exhibition taking place in New York in the coming month.\"\n\nI need to use the `find_exhibition` function. Let's look at the parameters:\n- `location`: The city - New York (in English or Hebrew, but the tool description says \"Language: English, Hebrew\" so I'll use \"New York\" to be safe, though \"ניו יורק\" should also work).\n- `art_form`: The form of art - sculpture / modern sculpture. The description says e.g. \"sculpture\". Since they asked for modern sculpture, but the parameter expects art form like \"sculpture\", I should use \"sculpture\" or maybe \"modern sculpture\". The examples show \"sculpture\", so I'll use that, but I could specify \"modern sculpture\". However, since the function just takes the art form, and sculpture is the art form, I'll use \"sculpture\". Actually, looking at the prompt again, they ask for \"תערוכת הפיסול המודרני\" - modern sculpture exhibition. The `art_form` parameter should be \"sculpture\" since that's the art form. But maybe I can write \"modern sculpture\"? The tool description says \"e.g., sculpture\". I'll use \"sculpture\" to be safe, but since the user specifically mentioned modern, maybe I should use \"modern sculpture\". Hmm, but it's an exhibition finder - likely it matches based on art form categories. I'll use \"sculpture\" as it's the standard category, but actually since both English and Hebrew are accepted, and they gave \"פיסול\" in Hebrew, maybe using Hebrew is fine too. But \"sculpture\" in English is safest.\n- `month`: \"the coming month\" or next month. The description says \"Default value will return upcoming events.\" Since they said \"in the coming month\", I could leave it as default (which returns upcoming events), or specify a month. Since I don't know exactly what the current month is from the context, and the default returns upcoming events which should cover \"coming month\", I might leave it empty. But they specifically asked \"in the coming month\" (החודש הקרוב). Without knowing the exact current date, specifying a month might be inaccurate. I'll leave it as default since it returns upcoming events.\n- `user_ratings`: They asked for \"המדורגת ביותר\" (highest-rated). The default is 'high'. But they asked for the highest-rated, so maybe I should explicitly set it to 'high'. The default is already 'high', so I don't need to specify, but I can. Actually, the user asked for the highest-rated, and the options are \"low\", \"average\", \"high\". Since default is 'high', this should work. I could explicitly pass \"high\" to be safe, but it's optional with default 'high'. Explicitly passing it might be clearer.\n\nWait, actually looking more carefully: The user wants the \"highest-rated\". The parameter `user_ratings` is a threshold (\"Select exhibitions with user rating threshold\"). So setting it to 'high' would select only high-rated exhibitions, which aligns with the request. The default is 'high', but I'll explicitly pass it.\n\nParameters:\n- `location`: \"New York\" (or \"ניו יורק\")\n- `art_form`: \"sculpture\" (or \"פיסול מודרני\")\n- `month`: I'll skip since default gives upcoming events which matches \"coming month\"\n- `user_ratings`: \"high\"\n\nI'll use English for location and art_form as it's most commonly expected by APIs, though Hebrew is accepted. Actually, the examples include English. I'll use \"New York\" and \"sculpture\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_exhibition'. Please review the function definition and try again.",
+      "tool_call_id": "functions.find_exhibition:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_exhibition:1",
+          "function": {
+            "arguments": "{\"art_form\": \"sculpture\", \"location\": \"New York, NY\", \"user_ratings\": \"high\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the parameters.\n\nLooking at the schema:\n- `art_form`: string, required - \"The form of art the exhibition is displaying e.g., sculpture. Language: English, Hebrew.\"\n- `location`: string, required - \"The city where the exhibition is held, e.g., New York, NY. Language: English, Hebrew.\"\n- `month`: string, optional - \"The month of exhibition. Default value will return upcoming events. Language: English, Hebrew.\"\n- `user_ratings`: enum [\"low\", \"average\", \"high\"], optional, default: \"high\"\n\nWait, I passed the parameters in the right order but let me check if the keys were correct. I used:\n- location: \"New York\"\n- art_form: \"sculpture\"\n- user_ratings: \"high\"\n\nThis looks correct. But it returned 400. Maybe the API expects Hebrew inputs since the user asked in Hebrew? Let me try with Hebrew values. Or maybe the location needs to be more specific like \"New York, NY\"? Or maybe `art_form` should be \"פיסול\"?\n\nLet me try with Hebrew values since the tool explicitly mentions Hebrew is accepted. I'll try:\n- location: \"ניו יורק\"\n- art_form: \"פיסול\" (since they asked for פיסול)\n\nOr maybe both English should work. Another thought: maybe `month` is actually required in some cases? Let me re-read: \"The month of exhibition. Default value will return upcoming events.\" So it's truly optional.\n\nMaybe the issue is that I should not pass `user_ratings` explicitly if it's already the default? No, that shouldn't cause a 400.\n\nLet me try again with \"New York\" and \"sculpture\" - wait, I already did that. Let me try with Hebrew values or maybe the art_form should be more specific like \"modern sculpture\"? But the example says \"sculpture\".\n\nActually, looking at the schema again, I notice `art_form` is the first parameter, `location` is second. But JSON doesn't care about order. \n\nMaybe the issue is that \"New York\" needs to be exactly as expected? Like \"New York, NY\"? Or maybe just \"NYC\"? Let me try with \"New York\" and \"פיסול\" in Hebrew. Or maybe the system expects the enum string for `user_ratings` to match exactly - I used \"high\" which is correct.\n\nLet me try with Hebrew values since the user's query is in Hebrew and sometimes these localized tools work better with the language matching.\n\nActually, another thought: the API might be strict about the month parameter format if I don't include it? No, optional parameters can be omitted.\n\nLet me try again but this time with location as \"New York\" and art_form as \"modern sculpture\" to match the user's request more precisely, or perhaps use Hebrew. Let me try with art_form: \"sculpture\" and location: \"New York, NY\" to match the example format.\n\nWait, the example says \"e.g., New York, NY\" for location, so maybe the comma and state are important!\n\nAnd for art_form, \"e.g., sculpture\" - so just \"sculpture\" should be fine.\n\nLet me try location: \"New York, NY\".\n\nIf that doesn't work, I'll try Hebrew."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_exhibition'. Please review the function definition and try again.",
+      "tool_call_id": "functions.find_exhibition:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_exhibition:2",
+          "function": {
+            "arguments": "{\"art_form\": \"פיסול\", \"location\": \"ניו יורק\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting 400. Let me reconsider. Maybe I need to use Hebrew since the tool descriptions mention Hebrew and the user is asking in Hebrew. Or maybe there's an issue with the function itself in this environment.\n\nLet me try with Hebrew values:\n- location: \"ניו יורק\"\n- art_form: \"פיסול\"\n- month: maybe the current/next month in Hebrew? Like \"דצמבר\"? But since I don't know the current date... Actually, the user said \"החודש הקרוב\" (the coming month). In Hebrew that would be the next month. But without knowing the current date, I can't specify. However, the default is upcoming events.\n\nWait, maybe the tool is not working properly and I should inform the user. But before that, let me try one more time without the optional `user_ratings` parameter to see if that's causing the issue, and use simpler inputs.\n\nOr, another idea: maybe the `art_form` parameter expects Hebrew because the system is configured for Hebrew? Let me try:\nart_form: \"פיסול מודרני\" or just \"פיסול\"\nlocation: \"ניו יורק\"\n\nActually, looking at the function definitions again:\n```json\n{\n  \"description\": \"Locate the most popular exhibitions based on criteria like location, time, art form, and user ratings.\",\n  \"name\": \"find_exhibition\",\n  \"parameters\": {\n    \"properties\": {\n      \"art_form\": {\n        \"description\": \"The form of art the exhibition is displaying e.g., sculpture. Language: English, Hebrew.\",\n        \"type\": \"string\"\n      },\n      ...\n    }\n  }\n}\n```\n\nThe fact that it explicitly says \"Language: English, Hebrew\" suggests both should work. But maybe there's a bug in the implementation.\n\nLet me try without `user_ratings` (relying on default) and with exact casing.\nActually, I just realized - maybe the function name is `find_exhibition` but in the system it's something else? No, the name is clearly `find_exhibition`.\n\nLet me try once more with Hebrew values since the user interface is in Hebrew and that might be what the backend expects."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

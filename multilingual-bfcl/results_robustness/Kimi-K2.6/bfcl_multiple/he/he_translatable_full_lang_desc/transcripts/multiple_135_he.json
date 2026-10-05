@@ -1,0 +1,173 @@
+{
+  "id": "multiple_135_he",
+  "source_id": "multiple_135",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 826,
+  "total_output_tokens": 532,
+  "total_latency_s": 3.2796034812927246,
+  "estimated_cost_usd": 0.0029127,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מי היה הקורבן בתיק שמספרו 2022/AL2562 בקליפורניה?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_case_info": {
+        "docket": [
+          "2022/AL2562"
+        ],
+        "court": [
+          "קליפורניה",
+          "קליפורניה"
+        ],
+        "info_type": [
+          "קורבן"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_case_info",
+          "arguments": {
+            "docket": "2022/AL2562",
+            "court": "California",
+            "info_type": "victim"
+          },
+          "id": "functions.get_case_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_case_info": {
+            "docket": "2022/AL2562",
+            "court": "California",
+            "info_type": "victim"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_case_info'. Please review the function definition and try again.",
+      "input_tokens": 275,
+      "output_tokens": 231,
+      "latency_s": 1.4245214462280273,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_case_info",
+          "arguments": {
+            "docket": "2022/AL2562",
+            "court": "קליפורניה",
+            "info_type": "קורבן"
+          },
+          "id": "functions.get_case_info:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_case_info": {
+            "docket": "2022/AL2562",
+            "court": "קליפורניה",
+            "info_type": "קורבן"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 551,
+      "output_tokens": 301,
+      "latency_s": 1.8550820350646973,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מי היה הקורבן בתיק שמספרו 2022/AL2562 בקליפורניה?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_case_info:0",
+          "function": {
+            "arguments": "{\"docket\":\"2022/AL2562\",\"court\":\"California\",\"info_type\":\"victim\"}",
+            "name": "get_case_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Who was the victim in case number 2022/AL2562 in California?\"\n\nI need to use the `get_case_info` function.\n- docket: \"2022/AL2562\"\n- court: \"California\" (the user said \"בקליפורניה\" which means in California)\n- info_type: \"victim\" (the user asked \"מי היה הקורבן\" which means who was the victim)\n\nThe function schema specifies that these parameters should be in English or Hebrew. I'll use English for court and info_type as that's typically safer, though Hebrew might also work. Actually, let me check the schema: \"Court in which the case was heard. Language: English, Hebrew.\" and \"Specify the information type needed for the case. i.e., victim, accused, verdict etc. Language: English, Hebrew.\"\n\nI'll use English for court and info_type for clarity."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_case_info'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_case_info:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_case_info:1",
+          "function": {
+            "arguments": "{\"docket\":\"2022/AL2562\",\"court\":\"קליפורניה\",\"info_type\":\"קורבן\"}",
+            "name": "get_case_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request with invalid parameters. Let me reconsider. \n\nWait, perhaps the issue is that I need to translate \"California\" to Hebrew? Or maybe \"victim\" needs to be something else? \n\nActually, looking at the schema again:\n- docket: Docket number for the specific court case. Language: English, Hebrew.\n- court: Court in which the case was heard. Language: English, Hebrew.\n- info_type: Specify the information type needed for the case. i.e., victim, accused, verdict etc. Language: English, Hebrew.\n\nThe user wrote in Hebrew. The example says \"victim\" is valid. Maybe \"California\" is not a valid court name in the system? Or maybe the function expects Hebrew?\n\nLet me try with Hebrew terms since the user asked in Hebrew and maybe the system is tuned for that:\n- court: \"קליפורניה\" (California in Hebrew)\n- info_type: \"קורבן\" (victim in Hebrew)\n\nOr maybe the docket format is wrong? But the user provided it.\n\nActually, another thought: maybe California is not specific enough as a court? But the schema just says \"court\".\n\nLet me try with Hebrew values for court and info_type."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

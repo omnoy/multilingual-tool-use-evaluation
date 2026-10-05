@@ -1,0 +1,171 @@
+{
+  "id": "multiple_156_he",
+  "source_id": "multiple_156",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1847,
+  "total_output_tokens": 1832,
+  "total_latency_s": 13.1947021484375,
+  "estimated_cost_usd": 0.00908265,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה הייתה תרומתו של אלברט איינשטיין למדע ב-17 במרץ 1915?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "historical_contrib.get_contrib": {
+        "scientist": [
+          "אלברט איינשטיין"
+        ],
+        "date": [
+          "1915-03-17",
+          "03/17/1915",
+          "17 במרץ, 1915"
+        ],
+        "category": [
+          "",
+          "הכול"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17"
+          },
+          "id": "functions.historical_contrib_get_contrib:0"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "input_tokens": 468,
+      "output_tokens": 862,
+      "latency_s": 8.668739080429077,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "אלברט איינשטיין",
+            "date": "1915-03-17"
+          },
+          "id": "functions.historical_contrib_get_contrib:1"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "אלברט איינשטיין",
+            "date": "1915-03-17"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1379,
+      "output_tokens": 970,
+      "latency_s": 4.525963068008423,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה הייתה תרומתו של אלברט איינשטיין למדע ב-17 במרץ 1915?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.historical_contrib_get_contrib:0",
+          "function": {
+            "arguments": "{\"scientist\": \"Albert Einstein\", \"date\": \"1915-03-17\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"What was Albert Einstein's contribution to science on March 17, 1915?\"\n\nI need to use the `historical_contrib_get_contrib` function to retrieve this information.\n\nThe parameters are:\n- scientist: \"Albert Einstein\" (or in Hebrew \"אלברט איינשטיין\", but I should probably use the English name since scientific databases typically use English names. However, the function might accept Hebrew. Let me check - the parameter description says \"המדען שאת תרומותיו יש לחפש\" which is in Hebrew, so it might accept Hebrew names. But to be safe and accurate, I should use \"Albert Einstein\" since that's the standard name in scientific records. Actually, looking at the function, it doesn't specify language requirements. I'll use the name as provided by the user in Hebrew since the interface is in Hebrew, but I'm not sure if the backend supports it. Let me use \"Albert Einstein\" to be more likely to get results, or I could use the Hebrew name. Hmm, the user specifically said \"אלברט איינשטיין\". Since this is a Hebrew interface and the parameter description is in Hebrew, I'll try the Hebrew name, but actually for historical figures, English might be more reliable. Let me use \"Albert Einstein\" as it's the universal name.)\n\nActually, looking at it again - the user asked in Hebrew. I should probably pass the name as provided. But let me think about what will actually work with the function. Since the function description is entirely in Hebrew, it's designed for Hebrew-speaking users, so it likely accepts Hebrew names or standardizes them. I'll pass \"Albert Einstein\" to be safe, but I could also pass it in Hebrew. \n\nWait, I should probably just pass it as the user wrote it: \"אלברט איינשטיין\". But actually, if the database is English, it won't find it. Let me reconsider.\n\nGiven the tool is in a Hebrew interface but might search an international database, I'll provide \"Albert Einstein\" as it's the canonical name. Actually you know what, I'll provide it in English since that's the standard scientific name.\n\nThe date needs to be in yyyy-mm-dd format.\nMarch 17, 1915 = 1915-03-17.\n\nCategory is optional, default is all fields.\n\nSo the function call should be:\n{\n  \"scientist\": \"Albert Einstein\",\n  \"date\": \"1915-03-17\"\n}\n\nOr if I want to use Hebrew:\n{\n  \"scientist\": \"אלברט איינשטיין\",\n  \"date\": \"1915-03-17\"\n}\n\nI think I'll use \"Albert Einstein\" for better compatibility with the underlying database, but honestly either might work. Actually, looking at the function description being fully Hebrew, maybe the system expects Hebrew input. But Einstein is universally known by his English name. I'll use the English name as it's the formal name in historical records.\n\nActually, let me reconsider whether to use the Hebrew name. The user explicitly wrote \"אלברט איינשטיין\". In many multilingual systems, the function might accept both. But to be most accurate for a historical database, I'll use the standard English name \"Albert Einstein\".\n\nWait, I should check if I can just pass exactly what the user said since the function might normalize it. But no, \"Albert Einstein\" is safer.\n\nLet me call the function with:\n- scientist: \"Albert Einstein\"\n- date: \"1915-03-17\"\n\nOr maybe I should try to match the language of the interface. I'll provide the scientist parameter as the user wrote it. Hmm.\n\nActually, in similar function-calling scenarios, the best practice is to use the canonical name if known. Einstein's canonical name is definitely \"Albert Einstein\".\n\nFinal decision: I'll use \"Albert Einstein\" and \"1915-03-17\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "tool_call_id": "functions.historical_contrib_get_contrib:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.historical_contrib_get_contrib:1",
+          "function": {
+            "arguments": "{\"scientist\": \"אלברט איינשטיין\", \"date\": \"1915-03-17\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request with invalid parameters. Let me review the function definition carefully:\n\n```json\n{\n  \"description\": \"אחזר תרומה היסטורית שנעשתה על ידי מדען בתאריך מסוים.\",\n  \"name\": \"historical_contrib_get_contrib\",\n  \"parameters\": {\n    \"description\": \"אחזר תרומה היסטורית שנעשתה על ידי מדען בתאריך מסוים.\",\n    \"properties\": {\n      \"category\": {\n        \"description\": \"תחום התרומה, כגון 'Physics' או 'Chemistry'. ברירת המחדל היא כל התחומים.\",\n        \"type\": \"string\"\n      },\n      \"date\": {\n        \"description\": \"התאריך שבו נעשתה התרומה בפורמט yyyy-mm-dd.\",\n        \"type\": \"string\"\n      },\n      \"scientist\": {\n        \"description\": \"המדען שאת תרומותיו יש לחפש.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"date\", \"scientist\"],\n    \"type\": \"object\"\n  }\n}\n```\n\nWait, the required parameters are `date` and `scientist`. I provided both. Let me look closer at the parameter types... both are string type.\n\nHmm, I provided both. Unless... wait, looking at the error message: \"400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'.\"\n\nMaybe the system expects the parameters in a different order? No, JSON objects are unordered.\n\nMaybe it needs the Hebrew name? Let me try again with the Hebrew name \"אלברט איינשטיין\". Or maybe the date format is strict? \"1915-03-17\" should be correct.\n\nActually, looking more carefully, the user asked about March 17, 1915. This date is actually significant for Einstein - on November 25, 1915 he presented the field equations of general relativity. March 17, 1915 - let me think. Actually, on March 20, 1915 Einstein finished a paper on the general theory of relativity. March 17 might be related to something else.\n\nBut regarding the error - maybe I need to pass the scientist name exactly as expected. Since the interface is Hebrew, maybe it expects Hebrew names. Or perhaps the function is not actually implemented and returns 400 for any input? That seems possible given the generic error.\n\nWait, let me reconsider - maybe I should provide both date and scientist, but perhaps I made a typo? No, I provided both correctly.\n\nCould it be that the function expects `scientist` first and `date` second in the JSON? No, JSON property order doesn't matter.\n\nLet me try with the Hebrew name. Or maybe the category field is implicitly required even though it says optional?\n\nActually, looking at the schema again:\n```json\n{\n  \"category\": {...},\n  \"date\": {...},\n  \"scientist\": {...}\n}\n```\nRequired: [\"date\", \"scientist\"]\n\nI included both. The error might be that the backend doesn't actually have this data, or there's an issue with the function itself. But let me try once more, perhaps with the Hebrew name or a slight variation. Actually, maybe the function requires the parameters to be passed in the exact order defined in the schema? Some JSON parsers are weird, but typically in function calling, order shouldn't matter.\n\nLet me try passing them in the order they appear in the schema: scientist, date? No wait, the schema shows category, date, scientist. But the required list shows date, scientist.\n\nActually, I think I should just try again. Maybe there was a transient error. Let me try with Hebrew name this time? Or stick with English?\n\nActually, perhaps the issue is that I need to format the date differently? Like \"1915-Mar-17\"? No, the description clearly says yyyy-mm-dd.\n\nHmm, let me just try again with the same parameters. Sometimes function calls fail randomly.\n\nWait, actually maybe I should pass \"אלברט איינשטיין\" since the user asked in Hebrew and the interface is in Hebrew. Let me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

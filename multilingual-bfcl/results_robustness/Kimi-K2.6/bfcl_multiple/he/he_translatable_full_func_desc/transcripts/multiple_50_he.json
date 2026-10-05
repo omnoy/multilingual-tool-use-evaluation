@@ -1,0 +1,172 @@
+{
+  "id": "multiple_50_he",
+  "source_id": "multiple_50",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1466,
+  "total_output_tokens": 863,
+  "total_latency_s": 4.971568822860718,
+  "estimated_cost_usd": 0.0048447,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חזה את מחירי הבתים בחודש הבא בניו יורק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "house_price_forecast": {
+        "location": [
+          "ניו יורק",
+          "ניו יורק, נ\"י",
+          "נ\"י",
+          "העיר ניו יורק"
+        ],
+        "months": [
+          1
+        ],
+        "features": [
+          [],
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "house_price_forecast",
+          "arguments": {
+            "location": "New York",
+            "months": 1
+          },
+          "id": "functions.house_price_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "house_price_forecast": {
+            "location": "New York",
+            "months": 1
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'house_price_forecast'. Please review the function definition and try again.",
+      "input_tokens": 459,
+      "output_tokens": 502,
+      "latency_s": 2.597766399383545,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "house_price_forecast",
+          "arguments": {
+            "location": "ניו יורק",
+            "months": 1
+          },
+          "id": "functions.house_price_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "house_price_forecast": {
+            "location": "ניו יורק",
+            "months": 1
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1007,
+      "output_tokens": 361,
+      "latency_s": 2.373802423477173,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חזה את מחירי הבתים בחודש הבא בניו יורק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.house_price_forecast:0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"months\":1}",
+            "name": "house_price_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants a house price forecast for New York for the next month. Looking at the available functions, `house_price_forecast` seems appropriate.\n\nRequired parameters:\n- location: \"New York\" (or \"ניו יורק\" - but location names are typically expected in English for APIs, though the function description doesn't specify language. However, since it's a well-known city name, I'll use \"New York\" to be safe, or I could use \"ניו יורק\" as provided. The system prompt says to respond with function calls. I should probably use the Hebrew name as provided by the user, or the English name. Since the schema doesn't specify language restrictions for location, and the user said \"ניו יורק\", but APIs usually expect English. However, the function examples/descriptions are in Hebrew so the function might accept Hebrew. But to be safest with location names, English is usually better. Actually, looking at it again, I'll use \"New York\" since location names are standard in English in most APIs.)\nWait, actually, the user wrote in Hebrew. The instructions say \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nI need to provide the function call. Let me check:\n- location: \"New York\" \n- months: 1\n\nSince the user asked for \"בחודש הבא\" (next month), months = 1.\n\nFeatures is optional and defaults to empty array, so I don't need to include it.\n\nSo the function call should be:\nhouse_price_forecast(location=\"New York\", months=1)\n\nBut wait, should location be \"ניו יורק\" or \"New York\"? The user said \"בניו יורק\". In Hebrew text, that's the city's name in Hebrew. But location parameters in geo APIs almost always expect English. However, since all the function metadata is in Hebrew and there's no explicit instruction about language, I think either could work but English is the standard for city names. I'll use \"New York\".\n\nActually, I should consider if the user might want the exact Hebrew string. But for maximum compatibility, \"New York\" is safer. \n\nLet me proceed with:\n{\n  \"location\": \"New York\",\n  \"months\": 1\n}"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'house_price_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.house_price_forecast:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.house_price_forecast:1",
+          "function": {
+            "arguments": "{\"location\": \"ניו יורק\", \"months\": 1}",
+            "name": "house_price_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Got a 400 Bad Request. Let me reconsider if there's an issue with my parameters.\n\nLooking at the function definition again:\n- location: string - The city for which you want the house price forecast.\n- months: number - Number of future months for the forecast.\n- features: array of enum [\"SqFt\", \"Bedrooms\", \"Bathrooms\", \"Location\"] - optional, defaults to empty\n\nMy parameters look correct: location=\"New York\", months=1.\n\nWait, could it be that the API expects months as an integer? Or perhaps the city name needs to be in Hebrew? Or maybe New York isn't supported? Or maybe the issue is something else entirely.\n\nActually, it could be that the system is simulating errors. But from my side, the parameters are valid per the schema. Let me check if months should be an integer type (which 1 is).\n\nAnother thought: maybe the function expects \"ניו יורק\" because the rest of the interface is Hebrew? Or maybe it requires a specific format like \"New York City\"?\n\nLet me try with the Hebrew name \"ניו יורק\" to see if that's what the backend expects, since the entire prompt interface is in Hebrew and perhaps the underlying mock API expects Hebrew inputs.\n\nActually, if I get another 400, I might need to reconsider. But looking at the schema again, there's nothing wrong with my first attempt. However, many APIs expect English city names, but since this tool's descriptions are entirely in Hebrew, there's a decent chance it expects Hebrew location names too.\n\nLet me try with \"ניו יורק\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

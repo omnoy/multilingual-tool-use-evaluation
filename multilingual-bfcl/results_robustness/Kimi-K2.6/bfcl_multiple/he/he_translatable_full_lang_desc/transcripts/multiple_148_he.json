@@ -1,0 +1,170 @@
+{
+  "id": "multiple_148_he",
+  "source_id": "multiple_148",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 655,
+  "total_output_tokens": 533,
+  "total_latency_s": 4.431793928146362,
+  "estimated_cost_usd": 0.00275425,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תן לי מידע מפורט על המניות של אפל בע\"מ."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_stock_info": {
+        "company_name": [
+          "אפל בע\"מ",
+          "אפל"
+        ],
+        "detail_level": [
+          "מפורט"
+        ],
+        "market": [
+          "נאסד\"ק",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_stock_info",
+          "arguments": {
+            "company_name": "Apple",
+            "detail_level": "detailed"
+          },
+          "id": "functions.get_stock_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_stock_info": {
+            "company_name": "Apple",
+            "detail_level": "detailed"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_stock_info'. Please review the function definition and try again.",
+      "input_tokens": 243,
+      "output_tokens": 126,
+      "latency_s": 1.1199862957000732,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_stock_info",
+          "arguments": {
+            "company_name": "אפל",
+            "detail_level": "מפורט"
+          },
+          "id": "functions.get_stock_info:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_stock_info": {
+            "company_name": "אפל",
+            "detail_level": "מפורט"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 412,
+      "output_tokens": 407,
+      "latency_s": 3.311807632446289,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תן לי מידע מפורט על המניות של אפל בע\"מ."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_stock_info:0",
+          "function": {
+            "arguments": "{\"company_name\":\"Apple\",\"detail_level\":\"detailed\"}",
+            "name": "get_stock_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for detailed information about Apple Inc. stocks in Hebrew. I need to use the get_stock_info function.\n\nParameters needed:\n- company_name: \"Apple\" (English is supported per the function description)\n- detail_level: \"detailed\" (since they asked for \"מפורט\" which means detailed)\n- market: optional, default is NASDAQ which is correct for Apple\n\nI don't need the current time function for this request. Let me make the stock info call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_stock_info'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_stock_info:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_stock_info:1",
+          "function": {
+            "arguments": "{\"company_name\":\"אפל\",\"detail_level\":\"מפורט\"}",
+            "name": "get_stock_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me check the parameters again. The function description says company_name and detail_level are required, and market is optional. \n\nWait, looking at the function definition more carefully:\n- company_name: string, description says \"Language: English, Hebrew.\"\n- detail_level: string, \"Level of detail... Can be 'summary' or 'detailed'. Language: English, Hebrew.\"\n\nMaybe I need to pass the parameters in a different way? Or perhaps the API expects Hebrew parameter names or values? No, the function definition clearly shows the parameter names are in English: company_name, detail_level, market.\n\nLet me try again with the exact same parameters, as the error might have been transient or perhaps there's an issue with how I formatted it. Actually, I already used the exact parameter names. Let me try once more in case it was a temporary issue, or maybe the company name needs to be \"Apple Inc.\" or just needs to be Hebrew.\n\nActually, wait - let me look at the detail_level description again: \"Can be 'summary' or 'detailed'. Language: English, Hebrew.\" So 'detailed' should be valid in English.\n\nLet me try with Hebrew values to see if that helps:\n- company_name: \"אפל\" or \"Apple\"\n- detail_level: \"detailed\" or \"מפורט\"\n\nActually, since the instruction says the user writes in Hebrew and I should understand and respond with correct function call, maybe I should try Hebrew values since the descriptions say \"Language: English, Hebrew.\"\n\nLet me try with:\n- company_name: \"אפל\" (Apple in Hebrew)\n- detail_level: \"מפורט\" (detailed in Hebrew)\n\nOr maybe both English. Let me try Hebrew first since the function annotations explicitly mention Hebrew is supported."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

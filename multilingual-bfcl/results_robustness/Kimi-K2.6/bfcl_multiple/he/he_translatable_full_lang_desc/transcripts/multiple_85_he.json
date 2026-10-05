@@ -1,0 +1,172 @@
+{
+  "id": "multiple_85_he",
+  "source_id": "multiple_85",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1185,
+  "total_output_tokens": 820,
+  "total_latency_s": 4.397695064544678,
+  "estimated_cost_usd": 0.00440575,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "קבל את תוצאות הכדורגל של משחקי ריאל מדריד בלה ליגה ב-5 המחזורים האחרונים."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_scores.get_scores": {
+        "team": [
+          "ריאל מדריד"
+        ],
+        "league": [
+          "לה ליגה"
+        ],
+        "rounds": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          },
+          "id": "functions.soccer_scores_get_scores:0"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'soccer_scores_get_scores'. Please review the function definition and try again.",
+      "input_tokens": 274,
+      "output_tokens": 592,
+      "latency_s": 2.9605953693389893,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "ריאל מדריד",
+            "league": "לה ליגה",
+            "rounds": 5
+          },
+          "id": "functions.soccer_scores_get_scores:1"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "ריאל מדריד",
+            "league": "לה ליגה",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 911,
+      "output_tokens": 228,
+      "latency_s": 1.4370996952056885,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "קבל את תוצאות הכדורגל של משחקי ריאל מדריד בלה ליגה ב-5 המחזורים האחרונים."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.soccer_scores_get_scores:0",
+          "function": {
+            "arguments": "{\"team\": \"Real Madrid\", \"league\": \"La Liga\", \"rounds\": 5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the soccer scores of Real Madrid in La Liga for the last 5 rounds.\n\nI need to use the `soccer_scores_get_scores` function with the following parameters:\n- team: \"Real Madrid\" (or possibly \"ריאל מדריד\" - but looking at the schema, it says Language: English, Hebrew for team, so either should work. I'll use the English version to be safe, but the user wrote in Hebrew so Hebrew might also work. Actually, looking at the schema again: \"The soccer team whose scores are to be retrieved. Language: English, Hebrew.\" So both are supported. I'll provide \"Real Madrid\" since it's the standard international name, but \"ריאל מדריד\" should also work. Let me use the English name since APIs typically handle English better unless specified otherwise.)\n- league: \"La Liga\" or \"לה ליגה\" - same logic applies. I'll use \"La Liga\".\n- rounds: 5\n\nWait, let me check the schema more carefully. The league description says: \"The league in which the team competes. Language: English, Hebrew.\" So I can use either. I'll use \"La Liga\" for the league and \"Real Madrid\" for the team.\n\nActually, looking at the user's request, they used \"לה ליגה\" and \"ריאל מדריד\". Since the schema explicitly supports Hebrew, I could pass the Hebrew names. But to be safe with API matching, English names are usually more standard. However, since the user asked in Hebrew and the system supports it, I should probably pass the names as the user provided them or standard English. \n\nGiven the ambiguity, and that this is likely an Israeli sports data API that supports Hebrew (since it mentions Hebrew support explicitly), I'll pass the Hebrew names to be most accurate for the user's context.\n\nActually, on second thought, let me just make the function call. It's better to use the Hebrew terms since the user provided them and the schema explicitly says Hebrew is supported.\n\nTeam: \"ריאל מדריד\"\nLeague: \"לה ליגה\"\nRounds: 5\n\nBut wait - should I use English since \"La Liga\" and \"Real Madrid\" are proper names that might be stored in English even in Hebrew databases? The schema says Language: English, Hebrew - meaning both are acceptable. I'll provide English since it's the original language of the league and team names, and more likely to match exactly. But honestly, either should work.\n\nLet me use English for the team and league since those are the official names, and it's universally recognized.\n\nTeam: \"Real Madrid\"\nLeague: \"La Liga\"\nRounds: 5"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'soccer_scores_get_scores'. Please review the function definition and try again.",
+      "tool_call_id": "functions.soccer_scores_get_scores:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.soccer_scores_get_scores:1",
+          "function": {
+            "arguments": "{\"team\": \"ריאל מדריד\", \"league\": \"לה ליגה\", \"rounds\": 5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. This suggests that the parameters might not be exactly as expected. Let me reconsider - perhaps I should use the Hebrew names since the user is asking in Hebrew and the API might be specifically configured for Hebrew input. Or perhaps \"La Liga\" should be formatted differently.\n\nActually, looking at the error, it might be that I need to use Hebrew parameters. Let me try with Hebrew terms:\n- team: \"ריאל מדריד\"\n- league: \"לה ליגה\"\n- rounds: 5\n\nWait, or maybe the league name in English needs to be exactly right. Could it be \"Spanish La Liga\"? Or \"Primera División\"? Or maybe the function expects a different format.\n\nGiven that the instructions say the user writes in Hebrew and I should understand the request, and the schema says Hebrew is supported, let me try the Hebrew version."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

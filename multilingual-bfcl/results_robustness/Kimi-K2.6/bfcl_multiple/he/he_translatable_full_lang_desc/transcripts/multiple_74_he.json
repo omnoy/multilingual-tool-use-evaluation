@@ -1,0 +1,228 @@
+{
+  "id": "multiple_74_he",
+  "source_id": "multiple_74",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2984,
+  "total_output_tokens": 1595,
+  "total_latency_s": 9.407786130905151,
+  "estimated_cost_usd": 0.0092148,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מחיר הציור של ואן גוך 'ליל כוכבים' בכל פלטפורמות המכירות הפומביות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "art_auction.fetch_artwork_price": {
+        "artwork_name": [
+          "ליל כוכבים"
+        ],
+        "artist": [
+          "ואן גוך"
+        ],
+        "platform": [
+          "הכול",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "The Starry Night",
+            "artist": "Vincent van Gogh"
+          },
+          "id": "functions.art_auction_fetch_artwork_price:0"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "The Starry Night",
+            "artist": "Vincent van Gogh"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 289,
+      "output_tokens": 615,
+      "latency_s": 4.05390191078186,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Starry Night",
+            "artist": "Van Gogh"
+          },
+          "id": "functions.art_auction_fetch_artwork_price:1"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Starry Night",
+            "artist": "Van Gogh"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 955,
+      "output_tokens": 737,
+      "latency_s": 3.739706039428711,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "ליל כוכבים",
+            "artist": "ואן גוך"
+          },
+          "id": "functions.art_auction_fetch_artwork_price:2"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "ליל כוכבים",
+            "artist": "ואן גוך"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1740,
+      "output_tokens": 243,
+      "latency_s": 1.61417818069458,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מחיר הציור של ואן גוך 'ליל כוכבים' בכל פלטפורמות המכירות הפומביות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.art_auction_fetch_artwork_price:0",
+          "function": {
+            "arguments": "{\"artwork_name\":\"The Starry Night\",\"artist\":\"Vincent van Gogh\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew to find the price of Van Gogh's painting 'Starry Night' (ליל כוכבים) on all auction platforms.\n\nI need to use the `art_auction_fetch_artwork_price` function.\n\nParameters:\n- artwork_name: \"Starry Night\" or \"ליל כוכבים\" - the tool says Language: English, Hebrew. I should probably use the English name since it's more standard in databases, but Hebrew is also accepted. Let me use the English name to be safe, though the tool explicitly accepts Hebrew. Actually, since the user wrote it in Hebrew, maybe I should use \"ליל כוכבים\" or \"Starry Night\". Van Gogh's famous painting is commonly known as \"The Starry Night\" in English. Let me use \"The Starry Night\" as the artwork_name to be precise, or I could use \"Starry Night\". \n- artist: The artist is Van Gogh. In English: \"Vincent van Gogh\" or just \"Van Gogh\". I'll use \"Vincent van Gogh\" for precision.\n- platform: Default is \"all\", so I don't need to specify it, but the user specifically asked for all platforms. I'll omit it to use the default, or I can explicitly set it to \"all\". Omitting is fine since default is \"all\".\n\nWait, the user's request says \"בכל פלטפורמות המכירות הפומביות\" which means \"on all auction platforms\". The default for platform is \"all\", so I'm good.\n\nLet me make the call with:\n- artwork_name: \"The Starry Night\" (or should I use Hebrew? The parameter description says \"Language: English, Hebrew.\" I'll provide the English name as it's the standard title, but the Hebrew would also work. I'll use \"The Starry Night\".)\n- artist: \"Vincent van Gogh\"\n\nActually, looking more carefully, the user wrote \"ליל כוכבים\" which is the Hebrew name. The function accepts both. I'll use the English name since auction platforms likely index by English names.\n\nWait, I should double check: is the famous painting called \"Starry Night\" or \"The Starry Night\"? It's officially \"The Starry Night\" (La Nuit étoilée). But many people search for \"Starry Night\". I'll use \"The Starry Night\".\n\nActually, let me reconsider using Hebrew since the user asked in Hebrew. The parameter explicitly says Hebrew is accepted. But for accuracy with international art databases, English might be better. I think either should work, but I'll provide the English name as it's more standard.\n\nCall:\nart_auction_fetch_artwork_price(artwork_name=\"The Starry Night\", artist=\"Vincent van Gogh\")"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "functions.art_auction_fetch_artwork_price:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.art_auction_fetch_artwork_price:1",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Starry Night\", \"artist\": \"Van Gogh\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters. \n\nLooking at the schema again:\n- artwork_name: string, \"The name of the artwork to be searched. Language: English, Hebrew.\"\n- artist: string, \"The artist's name to ensure the precise artwork is fetched. Language: English, Hebrew.\"\n- platform: string, optional, default \"all\"\n\nThe issue might be that I used \"Vincent van Gogh\" instead of just \"Van Gogh\", or \"The Starry Night\" might not be the exact name in their database. Or perhaps I need to write the parameters in Hebrew since the user asked in Hebrew?\n\nWait, the instructions say \"Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nThe tool definitions specify English parameter names, so that's not the issue.\n\nMaybe the artwork name needs to be in Hebrew? Let me try with Hebrew values since the language specification says both English and Hebrew are accepted. Or maybe the painting is not actually sold at auction because it's in the Museum of Modern Art (MoMA) collection and not for sale. But the function should still return a result or an empty result, not a 400 error.\n\nPerhaps the parameter values need to be provided exactly as expected. Let me try \"Starry Night\" without \"The\", or try Hebrew:\n- artwork_name: \"ליל כוכבים\"\n- artist: \"ואן גוך\" or \"ונסנט ואן גוך\"\n\nActually, looking at the error message: \"400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.\"\n\nThis looks like a simulated error for the purpose of this exercise, or perhaps there are strict requirements. Maybe I need to check if \"Starry Night\" is indeed the correct title. Actually, the original is \"De sterrennacht\" and in English it's \"The Starry Night\".\n\nBut wait - \"The Starry Night\" by Van Gogh is housed at MoMA and has never been sold at auction (to my knowledge, it was donated). An art auction function might not have data on it because it hasn't been on the market.\n\nHowever, the 400 error suggests invalid parameters, not \"not found\". This could mean my parameter values are rejected for some formatting reason.\n\nMaybe the artist should be \"van Gogh\" lowercase 'v'? Or just \"Van Gogh\"? \n\nLet me try with the Hebrew values since the prompt emphasizes the user writes in Hebrew and we need to respond correctly. Maybe the system expects Hebrew values for these specific tools.\n\nActually, looking more carefully at the function definition, the descriptions say \"Language: English, Hebrew\" which means I can use either. But since the user queried in Hebrew, maybe the function expects Hebrew input when the user's query is in Hebrew? That's an unusual constraint but possible.\n\nLet me try with:\n- artwork_name: \"ליל כוכבים\"\n- artist: \"ואן גוך\"\n\nOr maybe the artist is expected as \"Van Gogh\" in English. \n\nAnother thought: The user might be testing whether I know that \"The Starry Night\" is not actually available at auction. But I should still make the function call.\n\nLet me try a different spelling. Maybe the function expects \"Starry Night\" without \"The\". Let me try that."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "functions.art_auction_fetch_artwork_price:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.art_auction_fetch_artwork_price:2",
+          "function": {
+            "arguments": "{\"artwork_name\": \"ליל כוכבים\", \"artist\": \"ואן גוך\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function is returning 400 Bad Request again. This is strange. Let me reconsider the function schema:\n\n```json\n{\n  \"artwork_name\": string,\n  \"artist\": string,\n  \"platform\": string (optional, default \"all\")\n}\n```\n\nI provided all required parameters correctly. Why is it returning 400?\n\nMaybe the issue is that this specific artwork/painting is famously NOT available on auction platforms (it's in MoMA), so the function is designed to reject queries for it? But that seems odd.\n\nWait, could there be an issue with Hebrew characters? The user asked in Hebrew, but maybe I need to pass the values in Hebrew. Let me try that, since the parameter descriptions explicitly state \"Language: English, Hebrew.\"\n\nOr maybe I should consider that the error happens because I'm making the call and there's some internal validation. Let me try one more time with Hebrew values:\n\nartwork_name: \"ליל כוכבים\"\nartist: \"ואן גוך\""
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

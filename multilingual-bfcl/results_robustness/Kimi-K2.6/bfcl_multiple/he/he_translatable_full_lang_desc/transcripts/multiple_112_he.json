@@ -1,0 +1,172 @@
+{
+  "id": "multiple_112_he",
+  "source_id": "multiple_112",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 691,
+  "total_output_tokens": 314,
+  "total_latency_s": 2.3211333751678467,
+  "estimated_cost_usd": 0.00191245,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חזה את צמיחת היער בפארק הלאומי ילוסטון ל-5 השנים הבאות כולל השפעת האדם."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "forest_growth_forecast": {
+        "location": [
+          "פארק הלאומי ילוסטון"
+        ],
+        "years": [
+          5
+        ],
+        "include_human_impact": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "Yellowstone National Park",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "functions.forest_growth_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "Yellowstone National Park",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "input_tokens": 244,
+      "output_tokens": 158,
+      "latency_s": 1.1762878894805908,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "פארק הלאומי ילוסטון",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "functions.forest_growth_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "פארק הלאומי ילוסטון",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 447,
+      "output_tokens": 156,
+      "latency_s": 1.1448454856872559,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חזה את צמיחת היער בפארק הלאומי ילוסטון ל-5 השנים הבאות כולל השפעת האדם."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.forest_growth_forecast:0",
+          "function": {
+            "arguments": "{\"location\": \"Yellowstone National Park\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Forecast the forest growth in Yellowstone National Park for the next 5 years including human impact.\"\n\nI need to use the `forest_growth_forecast` function with:\n- location: \"Yellowstone National Park\" (or in Hebrew \"פארק הלאומי ילוסטון\", but the parameter description says Language: English, Hebrew, so either should work. I'll use the English name for safety, though Hebrew is also accepted)\n- years: 5\n- include_human_impact: true\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.forest_growth_forecast:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.forest_growth_forecast:1",
+          "function": {
+            "arguments": "{\"location\": \"פארק הלאומי ילוסטון\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. Let me check the parameters again. The schema says:\n- location: string (required)\n- years: number (required)\n- include_human_impact: boolean (optional)\n\nI provided all of these correctly. Wait, maybe the issue is that I sent \"include_human_impact\" as a boolean, but maybe the API expects a different format? Or maybe the location needs to be in Hebrew since the user asked in Hebrew? Let me try with the Hebrew location name as the user specified it."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

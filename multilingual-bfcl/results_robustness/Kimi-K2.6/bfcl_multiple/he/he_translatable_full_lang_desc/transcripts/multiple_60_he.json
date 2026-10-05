@@ -1,0 +1,166 @@
+{
+  "id": "multiple_60_he",
+  "source_id": "multiple_60",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 867,
+  "total_output_tokens": 439,
+  "total_latency_s": 3.1913702487945557,
+  "estimated_cost_usd": 0.00257965,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה תהיה הלחות והטמפרטורה בעיר ניו יורק בעוד 7 ימים?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "humidity_temperature_forecast": {
+        "location": [
+          "העיר ניו יורק",
+          "ניו יורק"
+        ],
+        "days": [
+          7
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "New York",
+            "days": 7
+          },
+          "id": "functions.humidity_temperature_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "New York",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'humidity_temperature_forecast'. Please review the function definition and try again.",
+      "input_tokens": 289,
+      "output_tokens": 244,
+      "latency_s": 1.6857662200927734,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "ניו יורק",
+            "days": 7
+          },
+          "id": "functions.humidity_temperature_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "ניו יורק",
+            "days": 7
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 578,
+      "output_tokens": 195,
+      "latency_s": 1.5056040287017822,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה תהיה הלחות והטמפרטורה בעיר ניו יורק בעוד 7 ימים?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.humidity_temperature_forecast:0",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"days\": 7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for humidity and temperature forecast for New York City in 7 days. The request is in Hebrew. I need to use the humidity_temperature_forecast function with:\n- location: \"New York\" (or \"New York City\") - the tool says language can be English or Hebrew, so I'll use \"New York\" to be safe, though Hebrew might work too. Let's use \"New York\" since it's a city name.\n- days: 7\n\nWait, let me check the parameter descriptions. Location: \"The city that you want to get the humidity and temperature forecast for. Language: English, Hebrew.\" So I can provide it in Hebrew or English. Since \"ניו יורק\" is the Hebrew name, but English \"New York\" is also fine. I'll use \"New York\" to be safe with the API, though either should work.\n\nActually, looking at the instruction: \"Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\" So I should make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'humidity_temperature_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.humidity_temperature_forecast:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.humidity_temperature_forecast:1",
+          "function": {
+            "arguments": "{\"location\":\"ניו יורק\",\"days\":7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me check the parameters again. The schema says:\n- location: string, description \"The city that you want to get the humidity and temperature forecast for. Language: English, Hebrew.\"\n- days: number, description \"Number of future days for which to retrieve the forecast.\"\n\nBoth were provided correctly. Maybe the API didn't like \"New York\" or maybe there's an issue with the function itself. Let me try with the Hebrew name \"ניו יורק\" as the parameter description mentions Hebrew is supported. Or maybe I should try \"New York City\"?\n\nActually, let me check if perhaps I made an error. The user asked for \"ניו יורק\" which is New York. Let me try with Hebrew characters since the description says Hebrew is supported."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

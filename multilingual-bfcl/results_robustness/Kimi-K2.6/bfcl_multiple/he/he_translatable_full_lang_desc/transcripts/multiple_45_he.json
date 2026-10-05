@@ -1,0 +1,165 @@
+{
+  "id": "multiple_45_he",
+  "source_id": "multiple_45",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 850,
+  "total_output_tokens": 997,
+  "total_latency_s": 6.281627655029297,
+  "estimated_cost_usd": 0.0047955,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חשב לפני כמה שנים היה עידן הקרח?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "geology.get_era": {
+        "era_name": [
+          "עידן הקרח"
+        ],
+        "calculate_years_ago": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geology_get_era",
+          "arguments": {
+            "era_name": "Ice age",
+            "calculate_years_ago": true
+          },
+          "id": "functions.geology_get_era:0"
+        }
+      ],
+      "decoded": [
+        {
+          "geology_get_era": {
+            "era_name": "Ice age",
+            "calculate_years_ago": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'geology_get_era'. Please review the function definition and try again.",
+      "input_tokens": 206,
+      "output_tokens": 394,
+      "latency_s": 2.017970323562622,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geology_get_era",
+          "arguments": {
+            "era_name": "עידן הקרח",
+            "calculate_years_ago": true
+          },
+          "id": "functions.geology_get_era:1"
+        }
+      ],
+      "decoded": [
+        {
+          "geology_get_era": {
+            "era_name": "עידן הקרח",
+            "calculate_years_ago": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 644,
+      "output_tokens": 603,
+      "latency_s": 4.263657331466675,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חשב לפני כמה שנים היה עידן הקרח?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geology_get_era:0",
+          "function": {
+            "arguments": "{\"era_name\": \"Ice age\", \"calculate_years_ago\": true}",
+            "name": "geology_get_era"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Calculate how many years ago was the Ice Age?\" \n\nI need to use the geology_get_era function with:\n- era_name: \"Ice age\" (the example given in the function definition)\n- calculate_years_ago: true (since they want to know how many years ago it was)\n\nThe user wrote in Hebrew, so I should respond with the correct function call. The function definition specifies that era_name can be in English or Hebrew. \"Ice age\" is the example given, so I'll use that. Or I could use \"עידן הקרח\" since Hebrew is also accepted according to the parameter description. But the example says \"e.g Ice age\" and the parameter description says \"Language: English, Hebrew\", so either should work. I'll use \"Ice age\" since it's the explicit example, or perhaps \"עידן הקרח\" to match the user's language. Actually, the parameter says \"e.g Ice age Language: English, Hebrew\" which means the name can be provided in either language. I'll use \"Ice age\" as it's the standard geological term and the example provided. Either should be fine, but I'll stick with the example to be safe.\n\nActually, looking more carefully: \"The name of the geological era. e.g Ice age Language: English, Hebrew.\" This suggests I can provide it in either language. Since the user asked in Hebrew, using \"עידן הקרח\" might be more natural, but \"Ice age\" is explicitly shown as an example. I'll use \"Ice age\" to be safe since it's the exact example from the schema.\n\nThe function call should be:\n{\n  \"era_name\": \"Ice age\",\n  \"calculate_years_ago\": true\n}"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'geology_get_era'. Please review the function definition and try again.",
+      "tool_call_id": "functions.geology_get_era:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geology_get_era:1",
+          "function": {
+            "arguments": "{\"era_name\": \"עידן הקרח\", \"calculate_years_ago\": true}",
+            "name": "geology_get_era"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters.\n\nLooking at the function definition again:\n```\n\"geology_get_era\": {\n  \"parameters\": {\n    \"properties\": {\n      \"calculate_years_ago\": {\n        \"description\": \"True if years ago is to be calculated. False by default\",\n        \"type\": \"boolean\"\n      },\n      \"era_name\": {\n        \"description\": \"The name of the geological era. e.g Ice age Language: English, Hebrew.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"era_name\"],\n    \"type\": \"object\"\n  }\n}\n```\n\nWait, the error says invalid parameters. Let me think about what could be wrong. Maybe the parameter order? No, JSON objects are unordered. Maybe the boolean should not be quoted? But I didn't quote it in the JSON. \n\nOh wait, looking at my function call again - it looks correct syntactically. But perhaps the function expects only the required parameter and `calculate_years_ago` is not properly supported? Or maybe I should try without specifying `calculate_years_ago` first, or perhaps the issue is with the era name.\n\nActually, I should try using Hebrew since the user asked in Hebrew and the parameter description says Hebrew is accepted. Or maybe I should check if it's \"Ice Age\" with capital letters, or maybe the correct geological term is different.\n\nWait, could the issue be that I used \"Ice age\" but the system expects exactly a specific string? Or maybe the parameter `calculate_years_ago` is causing the issue because of some schema mismatch?\n\nLet me try again with just the era_name to see if that's the issue. If that works, then there's a problem with the boolean parameter. If it doesn't work, then the era_name might need to be adjusted.\n\nActually, the instruction says to respond with the correct function call exactly as specified. Let me try again. Maybe the issue was a temporary error. Let me retry with the same parameters? No, that would likely fail again.\n\nWait - maybe the issue is that `calculate_years_ago` is a boolean and I need to pass it differently? No, the JSON looks correct: `{\"era_name\": \"Ice age\", \"calculate_years_ago\": true}`.\n\nLet me try \"Ice Age\" (capitalized) or perhaps a Hebrew name. Or maybe the parameter should be passed differently. Actually, looking at the function definition type again - it's exactly what I sent.\n\nHmm, maybe I should try with the Hebrew term \"עידן הקרח\". Or maybe the function name is exactly `geology_get_era` and the parameter is `era_name`. Let me retry with Hebrew name."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

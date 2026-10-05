@@ -1,0 +1,169 @@
+{
+  "id": "multiple_20_he",
+  "source_id": "multiple_20",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 812,
+  "total_output_tokens": 446,
+  "total_latency_s": 3.427117109298706,
+  "estimated_cost_usd": 0.0025554,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה המחיר להזמנת פסל עשוי שיש בגודל של 3 רגל?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture_price.calculate": {
+        "material": [
+          "שיש"
+        ],
+        "size": [
+          3
+        ],
+        "complexity": [
+          "בינונית",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "marble",
+            "size": 3
+          },
+          "id": "functions.sculpture_price_calculate:0"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "marble",
+            "size": 3
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sculpture_price_calculate'. Please review the function definition and try again.",
+      "input_tokens": 322,
+      "output_tokens": 121,
+      "latency_s": 1.5503144264221191,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "שיש",
+            "size": 3
+          },
+          "id": "functions.sculpture_price_calculate:1"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "שיש",
+            "size": 3
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 490,
+      "output_tokens": 325,
+      "latency_s": 1.876802682876587,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה המחיר להזמנת פסל עשוי שיש בגודל של 3 רגל?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sculpture_price_calculate:0",
+          "function": {
+            "arguments": "{\"material\": \"marble\", \"size\": 3}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the price to order a sculpture made of marble (שיש) with a size of 3 feet. I should use the `sculpture_price_calculate` function.\n\nThe parameters are:\n- material: \"marble\" (since שיש is marble)\n- size: 3\n- complexity: not specified, so I won't include it (it will use the default \"medium\")\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sculpture_price_calculate'. Please review the function definition and try again.",
+      "tool_call_id": "functions.sculpture_price_calculate:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sculpture_price_calculate:1",
+          "function": {
+            "arguments": "{\"material\": \"שיש\", \"size\": 3}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "It seems there was a bad request. Let me check the parameters again. The material should probably be passed correctly. Wait, maybe I need to use the exact Hebrew term or maybe the system expects it differently? No, the function definition says \"החומר המשמש לפסל\" in Hebrew but the parameter is a string. Let me check if there's an issue with the size parameter (should be a number).\n\nActually, looking at the function definition again:\n- material: string\n- size: number\n- complexity: optional with default \"medium\"\n\nWait, maybe the API expects specific material names? But I don't know the exact values expected. The parameter description says \"החומר המשמש לפסל\" in Hebrew, so values are probably in Hebrew.\n\nThe user said \"שיש\" which is marble. Let me try passing \"שיש\" instead of \"marble\".\n\nActually, in many of these systems, even though the description is in Hebrew, the expected values might still be in English, or they might be in Hebrew. Let me reconsider. The error was \"invalid parameters\". Let me look at the JSON I sent: {\"material\": \"marble\", \"size\": 3}\n\nCould size need to be integer specifically? 3 is an integer in JSON.\nCould \"marble\" not be the right material value?\n\nLet me try with Hebrew: material \"שיש\" and size 3."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

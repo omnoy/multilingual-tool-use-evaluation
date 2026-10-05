@@ -1,0 +1,111 @@
+{
+  "id": "multiple_85_he",
+  "source_id": "multiple_85",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 384,
+  "total_output_tokens": 829,
+  "total_latency_s": 8.522924661636353,
+  "estimated_cost_usd": 0.0036807999999999997,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "קבל את תוצאות הכדורגל של משחקי ריאל מדריד בלה ליגה ב-5 המחזורים האחרונים."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_scores.get_scores": {
+        "team": [
+          "ריאל מדריד"
+        ],
+        "league": [
+          "לה ליגה"
+        ],
+        "rounds": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "ריאל מדריד",
+            "league": "לה ליגה",
+            "rounds": 5
+          },
+          "id": "functions.soccer_scores_get_scores:0"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "ריאל מדריד",
+            "league": "לה ליגה",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 384,
+      "output_tokens": 829,
+      "latency_s": 8.522924661636353,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "קבל את תוצאות הכדורגל של משחקי ריאל מדריד בלה ליגה ב-5 המחזורים האחרונים."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.soccer_scores_get_scores:0",
+          "function": {
+            "arguments": "{\"team\":\"ריאל מדריד\",\"league\":\"לה ליגה\",\"rounds\":5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to get soccer scores for Real Madrid in La Liga for the last 5 rounds.\nTeam: ריאל מדריד (Real Madrid)\nLeague: לה ליגה (La Liga)\nRounds: 5\n\nI need to call soccer_scores_get_scores with:\n- team: \"ריאל מדריד\" or \"Real Madrid\"? The user wrote in Hebrew but the system might expect the team name as it is. Since the user specifically said \"ריאל מדריד\", I should try to use that. However, often these APIs expect English names. But the instruction says to understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions. The tool definitions don't specify language requirements for the team/league names, but since the user provided them in Hebrew, I should pass them as given, or perhaps pass the common names.\n\nActually, looking at the tool definition, the parameters are:\n- team: string, description in Hebrew\n- league: string, description in Hebrew\n- rounds: number\n\nThere is no explicit enum or list of valid values. I should use what the user provided. The user said \"ריאל מדריד\" for team and \"לה ליגה\" for league. But \"לה ליגה\" is the Hebrew name for La Liga. It might be safer to use the English names as these APIs typically use English identifiers. However, the system prompt says \"Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\" This implies I should make the function call. I need to decide on the values.\n\nGiven the ambiguity, and that the user is asking in Hebrew, I'll provide the values in Hebrew as requested, though I suspect the API might need English. But since I cannot change the user's intent and the schema accepts any string, I'll pass:\n- team: \"ריאל מדריד\"\n- league: \"לה ליגה\" or maybe \"La Liga\". \n\nWait, \"לה ליגה\" is literally \"La Liga\" transcribed to Hebrew. To maximize chance of success, maybe I should pass \"Real Madrid\" and \"La Liga\"? The prompt says \"קבל את תוצאות הכדורגל של משחקי ריאל מדריד בלה ליגה\" -> \"Get soccer results of Real Madrid games in La Liga\".\n\nI think the most helpful approach is to pass the names as commonly known in English sports APIs because these are standard identifiers. But the instruction doesn't say to translate. However, \"לה ליגה\" is not a standard API identifier, it's a Hebrew transliteration. \"La Liga\" is the actual league name. Similarly \"ריאל מדריד\" might be accepted but \"Real Madrid\" is the standard.\n\nLet me reconsider: The tool descriptions are in Hebrew. It's possible the backend also expects Hebrew inputs because the whole interface is Hebrew-oriented. But usually sports data APIs use English. Since I don't know the backend implementation, and the user explicitly used \"ריאל מדריד\" and \"לה ליגה\", I will pass those exact strings. The responsibility of the API is to handle the input. If I translate without being asked, I might deviate from user intent.\n\nActually, looking carefully at the instruction: \"Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\" This means I should extract the entities and call the function. The correct team name string to use is whatever represents Real Madrid. Since the user said \"ריאל מדריד\", I'll use that. For the league, \"לה ליגה\" is the Hebrew name. I'll use that.\n\nSo:\nteam: \"ריאל מדריד\"\nleague: \"לה ליגה\"\nrounds: 5"
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -7,8 +7,8 @@ Commands:
   mbfcl status  -- show which benchmarks have been built
 
 Usage examples:
-  mbfcl build bfcl_multiple --locales he zh-CN --level query
-  mbfcl build bfcl_multiple --locales he --level full --source eng_translatable.json
+  mbfcl build bfcl_multiple --locales he zh-CN --level query --model gpt-5.6-terra
+  mbfcl build bfcl_multiple --locales he --level full --model gpt-5.6-terra --source en/en_translatable.jsonl
   mbfcl build bfcl_multiple --retrieve batch_01AbCd...
   mbfcl locales
   mbfcl status
@@ -38,40 +38,47 @@ def build(
     category: str = typer.Argument(..., help="Benchmark category folder under data/benchmarks/"),
     locales: list[str] = typer.Option(None, "--locales", "-l", help="Space-separated locale codes, e.g. he zh-CN"),
     level: Level = typer.Option(Level.query, "--level", help="Translation scope: query or full"),
-    source: str = typer.Option("eng_base.json", "--source", help="Input filename under data/benchmarks/<category>/"),
-    model: Optional[str] = typer.Option(None, "--model", help="Azure deployment name (defaults to AZURE_OPENAI_DEPLOYMENT)"),
+    source: str = typer.Option("en/en_translatable.jsonl", "--source", help="Input .jsonl path relative to data/benchmarks/<category>/"),
+    model: Optional[str] = typer.Option(None, "--model", help="Azure deployment name (required unless --retrieve; no default)"),
     model_type: str = typer.Option("standard", "--model-type", help="Deployment kind: 'standard' or 'reasoning'"),
     limit: Optional[int] = typer.Option(None, "--limit", help="Translate only the first N source entries"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Print the first prompt and exit"),
     submit_only: bool = typer.Option(False, "--submit-only", help="Submit the batch and exit; retrieve later"),
     retrieve: Optional[str] = typer.Option(None, "--retrieve", help="Retrieve a previously submitted batch id"),
+    no_batch: bool = typer.Option(False, "--no-batch", help="Send plain concurrent requests instead of the Batch API (full price)"),
+    concurrency: int = typer.Option(8, "--concurrency", help="--no-batch only: max requests in flight"),
+    max_retries: int = typer.Option(6, "--max-retries", help="--no-batch only: SDK retries per request"),
 ) -> None:
     """Batch-translate a benchmark category into one or more target locales."""
     import asyncio
 
     from multilingual_bfcl.azure_client import ModelType
     from multilingual_bfcl.benchmark_builder import retrieve_translation, translate_benchmark
-    from multilingual_bfcl.localization.translator import (
-        DEFAULT_TRANSLATION_MODEL,
-        LocalizationLevel,
-    )
+    from multilingual_bfcl.localization.translator import LocalizationLevel
 
+    if no_batch and (submit_only or retrieve):
+        raise typer.BadParameter("--no-batch cannot be combined with --submit-only or --retrieve.")
     if retrieve:
         retrieve_translation(retrieve, category)
         return
     if not locales:
         raise typer.BadParameter("--locales is required unless using --retrieve.")
+    if not model:
+        raise typer.BadParameter("--model is required unless using --retrieve.")
 
     asyncio.run(translate_benchmark(
         category=category,
         locales=locales,
         level=LocalizationLevel(level.value),
         source=source,
-        model_name=model or DEFAULT_TRANSLATION_MODEL,
+        model_name=model,
         model_type=ModelType(model_type),
         limit=limit,
         dry_run=dry_run,
         submit_only=submit_only,
+        use_batch=not no_batch,
+        concurrency=concurrency,
+        max_retries=max_retries,
     ))
 
 

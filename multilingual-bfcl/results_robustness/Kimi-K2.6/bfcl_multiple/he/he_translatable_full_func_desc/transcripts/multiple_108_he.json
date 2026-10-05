@@ -1,0 +1,171 @@
+{
+  "id": "multiple_108_he",
+  "source_id": "multiple_108",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1024,
+  "total_output_tokens": 320,
+  "total_latency_s": 2.2307796478271484,
+  "estimated_cost_usd": 0.0022528,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חשב את קיבול החום בלחץ קבוע עבור אוויר, בהינתן שהטמפרטורה שלו היא 298K והנפח הוא 10 מ\"ק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calc_heat_capacity": {
+        "temp": [
+          298
+        ],
+        "volume": [
+          10
+        ],
+        "gas": [
+          "אוויר",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          },
+          "id": "functions.calc_heat_capacity:0"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "input_tokens": 423,
+      "output_tokens": 136,
+      "latency_s": 1.0567631721496582,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10
+          },
+          "id": "functions.calc_heat_capacity:1"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 601,
+      "output_tokens": 184,
+      "latency_s": 1.1740164756774902,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חשב את קיבול החום בלחץ קבוע עבור אוויר, בהינתן שהטמפרטורה שלו היא 298K והנפח הוא 10 מ\"ק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calc_heat_capacity:0",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10, \"gas\": \"air\"}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking to calculate the heat capacity at constant pressure for air, given a temperature of 298K and a volume of 10 cubic meters. I need to use the `calc_heat_capacity` function.\n\nThe parameters are:\n- temp: 298 (in Kelvin)\n- volume: 10 (in m^3)\n- gas: \"air\" (though it's optional and defaults to air, I can explicitly pass it since the user specified air)\n\nLet me call the function with these parameters."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "tool_call_id": "functions.calc_heat_capacity:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calc_heat_capacity:1",
+          "function": {
+            "arguments": "{\"temp\":298,\"volume\":10}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. Let me check the parameters again. The function definition says:\n\n- temp: number (The temperature of the gas in Kelvin units)\n- volume: number (The volume of the gas in m^3 units)\n- gas: string (The type of gas, default is air)\n\nI sent temp: 298, volume: 10, gas: \"air\". That seems correct. Maybe the function doesn't accept \"air\" as a gas parameter explicitly, or maybe the Hebrew documentation suggests something else? Wait, let me look at the schema more carefully.\n\nActually, looking at the schema, it says gas is optional (not in required list). Maybe I should not pass the gas parameter since air is the default? Let me try without the gas parameter."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

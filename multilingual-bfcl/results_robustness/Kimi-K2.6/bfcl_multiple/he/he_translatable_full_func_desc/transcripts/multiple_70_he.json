@@ -1,0 +1,165 @@
+{
+  "id": "multiple_70_he",
+  "source_id": "multiple_70",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1263,
+  "total_output_tokens": 456,
+  "total_latency_s": 3.1051933765411377,
+  "estimated_cost_usd": 0.00302385,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מי היו מלכי צרפת במהלך המאה ה-18?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "european_history.get_monarchs": {
+        "country": [
+          "צרפת"
+        ],
+        "century": [
+          18
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "european_history_get_monarchs",
+          "arguments": {
+            "country": "France",
+            "century": 18
+          },
+          "id": "functions.european_history_get_monarchs:0"
+        }
+      ],
+      "decoded": [
+        {
+          "european_history_get_monarchs": {
+            "country": "France",
+            "century": 18
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'european_history_get_monarchs'. Please review the function definition and try again.",
+      "input_tokens": 539,
+      "output_tokens": 137,
+      "latency_s": 1.2569098472595215,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "european_history_get_monarchs",
+          "arguments": {
+            "country": "צרפת",
+            "century": 18
+          },
+          "id": "functions.european_history_get_monarchs:1"
+        }
+      ],
+      "decoded": [
+        {
+          "european_history_get_monarchs": {
+            "country": "צרפת",
+            "century": 18
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 724,
+      "output_tokens": 319,
+      "latency_s": 1.8482835292816162,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מי היו מלכי צרפת במהלך המאה ה-18?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.european_history_get_monarchs:0",
+          "function": {
+            "arguments": "{\"country\": \"France\", \"century\": 18}",
+            "name": "european_history_get_monarchs"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew: \"Who were the kings of France during the 18th century?\"\n\nI need to use the `european_history_get_monarchs` function with:\n- country: \"France\" (or \"צרפת\" - but the parameter likely expects English country names based on the schema description \"Name of the country\" and examples usually being in English)\n- century: 18 (for the 1700s)\n\nLet me call the function with country=\"France\" and century=18."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'european_history_get_monarchs'. Please review the function definition and try again.",
+      "tool_call_id": "functions.european_history_get_monarchs:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.european_history_get_monarchs:1",
+          "function": {
+            "arguments": "{\"country\": \"צרפת\", \"century\": 18}",
+            "name": "european_history_get_monarchs"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. This might be because the API expects the country name in Hebrew, or perhaps a different format. Let me try again, maybe with \"France\" spelled differently, or perhaps I should try calling with the parameters exactly as expected. Since the schema says \"שם המדינה\" (name of the country) in Hebrew description but the examples/standards might vary, let me try both English and see if there's another issue. Actually, the error might be because the function is sensitive to parameter format. Let me verify: country is string, century is number. I passed {\"country\": \"France\", \"century\": 18}. That should be correct according to the schema. \n\nWait, perhaps the issue is that in some implementations, the country needs to be in Hebrew? Let me try with \"צרפת\". Or maybe the century should be 18 and it's correct. Let me retry once more - sometimes transient errors happen. Actually the instructions say to respond with the correct function call exactly as specified. I've already made the call. But since I got a 400 error, maybe I should try with Hebrew country name?\n\nGiven that the interface descriptions are in Hebrew (\"שם המדינה\", \"המאה כמספר שלם\"), maybe the expected values should also be localized. Let me try with country=\"צרפת\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

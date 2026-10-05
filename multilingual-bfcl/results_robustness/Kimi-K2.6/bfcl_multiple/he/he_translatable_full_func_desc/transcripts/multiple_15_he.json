@@ -1,0 +1,188 @@
+{
+  "id": "multiple_15_he",
+  "source_id": "multiple_15",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1854,
+  "total_output_tokens": 1014,
+  "total_latency_s": 5.89788556098938,
+  "estimated_cost_usd": 0.005817299999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו הפוטנציאל של חוות הקולטים הסולאריים במיקום עם הקואורדינטות [43.653225, -79.383186] בדצמבר, בהינתן שיש לה שטח כולל של פאנלים סולאריים של 80000 רגל רבועה?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "solarFarm.potential": {
+        "coordinates": [
+          [
+            43.653225,
+            -79.383186
+          ]
+        ],
+        "panelArea": [
+          80000
+        ],
+        "month": [
+          "דצמבר",
+          "דצמ׳"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          },
+          "id": "functions.solarFarm_potential:0"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+      "input_tokens": 498,
+      "output_tokens": 813,
+      "latency_s": 4.5802788734436035,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "דצמבר"
+          },
+          "id": "functions.solarFarm_potential:1"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "דצמבר"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1356,
+      "output_tokens": 201,
+      "latency_s": 1.3176066875457764,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו הפוטנציאל של חוות הקולטים הסולאריים במיקום עם הקואורדינטות [43.653225, -79.383186] בדצמבר, בהינתן שיש לה שטח כולל של פאנלים סולאריים של 80000 רגל רבועה?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.solarFarm_potential:0",
+          "function": {
+            "arguments": "{\"coordinates\": [43.653225,-79.383186], \"panelArea\": 80000, \"month\": \"December\"}",
+            "name": "solarFarm_potential"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in Hebrew about the solar farm potential at coordinates [43.653225, -79.383186] in December, with a total panel area of 80,000 square feet.\n\nLooking at the available functions, I have:\n1. `solarFarm_potential` - which takes coordinates, panelArea, and optionally month\n2. `windFarm_potential` - which takes coordinates, turbineCount, and optionally month\n\nThe user is asking about solar panels, so I should use `solarFarm_potential`.\n\nParameters:\n- coordinates: [43.653225, -79.383186] (the user provided this)\n- panelArea: 80000 (square feet, as specified)\n- month: \"דצמבר\" or I need to check if Hebrew month names are accepted, or if I should use English. The tool definition says \"ברירת המחדל היא ינואר\" which suggests Hebrew might work, but it's safer to use the standard month name. Actually, looking at the description: \"החודש שעבורו יש לחשב את תפוקת האנרגיה הפוטנציאלית. ברירת המחדל היא ינואר\". Since the default example uses Hebrew \"ינואר\", it's possible Hebrew month names are accepted. But I think English month names like \"December\" are more standard. However, since the schema doesn't specify an enum and the example uses Hebrew, I could use \"December\" or \"דצמבר\". I'll use \"December\" to be safe since it's a standard English name, but actually wait - the system says \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nActually, looking at the parameter description, the default value is given in Hebrew (\"ינואר\"), which strongly suggests the function expects or at least supports Hebrew month names. But to be absolutely safe and standard, \"December\" is the English name. However, since the interface might be localized, and the default is shown in Hebrew, I think either should work, but I'll provide the month as requested. The user said \"דצמבר\" (December in Hebrew).\n\nWait, I should check if I can just pass the string as the user said it or if I need to translate. The tool definition doesn't specify a format. I'll pass it as requested or standardize to English. Actually, standard programming APIs usually use English for month names in such contexts. But the fact that the default is shown in Hebrew in the schema... Hmm.\n\nActually, since the schema uses month as string type, and the example in the description is in Hebrew, I'll pass \"December\" in English because it's the safest common denominator for APIs. But wait - could it be that the backend specifically expects Hebrew because the tool descriptions are in Hebrew? \n\nYou know what, I think either way the system should handle it, but \"December\" is the most universally recognized for a month parameter in an API. However, since the user explicitly said \"בדצמבר\" and the default shows Hebrew, maybe the tool expects Hebrew. Let me go with \"דצמבר\" or translate to English \"December\".\n\nActually, looking at this more carefully: the user is asking in Hebrew, and I'm supposed to make the function call. I'll use \"December\" since that's the standard English month name and most likely to be accepted by an energy calculation API. But to be honest, without an enum list, it's ambiguous. I'll provide it in English \"December\" as it's the safest standard.\n\nWait, I need to respond with the function call. Let me format it properly."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+      "tool_call_id": "functions.solarFarm_potential:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.solarFarm_potential:1",
+          "function": {
+            "arguments": "{\"coordinates\": [43.653225,-79.383186], \"panelArea\": 80000, \"month\": \"דצמבר\"}",
+            "name": "solarFarm_potential"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters.\n\nCoordinates: [43.653225, -79.383186] - this looks correct. It's [lat, long].\npanelArea: 80000 - this is a number, correct.\nmonth: \"December\" - maybe the API expects Hebrew month names since the interface is in Hebrew? Or maybe it expects a specific format?\n\nWait, looking back at the tool definition, the default is \"ינואר\" which is Hebrew. So perhaps I should use \"דצמבר\" in Hebrew. Or maybe the coordinates format is wrong? Or maybe panelArea should be an integer and 80000 is fine.\n\nLet me try with Hebrew month name \"דצמבר\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

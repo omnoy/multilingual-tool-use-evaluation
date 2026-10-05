@@ -1,0 +1,158 @@
+{
+  "id": "multiple_2_he",
+  "source_id": "multiple_2",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 935,
+  "total_output_tokens": 525,
+  "total_latency_s": 5.305025100708008,
+  "estimated_cost_usd": 0.0029882499999999996,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהי בירת ברזיל?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "country_info.capital": {
+        "country": [
+          "ברזיל"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "country_info_capital",
+          "arguments": {
+            "country": "Brazil"
+          },
+          "id": "functions.country_info_capital:0"
+        }
+      ],
+      "decoded": [
+        {
+          "country_info_capital": {
+            "country": "Brazil"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'country_info_capital'. Please review the function definition and try again.",
+      "input_tokens": 221,
+      "output_tokens": 450,
+      "latency_s": 4.351932048797607,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "country_info_capital",
+          "arguments": {
+            "country": "ברזיל"
+          },
+          "id": "functions.country_info_capital:1"
+        }
+      ],
+      "decoded": [
+        {
+          "country_info_capital": {
+            "country": "ברזיל"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 714,
+      "output_tokens": 75,
+      "latency_s": 0.9530930519104004,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהי בירת ברזיל?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.country_info_capital:0",
+          "function": {
+            "arguments": "{\"country\":\"Brazil\"}",
+            "name": "country_info_capital"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking \"What is the capital of Brazil?\" in Hebrew.\n\nI need to use the `country_info_capital` function with the country parameter set to \"Brazil\" (or \"ברזיל\" - but looking at the function definitions, the parameter is the country name, and typically these functions expect English names, though the schema doesn't specify. However, given the tool descriptions are in Hebrew, the function might accept Hebrew names. But to be safe, I should probably use \"Brazil\" or \"ברזיל\". \n\nLooking at the function: `country_info_capital` with parameter `country: string`. The description says \"שם המדינה\" (country name). I'll use \"Brazil\" to be safe, as these APIs usually expect English, but \"ברזיל\" might also work. Actually, let me check if there's any indication. The system prompt says \"respond with the correct function call exactly as specified in the tool definitions.\"\n\nI'll use \"Brazil\" since that's the standard English name. However, since the user asked in Hebrew and the tool descriptions are in Hebrew, it might accept \"ברזיל\". But most country info APIs use English country names. I'll go with \"Brazil\".\n\nWait, actually, looking at the available tools, there's no restriction specified on the language of the country parameter. But to maximize compatibility, I'll use \"Brazil\".\n\nActually, on second thought, since this is an exercise in using the tools and the user interface is in Hebrew, using \"ברזיל\" might be more appropriate and might be what the function expects. But I don't know the implementation. Since the parameter is just \"country name\" without language specification, and the examples are in Hebrew... I'll use \"Brazil\" as it's the internationally recognized name.\n\nHmm, actually, let me reconsider. The user asked \"מהי בירת ברזיל?\" I'll call the function with `country=\"Brazil\"`. \n\nActually, I could also reason that if the tool descriptions are localized to Hebrew, the API might expect Hebrew input. But that's not necessarily true. I'll use \"Brazil\" to be safe."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'country_info_capital'. Please review the function definition and try again.",
+      "tool_call_id": "functions.country_info_capital:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.country_info_capital:1",
+          "function": {
+            "arguments": "{\"country\": \"ברזיל\"}",
+            "name": "country_info_capital"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. This likely means \"Brazil\" was not the expected parameter format, or perhaps I need to use the Hebrew name \"ברזיל\". Let me try with \"ברזיל\" since the interface is in Hebrew."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

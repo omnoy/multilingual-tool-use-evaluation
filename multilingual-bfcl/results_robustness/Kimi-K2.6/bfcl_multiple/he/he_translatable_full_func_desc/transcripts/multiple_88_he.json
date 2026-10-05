@@ -1,0 +1,169 @@
+{
+  "id": "multiple_88_he",
+  "source_id": "multiple_88",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1393,
+  "total_output_tokens": 1057,
+  "total_latency_s": 6.888471603393555,
+  "estimated_cost_usd": 0.00555135,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי את מספר השחקנים הפעילים במשחק 'וורלד אוף וורקראפט' בשנת 2020."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "video_games.get_player_count": {
+        "game_title": [
+          "וורלד אוף וורקראפט"
+        ],
+        "year": [
+          2020
+        ],
+        "platform": [
+          "",
+          "מחשב אישי"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "video_games_get_player_count",
+          "arguments": {
+            "game_title": "World of Warcraft",
+            "year": 2020
+          },
+          "id": "functions.video_games_get_player_count:0"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_get_player_count": {
+            "game_title": "World of Warcraft",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'video_games_get_player_count'. Please review the function definition and try again.",
+      "input_tokens": 338,
+      "output_tokens": 668,
+      "latency_s": 4.420590400695801,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "video_games_get_player_count",
+          "arguments": {
+            "game_title": "וורלד אוף וורקראפט",
+            "year": 2020
+          },
+          "id": "functions.video_games_get_player_count:1"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_get_player_count": {
+            "game_title": "וורלד אוף וורקראפט",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1055,
+      "output_tokens": 389,
+      "latency_s": 2.467881202697754,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי את מספר השחקנים הפעילים במשחק 'וורלד אוף וורקראפט' בשנת 2020."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.video_games_get_player_count:0",
+          "function": {
+            "arguments": "{\"game_title\":\"World of Warcraft\",\"year\":2020}",
+            "name": "video_games_get_player_count"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the number of active players for the game 'World of Warcraft' in 2020. The game title provided is in Hebrew: 'וורלד אוף וורקראפט', which is \"World of Warcraft\".\n\nI need to call the function `video_games_get_player_count` with:\n- game_title: 'World of Warcraft' (I should probably use the English name, or should I use the Hebrew name? The user wrote it in Hebrew. Let me check the instructions. The instructions say to respond with the correct function call exactly as specified. I'll use the Hebrew name since that's what the user provided, unless it's obviously a translation. Actually, looking at the function description, it expects \"שם משחק הווידאו\" which could be in any language? But typically these databases use English names. However, the user specifically asked in Hebrew and provided the Hebrew name. I should probably pass the Hebrew name as provided by the user. But wait - the function might expect English names. The instructions say \"respond with the correct function call exactly as specified\". Since the user said 'וורלד אוף וורקראפט', I should pass that as the game_title parameter to be safe and faithful to the user's request. Actually, standard practice is to pass the game title as provided by the user since I don't have a lookup function to translate it.\n\nWait, let me reconsider. The system prompt says \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\" This means I need to extract the parameters and make the function call.\n\nThe Hebrew name \"וורלד אוף וורקראפט\" is clearly \"World of Warcraft\". But should I translate it? The function parameter is just a generic string. I think it's safer to use the English title \"World of Warcraft\" because these API-like functions usually expect English game titles, especially for a global database. However, the instruction says to respond \"exactly as specified\". The user's query is in Hebrew and they provided the Hebrew name. But function calls should contain the extracted arguments. Usually, for pragmatic reasons, game titles are passed in English since that's how they are registered. But I need to decide. Let me think... The user asked in Hebrew. The tool doesn't specify the language. But if I put the Hebrew name, and the backend expects English, it will fail. If I put English, and the user specified Hebrew, it might be wrong too. \n\nActually, \"World of Warcraft\" is well-known. I'll provide the English name \"World of Warcraft\" because these functions almost certainly query a database indexed by English titles. This is standard for translation tasks where you extract entities and normalize them.\n\nWait, should I include `platform`? The parameter is optional with default ''. The user didn't specify a platform, so I should omit it or pass default empty string? The instructions say to pass required arguments, platform is optional. I'll omit it.\n\nLet me make the call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'video_games_get_player_count'. Please review the function definition and try again.",
+      "tool_call_id": "functions.video_games_get_player_count:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.video_games_get_player_count:1",
+          "function": {
+            "arguments": "{\"game_title\": \"וורלד אוף וורקראפט\", \"year\": 2020}",
+            "name": "video_games_get_player_count"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. This might mean the parameters were wrong. Let me reconsider. \n\nMaybe the function expects the Hebrew name, not the English name? Or maybe \"World of Warcraft\" is not the exact title? Or maybe I need to pass platform? The error says invalid parameters.\n\nWait, looking back at the function definition:\n```\n\"parameters\": {\"properties\": {\"game_title\": {\"description\": \"שם משחק הווידאו.\", \"type\": \"string\"}, \"platform\": {\"default\": \"\", \"description\": \"פלטפורמת המשחק (למשל 'PC', 'Xbox', 'Playstation'). ברירת מחדל ''\", \"type\": \"string\"}, \"year\": {\"description\": \"השנה המדוברת.\", \"type\": \"number\"}}, \"required\": [\"game_title\", \"year\"], \"type\": \"object\"}\n```\n\nMaybe the year should be an integer? I passed 2020 as a number, which should be fine. Maybe the game title should be exactly as the user said in Hebrew: 'וורלד אוף וורקראפט'. Let me try with the Hebrew name since the user provided it and the previous call failed. It might be a translation issue where the Hebrew title is what's in the database, or simply the English title wasn't recognized for some other reason, but trying Hebrew is the next logical step.\n\nActually, another thought: Is there a known issue with the Hebrew translation? \"וורלד אוף וורקראפט\" - yes, that's how it's commonly referred to in Hebrew. Let me try that."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -8,7 +8,7 @@ run_robustness_eval.py subprocess that gets all of its benchmarks at once (--ben
 nargs="+"), so one model failing does not stop the others.
 
 Any argument not recognised here is forwarded verbatim to run_robustness_eval.py
-(e.g. --resume, --concurrency 8, --max-api-calls 12, --recompute-stats).
+(e.g. --resume, --concurrency 8, --max-api-calls 12).
 
 Usage:
     # Every model in MODELS on every German variant, full files:
@@ -23,6 +23,10 @@ Usage:
 
     # Run every (model, benchmark) pair as its own concurrent process:
     python scripts/run_robustness_sweep.py --lang-dir de --parallel
+
+    # Rebuild statistics.csv + summary.json from saved transcripts, no API calls. Pairs
+    # with no transcripts are skipped:
+    python scripts/run_robustness_sweep.py --lang-dir de --recompute-stats
 
     # Just print the commands:
     python scripts/run_robustness_sweep.py --lang-dir de --dry-run
@@ -65,6 +69,11 @@ def discover_benchmarks(category: str, lang_dir: str, variants: list[str] | None
     return selected
 
 
+def has_transcripts(output_dir: str, model: str, category: str, lang_dir: str, benchmark: str) -> bool:
+    transcripts = PACKAGE_ROOT / output_dir / model / category / lang_dir / benchmark / "transcripts"
+    return any(transcripts.glob("*.json"))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run run_robustness_eval.py over many models x benchmark variants. "
@@ -81,6 +90,11 @@ def main() -> None:
                         help="Forwarded --limit (default 0 = full file).")
     parser.add_argument("--parallel", action="store_true",
                         help="Run every (model, benchmark) pair as its own concurrent process.")
+    parser.add_argument("--recompute-stats", action="store_true",
+                        help="No API calls: rebuild statistics.csv and summary.json from "
+                             "existing transcripts. Pairs with no transcripts are skipped.")
+    parser.add_argument("--output-dir", default="results_robustness",
+                        help="Forwarded --output-dir (relative to the package root).")
     parser.add_argument("--dry-run", action="store_true", help="Print commands only.")
     args, passthrough = parser.parse_known_args()
 
@@ -91,11 +105,24 @@ def main() -> None:
     benchmarks = discover_benchmarks(args.category, args.lang_dir, args.variants)
     print(f"Benchmarks ({len(benchmarks)}): {benchmarks}")
 
+    model_benchmarks = {m: benchmarks for m in args.models}
+    if args.recompute_stats:
+        # The harness raises on a benchmark with no transcripts, which would also abort
+        # the benchmarks queued after it in that process, so filter those out up front.
+        for model in args.models:
+            present = [b for b in benchmarks
+                       if has_transcripts(args.output_dir, model, args.category, args.lang_dir, b)]
+            skipped = [b for b in benchmarks if b not in present]
+            if skipped:
+                print(f"Skipping {model} (no transcripts): {skipped}")
+            model_benchmarks[model] = present
+        passthrough.append("--recompute-stats")
+
     # Sequential: one process per model running all its benchmarks back to back.
     # Parallel: one process per (model, benchmark) so every pair runs concurrently.
     jobs = (
-        [(m, [b]) for m in args.models for b in benchmarks] if args.parallel
-        else [(m, benchmarks) for m in args.models]
+        [(m, [b]) for m, bms in model_benchmarks.items() for b in bms] if args.parallel
+        else [(m, bms) for m, bms in model_benchmarks.items() if bms]
     )
     commands = {
         f"{model} / {' '.join(bms) if args.parallel else 'all'}": [
@@ -106,6 +133,7 @@ def main() -> None:
             "--model", model,
             "--model-type", MODELS[model],
             "--limit", args.limit,
+            "--output-dir", args.output_dir,
             *passthrough,
         ]
         for model, bms in jobs
@@ -129,7 +157,8 @@ def main() -> None:
 
     print(f"\nDone. {len(commands) - len(failed)}/{len(commands)} jobs succeeded.")
     if failed:
-        print(f"Failed: {failed} — rerun those with --resume")
+        hint = "" if args.recompute_stats else " — rerun those with --resume"
+        print(f"Failed: {failed}{hint}")
         sys.exit(1)
 
 

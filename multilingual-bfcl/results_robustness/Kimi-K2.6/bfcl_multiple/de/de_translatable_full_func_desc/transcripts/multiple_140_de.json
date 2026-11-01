@@ -1,0 +1,116 @@
+{
+  "id": "multiple_140_de",
+  "source_id": "multiple_140",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 405,
+  "total_output_tokens": 359,
+  "total_latency_s": 2.18747615814209,
+  "estimated_cost_usd": 0.0018207499999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde die Klagen, die im Jahr 2020 gegen das Unternehmen Gugel in Kalifornien eingereicht wurden."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuits_search": {
+        "company_name": [
+          "Gugel"
+        ],
+        "location": [
+          "Kalifornien",
+          "Kalifornien"
+        ],
+        "year": [
+          2020
+        ],
+        "case_type": [
+          "",
+          "alle"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuits_search",
+          "arguments": {
+            "company_name": "Gugel",
+            "year": 2020,
+            "location": "Kalifornien"
+          },
+          "id": "functions.lawsuits_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuits_search": {
+            "company_name": "Gugel",
+            "year": 2020,
+            "location": "Kalifornien"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 405,
+      "output_tokens": 359,
+      "latency_s": 2.18747615814209,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde die Klagen, die im Jahr 2020 gegen das Unternehmen Gugel in Kalifornien eingereicht wurden."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawsuits_search:0",
+          "function": {
+            "arguments": "{\"company_name\": \"Gugel\", \"year\": 2020, \"location\": \"Kalifornien\"}",
+            "name": "lawsuits_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find lawsuits filed in 2020 against the company \"Gugel\" in California (Kalifornien).\n\nI need to use the `lawsuits_search` function. Let me check the parameters:\n- company_name: \"Gugel\" (required)\n- year: 2020 (required)\n- location: \"Kalifornien\" or should I use \"California\"? The parameter description says \"Der Ort, an dem die Klage eingereicht wurde.\" The user wrote in German \"Kalifornien\". However, typically locations in such databases might be expected in English. But the user specifically said \"Kalifornien\" and the system prompt says to understand the request in German and respond with the correct function call. I should probably use what makes most sense. Since this is a German query but the location is a proper noun, I could use either. Let me use \"Kalifornien\" as the user specified, though \"California\" might be more likely in a database. Actually, looking at the function, it doesn't specify language for location. I'll use \"Kalifornien\" to match the user's input exactly.\n\nWait, actually looking at the tool definition, it doesn't specify that location needs to be in English. The user asked in German. I'll use \"Kalifornien\".\n\ncase_type is optional and defaults to 'all'. The user didn't specify a case type, so I don't need to include it.\n\nAll required parameters are present:\n- company_name: \"Gugel\"\n- year: 2020\n- location: \"Kalifornien\""
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

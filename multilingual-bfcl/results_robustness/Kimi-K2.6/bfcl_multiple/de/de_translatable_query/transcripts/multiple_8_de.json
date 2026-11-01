@@ -1,0 +1,132 @@
+{
+  "id": "multiple_8_de",
+  "source_id": "multiple_8",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 326,
+  "total_output_tokens": 203,
+  "total_latency_s": 2.518371343612671,
+  "estimated_cost_usd": 0.0011217,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde eine Villa mit 3 Schlafzimmern zum Kauf in San Diego im Budgetrahmen von $300,000 bis $400,000."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "realestate.find_properties": {
+        "location": [
+          "SD",
+          "San Diego",
+          "San Diego, CA",
+          "CA"
+        ],
+        "propertyType": [
+          "villa"
+        ],
+        "bedrooms": [
+          3
+        ],
+        "budget": [
+          {
+            "min": [
+              300000
+            ],
+            "max": [
+              400000
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, CA",
+            "bedrooms": 3,
+            "propertyType": "villa",
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "functions.realestate_find_properties:0"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, CA",
+            "bedrooms": 3,
+            "propertyType": "villa",
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 326,
+      "output_tokens": 203,
+      "latency_s": 2.518371343612671,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde eine Villa mit 3 Schlafzimmern zum Kauf in San Diego im Budgetrahmen von $300,000 bis $400,000."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.realestate_find_properties:0",
+          "function": {
+            "arguments": "{\"location\":\"San Diego, CA\",\"bedrooms\":3,\"propertyType\":\"villa\",\"budget\":{\"min\":300000,\"max\":400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German to find a villa with 3 bedrooms in San Diego within a budget of $300,000 to $400,000.\n\nI need to use the `realestate_find_properties` function with these parameters:\n- location: \"San Diego, CA\" (I should include the state abbreviation as specified in the examples)\n- bedrooms: 3\n- propertyType: \"villa\"\n- budget: { min: 300000, max: 400000 }\n\nThe user says \"zum Kauf\" (for purchase), but the function doesn't have a parameter for rent/buy, so I'll proceed with the available parameters.\n\nLet me make sure I format the location correctly as \"San Diego, CA\" and the budget as floating point numbers."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

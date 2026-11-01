@@ -1,0 +1,112 @@
+{
+  "id": "multiple_146_de",
+  "source_id": "multiple_146",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 298,
+  "total_output_tokens": 306,
+  "total_latency_s": 2.1325244903564453,
+  "estimated_cost_usd": 0.0015071,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde Restaurants in meiner Nähe im Umkreis von 10 Meilen, die chinesische Küche in Seattle anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          "Chinesisch"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "chinesisch",
+            "max_distance": 10
+          },
+          "id": "functions.restaurant_find_nearby:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "chinesisch",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 298,
+      "output_tokens": 306,
+      "latency_s": 2.1325244903564453,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde Restaurants in meiner Nähe im Umkreis von 10 Meilen, die chinesische Küche in Seattle anbieten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_nearby:0",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, WA\",\"cuisine\":\"chinesisch\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer möchte Restaurants in der Nähe finden, die chinesische Küche in Seattle anbieten, im Umkreis von 10 Meilen.\n\nIch muss die Funktion `restaurant_find_nearby` verwenden mit folgenden Parametern:\n- location: \"Seattle, WA\" (die Stadt und der Bundesstaat)\n- cuisine: \"chinesische\" oder besser \"Chinese\" - aber die Tool-Definition sagt \"Bevorzugte Art der Küche im Restaurant.\" Auf Deutsch. Ich sollte \"chinesisch\" oder \"Chinese\" verwenden. Da der Benutzer auf Deutsch schreibt und die Tool-Beschreibung auch Deutsch ist, verwende ich \"chinesisch\".\n- max_distance: 10 (optional, Standard ist 5, aber hier explizit 10 gewünscht)\n\nWarte, die Parameter sind:\n- location (required): string, z.B. \"Seattle, WA\"\n- cuisine (required): string, bevorzugte Art der Küche\n- max_distance (optional): number, default 5\n\nIch rufe die Funktion mit:\n- location: \"Seattle, WA\"\n- cuisine: \"chinesisch\"\n- max_distance: 10"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

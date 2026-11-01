@@ -1,0 +1,230 @@
+{
+  "id": "multiple_168_he",
+  "source_id": "multiple_168",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3291,
+  "total_output_tokens": 1239,
+  "total_latency_s": 8.898704290390015,
+  "estimated_cost_usd": 0.00808245,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מילות השיר 'בוהמיאן רפסודי' של קווין."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_song_lyrics": {
+        "song_title": [
+          "בוהמיאן רפסודי"
+        ],
+        "artist_name": [
+          "קווין"
+        ],
+        "lang": [
+          "אנגלית",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_song_lyrics",
+          "arguments": {
+            "artist_name": "Queen",
+            "song_title": "Bohemian Rhapsody",
+            "lang": "English"
+          },
+          "id": "functions.get_song_lyrics:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_song_lyrics": {
+            "artist_name": "Queen",
+            "song_title": "Bohemian Rhapsody",
+            "lang": "English"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_song_lyrics'. Please review the function definition and try again.",
+      "input_tokens": 431,
+      "output_tokens": 799,
+      "latency_s": 4.748139142990112,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_song_lyrics",
+          "arguments": {
+            "artist_name": "Queen",
+            "song_title": "Bohemian Rhapsody"
+          },
+          "id": "functions.get_song_lyrics:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_song_lyrics": {
+            "artist_name": "Queen",
+            "song_title": "Bohemian Rhapsody"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_song_lyrics'. Please review the function definition and try again.",
+      "input_tokens": 1281,
+      "output_tokens": 252,
+      "latency_s": 2.626960515975952,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_song_lyrics",
+          "arguments": {
+            "artist_name": "קווין",
+            "song_title": "בוהמיאן רפסודי"
+          },
+          "id": "functions.get_song_lyrics:2"
+        }
+      ],
+      "decoded": [
+        {
+          "get_song_lyrics": {
+            "artist_name": "קווין",
+            "song_title": "בוהמיאן רפסודי"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1579,
+      "output_tokens": 188,
+      "latency_s": 1.5236046314239502,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מילות השיר 'בוהמיאן רפסודי' של קווין."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_song_lyrics:0",
+          "function": {
+            "arguments": "{\"artist_name\":\"Queen\",\"song_title\":\"Bohemian Rhapsody\",\"lang\":\"English\"}",
+            "name": "get_song_lyrics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the lyrics of the song 'Bohemian Rhapsody' by Queen (קווין in Hebrew).\n\nI need to use the `get_song_lyrics` function.\n- artist_name: Queen (or קווין - but the tool says languages supported are English, Hebrew, so either should work. I'll use \"Queen\" as it's the original name and more likely to be in the database, or I could use \"קווין\" as the user specified. The tool description says \"שם האמן שביצע את השיר. שפות: אנגלית, עברית.\" so Hebrew is supported. I'll use the Hebrew name as provided by the user or English - probably safer to use the English name \"Queen\" for better matching, but the system supports Hebrew. Let me use \"Queen\" since it's the original and most recognized name, but actually the user wrote \"קווין\". I'll provide \"Queen\" as it's more standard for APIs, but the instructions say the tool accepts Hebrew. To be safe and accurate to the user's request while maximizing chances of success, I'll use \"Queen\". Actually, looking at the parameter descriptions, both languages are accepted. I'll use \"Queen\" for the artist and \"Bohemian Rhapsody\" for the song title since the user wrote the title in Hebrew characters 'בוהמיאן רפסודי' but the original is in English. However, the user specifically wrote the title in Hebrew. The tool accepts Hebrew. But for best results with APIs, English is usually better. Let me check: the user wrote \"'בוהמיאן רפסודי' של קווין\". I should probably use the English names as they are the original. But I could also use Hebrew. I'll use English for both as it's the standard in music databases.\n\nWait, the user asked in Hebrew. The function parameter says: \"שם האמן שביצע את השיר. שפות: אנגלית, עברית.\" and \"כותרת השיר. שפות: אנגלית, עברית.\"\n\nSo I can use either. I'll use:\n- artist_name: \"Queen\"\n- song_title: \"Bohemian Rhapsody\"\n- lang: The default is English. The song is in English, so I don't need to specify or I can specify \"English\".\n\nActually, I should use exactly what the user said to be helpful, but API-wise English is safer. I'll go with English.\n\nFunction call:\nget_song_lyrics(artist_name=\"Queen\", song_title=\"Bohemian Rhapsody\", lang=\"English\")\n\nOr I could not specify lang since default is English. I'll include it for clarity or omit it. Let's omit it since it's default. Actually, including it is fine too. I'll include it.\n\nWait, looking more carefully: the song title the user provided is in Hebrew: בוהמיאן רפסודי. Since the tool explicitly supports Hebrew, I could pass it in Hebrew. But database lookups usually work better with original English titles. I'll pass English.\n\nLet me reconsider: the instruction says \"respond with the correct function call exactly as specified in the tool definitions.\" So I need to output the function call.\n\nFinal decision:\n{\n  \"artist_name\": \"Queen\",\n  \"song_title\": \"Bohemian Rhapsody\",\n  \"lang\": \"English\"\n}\n\nOr should I use Hebrew since the user asked in Hebrew? The parameter accepts Hebrew, but the actual value should identify the song. \"Bohemian Rhapsody\" is the correct title. \"Queen\" is the correct artist. I'll go with these."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_song_lyrics'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_song_lyrics:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_song_lyrics:1",
+          "function": {
+            "arguments": "{\"artist_name\": \"Queen\", \"song_title\": \"Bohemian Rhapsody\"}",
+            "name": "get_song_lyrics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me reconsider the parameters. \n\nLooking at the function definition again:\n- artist_name: string, required\n- song_title: string, required\n- lang: enum [\"English\", \"French\", \"Spanish\", \"German\", \"Italian\"], default is English, optional\n\nWait, perhaps the issue is something else. Maybe the lyrics aren't available, or maybe I need to use the exact format. But the parameters seem correct. Let me try without the `lang` parameter since it's optional with default English. Or maybe the API expects Hebrew names since the user asked in Hebrew? No, that shouldn't cause a bad request.\n\nActually, looking at the schema again, the `lang` parameter is optional and defaults to English. Let me try again without specifying lang.\n\nOr maybe the issue is that I should use Hebrew text as provided by the user since the tool description says it supports Hebrew. Let me try with Hebrew text. But typically APIs shouldn't fail based on that unless there's an encoding issue.\n\nLet me try calling without lang parameter first."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_song_lyrics'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_song_lyrics:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_song_lyrics:2",
+          "function": {
+            "arguments": "{\"artist_name\": \"קווין\", \"song_title\": \"בוהמיאן רפסודי\"}",
+            "name": "get_song_lyrics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting a 400 error. Let me look more carefully at the function definition.\n\nMaybe the parameters need to be in Hebrew? The user asked in Hebrew. The tool description says languages supported are English and Hebrew. Let me try with Hebrew values exactly as the user provided.\n\nartist_name: \"קווין\"\nsong_title: \"בוהמיאן רפסודי\"\n\nOr maybe it's case sensitive or there's something about the enum. Wait, looking at the schema, lang is optional with default English. The enum values are capitalized: \"English\", \"French\", etc. I used that correctly.\n\nLet me try with Hebrew text since the user wrote it that way and the tool explicitly mentions Hebrew support."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

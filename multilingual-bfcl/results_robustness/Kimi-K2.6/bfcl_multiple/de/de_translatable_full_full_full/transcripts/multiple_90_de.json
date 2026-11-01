@@ -1,0 +1,183 @@
+{
+  "id": "multiple_90_de",
+  "source_id": "multiple_90",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1035,
+  "total_output_tokens": 864,
+  "total_latency_s": 5.333656549453735,
+  "estimated_cost_usd": 0.00443925,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich suche ein Fischrestaurant in Seattle, das Platz für eine Gruppe von 5 Personen hat."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_group": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          [
+            "Seafood"
+          ]
+        ],
+        "group_size": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_group",
+          "arguments": {
+            "location": "Seattle, Washington",
+            "group_size": 5,
+            "cuisine": [
+              "Seafood"
+            ]
+          },
+          "id": "functions.restaurant_find_group:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_group": {
+            "location": "Seattle, Washington",
+            "group_size": 5,
+            "cuisine": [
+              "Seafood"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_group'. Please review the function definition and try again.",
+      "input_tokens": 371,
+      "output_tokens": 246,
+      "latency_s": 1.7094624042510986,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_group",
+          "arguments": {
+            "location": "Seattle, WA",
+            "group_size": 5,
+            "cuisine": [
+              "Seafood"
+            ]
+          },
+          "id": "functions.restaurant_find_group:1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_group": {
+            "location": "Seattle, WA",
+            "group_size": 5,
+            "cuisine": [
+              "Seafood"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 664,
+      "output_tokens": 618,
+      "latency_s": 3.6241941452026367,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich suche ein Fischrestaurant in Seattle, das Platz für eine Gruppe von 5 Personen hat."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_group:0",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, Washington\",\"group_size\":5,\"cuisine\":[\"Seafood\"]}",
+            "name": "restaurant_find_group"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is searching for a fish restaurant in Seattle that has space for a group of 5 people.\n\nThis maps to the `restaurant_find_group` function with:\n- location: \"Seattle, WA\" (or similar - the user said Seattle, and the examples suggest city and state format. Since Seattle is in Washington, I should use \"Seattle, WA\" or \"Seattle, Washington\". The parameter description says \"z. B. Seattle, Washington\", so I'll use that format or the WA format. Looking at the description: \"Die Stadt und der Bundesstaat, z. B. Seattle, Washington\".\n- group_size: 5\n- cuisine: [\"Seafood\"] (Fischrestaurant means fish/seafood restaurant)\n\nLet me check the enum for cuisine: [\"Seafood\", \"Italian\", \"Indian\", \"Chinese\"]. So Seafood is correct.\n\nFunction call:\n{\n  \"location\": \"Seattle, Washington\",\n  \"group_size\": 5,\n  \"cuisine\": [\"Seafood\"]\n}"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_group'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_find_group:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_group:1",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, WA\", \"group_size\": 5, \"cuisine\": [\"Seafood\"]}",
+            "name": "restaurant_find_group"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me review the parameters.\n\nLooking at the schema again:\n- location: string, \"Die Stadt und der Bundesstaat, z. B. Seattle, Washington\"\n- group_size: number\n- cuisine: array of enum [\"Seafood\", \"Italian\", \"Indian\", \"Chinese\"], default empty array\n\nWait, the function is `restaurant_find_group`. Let me check if I need to use the exact format. Maybe the issue is with the location format. The description says: \"Die Stadt und der Bundesstaat, z. B. Seattle, Washington\". But maybe it expects exactly \"Seattle, WA\"? No, the example clearly says \"Seattle, Washington\".\n\nActually, looking more carefully at the restaurant_find_group description: \"Die Stadt und der Bundesstaat, z. B. Seattle, Washington\"\n\nBut wait - maybe the issue is the group_size? No, 5 is a number.\n\nCould the issue be that cuisine is optional but I provided it correctly? Yes.\n\nActually, looking at the events function: `location` description says \"z. B. Seattle, WA\". And the restaurant function says \"z. B. Seattle, Washington\". So there might be inconsistency, but I followed the restaurant one.\n\nWait, could the parameter name be wrong? Let me check: `restaurant_find_group` takes `location`, `group_size`, and `cuisine`.\n\nHmm, maybe the API is strict about something else. But since I don't have more info, I should retry with the exact same parameters? Or maybe try \"Seattle, WA\" since that's the US standard? Actually many of these mock APIs are sensitive to the format. Let me try with \"Seattle, Washington\" again? No, that already failed.\n\nActually wait - looking back at the tool definitions, I see that `events_find_event` says \"z. B. Seattle, WA\" and `restaurant_find_group` says \"z. B. Seattle, Washington\". \n\nBut maybe the backend actually expects \"Seattle, WA\" for both? Or maybe \"Seattle\"? Let me try without Washington since some services only want the city. But the instruction clearly says city and state.\n\nActually, looking at typical function calling APIs, 400 Bad Request often means a validation error on the backend, which could be due to an unsupported location format. Since the user asked in German and the tool descriptions are in German, maybe the backend expects German city names? No, Seattle is Seattle in German too.\n\nLet me retry with just \"Seattle\" or \"Seattle, WA\". Since the restaurant tool example says \"Seattle, Washington\", but that failed, let me try \"Seattle, WA\" since that's the standard abbreviation and maybe the API validates against US states using abbreviations."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

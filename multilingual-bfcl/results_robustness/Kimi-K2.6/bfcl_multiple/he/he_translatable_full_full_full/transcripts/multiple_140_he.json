@@ -1,0 +1,177 @@
+{
+  "id": "multiple_140_he",
+  "source_id": "multiple_140",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1316,
+  "total_output_tokens": 511,
+  "total_latency_s": 4.0968475341796875,
+  "estimated_cost_usd": 0.0032941999999999997,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את התביעות שהוגשו נגד חברת גוגל בקליפורניה בשנת 2020."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuits_search": {
+        "company_name": [
+          "גוגל"
+        ],
+        "location": [
+          "קליפורניה",
+          "קליפורניה"
+        ],
+        "year": [
+          2020
+        ],
+        "case_type": [
+          "",
+          "הכול"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuits_search",
+          "arguments": {
+            "company_name": "Google",
+            "location": "California",
+            "year": 2020
+          },
+          "id": "functions.lawsuits_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuits_search": {
+            "company_name": "Google",
+            "location": "California",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuits_search'. Please review the function definition and try again.",
+      "input_tokens": 559,
+      "output_tokens": 156,
+      "latency_s": 1.4306187629699707,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuits_search",
+          "arguments": {
+            "company_name": "גוגל",
+            "location": "קליפורניה",
+            "year": 2020
+          },
+          "id": "functions.lawsuits_search:1"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuits_search": {
+            "company_name": "גוגל",
+            "location": "קליפורניה",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 757,
+      "output_tokens": 355,
+      "latency_s": 2.666228771209717,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את התביעות שהוגשו נגד חברת גוגל בקליפורניה בשנת 2020."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawsuits_search:0",
+          "function": {
+            "arguments": "{\"company_name\": \"Google\", \"location\": \"California\", \"year\": 2020}",
+            "name": "lawsuits_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking to find lawsuits filed against Google in California in the year 2020. I need to use the `lawsuits_search` function.\n\nParameters:\n- company_name: \"Google\" (or \"גוגל\" - but the function accepts Hebrew and English, either should work, but I'll use the English name for better compatibility since it's a company name)\n- location: \"California\" (or \"קליפורניה\")\n- year: 2020\n- case_type: not specified, so I should use the default \"all\"\n\nLet me construct the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuits_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.lawsuits_search:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawsuits_search:1",
+          "function": {
+            "arguments": "{\"company_name\": \"גוגל\", \"location\": \"קליפורניה\", \"year\": 2020}",
+            "name": "lawsuits_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check the parameters again. \n\nLooking at the schema:\n- company_name: string (Hebrew/English)\n- location: string (Hebrew/English) \n- year: number\n- case_type: optional, default is \"all\"\n\nWait, the issue might be that I used \"Google\" instead of \"גוגל\" or the location needs to be in Hebrew? But the instructions say both languages are accepted. \n\nActually, looking more carefully at the JSON I sent, it seems correct. Let me try with Hebrew values as the user wrote them, or maybe the parameter names need to match exactly.\n\nActually wait - I see in the schema the parameters are:\n- company_name\n- location\n- year\n- case_type\n\nMy JSON looks correct. Maybe I should try with Hebrew text since the user asked in Hebrew? Let me try again with the exact terms from the user's request.\n\nActually, let me re-read the error. It says \"invalid parameters\". Maybe the year needs to be passed in a specific way, or maybe there's an issue with the schema validation.\n\nWait - let me look at the schema again carefully. The year parameter says \"השנה שבה הוגשה התביעה.\" and the type is number. That should be fine.\n\nActually, I think I should try sending it again. Sometimes there might be transient issues. But let me try with Hebrew names this time since the user is Israeli and the function description is in Hebrew."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

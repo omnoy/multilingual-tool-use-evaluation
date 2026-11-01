@@ -1,0 +1,106 @@
+{
+  "id": "multiple_157_de",
+  "source_id": "multiple_157",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 227,
+  "total_output_tokens": 270,
+  "total_latency_s": 1.7844889163970947,
+  "estimated_cost_usd": 0.00129565,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Was ist die früheste Erwähnung Jesu Christi in historischen Aufzeichnungen?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_earliest_reference": {
+        "name": [
+          "Jesus Christ"
+        ],
+        "source": [
+          "historical records"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_earliest_reference",
+          "arguments": {
+            "name": "Jesus Christ",
+            "source": "historical records"
+          },
+          "id": "functions.get_earliest_reference:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_earliest_reference": {
+            "name": "Jesus Christ",
+            "source": "historical records"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 227,
+      "output_tokens": 270,
+      "latency_s": 1.7844889163970947,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Was ist die früheste Erwähnung Jesu Christi in historischen Aufzeichnungen?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_earliest_reference:0",
+          "function": {
+            "arguments": "{\"name\": \"Jesus Christ\", \"source\": \"historical records\"}",
+            "name": "get_earliest_reference"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"What is the earliest mention of Jesus Christ in historical records?\"\n\nI need to use the `get_earliest_reference` function to answer this. The name is \"Jesus Christ\". The user specifically asks for \"historischen Aufzeichnungen\" (historical records), so I should set the source to \"historical records\" rather than the default \"scriptures\".\n\nLet me check the function parameters:\n- name: string - required - \"Jesus Christ\" or \"Jesus Christus\" - I'll use \"Jesus Christ\" to be safe, but since the function likely handles English better, I'll use the English name. Actually, looking at the function description, it just says \"The name of the person.\" It doesn't specify language. But \"Jesus Christ\" is internationally recognized. I'll use \"Jesus Christ\".\n- source: enum [\"scriptures\", \"historical records\"] - optional, default is \"scriptures\". Since the user explicitly asks for \"historischen Aufzeichnungen\", I should set source to \"historical records\".\n\nSo the function call should be:\nget_earliest_reference(name=\"Jesus Christ\", source=\"historical records\")"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

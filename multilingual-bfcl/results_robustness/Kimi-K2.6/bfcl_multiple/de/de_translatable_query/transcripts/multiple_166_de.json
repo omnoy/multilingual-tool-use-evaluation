@@ -1,0 +1,118 @@
+{
+  "id": "multiple_166_de",
+  "source_id": "multiple_166",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 356,
+  "total_output_tokens": 209,
+  "total_latency_s": 1.378986120223999,
+  "estimated_cost_usd": 0.0011742,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde mir ein klassisches Konzert dieses Wochenende in Los Angeles mit günstigen Eintrittskarten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.search": {
+        "genre": [
+          "classical"
+        ],
+        "location": [
+          "Los Angeles",
+          "LA"
+        ],
+        "date": [
+          "this weekend",
+          "weekend"
+        ],
+        "price_range": [
+          "cheap"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_search",
+          "arguments": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "this weekend",
+            "price_range": "cheap"
+          },
+          "id": "functions.concert_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_search": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "this weekend",
+            "price_range": "cheap"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 356,
+      "output_tokens": 209,
+      "latency_s": 1.378986120223999,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde mir ein klassisches Konzert dieses Wochenende in Los Angeles mit günstigen Eintrittskarten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.concert_search:0",
+          "function": {
+            "arguments": "{\"genre\": \"classical\", \"location\": \"Los Angeles\", \"date\": \"this weekend\", \"price_range\": \"cheap\"}",
+            "name": "concert_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find a classical concert this weekend in Los Angeles with cheap tickets.\n\nLooking at the available functions, I have `concert_search` which takes:\n- genre (required): string - \"classical\" or \"klassisch\" - but I should use English as the function expects likely English terms based on the parameter descriptions\n- location (required): string - \"Los Angeles\"\n- date (required): string - \"this weekend\" or \"dieses Wochenende\" - but the examples show English terms like \"this weekend\"\n- price_range (optional): enum - \"cheap\" fits \"günstigen Eintrittskarten\"\n\nSo the function call should be:\n- genre: \"classical\"\n- location: \"Los Angeles\"\n- date: \"this weekend\"\n- price_range: \"cheap\""
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

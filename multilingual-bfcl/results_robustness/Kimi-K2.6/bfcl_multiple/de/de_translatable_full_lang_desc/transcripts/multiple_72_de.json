@@ -1,0 +1,166 @@
+{
+  "id": "multiple_72_de",
+  "source_id": "multiple_72",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 653,
+  "total_output_tokens": 356,
+  "total_latency_s": 2.7714109420776367,
+  "estimated_cost_usd": 0.00204435,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie hoch war die Einwohnerzahl Kaliforniens im Jahr 1970?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "us_history.population_by_state_year": {
+        "state": [
+          "Kalifornien",
+          "CA"
+        ],
+        "year": [
+          1970
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "California",
+            "year": 1970
+          },
+          "id": "functions.us_history_population_by_state_year:0"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "California",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "input_tokens": 257,
+      "output_tokens": 91,
+      "latency_s": 0.9055583477020264,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "Kalifornien",
+            "year": 1970
+          },
+          "id": "functions.us_history_population_by_state_year:1"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "Kalifornien",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 396,
+      "output_tokens": 265,
+      "latency_s": 1.8658525943756104,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie hoch war die Einwohnerzahl Kaliforniens im Jahr 1970?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.us_history_population_by_state_year:0",
+          "function": {
+            "arguments": "{\"state\": \"California\", \"year\": 1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"What was the population of California in 1970?\"\n\nI need to use the `us_history_population_by_state_year` function.\n- state: \"California\" (English is supported)\n- year: 1970\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "tool_call_id": "functions.us_history_population_by_state_year:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.us_history_population_by_state_year:1",
+          "function": {
+            "arguments": "{\"state\": \"Kalifornien\", \"year\": 1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the parameters.\n\nThe function definition says:\n- state: string, \"The U.S. state for which to retrieve the population. Languages: English, German.\"\n- year: number, \"The year for which to retrieve the population.\"\n\nMy parameters were:\n- state: \"California\"\n- year: 1970\n\nThis looks correct. Maybe there's an issue with the state name format or the year? Or maybe the API expects a different spelling? Let me check if maybe German state names are required or if there's a specific format issue.\n\nWait, perhaps the tool expects the state parameter in a different way, or maybe there's a bug. But according to the schema, it should accept \"California\" and 1970.\n\nActually, looking at the error again - it says \"invalid parameters for function\". Let me re-examine my JSON. It looks correct. Maybe the system has a bug, or maybe I should try with a different capitalization or with the German name \"Kalifornien\" since the parameter description says \"Languages: English, German.\"\n\nLet me try with \"Kalifornien\"."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

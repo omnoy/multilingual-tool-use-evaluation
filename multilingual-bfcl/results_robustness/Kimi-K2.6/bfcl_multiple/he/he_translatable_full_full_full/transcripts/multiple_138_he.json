@@ -1,0 +1,139 @@
+{
+  "id": "multiple_138_he",
+  "source_id": "multiple_138",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1212,
+  "total_output_tokens": 1789,
+  "total_latency_s": 12.099520206451416,
+  "estimated_cost_usd": 0.0083074,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כיצד להשיג את פרטי המידע המפורט של התיק המשפטי המדינה נגד אדמס?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "legal_case.fetch": {
+        "case_id": [
+          "המדינה נגד אדמס",
+          "R_vs_Adams"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "כדי לאחזר את פרטי התיק המשפטי **\"המדינה נגד אדמס\"**, אני זקוק למזהה התיק (case_id). \n\nאנא ספק את מספר התיק או את המזהה הייחודי שלו במערכת, ואשמח להביא עבורך את המידע המפורט."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 540,
+      "output_tokens": 1052,
+      "latency_s": 6.621962547302246,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "legal_case_fetch",
+          "arguments": {
+            "case_id": "המדינה נגד אדמס",
+            "details": true
+          },
+          "id": "functions.legal_case_fetch:0"
+        }
+      ],
+      "decoded": [
+        {
+          "legal_case_fetch": {
+            "case_id": "המדינה נגד אדמס",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 672,
+      "output_tokens": 737,
+      "latency_s": 5.47755765914917,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כיצד להשיג את פרטי המידע המפורט של התיק המשפטי המדינה נגד אדמס?"
+    },
+    {
+      "content": "כדי לאחזר את פרטי התיק המשפטי **\"המדינה נגד אדמס\"**, אני זקוק למזהה התיק (case_id). \n\nאנא ספק את מספר התיק או את המזהה הייחודי שלו במערכת, ואשמח להביא עבורך את המידע המפורט.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "The user is asking how to get detailed information about a legal case called \"המדינה נגד אדמס\" (The State v. Adams). \n\nTo fetch detailed case information, I need to use the `legal_case_fetch` function. But I don't have a case_id. The function requires `case_id` as a parameter. The user didn't provide the specific case ID.\n\nWait, let me re-read the user's question: \"כיצד להשיג את פרטי המידע המפורט של התיק המשפטי המדינה נגד אדמס?\" - \"How to get the detailed information of the legal case The State v. Adams?\"\n\nActually, this seems like the user is asking me to do it, not asking for instructions. But without a case_id, I cannot call the function. However, maybe the case name itself can be used as the identifier? Looking at the function definition:\n\n- `case_id`: string, \"המזהה של התיק המשפטי. שפות: אנגלית, עברית.\" (The identifier of the legal case. Languages: English, Hebrew.)\n\nThe function says the identifier can be in Hebrew or English. But \"המדינה נגד אדמס\" is the case name, not necessarily the case ID. However, perhaps the system accepts case names as identifiers? Or perhaps I should ask for the case ID?\n\nWait, looking at the user's phrasing again: \"כיצד להשיג את...\" means \"How to obtain/get...\" They are asking for the method/process, not necessarily asking me to execute it right now. But in the context of having tools available, they probably expect me to use the tool if possible.\n\nBut I don't have enough information - I need a case_id. I should ask the user for the case ID number or identifier. However, sometimes the case name might work. But \"המדינה נגד אדמס\" is very generic and might not be a unique identifier. A legal case database would typically need a docket number or specific case ID.\n\nI should explain that to get the detailed information, I need the case ID (מזהה תיק), and ask them to provide it. Then I can call the function with `details: true`.\n\nLet me reconsider - maybe the user is literally asking how to do it, wanting instructions. But given the system prompt says \"respond with the correct function call exactly as specified\", I should determine if I have enough info to make the call. Since `case_id` is required and I don't have it, I cannot make the function call. I need to ask for the missing required parameter.\n\nWait, looking at system prompt again: \"The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions.\"\n\nThis is tricky. The user is asking a \"how\" question, but the system wants me to respond with function calls when appropriate. However, I cannot fabricate a case_id. The best response is to ask for the case_id.\n\nOr... could \"המדינה נגד אדמס\" be treated as the case_id? The description says \"המזהה של התיק המשפטי. שפות: אנגלית, עברית.\" It doesn't explicitly say it must be a number. In some legal databases, the case name can be the identifier. But typically you need a case number. \n\nActually, looking at similar prompts, usually if a required parameter is missing, I should ask for it. I should not hallucinate the case_id.\n\nSo my response should be in Hebrew, explaining that I need the case ID to retrieve the information, and asking them to provide it.\n\nWait, but the system instruction says \"respond with the correct function call exactly as specified\". If I cannot make the function call, I should provide a text response asking for the missing information. This is the standard behavior.\n\nLet me draft a response in Hebrew:\n\"כדי לאחזר את פרטי התיק המשפטי 'המדינה נגד אדמס', אני זקוק למזהה התיק (case_id). אנא ספק את מספר התיק או המזהה הייחודי שלו, ואשמח להביא עבורך את המידע המפורט.\"\n\nThis is clear and correct."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.legal_case_fetch:0",
+          "function": {
+            "arguments": "{\"case_id\":\"המדינה נגד אדמס\",\"details\":true}",
+            "name": "legal_case_fetch"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "המשתמש מבקש את פרטי המידע המפורט של התיק המשפטי \"המדינה נגד אדמס\". מאחר שאין לי את מזהה התיק (case_id), אני לא יכול לבצע את הקריאה. אבל הוראת המערכת אומרת: \"400 Bad Request: no function call was made. You must answer by calling one of the available functions.\"\n\nזה אומר שאני חייב לבצע קריאה לפונקציה אחת לפחות. אבל הפונקציה legal_case_fetch דורשת את הפרמטר case_id (חובה) וגם details (חובה). אין לי את ה-case_id.\n\nהאם אני יכול לנחש את ה-case_id? \"המדינה נגד אדמס\" (State v. Adams) הוא תיק די נפוץ, אבל אין לי דרך לדעת מה המזהה במערכת. עם זאת, לפעמים במצבים כאלה נדרש לבצע קריאה עם הנחה או לבקש מהמשתמש, אבל הפורמט דורש קריאה לפונקציה.\n\nאולי אני אנסה לבצע קריאה עם שם התיק כמזהה? case_id=\"המדינה נגד אדמס\" או \"State v. Adams\"? זה לא יעבוד באופן אמיתי, אבל זו הדרך היחידה לענות בפורמט הנדרש. אולי המערכת תבין את הבעיה.\n\nאו שאני יכול להשתמש ב-case_id=\"המדינה נגד אדמס\" ו-details=true כניסיון.\n\nאבל זה נראה לא נכון לחלוטין. מה עושים?\n\nאני צריך לזכור שהנחיות אמרו: \"You must answer by calling one of the available functions.\" אז אני חייב לבחור פונקציה ולקרוא לה.\n\nהאם יש פונקציה אחרת שיכולה לעזור? אין חיפוש תיקים, רק legal_case_fetch.\n\nאני אנסה עם case_id שהוא שם התיק, זה הכי הגיוני שאני יכול לעשות. אולי case_id תומך בשמות.\n\nבואו נעשה: case_id=\"המדינה נגד אדמס\" ו-details=true.\n\nאו \"State v. Adams\" באנגלית? המשתמש כתב בעברית.\n\nננסה case_id=\"המדינה נגד אדמס\", details=true."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

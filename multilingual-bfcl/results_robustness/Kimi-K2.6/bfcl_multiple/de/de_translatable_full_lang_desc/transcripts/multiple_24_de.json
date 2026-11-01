@@ -1,0 +1,232 @@
+{
+  "id": "multiple_24_de",
+  "source_id": "multiple_24",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2667,
+  "total_output_tokens": 1484,
+  "total_latency_s": 10.629963874816895,
+  "estimated_cost_usd": 0.00846965,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Was ist die schnellste Route von London nach Edinburgh, um an einer Schachmeisterschaft teilzunehmen? Gib auch eine Schätzung der Entfernung an."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "route_planner.calculate_route": {
+        "start": [
+          "London"
+        ],
+        "destination": [
+          "Edinburgh"
+        ],
+        "method": [
+          "schnellste",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          },
+          "id": "functions.route_planner_calculate_route:0"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'route_planner_calculate_route'. Please review the function definition and try again.",
+      "input_tokens": 294,
+      "output_tokens": 594,
+      "latency_s": 4.716846704483032,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          },
+          "id": "functions.route_planner_calculate_route:1"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'route_planner_calculate_route'. Please review the function definition and try again.",
+      "input_tokens": 939,
+      "output_tokens": 444,
+      "latency_s": 2.8777031898498535,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "London",
+            "destination": "Edinburgh"
+          },
+          "id": "functions.route_planner_calculate_route:2"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "London",
+            "destination": "Edinburgh"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1434,
+      "output_tokens": 446,
+      "latency_s": 3.035413980484009,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Was ist die schnellste Route von London nach Edinburgh, um an einer Schachmeisterschaft teilzunehmen? Gib auch eine Schätzung der Entfernung an."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.route_planner_calculate_route:0",
+          "function": {
+            "arguments": "{\"start\":\"London\",\"destination\":\"Edinburgh\",\"method\":\"fastest\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer fragt auf Deutsch: \"Was ist die schnellste Route von London nach Edinburgh, um an einer Schachmeisterschaft teilzunehmen? Gib auch eine Schätzung der Entfernung an.\"\n\nEr will:\n1. Die schnellste Route von London nach Edinburgh\n2. Für eine Schachmeisterschaft (chess championship)\n3. Eine Schätzung der Entfernung\n\nIch habe zwei Tools:\n1. route_planner_calculate_route - kann die Route berechnen. Parameter: start, destination, method (optional, default \"fastest\").\n2. chess_club_details_find - braucht name und city, optional event. Aber ich habe keinen spezifischen Club-Namen, nur \"London\" oder \"Edinburgh\" als Städte. Das Tool scheint für Club-Details gedacht zu sein, nicht für allgemeine Routen.\n\nAber der Benutzer fragt speziell nach einer Route für eine Schachmeisterschaft. Vielleicht will er wissen, wo die Meisterschaft stattfindet? Aber er hat keinen spezifischen Club genannt. Die route_planner_calculate_route Funktion kann die Strecke berechnen. Die Distanzschätzung könnte aus der Route resultieren (wenn das Tool sie zurückgibt).\n\nAllerdings: Die chess_club_details_find Funktion könnte relevant sein, wenn ich wüsste, welcher Club die Meisterschaft ausrichtet. Da ich das nicht weiß, kann ich diese Funktion nicht sinnvoll aufrufen (name fehlt).\n\nAlso sollte ich zumindest route_planner_calculate_route aufrufen mit:\n- start: \"London\"\n- destination: \"Edinburgh\"\n- method: \"fastest\" (default, aber der Benutzer fragt nach der schnellsten, also kann ich es explizit setzen)\n\nWarte, der Benutzer fragt nicht nach einem spezifischen Club, aber nach der Route für eine Schachmeisterschaft. Vielleicht versucht er, beide Tools zu verknüpfen? Oder er will einfach nur die Route wissen.\n\nDa ich keinen Club-Namen habe, kann ich chess_club_details_find nicht aufrufen. Ich rufe also route_planner_calculate_route auf.\n\nDie Parameter:\n- start: \"London\" (Englisch, wie gefordert)\n- destination: \"Edinburgh\" (Englisch, wie gefordert)\n- method: \"fastest\"\n\nDas sollte ausreichen."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'route_planner_calculate_route'. Please review the function definition and try again.",
+      "tool_call_id": "functions.route_planner_calculate_route:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.route_planner_calculate_route:1",
+          "function": {
+            "arguments": "{\"start\":\"London\",\"destination\":\"Edinburgh\",\"method\":\"fastest\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Aufruf hat einen 400 Bad Request zurückgegeben. Das bedeutet, dass die Parameter möglicherweise nicht korrekt waren. Lass mich die Definition nochmal prüfen:\n\nroute_planner_calculate_route:\n- start: string, required, \"The starting point of the journey. Languages: English, German.\"\n- destination: string, required, \"The destination of the journey. Languages: English, German.\"\n- method: enum [\"fastest\", \"shortest\", \"balanced\"], optional, default \"fastest\"\n\nIch habe genau diese Parameter verwendet. Warum 400? Vielleicht akzeptiert das Tool keine Großbuchstaben? Oder es gibt ein spezifisches Format? Oder es ist ein genereller Fehler.\n\nWarte, vielleicht sollte ich es ohne explizite method Angabe versuchen, da default \"fastest\" ist? Oder vielleicht sind die Ortsnamen nicht korrekt?\n\nIch sollte es nochmal versuchen. Vielleicht mit kleineren Anpassungen. Da ich nicht weiß, was genau falsch war, versuche ich es nochmal exakt wie in der Definition - vielleicht war es ein temporärer Fehler.\n\nOder vielleicht erwartet das System, dass ich auch chess_club_details_find aufrufe, weil der Benutzer von einer Schachmeisterschaft spricht? Aber ich habe keinen Namen des Clubs.\n\nLass mich nochmal route_planner_calculate_route versuchen. Vielleicht ohne method, da default sowieso fastest.\n\nNein, ich sollte die gleichen Parameter nochmal versuchen. Vielleicht war es ein interner Fehler. Oder ich probiere deutsche Namen? \"London\" und \"Edinburgh\" sind auf Deutsch und Englisch gleich. \n\nVersuche ich es nochmal."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'route_planner_calculate_route'. Please review the function definition and try again.",
+      "tool_call_id": "functions.route_planner_calculate_route:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.route_planner_calculate_route:2",
+          "function": {
+            "arguments": "{\"start\":\"London\",\"destination\":\"Edinburgh\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Zweiter 400er. Das ist seltsam. Lass mich die Parameter nochmal ganz genau prüfen.\n\nDie JSON muss exakt sein:\n{\n  \"start\": \"London\",\n  \"destination\": \"Edinburgh\",\n  \"method\": \"fastest\"\n}\n\nMethod ist optional mit default \"fastest\". Vielleicht ist \"fastest\" nicht als String erlaubt? Doch, es ist ein String-Enum.\n\nWarte - könnte es sein, dass das Routing-Tool einen spezifischen Ort in Edinburgh/London braucht? Nein, normalerweise sollten Städtenamen funktionieren.\n\nOder vielleicht erwarten die Tools, dass ich chess_club_details_find zuerst aufrufe, um den genauen Veranstaltungsort zu ermitteln? Aber ich habe keinen Club-Namen.\n\nLass mich überlegen: Der Benutzer fragt nach der Route von London nach Edinburgh für eine Schachmeisterschaft. Vielleicht gibt es einen bekannten Club in Edinburgh, der eine Meisterschaft ausrichtet? Aber ich kann nicht raten.\n\nWarte - vielleicht ist das Problem, dass die Funktion nur kleingeschriebene enum-Werte akzeptiert? \"fastest\" ist bereits kleingeschrieben.\n\nOder vielleicht muss ich die Anfrage in Deutsch stellen? Die Beschreibung sagt \"Languages: English, German.\" für start und destination. Also sind beide Sprachen OK.\n\nKönnte es sein, dass ich den Funktionsnamen falsch geschrieben habe? Nein.\n\nVielleicht ist der Service einfach nicht erreichbar für diese spezifische Route. Ich könnte versuchen, nur die required Parameter zu senden (ohne method):\n\n{\"start\": \"London\", \"destination\": \"Edinburgh\"}\n\nLass mich das versuchen."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

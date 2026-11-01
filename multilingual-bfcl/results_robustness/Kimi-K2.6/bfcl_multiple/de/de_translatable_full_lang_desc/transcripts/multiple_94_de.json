@@ -1,0 +1,111 @@
+{
+  "id": "multiple_94_de",
+  "source_id": "multiple_94",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 356,
+  "total_output_tokens": 225,
+  "total_latency_s": 1.575620412826538,
+  "estimated_cost_usd": 0.0012382,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich möchte für 3 Nächte eine Suite mit Queensize-Bett im Hilton New York buchen. Können Sie die Preise für mich herausfinden?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel_room_pricing.get": {
+        "hotelName": [
+          "Hilton New York"
+        ],
+        "roomType": [
+          "Suite mit Queensize-Bett"
+        ],
+        "nights": [
+          3
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_room_pricing_get",
+          "arguments": {
+            "hotelName": "Hilton New York",
+            "nights": 3,
+            "roomType": "Suite mit Queensize-Bett"
+          },
+          "id": "functions.hotel_room_pricing_get:0"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_room_pricing_get": {
+            "hotelName": "Hilton New York",
+            "nights": 3,
+            "roomType": "Suite mit Queensize-Bett"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 356,
+      "output_tokens": 225,
+      "latency_s": 1.575620412826538,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich möchte für 3 Nächte eine Suite mit Queensize-Bett im Hilton New York buchen. Können Sie die Preise für mich herausfinden?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.hotel_room_pricing_get:0",
+          "function": {
+            "arguments": "{\"hotelName\": \"Hilton New York\", \"nights\": 3, \"roomType\": \"Suite mit Queensize-Bett\"}",
+            "name": "hotel_room_pricing_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"I would like to book a suite with a queen-size bed at Hilton New York for 3 nights. Can you find the prices for me?\"\n\nI need to use the `hotel_room_pricing_get` function.\nParameters:\n- hotelName: \"Hilton New York\"\n- nights: 3\n- roomType: \"Suite mit Queensize-Bett\" or \"Suite with queen size bed\" - but the tool description says \"Languages: English, German\" so German should be fine. Actually, looking at the schema descriptions again: \"The name of the hotel e.g. Hilton New York Languages: English, German.\" and \"Type of the room to be booked. Languages: English, German.\" So I can provide the room type in German. The user specified \"Suite mit Queensize-Bett\".\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

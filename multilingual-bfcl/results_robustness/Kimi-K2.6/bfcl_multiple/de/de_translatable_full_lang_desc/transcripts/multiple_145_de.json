@@ -1,0 +1,177 @@
+{
+  "id": "multiple_145_de",
+  "source_id": "multiple_145",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1349,
+  "total_output_tokens": 1379,
+  "total_latency_s": 8.37721037864685,
+  "estimated_cost_usd": 0.006797549999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie viel CO2 produziert ein benzinbetriebenes Auto jährlich, das 12,000 Meilen pro Jahr fährt und eine Kraftstoffeffizienz von 20 Meilen pro Gallone aufweist?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calculate_emissions": {
+        "distance": [
+          12000
+        ],
+        "fuel_type": [
+          "Benzin",
+          "Benzin"
+        ],
+        "fuel_efficiency": [
+          20
+        ],
+        "efficiency_reduction": [
+          "",
+          0.0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_efficiency": 20,
+            "fuel_type": "gasoline"
+          },
+          "id": "functions.calculate_emissions:0"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_efficiency": 20,
+            "fuel_type": "gasoline"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calculate_emissions'. Please review the function definition and try again.",
+      "input_tokens": 423,
+      "output_tokens": 463,
+      "latency_s": 3.657355785369873,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_efficiency": 20,
+            "fuel_type": "Benzin"
+          },
+          "id": "functions.calculate_emissions:1"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_efficiency": 20,
+            "fuel_type": "Benzin"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 926,
+      "output_tokens": 916,
+      "latency_s": 4.7198545932769775,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie viel CO2 produziert ein benzinbetriebenes Auto jährlich, das 12,000 Meilen pro Jahr fährt und eine Kraftstoffeffizienz von 20 Meilen pro Gallone aufweist?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calculate_emissions:0",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_efficiency\": 20, \"fuel_type\": \"gasoline\"}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"How much CO2 does a gasoline-powered car produce annually that drives 12,000 miles per year and has a fuel efficiency of 20 miles per gallon?\"\n\nI need to use the `calculate_emissions` function.\nParameters:\n- distance: 12000 (miles)\n- fuel_efficiency: 20 (miles per gallon)\n- fuel_type: \"gasoline\" or in German \"Benzin\" - but the function description says \"Languages: English, German\" for fuel_type, so either should work. I'll use \"gasoline\" to be safe since the schema examples usually prefer English, but \"Benzin\" should also be accepted. Actually, looking at the tool definition, it says \"Type of fuel used by the vehicle. Languages: English, German.\" So both are fine. I'll use \"gasoline\" or \"Benzin\". Let me use \"gasoline\" as it's the standard term in the function's likely training data, but \"Benzin\" is explicitly allowed. Let me use \"Benzin\" since the user used it, but actually standard practice for these APIs is often to use English values even if descriptions are multilingual. However, since it explicitly says German is supported, I could use \"Benzin\". To be safest, I'll use \"gasoline\".\n\nWait, I should check if there are any optional parameters. efficiency_reduction is optional, default 0. So I don't need to specify it.\n\nThe function call should be:\ncalculate_emissions(distance=12000, fuel_efficiency=20, fuel_type=\"gasoline\")\n\nOr I could use \"Benzin\" for fuel_type since German is supported. I'll use \"gasoline\" as it's the most standard for this type of API, but both should be acceptable. Actually, the user asked in German, and the tool accepts German. Let me provide the call.\n\nActually, let me look at the instructions again: \"respond with the correct function call exactly as specified in the tool definitions.\"\n\nSo I need to output exactly the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calculate_emissions'. Please review the function definition and try again.",
+      "tool_call_id": "functions.calculate_emissions:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calculate_emissions:1",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_efficiency\": 20, \"fuel_type\": \"Benzin\"}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request with invalid parameters. Let me review the function definition again.\n\n```json\n{\n  \"description\": \"Calculates the annual carbon dioxide emissions produced by a vehicle based on the distance traveled, the fuel type and the fuel efficiency of the vehicle.\",\n  \"name\": \"calculate_emissions\",\n  \"parameters\": {\n    \"properties\": {\n      \"distance\": {\n        \"description\": \"The distance travelled in miles.\",\n        \"type\": \"number\"\n      },\n      \"efficiency_reduction\": {\n        \"default\": 0,\n        \"description\": \"The percentage decrease in fuel efficiency per year (optional). Default is 0 This is a float type value.\",\n        \"type\": \"number\"\n      },\n      \"fuel_efficiency\": {\n        \"description\": \"The vehicle's fuel efficiency in miles per gallon.\",\n        \"type\": \"number\"\n      },\n      \"fuel_type\": {\n        \"description\": \"Type of fuel used by the vehicle. Languages: English, German.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"distance\", \"fuel_efficiency\", \"fuel_type\"],\n    \"type\": \"object\"\n  }\n}\n```\n\nThe parameters I sent were:\n- distance: 12000\n- fuel_efficiency: 20\n- fuel_type: \"gasoline\"\n\nThese all seem correct and match the schema. The required fields are all present. The types are correct (number, number, string).\n\nWait, could it be that \"gasoline\" is not accepted and it must be exactly \"petrol\" or \"Benzin\"? Or maybe the API expects German since the user asked in German? But the parameter accepts both languages.\n\nOr maybe the issue is that the API doesn't actually support German values despite the description saying so? Or perhaps it needs to be exactly \"Gasoline\" with capital G? No, that shouldn't matter.\n\nLet me think... maybe the system is case-sensitive or has an enum limitation that wasn't exposed in the schema? Or perhaps the distance needs to be a float? No, 12000 is a valid number.\n\nWait, could the user have written \"12,000\" with a comma? I converted it to 12000 which is correct.\n\nMaybe the issue is that fuel_type needs to be exactly \"Benzin\" because the system detected German language and expects German fuel type? But the schema explicitly says both languages are accepted.\n\nAlternatively, maybe there's a validation error because I didn't provide efficiency_reduction? But it has a default value and is not in the required list.\n\nActually, looking at the error: \"400 Bad Request: invalid parameters\". This might be a simulated error for the purpose of this exercise? No, I should try again. Maybe I should try with \"petrol\"? Or \"Benzin\"?\n\nWait, in the US it's \"gasoline\", in the UK it's \"petrol\". The German word is \"Benzin\". Since the user asked in German, maybe I should try \"Benzin\". Or maybe try \"Gasoline\" capitalized? \n\nActually, another thought: the schema says the type is \"object\" and properties are defined. My JSON should be correct. Let me re-read carefully... \n\nOh wait! Could it be that the function expects the parameter names to be exactly as written but maybe I made a typo? No, they look correct.\n\nPerhaps the function API is strict about the fuel_type being from a specific enum not exposed in the schema, and \"gasoline\" isn't in it but \"petrol\" is? Or vice versa?\n\nLet me try with \"Benzin\" since the user wrote \"benzinbetriebenes\" and the tool description explicitly mentions German is supported. Or maybe try both? But I can only make one call per turn.\n\nAnother idea: perhaps the system is expecting German because the query is in German, and \"gasoline\" is seen as invalid in the German context? Let me try \"Benzin\".\n\nActually, looking at similar tools in these evaluations, sometimes they accept \"gasoline\", sometimes they require exact strings. Given the user said \"benzinbetriebenes\", the safest bet in a multilingual system that accepts German might be to use \"Benzin\".\n\nLet me retry with \"Benzin\"."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,120 @@
+{
+  "id": "multiple_92_de",
+  "source_id": "multiple_92",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 422,
+  "total_output_tokens": 526,
+  "total_latency_s": 3.5461926460266113,
+  "estimated_cost_usd": 0.0025049,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Besorge mir eine Liste der verfügbaren vegetarischen und glutenfreien Lebensmittel bei Wolmart in der Nähe von Denver."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "walmart.vegan_products": {
+        "location": [
+          "Denver, CO",
+          "Denver"
+        ],
+        "categories": [
+          [
+            "vegan",
+            "gluten-free"
+          ],
+          [
+            "gluten-free",
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "walmart_vegan_products",
+          "arguments": {
+            "location": "Denver, CO",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          },
+          "id": "functions.walmart_vegan_products:0"
+        }
+      ],
+      "decoded": [
+        {
+          "walmart_vegan_products": {
+            "location": "Denver, CO",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 422,
+      "output_tokens": 526,
+      "latency_s": 3.5461926460266113,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Besorge mir eine Liste der verfügbaren vegetarischen und glutenfreien Lebensmittel bei Wolmart in der Nähe von Denver."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.walmart_vegan_products:0",
+          "function": {
+            "arguments": "{\"location\":\"Denver, CO\",\"categories\":[\"vegan\",\"gluten-free\"]}",
+            "name": "walmart_vegan_products"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer fragt nach vegetarischen und glutenfreien Lebensmitteln bei Walmart in der Nähe von Denver.\n\nZuerst muss ich die richtige Funktion auswählen. Es gibt drei Funktionen für vegane/vegetarische Produkte bei verschiedenen Supermärkten:\n- safeway_vegan_products\n- wholefoods_vegan_products\n- walmart_vegan_products\n\nDer Benutzer fragt nach \"Wolmart\" - das ist wahrscheinlich ein Schreibfehler für \"Walmart\". Ich sollte walmart_vegan_products verwenden.\n\nDer Standort ist \"Denver\". Ich sollte ein Format wie \"Denver, CO\" verwenden, wie in den Tool-Definitionen als Beispiel angegeben.\n\nBei den Kategorien: Der Benutzer fragt nach \"vegetarischen und glutenfreien\" Produkten. Die verfügbaren Kategorien sind jedoch nur [\"vegan\", \"gluten-free\"] gemäß den Tool-Definitionen. Es gibt keine \"vegetarian\" Kategorie, nur \"vegan\". \n\nDa der Benutzer nach \"vegetarischen\" fragt und die Funktionen nur \"vegan\" und \"gluten-free\" unterstützen, sollte ich die bestmögliche Annäherung wählen. Ich könnte entweder:\n1. Nur \"gluten-free\" verwenden, da \"vegetarisch\" nicht unterstützt wird\n2. \"vegan\" verwenden, da Veganer auch Vegetarier sind (striktere Form)\n3. Beides verwenden: [\"vegan\", \"gluten-free\"]\n\nDa der Benutzer ausdrücklich nach beiden fragt, und die Definition besagt, dass Kategorien optional sind mit einem Array von \"vegan\" oder \"gluten-free\", werde ich beides angeben: [\"vegan\", \"gluten-free\"]. Obwohl der Benutzer \"vegetarisch\" sagte, ist \"vegan\" die nächstbeste verfügbare Option in diesem System.\n\nDie location sollte \"Denver, CO\" sein.\n\nIch rufe also walmart_vegan_products mit:\n- location: \"Denver, CO\"\n- categories: [\"vegan\", \"gluten-free\"]"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

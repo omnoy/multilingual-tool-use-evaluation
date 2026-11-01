@@ -1,0 +1,120 @@
+{
+  "id": "multiple_187_de",
+  "source_id": "multiple_187",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 386,
+  "total_output_tokens": 439,
+  "total_latency_s": 3.1841814517974854,
+  "estimated_cost_usd": 0.0021227,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Prüfe die Preise für Tomaten und Kopfsalat bei Houl Fuds in Los Angeles."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "whole_foods.check_price": {
+        "location": [
+          "Los Angeles",
+          "LA"
+        ],
+        "items": [
+          [
+            "tomatoes",
+            "lettuce"
+          ],
+          [
+            "lettuce",
+            "tomatoes"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "whole_foods_check_price",
+          "arguments": {
+            "items": [
+              "tomatoes",
+              "lettuce"
+            ],
+            "location": "Los Angeles"
+          },
+          "id": "functions.whole_foods_check_price:0"
+        }
+      ],
+      "decoded": [
+        {
+          "whole_foods_check_price": {
+            "items": [
+              "tomatoes",
+              "lettuce"
+            ],
+            "location": "Los Angeles"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 386,
+      "output_tokens": 439,
+      "latency_s": 3.1841814517974854,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Prüfe die Preise für Tomaten und Kopfsalat bei Houl Fuds in Los Angeles."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.whole_foods_check_price:0",
+          "function": {
+            "arguments": "{\"items\": [\"tomatoes\",\"lettuce\"], \"location\": \"Los Angeles\"}",
+            "name": "whole_foods_check_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer möchte die Preise für Tomaten und Kopfsalat bei \"Houl Fuds\" in Los Angeles prüfen. Das scheint \"Whole Foods\" zu sein, basierend auf der phonetischen Ähnlichkeit und dem verfügbaren Tool `whole_foods_check_price`.\n\nIch muss das Tool `whole_foods_check_price` verwenden.\n- items: [\"Tomaten\", \"Kopfsalat\"] oder besser auf Englisch? Das Tool ist für eine Whole Foods Location in Los Angeles. Es wäre besser, die Artikel auf Englisch anzugeben, da es sich um einen US-Supermarkt handelt: [\"tomatoes\", \"lettuce\"] oder [\"head lettuce\"]. Der Benutzer sagte \"Kopfsalat\", was im Deutschen typischerweise \"iceberg lettuce\" oder einfach \"lettuce\" ist. Ich werde es als \"tomatoes\" und \"lettuce\" oder \"head lettuce\" übergeben. Da der Benutzer auf Deutsch fragt, aber das Tool wahrscheinlich englische Produktnamen erwartet (Whole Foods USA), gebe ich die Items auf Englisch an.\n- location: \"Los Angeles\"\n\nWarte, die phonetische Ähnlichkeit \"Houl Fuds\" -> \"Whole Foods\" ist stark. Ich sollte \"Whole Foods\" als Location-String verwenden? Die Parameterbeschreibung sagt: \"Location of the Whole Foods store.\" Also wahrscheinlich \"Los Angeles\" oder etwas Spezifischeres. Da der Benutzer \"Houl Fuds in Los Angeles\" sagt, interpretiere ich das als Whole Foods in Los Angeles.\n\nAber Moment, die items sollten auf Englisch sein, da es ein US-Store ist. Ich werde [\"tomatoes\", \"lettuce\"] verwenden."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

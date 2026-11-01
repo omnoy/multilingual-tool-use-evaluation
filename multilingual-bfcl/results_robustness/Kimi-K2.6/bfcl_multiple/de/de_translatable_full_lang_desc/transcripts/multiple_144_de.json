@@ -1,0 +1,110 @@
+{
+  "id": "multiple_144_de",
+  "source_id": "multiple_144",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 238,
+  "total_output_tokens": 295,
+  "total_latency_s": 2.077218532562256,
+  "estimated_cost_usd": 0.0014061,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie hoch ist der Luftqualitätsindex in London am 2022/08/16?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "air_quality": {
+        "location": [
+          "London"
+        ],
+        "date": [
+          "2022-08-16",
+          "16/08/2022",
+          "Aug.16,2022",
+          "2022/08/16",
+          "16\\08\\2022"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality",
+          "arguments": {
+            "location": "London",
+            "date": "2022/08/16"
+          },
+          "id": "functions.air_quality:0"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality": {
+            "location": "London",
+            "date": "2022/08/16"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 238,
+      "output_tokens": 295,
+      "latency_s": 2.077218532562256,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie hoch ist der Luftqualitätsindex in London am 2022/08/16?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality:0",
+          "function": {
+            "arguments": "{\"location\": \"London\", \"date\": \"2022/08/16\"}",
+            "name": "air_quality"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the air quality index in London on 2022/08/16. They wrote in German. I need to call the air_quality function with location \"London\" and date \"2022/08/16\" (or maybe format it differently? The tool definition says date is a string, and the example in the tool definition shows it can be in various formats. The parameter description says \"The date you want to get the air quality index for. Default is today. Languages: English, German.\" So \"2022/08/16\" should be fine, or maybe \"16/08/2022\"? The user specifically said \"2022/08/16\". I should pass that as is. The location should be \"London\".\n\nLet me check: The function air_quality takes location (city) and date (string). Both are required. So I'll call air_quality with location=\"London\" and date=\"2022/08/16\".\n\nWait, the user wrote in German, but the function parameters accept English and German. \"London\" is the same in German. The date format \"2022/08/16\" is clear.\n\nSo the function call should be:\nair_quality(location=\"London\", date=\"2022/08/16\")\n\nOr in JSON format as requested."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

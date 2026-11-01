@@ -1,0 +1,118 @@
+{
+  "id": "multiple_176_he",
+  "source_id": "multiple_176",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1063,
+  "total_output_tokens": 521,
+  "total_latency_s": 3.648958444595337,
+  "estimated_cost_usd": 0.0030938499999999996,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תן לי את לוח המשחקים של מנצ'סטר יונייטד ל-6 המשחקים הבאים בליגת העל האנגלית."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sports_team.get_schedule": {
+        "team_name": [
+          "מנצ'סטר יונייטד",
+          "מאן יונייטד",
+          "מאן יו",
+          "MUFC"
+        ],
+        "num_of_games": [
+          6
+        ],
+        "league": [
+          "ליגת העל האנגלית",
+          "PL"
+        ],
+        "location": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_team_get_schedule",
+          "arguments": {
+            "team_name": "מנצ'סטר יונייטד",
+            "num_of_games": 6,
+            "league": "ליגת העל האנגלית"
+          },
+          "id": "functions.sports_team_get_schedule:0"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_team_get_schedule": {
+            "team_name": "מנצ'סטר יונייטד",
+            "num_of_games": 6,
+            "league": "ליגת העל האנגלית"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1063,
+      "output_tokens": 521,
+      "latency_s": 3.648958444595337,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תן לי את לוח המשחקים של מנצ'סטר יונייטד ל-6 המשחקים הבאים בליגת העל האנגלית."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sports_team_get_schedule:0",
+          "function": {
+            "arguments": "{\"team_name\":\"מנצ'סטר יונייטד\",\"num_of_games\":6,\"league\":\"ליגת העל האנגלית\"}",
+            "name": "sports_team_get_schedule"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants the schedule for Manchester United for the next 6 games in the English Premier League.\n\nThe function to use is `sports_team_get_schedule`.\nParameters:\n- team_name: \"Manchester United\" (or in Hebrew: \"מנצ'סטר יונייטד\") - the tool says languages: English, Hebrew, so either should work.\n- num_of_games: 6\n- league: English Premier League. In Hebrew this would be \"הפרמייר ליג\" or \"ליגת העל האנגלית\". The tool says languages: English, Hebrew. I should provide the team name and league name. I'll use Hebrew as requested but either works. Actually, to be safest, I could use English for the team and league identifiers as they are more standard, but the instructions say the user writes in Hebrew and I should understand and respond with the correct function call. The tool explicitly supports Hebrew, so I can use Hebrew. But sometimes these APIs work better with English names. However, the user asked in Hebrew and the tool supports Hebrew. Let me check the tool description again: \"שם קבוצת הספורט. שפות: אנגלית, עברית.\" and \"שם ליגת הספורט. אם לא סופק, הפונקציה תאחזר את לוח הזמנים של כל המשחקים, ללא קשר לליגה. שפות: אנגלית, עברית.\"\n\nI should probably provide the team and league names. Manchester United in Hebrew is \"מנצ'סטר יונייטד\". English Premier League in Hebrew is \"ליגת העל האנגלית\" or \"הפרמייר ליג האנגלית\".\n\nI'll provide the parameters as:\n- team_name: \"מנצ'סטר יונייטד\"\n- num_of_games: 6\n- league: \"ליגת העל האנגלית\"\n\nWait, the system instruction says: \"respond with the correct function call exactly as specified in the tool definitions.\" This means I should output the function call.\n\nLet me construct the JSON for the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

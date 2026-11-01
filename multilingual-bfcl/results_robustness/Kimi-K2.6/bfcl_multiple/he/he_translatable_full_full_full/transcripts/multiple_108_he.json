@@ -1,0 +1,112 @@
+{
+  "id": "multiple_108_he",
+  "source_id": "multiple_108",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 436,
+  "total_output_tokens": 250,
+  "total_latency_s": 1.664271593093872,
+  "estimated_cost_usd": 0.0014142,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חשב את קיבול החום בלחץ קבוע עבור אוויר, בהינתן שהטמפרטורה שלו היא 298K והנפח הוא 10 מ\"ק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calc_heat_capacity": {
+        "temp": [
+          298
+        ],
+        "volume": [
+          10
+        ],
+        "gas": [
+          "אוויר",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "אוויר"
+          },
+          "id": "functions.calc_heat_capacity:0"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "אוויר"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 436,
+      "output_tokens": 250,
+      "latency_s": 1.664271593093872,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חשב את קיבול החום בלחץ קבוע עבור אוויר, בהינתן שהטמפרטורה שלו היא 298K והנפח הוא 10 מ\"ק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calc_heat_capacity:0",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10, \"gas\": \"אוויר\"}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to calculate the heat capacity at constant pressure for air, given:\n- Temperature: 298K\n- Volume: 10 m³\n\nI should use the `calc_heat_capacity` function. Let me check the parameters:\n- temp: 298 (required)\n- volume: 10 (required)\n- gas: \"air\" or \"אוויר\" (optional, but I should specify it since the user explicitly mentioned air)\n\nThe description says the function calculates \"heat capacity at constant pressure of air using its temperature and volume\". Even though it says \"of air\" in the description, there's a gas parameter where air is the default. I'll specify \"אוויר\" or \"air\" to be safe. Let me check the parameter description: \"סוג הגז, כאשר אוויר הוא ברירת המחדל. שפות: אנגלית, עברית.\" So I can pass \"אוויר\".\n\nThe user is asking in Hebrew, so I'll call the function with the appropriate parameters."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

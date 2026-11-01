@@ -1,0 +1,115 @@
+{
+  "id": "multiple_39_de",
+  "source_id": "multiple_39",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 243,
+  "total_output_tokens": 189,
+  "total_latency_s": 1.3835041522979736,
+  "estimated_cost_usd": 0.00098685,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde eine Fahrt von New York nach Philadelphia, die höchstens $50 kostet."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "ride_hailing.get_rides": {
+        "source": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "NYC",
+          "NY"
+        ],
+        "destination": [
+          "Philadelphia"
+        ],
+        "max_cost": [
+          50
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          },
+          "id": "functions.ride_hailing_get_rides:0"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 243,
+      "output_tokens": 189,
+      "latency_s": 1.3835041522979736,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde eine Fahrt von New York nach Philadelphia, die höchstens $50 kostet."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.ride_hailing_get_rides:0",
+          "function": {
+            "arguments": "{\"source\": \"New York\", \"destination\": \"Philadelphia\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Alright, let me parse the German request:\n\n\"Finde eine Fahrt von New York nach Philadelphia, die höchstens $50 kostet.\"\n\nTranslation: Find a ride from New York to Philadelphia that costs at most $50.\n\nI need to use the `ride_hailing_get_rides` function with the following parameters:\n- source: \"New York\"\n- destination: \"Philadelphia\"\n- max_cost: 50.0 (since it's specified as at most $50)\n\nLet me check the parameter types:\n- source: string ✓\n- destination: string ✓\n- max_cost: float (default is 1000000) ✓\n\nThis is straightforward. I'll call the function with these parameters."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

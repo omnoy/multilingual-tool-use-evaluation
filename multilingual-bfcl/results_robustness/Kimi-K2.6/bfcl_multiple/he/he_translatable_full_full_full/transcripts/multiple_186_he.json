@@ -1,0 +1,172 @@
+{
+  "id": "multiple_186_he",
+  "source_id": "multiple_186",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1457,
+  "total_output_tokens": 1021,
+  "total_latency_s": 7.893174171447754,
+  "estimated_cost_usd": 0.00546815,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי מתכון טבעוני לבראוניז שזמן ההכנה שלו פחות מ-30 דקות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_recipe": {
+        "dietary_restrictions": [
+          "טבעוני"
+        ],
+        "recipe_type": [
+          "קינוח"
+        ],
+        "time": [
+          30
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_recipe",
+          "arguments": {
+            "dietary_restrictions": "טבעוני",
+            "recipe_type": "בראוניז",
+            "time": 30
+          },
+          "id": "functions.find_recipe:0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_recipe": {
+            "dietary_restrictions": "טבעוני",
+            "recipe_type": "בראוניז",
+            "time": 30
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_recipe'. Please review the function definition and try again.",
+      "input_tokens": 426,
+      "output_tokens": 565,
+      "latency_s": 4.284186840057373,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_recipe",
+          "arguments": {
+            "dietary_restrictions": "טבעוני",
+            "recipe_type": "קינוח",
+            "time": 30
+          },
+          "id": "functions.find_recipe:1"
+        }
+      ],
+      "decoded": [
+        {
+          "find_recipe": {
+            "dietary_restrictions": "טבעוני",
+            "recipe_type": "קינוח",
+            "time": 30
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1031,
+      "output_tokens": 456,
+      "latency_s": 3.608987331390381,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי מתכון טבעוני לבראוניז שזמן ההכנה שלו פחות מ-30 דקות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_recipe:0",
+          "function": {
+            "arguments": "{\"dietary_restrictions\": \"טבעוני\", \"recipe_type\": \"בראוניז\", \"time\": 30}",
+            "name": "find_recipe"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking me to find a vegan brownie recipe that takes less than 30 minutes to prepare. Let me break down the parameters:\n\n- dietary_restrictions: \"טבעוני\" (vegan)\n- recipe_type: \"קינוח\" or specifically \"בראוניז\" (dessert / brownies - but looking at the parameter description, it says for example: קינוח, מנה עיקרית, ארוחת בוקר. Since brownies are a dessert, I should use \"קינוח\" or maybe \"בראוניז\". The description says \"סוג המתכון\" so either should work, but standard examples are the meal types. Let me use \"קינוח\" since that's the general category, though \"בראוניז\" fits the parameter. Actually, looking at the examples given: \"קינוח, מנה עיקרית, ארוחת בוקר\" - these are categories, so \"קינוח\" is more appropriate. But \"בראוניז\" is also a recipe type. Let me provide \"בראוניז\" or \"קינוח\". I'll go with \"בראוניז\" since it's specific and clearly understood.\n- time: 30 (less than 30 minutes, so I'll use 30 as the maximum)\n\nWait, let me check the instruction again: \"מצבתי מתכון טבעוני לבראוניז שזמן ההכנה שלו פחות מ-30 דקות.\"\n\nSo:\n- dietary_restrictions: \"טבעוני\"\n- recipe_type: \"בראוניז\" or \"קינוח\" - I'll use \"בראוניז\" \n- time: 30\n\nActually, looking more carefully, should I use \"בראוניז\" as recipe_type? The parameter says \"סוג המתכון. למשל קינוח, מנה עיקרית, ארוחת בוקר\". \"בראוניז\" is a specific dessert type, so it should be acceptable. I'll use \"בראוניז\" to be specific, or maybe \"קינוח\" to fit the examples better. Actually, I think \"בראוניז\" is better because it's exactly what was asked. Let me provide that.\n\nSo the function call will be:\nfind_recipe(dietary_restrictions=\"טבעוני\", recipe_type=\"בראוניז\", time=30)"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_recipe'. Please review the function definition and try again.",
+      "tool_call_id": "functions.find_recipe:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_recipe:1",
+          "function": {
+            "arguments": "{\"dietary_restrictions\": \"טבעוני\", \"recipe_type\": \"קינוח\", \"time\": 30}",
+            "name": "find_recipe"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. This could be because the parameter values need to match exactly in a specific way, or perhaps the recipe_type needs to be one of the specific categories mentioned. Let me try with \"קינוח\" instead of \"בראוניז\" since the examples given are general meal types. Or maybe the parameters need to be in English? The schema says \"שפות: אנגלית, עברית\" so Hebrew should be fine, but maybe the backend expects English values? Let me try English values to be safe.\n\nActually, looking at the parameter description again:\n- dietary_restrictions: \"למשל טבעוני, צמחוני, ללא גלוטן, ללא מוצרי חלב\" - examples in Hebrew\n- recipe_type: \"למשל קינוח, מנה עיקרית, ארוחת בוקר\" - examples in Hebrew\n\nSo Hebrew should work. But the error might be because \"בראוניז\" is not recognized and it needs to be \"קינוח\". Let me try with \"קינוח\" or maybe the system expects English despite the description saying both languages are supported. Let me try English to see if that works better, or try Hebrew category names.\n\nWait, the error says \"invalid parameters\". This is strange because all three required parameters were provided. Let me try with English recipe type \"dessert\" to see if the system internally uses English constants.\n\nActually, looking at the science function, the discovery parameter description says \"שפות: אנגלית, עברית\" - and it uses examples like \"Gravity\". \n\nLet me try the find_recipe again with maybe \"vegan\" and \"dessert\" or try \"קינוח\" in Hebrew. I'll try Hebrew first since the previous attempt was with Hebrew. Maybe the problem was \"בראוניז\" is too specific. Let me use \"קינוח\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

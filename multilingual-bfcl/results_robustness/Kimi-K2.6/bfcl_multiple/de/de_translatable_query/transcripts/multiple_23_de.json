@@ -1,0 +1,203 @@
+{
+  "id": "multiple_23_de",
+  "source_id": "multiple_23",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 335,
+  "total_output_tokens": 326,
+  "total_latency_s": 1.7870135307312012,
+  "estimated_cost_usd": 0.00162225,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie lauten die aktuellen Statistiken des Basketballspielers Lebron Dscheims, einschließlich Punkte pro Spiel, Korbvorlagen und Minuten pro Spiel?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "basketball.player_stats.get": {
+        "player_name": [
+          "LeBron James"
+        ],
+        "stats_fields": [
+          [
+            "points per game",
+            "assists",
+            "minutes per game"
+          ],
+          [
+            "points per game",
+            "minutes per game",
+            "assists"
+          ],
+          [
+            "assists",
+            "points per game",
+            "minutes per game"
+          ],
+          [
+            "assists",
+            "minutes per game",
+            "points per game"
+          ],
+          [
+            "minutes per game",
+            "points per game",
+            "assists"
+          ],
+          [
+            "minutes per game",
+            "assists",
+            "points per game"
+          ],
+          [
+            "points",
+            "assists",
+            "minutes"
+          ],
+          [
+            "points",
+            "minutes",
+            "assists"
+          ],
+          [
+            "assists",
+            "points",
+            "minutes"
+          ],
+          [
+            "assists",
+            "minutes",
+            "points"
+          ],
+          [
+            "minutes",
+            "points",
+            "assists"
+          ],
+          [
+            "minutes",
+            "assists",
+            "points"
+          ],
+          [
+            "points_per_game",
+            "assists",
+            "minutes_per_game"
+          ],
+          [
+            "points_per_game",
+            "minutes_per_game",
+            "assists"
+          ],
+          [
+            "assists",
+            "points_per_game",
+            "minutes_per_game"
+          ],
+          [
+            "assists",
+            "minutes_per_game",
+            "points_per_game"
+          ],
+          [
+            "minutes_per_game",
+            "points_per_game",
+            "assists"
+          ],
+          [
+            "minutes_per_game",
+            "assists",
+            "points_per_game"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "basketball_player_stats_get",
+          "arguments": {
+            "player_name": "LeBron James",
+            "stats_fields": [
+              "points",
+              "assists",
+              "minutes"
+            ]
+          },
+          "id": "functions.basketball_player_stats_get:0"
+        }
+      ],
+      "decoded": [
+        {
+          "basketball_player_stats_get": {
+            "player_name": "LeBron James",
+            "stats_fields": [
+              "points",
+              "assists",
+              "minutes"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 335,
+      "output_tokens": 326,
+      "latency_s": 1.7870135307312012,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie lauten die aktuellen Statistiken des Basketballspielers Lebron Dscheims, einschließlich Punkte pro Spiel, Korbvorlagen und Minuten pro Spiel?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.basketball_player_stats_get:0",
+          "function": {
+            "arguments": "{\"player_name\":\"LeBron James\",\"stats_fields\":[\"points\",\"assists\",\"minutes\"]}",
+            "name": "basketball_player_stats_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for current statistics of a basketball player named \"Lebron Dscheims\" (which seems to be a German phonetic attempt at \"LeBron James\"), including points per game, assists, and minutes per game.\n\nI need to use the `basketball_player_stats_get` function. The player_name should be \"LeBron James\" since \"Lebron Dscheims\" is clearly meant to be LeBron James. The stats_fields should include points, assists, and minutes.\n\nLet me check the function signature:\n- player_name: string - The name of the player.\n- stats_fields: array of strings - List of statistical categories to be fetched, including points, assists, rebounds, minutes.\n\nSo I'll call:\nplayer_name: \"LeBron James\" (I'll use the correct spelling)\nstats_fields: [\"points\", \"assists\", \"minutes\"]\n\nActually, looking at the requested stats:\n- Punkte pro Spiel = points per game = \"points\"\n- Korbvorlagen = assists = \"assists\"  \n- Minuten pro Spiel = minutes per game = \"minutes\"\n\nThe function seems to expect exact names from the allowed list. The description says: \"List of statistical categories to be fetched, including points, assists, rebounds, minutes.\"\n\nSo the call should be:\n{\n  \"player_name\": \"LeBron James\",\n  \"stats_fields\": [\"points\", \"assists\", \"minutes\"]\n}"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

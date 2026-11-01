@@ -1,0 +1,373 @@
+{
+  "id": "multiple_54_de",
+  "source_id": "multiple_54",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "claude-opus-5",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 5,
+  "num_clarifications": 1,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 5921,
+  "total_output_tokens": 1229,
+  "total_latency_s": 16.69785475730896,
+  "estimated_cost_usd": 0.06033,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ermittle die historischen Dividendenzahlungen der Äppel AG für die letzten fünf Jahre."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.dividend_data": {
+        "company": [
+          "Apple Inc",
+          "Apple",
+          "Apple Inc."
+        ],
+        "years": [
+          5
+        ],
+        "frequency": [
+          "",
+          "annually"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Äppel AG",
+            "years": 5
+          },
+          "id": "toolu_013Sabnnbmbg4F6Uk9ipzYh4"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Äppel AG",
+            "years": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+      "input_tokens": 703,
+      "output_tokens": 82,
+      "latency_s": 1.093440055847168,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Der Aufruf wurde abgelehnt – ich versuche es mit explizit gesetzter Frequenz:"
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Äppel AG",
+            "years": 5,
+            "frequency": "annually"
+          },
+          "id": "toolu_01CNXZdLZrNTjzTd5oJuJygk"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Äppel AG",
+            "years": 5,
+            "frequency": "annually"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+      "input_tokens": 833,
+      "output_tokens": 232,
+      "latency_s": 3.3216753005981445,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Möglicherweise verursacht der Umlaut das Problem – ich versuche eine transliterierte Schreibweise:"
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Aeppel AG",
+            "years": 5,
+            "frequency": "annually"
+          },
+          "id": "toolu_014r7eeRxn2C8U5DfoAnbiZr"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Aeppel AG",
+            "years": 5,
+            "frequency": "annually"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+      "input_tokens": 1113,
+      "output_tokens": 176,
+      "latency_s": 2.1711463928222656,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Ich konnte die Dividendendaten leider nicht abrufen – alle drei Versuche wurden mit einem Fehler abgewiesen:\n\n| Versuch | Parameter | Ergebnis |\n|---|---|---|\n| 1 | company: \"Äppel AG\", years: 5 | 400 Bad Request |\n| 2 | zusätzlich frequency: \"annually\" | 400 Bad Request |\n| 3 | company: \"Aeppel AG\" (ohne Umlaut) | 400 Bad Request |\n\nDie Parameter (Firmenname als Text, 5 Jahre, jährliche Frequenz) entsprechen der Funktionsdefinition, daher liegt die Ursache vermutlich darin, dass das Unternehmen \"Äppel AG\" im Datenbestand nicht gefunden wird bzw. nicht als gültiger Bezeichner akzeptiert wird.\n\nKönntest du mir bitte weiterhelfen:\n- Ist \"Äppel AG\" die exakte Firmierung, oder meinst du ggf. **Apple Inc.** (AAPL)?\n- Falls bekannt: Wie lautet das Börsenkürzel (Ticker) oder die ISIN?\n\nMit dem korrekten Namen oder Ticker starte ich die Abfrage sofort erneut."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1337,
+      "output_tokens": 568,
+      "latency_s": 7.736968994140625,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Apple",
+            "years": 5,
+            "frequency": "annually"
+          },
+          "id": "toolu_014i6T6WGWPdCLChC59RV6Hp"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Apple",
+            "years": 5,
+            "frequency": "annually"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1935,
+      "output_tokens": 171,
+      "latency_s": 2.374624013900757,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Ermittle die historischen Dividendenzahlungen der Äppel AG für die letzten fünf Jahre."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_013Sabnnbmbg4F6Uk9ipzYh4",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Äppel AG",
+            "years": 5
+          },
+          "name": "corporate_finance_dividend_data",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_013Sabnnbmbg4F6Uk9ipzYh4"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISqgUKzwIIExgCKkCyIDBB4eoJ9a4x5TwiaMXj8aSfxbGgOA67ChS1ejYEKaxAT0Tk7ZcIrdkLXrcIJCHS58HdhB+PZuPARegokfGWMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAbO4mNcGwgFJCAkQABobAQ7MAgioA083Beg+BCatCt1tA083C78VBCatIAIyBBJxzyU6BJo7ND9CBKbHxIdKBM0Fm1pQAloE2QXhVmAEaAFwAdoBYAoWcHJlZml4X2JlZm9yZV9ibG9ja192MRIg7+PqPeksTAwm0sy9XHaBwlz/C//STbrblzqsvkFbx3EiADIgwsATyGqckuIvlm89hhd2j4t6RMkCrcwJe/oeCYr7Th9IAxIMiPrkZo+GbiqPaDoPGgy6hB9sL1h2OQweY4EiMJJ333oT9dAKHSdEcAQKlhkPVHpU6C/vYRrxqXtbgZqGkh4Jm0xojNca/M9MLc9EPyqHAgGvbOE5ivElZcBkELb0hMZzXaj2wzLAGLpuMGhP2XIqHTuihGPYagtGpfgjNUqPJ09J3aBXsAMo/dN6jkxeE8upSBiNRC3ISs7pzUNfJTFJ1i1AXcLG50ZG6V3sjv0fHB3JcrCaqrLCRAwav8bwJrQgFXVr3cw1etFFHKaN8m2ubuiQ1zHKDZ9wQLNAz1KiStL9p5qZesA/tkhD83LThPiS07bBXbgX8x0TaMqZhwU3LxXMlHD9XChzqBz+vJ7Jl8iIlSB8tj28scgALcSZthAXYMFUvFxQiQ2LyXwXH1+/KG1iuLIrmZBZvD2PRWWO+SQ+s5xrDr/mdBbSIcaaZiLgHB+qz1owGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Der Aufruf wurde abgelehnt – ich versuche es mit explizit gesetzter Frequenz:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01CNXZdLZrNTjzTd5oJuJygk",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Äppel AG",
+            "years": 5,
+            "frequency": "annually"
+          },
+          "name": "corporate_finance_dividend_data",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01CNXZdLZrNTjzTd5oJuJygk"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISswQKnwMIExgCKkC+hIHm1u3LTxThe74YDuV8qlYkYOYd98d5vsznqrUa0Y0bBdkEkjoI9JypgwLvVont1iv/Yz6jgXD46U9uc2J/Mg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAbW4mNcGwgFYCA4QABoqAQ7MAgioA083Beg+BCatCt1tA083C78VBCatBaShCicAA083C9/BBCatIAIyBBJxzyU6BJo7ND9CBKbHxIdKBM0Fm1pQAloE2QXhVmAGaAFwAdoBoAEKFnByZWZpeF9iZWZvcmVfYmxvY2tfdjESIONsUVFftb2yviyNZwwL1hmiXeOEZE3h9kAvGjKhhfEoIkCyIDBB4eoJ9a4x5TwiaMXj8aSfxbGgOA67ChS1ejYEKaxAT0Tk7ZcIrdkLXrcIJCHS58HdhB+PZuPARegokfGWMiDCwBPIapyS4i+Wbz2GF3aPi3pEyQKtzAl7+h4JivtOH0gDEgyJov3xku8/c/+0Ih4aDMpMESdpNGzyBXeM7yIwGJKW6nrsnAKHmK0TVG5Ae26M2eVUbvnwuma4z4yl6bLGPNccMfHCvspicKCCMxDlKkHfJ9Wd9KCWyFTq1ReFCsmMqSdnKf1vyLjeIJ0jahUEKZB9IzBmMZPPwF5l1hGFRT1VdEKUr0IysLHwvFQ8/TVObBgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Möglicherweise verursacht der Umlaut das Problem – ich versuche eine transliterierte Schreibweise:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_014r7eeRxn2C8U5DfoAnbiZr",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Aeppel AG",
+            "years": 5,
+            "frequency": "annually"
+          },
+          "name": "corporate_finance_dividend_data",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_014r7eeRxn2C8U5DfoAnbiZr"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISzwYKrgMIExgCKkCINRjhXUo5fB9We5Ry6ZIMl8isH2OcghrGMz/V3PBZiIsednNvoqIIqCuS+tq3X/hJ23eIQEyjYVok8qvx0ExQMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAbm4mNcGwgFnCBMQABo5AQ7MAgioA083Beg+BCatCt1tA083C78VBCatBaShCicAA083C9/BBCatBabICudLA083CwWfBCatIAIyBBJxzyU6BJo7ND9CBKbHxIdKBM0Fm1pQAloE2QXhVmAIaAFwAdoBoAEKFnByZWZpeF9iZWZvcmVfYmxvY2tfdjESIEeK4cxPUXcoVGa5R8hFH6J35M7AUXdBUd+rSuiN7LcDIkC+hIHm1u3LTxThe74YDuV8qlYkYOYd98d5vsznqrUa0Y0bBdkEkjoI9JypgwLvVont1iv/Yz6jgXD46U9uc2J/MiDCwBPIapyS4i+Wbz2GF3aPi3pEyQKtzAl7+h4JivtOH0gDEgxNY1U26d4uE7V024caDDEzuJ/zM0+DwKCaniIwft/0MPRZRypoN9CBYswCGy1dtQFXPqYEuu8Hxp6dk/mMZo/M0J+JhQ5UqaAxhb6cKs0CHRVs3GSKUP7gcFlTH6HKHJ5/KC0xm+3snWWtqXYj4xg32kTi4OmARHaBIP/+PhqyH72yeY4QeNwbvIOVvOvP3baZpnJN0POVbk0Gjy24gPaH0Pytcg91eQf/1MGgq6DqL+JtpJCQTvRfK2E+KJQQ14imXD2wSXlKhpAmzxKX0Mq2LEnoHY2MpX4nzs7NPg4J3jJhsgz7u+iMuyyXQLSrHl/vQ3LKnffP0ZeEG227P2IsK6TzY1EhTSBNlLrzGHcPNHX+x21Yp5Mqp4RTE5fjTHiVtsP06fBimyrP32zdbQd4yCT8/tTPrEfROylveGb6OB4NUOb1cS/GtpvIfhFQC5ncgNuKmYQR2AhP337cbGN7uwQ/DZpf9CDDfExMPlmuFqhNRRTj7kKmIzvu3+EE+DqIJ1oM5nKDfjauzzdfQwgNWONpMhzZnoPj6ZCdGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Ich konnte die Dividendendaten leider nicht abrufen – alle drei Versuche wurden mit einem Fehler abgewiesen:\n\n| Versuch | Parameter | Ergebnis |\n|---|---|---|\n| 1 | company: \"Äppel AG\", years: 5 | 400 Bad Request |\n| 2 | zusätzlich frequency: \"annually\" | 400 Bad Request |\n| 3 | company: \"Aeppel AG\" (ohne Umlaut) | 400 Bad Request |\n\nDie Parameter (Firmenname als Text, 5 Jahre, jährliche Frequenz) entsprechen der Funktionsdefinition, daher liegt die Ursache vermutlich darin, dass das Unternehmen \"Äppel AG\" im Datenbestand nicht gefunden wird bzw. nicht als gültiger Bezeichner akzeptiert wird.\n\nKönntest du mir bitte weiterhelfen:\n- Ist \"Äppel AG\" die exakte Firmierung, oder meinst du ggf. **Apple Inc.** (AAPL)?\n- Falls bekannt: Wie lautet das Börsenkürzel (Ticker) oder die ISIN?\n\nMit dem korrekten Namen oder Ticker starte ich die Abfrage sofort erneut.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS3AUKugMIExgCKkCd07wr4kAJMThphhp3E70/Ty1WGtrJFHkQF11rlD/Cz1j7q67rpTfnT01SQE6oyXj0TDY0/cWSiFZsfd1uEIKeMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAcC4mNcGwgFzCBcQABpFAQ7MAgioA083Beg+BCatCt1tA083C78VBCatBaShCicAA083C9/BBCatBabICudLA083CwWfBCatBXEMA083BQoXBCatIAIyBBJxzyU6BJo7ND9CBKbHxIdKBM0Fm1pQAloE2QXhVmAKaAFwAdoBoAEKFnByZWZpeF9iZWZvcmVfYmxvY2tfdjESIEQ/M+S/NvSidfozSNN4CY9uG0psqmC84Wncs3jAQm/mIkCINRjhXUo5fB9We5Ry6ZIMl8isH2OcghrGMz/V3PBZiIsednNvoqIIqCuS+tq3X/hJ23eIQEyjYVok8qvx0ExQMiDCwBPIapyS4i+Wbz2GF3aPi3pEyQKtzAl7+h4JivtOH0gDEgxzrUVkBgbvz3HpBV8aDPc+0mCw/3X7PEK7eiIw/HqDGgqbCKhWaQrkI/IA8FhnhexjKpz2UG1gaoHVHYNh2oS2Hk188XV0y3qbps5YKs4BHync35F65x8dbJh5bnNklsdBFYrpdnytxKpxCAjX4mvH2MxaopntNfMlQCilppyPL2Ebz0NbtLP3/CcAkQrMFfeXViOObOrN7dBdUQpKilXVNn+U+Hrk2NInsISSeXarTpZVN1RUtH3nkAGjNcpBr1XLsbKUrwSM3/xO2SfLKO6z9CpVzvP0QC7HXaK4JZukxbRYq9FUGnq50/Q8qVLThJsInuTDV1XzTYB2GhHSsL4mE/AtScfEX5mrtzS20SQEvtBbyt5VagFicfQmdF4YAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_014i6T6WGWPdCLChC59RV6Hp",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Apple",
+            "years": 5,
+            "frequency": "annually"
+          },
+          "name": "corporate_finance_dividend_data",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

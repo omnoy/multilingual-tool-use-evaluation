@@ -1,0 +1,245 @@
+{
+  "id": "multiple_137_de",
+  "source_id": "multiple_137",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3947,
+  "total_output_tokens": 1685,
+  "total_latency_s": 11.653475522994995,
+  "estimated_cost_usd": 0.01048965,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Suche nach laufenden Gerichtsverfahren im Zusammenhang mit dem Unternehmen 'Gugel', bei denen die Klage nach dem 1. Januar 2021 in Kalifornien eingereicht wurde."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuit_search": {
+        "company": [
+          "Gugel"
+        ],
+        "start_date": [
+          "2021-01-01",
+          "01/01/2021",
+          "Jan.1,2021",
+          "Januar 1, 2021"
+        ],
+        "location": [
+          "Kalifornien",
+          "CA"
+        ],
+        "status": [
+          "laufend",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugel",
+            "start_date": "1. Januar 2021",
+            "location": "Kalifornien",
+            "status": "ongoing"
+          },
+          "id": "functions.lawsuit_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugel",
+            "start_date": "1. Januar 2021",
+            "location": "Kalifornien",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 571,
+      "output_tokens": 911,
+      "latency_s": 5.13206148147583,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugel",
+            "location": "California",
+            "start_date": "2021-01-01",
+            "status": "ongoing"
+          },
+          "id": "functions.lawsuit_search:1"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugel",
+            "location": "California",
+            "start_date": "2021-01-01",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 1524,
+      "output_tokens": 286,
+      "latency_s": 3.6434566974639893,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugel",
+            "location": "Kalifornien",
+            "start_date": "2021-01-01"
+          },
+          "id": "functions.lawsuit_search:2"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugel",
+            "location": "Kalifornien",
+            "start_date": "2021-01-01"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1852,
+      "output_tokens": 488,
+      "latency_s": 2.877957344055176,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Suche nach laufenden Gerichtsverfahren im Zusammenhang mit dem Unternehmen 'Gugel', bei denen die Klage nach dem 1. Januar 2021 in Kalifornien eingereicht wurde."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawsuit_search:0",
+          "function": {
+            "arguments": "{\"company\": \"Gugel\", \"start_date\": \"1. Januar 2021\", \"location\": \"Kalifornien\", \"status\": \"ongoing\"}",
+            "name": "lawsuit_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to search for ongoing lawsuits related to the company 'Gugel' that were filed after January 1, 2021 in California.\n\nLooking at the function definition:\n- `lawsuit_search`\n- Parameters:\n  - `company` (required): \"Gugel\" (in German, but the instructions say languages: English, German for all string parameters). Since this is a company name, I'll pass it as is.\n  - `start_date` (required): \"1. Januar 2021\" or \"January 1, 2021\". The parameter description says \"Beginn des Datumsbereichs... Sprachen: Englisch, Deutsch.\" So I can use German format, but ISO format or standard English date format might be safer. However, looking at the instruction \"understand the request in German and respond with the correct function call exactly as specified in the tool definitions\", and the function definition allows German. The user said \"nach dem 1. Januar 2021\" which means after January 1, 2021. The function parameter is `start_date` which is the \"Beginn des Datumsbereichs\" (start of date range), so \"1. Januar 2021\" or \"January 1, 2021\" would be appropriate. I'll use a standard format. Since the function allows German, I'll pass \"1. Januar 2021\" or perhaps a more standard \"01.01.2021\" or \"January 1, 2021\". Actually, looking at the examples in tool definitions, they don't specify exact date format. I'll use \"January 1, 2021\" to be safe, or perhaps \"1. Januar 2021\" since German is explicitly allowed. Let me use \"1. Januar 2021\" since the user wrote it that way and the tool accepts German.\n  - `location` (required): \"Kalifornien\" or \"California\". I'll use \"Kalifornien\" since German is allowed, but \"California\" might be more standard for the database. The instructions say \"Sprachen: Englisch, Deutsch.\" for location. I'll use \"California\" because it's a proper noun and location names in databases are often in English. But actually, \"Kalifornien\" should also be fine. I'll use \"California\" to be safer.\n  - `status` (optional): Default is 'ongoing'. The user asked for \"laufenden\" (ongoing), so I don't need to specify it, but I could specify \"ongoing\". Since default is 'ongoing', I can omit it or include it. The user said \"laufenden Gerichtsverfahren\" (ongoing lawsuits), so I should probably specify status: \"ongoing\" to be explicit, but it's optional with default ongoing. I'll include it for clarity.\n\nWait, the instruction says: \"respond with the correct function call exactly as specified in the tool definitions.\" This means I should output the function call.\n\nLet me construct the arguments:\n- company: \"Gugel\"\n- start_date: \"1. Januar 2021\"\n- location: \"Kalifornien\" or \"California\". I'll use \"Kalifornien\" to stay consistent with the user's language, but actually for locations, it's often better to use the English form. However, the parameter explicitly says German is allowed. I'll use \"Kalifornien\".\n- status: \"ongoing\" (this is an enum value, so must be exact string \"ongoing\")\n\nActually, let me reconsider the date format. The user said \"nach dem 1. Januar 2021\", which means strictly after January 1, 2021. The parameter description says \"Beginn des Datumsbereichs\" (start of date range). So the start of the range is January 1, 2021. That seems correct.\n\nFor location, I'll use \"Kalifornien\" since German is allowed and that's what the user said.\n\nActually, looking at it again, for proper nouns of places, maybe keeping it as \"Kalifornien\" is fine since the tool explicitly accepts German.\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.lawsuit_search:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawsuit_search:1",
+          "function": {
+            "arguments": "{\"company\": \"Gugel\", \"location\": \"California\", \"start_date\": \"2021-01-01\", \"status\": \"ongoing\"}",
+            "name": "lawsuit_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me reconsider the parameters.\n\nPossible issues:\n1. Date format: Maybe \"1. Januar 2021\" is not accepted. Perhaps it needs to be in ISO format like \"2021-01-01\" or English format \"January 1, 2021\".\n2. Location: Maybe \"Kalifornien\" is not accepted and it needs to be \"California\".\n3. The parameter `status` might need to be omitted if the default is already 'ongoing', but that's unlikely to cause a 400.\n\nLet me try with more standard formatting:\n- company: \"Gugel\"\n- start_date: \"January 1, 2021\" or \"2021-01-01\"\n- location: \"California\"\n- status: \"ongoing\"\n\nActually, since the tool description says German is allowed for these fields, the issue might be something else. But to be safe, let me use English formats since they're more commonly accepted in APIs.\n\nWait, I should review if there's any issue with my JSON or parameter names. They look correct.\n\nLet me try with ISO date format and English location name."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.lawsuit_search:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawsuit_search:2",
+          "function": {
+            "arguments": "{\"company\": \"Gugel\", \"location\": \"Kalifornien\", \"start_date\": \"2021-01-01\"}",
+            "name": "lawsuit_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting a 400 error. Let me think about what could be wrong.\n\nMaybe the status needs to be exactly the enum value. I used \"ongoing\" which is correct according to the enum: [\"ongoing\", \"settled\", \"dismissed\"].\n\nWait, could the issue be that \"Gugel\" is not a real company and the API validates company names? But that would be a business logic error, not typically a 400 for invalid parameters.\n\nLet me look at the schema again:\n- company: string (required)\n- start_date: string (required) \n- location: string (required)\n- status: enum (optional, default \"ongoing\")\n\nAll required parameters are present.\n\nMaybe the API expects the date in a specific format not shown in the description? Or maybe \"Gugel\" needs quotes? No, that's handled by JSON.\n\nActually, maybe the issue is that the system is simulating the function call and there might be a validation rule I'm missing. But since I don't have more info, let me try without the optional status parameter since it has a default value. Maybe the API doesn't accept it explicitly or there's a bug with it? No, that seems unlikely.\n\nWait - could the parameter names be case-sensitive or different? No, I used the exact names from the schema.\n\nLet me try one more time without the status parameter, using German text since that was explicitly allowed.\n\nActually, another thought: Maybe the company name needs to be a known company in the system, and \"Gugel\" causes an invalid parameter error because it's not recognized? Some APIs validate inputs against known entities. But the user asked for \"Gugel\"...\n\nLet me try removing the status parameter to see if that helps, though I doubt it. Or maybe try a different date format. Let me try \"January 1, 2021\" as a string.\n\nActually, I should just provide the information back to the user since the function isn't working. But wait, the user asked me to make the function call. I made it and got an error. I should inform the user about the result.\n\nBut first, let me try once more without status parameter."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,122 @@
+{
+  "id": "multiple_189_de",
+  "source_id": "multiple_189",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 301,
+  "total_output_tokens": 322,
+  "total_latency_s": 2.1431479454040527,
+  "estimated_cost_usd": 0.0015739500000000002,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Rechne 3 Uhr nachmittags von der Zeitzone von New York in die Zeitzone von London um."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "3 Uhr nachmittags"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "New York",
+          "New York, New York",
+          "New York",
+          "Stadt New York",
+          "Östliche Standardzeit",
+          "Östliche Standardzeit"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "London",
+          "Britische Sommerzeit",
+          "Britische Sommerzeit",
+          "Mittlere Greenwich-Zeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "3 Uhr nachmittags",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          },
+          "id": "functions.timezone_convert:0"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "3 Uhr nachmittags",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 301,
+      "output_tokens": 322,
+      "latency_s": 2.1431479454040527,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Rechne 3 Uhr nachmittags von der Zeitzone von New York in die Zeitzone von London um."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:0",
+          "function": {
+            "arguments": "{\"time\":\"3 Uhr nachmittags\",\"from_timezone\":\"New York\",\"to_timezone\":\"London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer möchte eine Zeitzonen-Umrechnung durchführen: 3 Uhr nachmittags (also 3 PM = 15:00) von New York nach London.\n\nIch habe die Funktion `timezone_convert` mit den Parametern:\n- time: \"3 Uhr nachmittags\" oder \"3pm\" oder \"15:00\"\n- from_timezone: \"New York\" oder \"America/New_York\" oder \"Eastern Time\"? Die Tool-Definition gibt keine spezifischen Werte vor, aber \"New York\" sollte funktionieren.\n- to_timezone: \"London\" oder \"Europe/London\" oder \"Greenwich Mean Time\"?\n\nDa die Tool-Definition sagt \"z. B. 3 Uhr nachmittags\" für time, kann ich genau das verwenden, was der Benutzer geschrieben hat: \"3 Uhr nachmittags\".\nFür die Zeitzonen verwende ich \"New York\" und \"London\", da das am wahrscheinlichsten akzeptiert wird, wenn keine spezifische Formatierung verlangt wird.\n\nDer Funktionsaufruf sollte so aussehen:\n```\n{\n  \"time\": \"3 Uhr nachmittags\",\n  \"from_timezone\": \"New York\",\n  \"to_timezone\": \"London\"\n}\n```"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

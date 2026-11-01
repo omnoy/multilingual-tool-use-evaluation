@@ -1,0 +1,125 @@
+{
+  "id": "multiple_89_de",
+  "source_id": "multiple_89",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 370,
+  "total_output_tokens": 624,
+  "total_latency_s": 4.332535982131958,
+  "estimated_cost_usd": 0.0028474999999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde ein gesundes Rezept für ein Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "lunch",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "functions.recipe_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 370,
+      "output_tokens": 624,
+      "latency_s": 4.332535982131958,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde ein gesundes Rezept für ein Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:0",
+          "function": {
+            "arguments": "{\"ingredients\": [\"chicken\", \"mushrooms\"], \"calories\": 500, \"meal\": \"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer möchte ein gesundes Rezept für ein Mittagessen (lunch) mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält.\n\nIch muss die Funktion `recipe_search` aufrufen mit:\n- ingredients: [\"Hähnchen\", \"Pilze\"] oder [\"chicken\", \"mushrooms\"] - der Benutzer schrieb auf Deutsch, aber ich sollte die korrekten Parameter verwenden. Das Tool akzeptiert eine Liste von Zutaten. Ich werde die deutschen Begriffe verwenden oder die englischen? Die Tool-Beschreibung sagt nicht explizit, dass es englisch sein muss, aber APIs sind oft auf Englisch. Da der Benutzer auf Deutsch geschrieben hat und die Tool-Beschreibung auch keine Sprache spezifiziert, werde ich die deutschen Begriffe verwenden, wie vom Benutzer angegeben, oder vielleicht englische Begriffe als sicherere Variante? \n\nEigentlich sollte ich die Parameter so übergeben, wie sie logisch sind. Da der Benutzer \"Hähnchen\" und \"Pilze\" auf Deutsch sagt, versuche ich es mit den deutschen Begriffen, da das Tool keine Spracheinschränkung angibt. Aber oft sind solche Tools auf Englisch trainiert. Ich könnte auch beides versuchen? Nein, ich sollte nur einen Funktionsaufruf machen. Ich werde die englischen Äquivalente verwenden: [\"chicken\", \"mushrooms\"], da das wahrscheinlicher ist, dass das Tool sie erkennt. Aber eigentlich sollte ich die Anfrage des Benutzers respektieren. \n\nWarte, die Instruktion sagt: \"Understand the request in German and respond with the correct function call exactly as specified in the tool definitions.\"\n\nDas bedeutet, ich soll den deutschen Request verstehen, aber den Funktionsaufruf korrekt machen. Die Parameter \"ingredients\" sollten Strings sein. Es ist wahrscheinlich am besten, englische Zutatennamen zu verwenden, da das Tool vermutlich eine englische API ist. Aber es könnte auch deutsche verstehen. Ich werde die englischen Begriffe \"chicken\" und \"mushrooms\" verwenden, da diese universeller sind.\n\nParameter:\n- ingredients: [\"chicken\", \"mushrooms\"]\n- calories: 500\n- meal: \"lunch\" (da Mittagessen)\n\nIch rufe recipe_search auf."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

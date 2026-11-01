@@ -1,0 +1,123 @@
+{
+  "id": "multiple_59_de",
+  "source_id": "multiple_59",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 227,
+  "total_output_tokens": 208,
+  "total_latency_s": 1.7183353900909424,
+  "estimated_cost_usd": 0.00104765,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde auf Strafrecht spezialisierte Rechtsanwälte in meiner Nähe in New York."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawyer_finder": {
+        "location": [
+          "New York",
+          "New York, New York",
+          "New York",
+          "Stadt New York",
+          "Stadt New York"
+        ],
+        "specialization": [
+          [
+            "Criminal Law"
+          ],
+          [
+            "criminal law"
+          ]
+        ],
+        "experience": [
+          "",
+          1
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_finder",
+          "arguments": {
+            "location": "New York",
+            "specialization": [
+              "criminal law"
+            ]
+          },
+          "id": "functions.lawyer_finder:0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_finder": {
+            "location": "New York",
+            "specialization": [
+              "criminal law"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 227,
+      "output_tokens": 208,
+      "latency_s": 1.7183353900909424,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde auf Strafrecht spezialisierte Rechtsanwälte in meiner Nähe in New York."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.lawyer_finder:0",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"specialization\": [\"criminal law\"]}",
+            "name": "lawyer_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"Find lawyers specialized in criminal law in my area in New York.\"\n\nI need to use the lawyer_finder function.\n- location: \"New York\"\n- specialization: criminal law = \"criminal law\" (in English, as typically expected by such tools unless otherwise specified, but the user speaks German - however the function parameter descriptions suggest English values. Let me check the specialization description: \"Specializations of lawyer that you are looking for.\" It says specialization is an array of strings. I should use standard English specialization terms. \"Strafrecht\" translates to \"criminal law\".)\n- experience: default is 1, but user didn't specify, so I can omit it or use default. Since it's not required, I'll omit it.\n\nSo the function call should be:\nlawyer_finder(location=\"New York\", specialization=[\"criminal law\"])"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

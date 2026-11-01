@@ -1,0 +1,165 @@
+{
+  "id": "multiple_175_de",
+  "source_id": "multiple_175",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1262,
+  "total_output_tokens": 519,
+  "total_latency_s": 4.73200249671936,
+  "estimated_cost_usd": 0.0032749000000000003,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wer ist die bestplatzierte Spielerin im Damentennis?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sports_ranking.get_top_player": {
+        "sport": [
+          "Tennis"
+        ],
+        "gender": [
+          "Frauen"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_ranking_get_top_player",
+          "arguments": {
+            "sport": "tennis",
+            "gender": "women"
+          },
+          "id": "functions.sports_ranking_get_top_player:0"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_ranking_get_top_player": {
+            "sport": "tennis",
+            "gender": "women"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sports_ranking_get_top_player'. Please review the function definition and try again.",
+      "input_tokens": 489,
+      "output_tokens": 236,
+      "latency_s": 1.6383731365203857,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_ranking_get_top_player",
+          "arguments": {
+            "gender": "Frauen",
+            "sport": "Tennis"
+          },
+          "id": "functions.sports_ranking_get_top_player:1"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_ranking_get_top_player": {
+            "gender": "Frauen",
+            "sport": "Tennis"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 773,
+      "output_tokens": 283,
+      "latency_s": 3.0936293601989746,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wer ist die bestplatzierte Spielerin im Damentennis?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sports_ranking_get_top_player:0",
+          "function": {
+            "arguments": "{\"sport\": \"tennis\", \"gender\": \"women\"}",
+            "name": "sports_ranking_get_top_player"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"Who is the top-ranked female player in women's tennis?\"\n\nI need to use the `sports_ranking_get_top_player` function to find the top player in women's tennis.\n\nLooking at the function parameters:\n- sport: string, required - should be \"tennis\"\n- gender: string, optional, default is \"men\" - should be \"women\" since the user is asking about female players (Damentennis)\n\nThe user's language is German, but the tool definition says Languages: English, German for the parameters. However, typically for these sports APIs, \"tennis\" is the standard sport identifier in English. Let me check the description: \"The type of sport. Languages: English, German.\" Since it accepts both, I could use \"Tennis\" or \"tennis\". But to be safe and standard, I'll use English terms as they are most commonly used in APIs.\n\nSo I'll call:\n- sport: \"tennis\"\n- gender: \"women\""
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sports_ranking_get_top_player'. Please review the function definition and try again.",
+      "tool_call_id": "functions.sports_ranking_get_top_player:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.sports_ranking_get_top_player:1",
+          "function": {
+            "arguments": "{\"gender\": \"Frauen\", \"sport\": \"Tennis\"}",
+            "name": "sports_ranking_get_top_player"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me reconsider the parameters. \n\nThe tool definition says:\n- sport: The type of sport. Languages: English, German.\n- gender: The gender of the sport category. Optional. Languages: English, German. Default: \"men\"\n\nMaybe I need to use German terms since the function accepts German and the user asked in German? Let me try with German:\n- sport: \"Tennis\"\n- gender: \"Frauen\" or \"Damen\" or maybe it still expects \"women\"?\n\nLet me try \"tennis\" and \"women\" again, but maybe the issue is something else. Actually, looking back, the JSON was correct. Let me try with German terms since the tool explicitly supports German language inputs.\n\nActually, looking more carefully, it might be that the parameter values need to be exactly as expected. In German, \"women\" could be \"Frauen\" or \"Damen\". Let me try:\n- sport: \"Tennis\"\n- gender: \"Frauen\"\n\nOr perhaps the sport should be specified as \"Damentennis\"? No, usually sport is the sport type and gender is the separate parameter.\n\nLet me try with German terms."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,107 @@
+{
+  "id": "multiple_91_de",
+  "source_id": "multiple_91",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 249,
+  "total_output_tokens": 515,
+  "total_latency_s": 3.5515763759613037,
+  "estimated_cost_usd": 0.00229655,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "Apfelkuchen",
+          "Apfel"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          },
+          "id": "functions.recipe_find:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 249,
+      "output_tokens": 515,
+      "latency_s": 3.5515763759613037,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_find:0",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"Apfel\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer fragt nach einem Apfelkuchen-Rezept mit weniger als 5 Zutaten. Ich muss die `recipe_find` Funktion nutzen.\n\nHauptzutat (mainIngredient): Apfelkuchen (oder einfach nur Apfel? Der Benutzer fragt nach einem Rezept für Apfelkuchen, also sollte die Hauptzutat \"Apfel\" sein, da Apfelkuchen kein Zutatentyp ist. Die Funktion sucht nach einer Hauptzutat. \"Apfel\" macht am meisten Sinn, aber \"Apfelkuchen\" könnte auch als Hauptzutat gelten. Ich denke, \"Apfel\" ist die richtige Hauptzutat für ein Rezept, da \"Apfelkuchen\" ein Gericht ist.)\n\nWarte, die Funktion `recipe_find` hat Parameter:\n- mainIngredient: Hauptzutat für das Rezept.\n- ingredientLimit: Maximale Anzahl der Zutaten.\n\nDer Benutzer will ein Apfelkuchen-Rezept. Die Hauptzutat sollte also \"Apfel\" sein. Die maximale Anzahl der Zutaten ist weniger als 5, also 4.\n\nIch sollte den Funktionsaufruf auf Deutsch machen, da die Parameternamen in Englisch sind, aber die Werte könnten auf Deutsch sein. Die Funktionsdefinition gibt keine spezifischen enum-Werte vor, also kann ich \"Apfel\" verwenden.\n\nWarte: Manchmal erwarten solche Tools englische Eingaben, aber die Anweisung sagt \"Understand the request in German and respond with the correct function call exactly as specified in the tool definitions.\" Der Benutzer schreibt auf Deutsch. Ich sollte die Funktion mit den Parametern aufrufen. Da die Funktionsbeschreibung auf Deutsch ist, sind die Parameter wahrscheinlich auch für deutsche Eingaben gedacht.\n\nIch rufe `recipe_find` auf mit:\n- mainIngredient: \"Apfel\" (da Apfel die Hauptzutat ist)\n- ingredientLimit: 4 (da weniger als 5 Zutaten)"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

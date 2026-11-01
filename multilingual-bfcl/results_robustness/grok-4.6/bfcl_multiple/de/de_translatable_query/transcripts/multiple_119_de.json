@@ -1,0 +1,534 @@
+{
+  "id": "multiple_119_de",
+  "source_id": "multiple_119",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "grok-4.6",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 12892,
+  "total_output_tokens": 787,
+  "total_latency_s": 177.23656368255615,
+  "estimated_cost_usd": 0.030506000000000002,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde in der Datenbank Datensätze in der Benutzertabelle, bei denen das Alter größer als 25 ist und der Beruf 'Ingenieur' lautet."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "database.query": {
+        "table": [
+          "user"
+        ],
+        "conditions": [
+          [
+            {
+              "field": [
+                "age"
+              ],
+              "operation": [
+                ">"
+              ],
+              "value": [
+                "25"
+              ]
+            },
+            {
+              "field": [
+                "job"
+              ],
+              "operation": [
+                "="
+              ],
+              "value": [
+                "engineer"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "Benutzer",
+            "conditions": [
+              {
+                "field": "Alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "Beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "call-ee112cd1-d3aa-4f53-92cc-7b9f0f0735d4-0"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "Benutzer",
+            "conditions": [
+              {
+                "field": "Alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "Beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 730,
+      "output_tokens": 50,
+      "latency_s": 22.073119640350342,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Ich habe die Anfrage an die Datenbank-Funktion mit den Parametern für die Tabelle \"Benutzer\" und den Bedingungen (Alter > 25 und Beruf = \"Ingenieur\") gesendet. Es kam jedoch eine Fehlermeldung zurück: \"400 Bad Request: invalid parameters for function 'database_query'\".\n\nDas deutet darauf hin, dass die Parameter nicht exakt dem erwarteten Format der Funktion entsprechen. Möglicherweise liegt es an der Namensgebung der Tabelle/Felder (z. B. könnte die Tabelle \"users\" oder \"benutzer\" heißen, oder die Felder \"age\"/\"occupation\" statt \"Alter\"/\"Beruf\"), an der Art, wie der \"conditions\"-Array strukturiert ist, oder an einem internen Validierungsproblem.\n\nKannst du die genauen Tabellen- und Feldnamen aus dem Schema bestätigen oder weitere Details geben? Dann kann ich den Aufruf entsprechend anpassen. Alternativ kannst du die Anfrage direkt in der Datenbank ausführen, z. B. mit einer SQL-ähnlichen Query:\n\n```sql\nSELECT * FROM Benutzer WHERE Alter > 25 AND Beruf = 'Ingenieur';\n```\n\nFalls das nicht hilft, lass uns wissen, wie wir weitermachen sollen!"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 802,
+      "output_tokens": 253,
+      "latency_s": 9.10517930984497,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "Benutzer",
+            "conditions": [
+              {
+                "field": "Alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "Beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "call-2c6661b0-0a87-461b-b7f5-ad99d4dbc532-1"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "Benutzer",
+            "conditions": [
+              {
+                "field": "Alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "Beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 1084,
+      "output_tokens": 50,
+      "latency_s": 33.5178439617157,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "Benutzer",
+            "conditions": [
+              {
+                "field": "Alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "Beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "call-9a95eed0-7e31-40ba-8678-777d0beb69e3-2"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "Benutzer",
+            "conditions": [
+              {
+                "field": "Alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "Beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 2638,
+      "output_tokens": 50,
+      "latency_s": 39.70674180984497,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Ich habe den Funktionsaufruf für `database_query` mehrfach mit den angegebenen Parametern (Tabelle \"Benutzer\", Bedingungen Alter > 25 und Beruf = 'Ingenieur') versucht. Es kommt jedoch immer die Fehlermeldung \"400 Bad Request: invalid parameters for function 'database_query'\".\n\nDas deutet darauf hin, dass die Parameter nicht dem exakten Schema der Funktion entsprechen. Mögliche Ursachen:\n\n- Die Tabelle heißt möglicherweise anders (z. B. \"users\", \"benutzer\" oder \"User\").\n- Die Feldnamen sind anders (z. B. \"age\" statt \"Alter\", \"occupation\" oder \"job\" statt \"Beruf\").\n- Das \"conditions\"-Array muss möglicherweise anders strukturiert sein (z. B. als String oder mit anderen Keys).\n- Es gibt zusätzliche erforderliche Parameter oder Formatbeschränkungen (z. B. Wert als Zahl statt String).\n\nBitte überprüfe das genaue Datenbankschema (Tabellen- und Spaltennamen) und gib mir die korrekten Bezeichnungen. Dann kann ich den Aufruf anpassen.\n\nAlternativ kannst du die Abfrage direkt in der Datenbank ausführen, z. B.:\n\n```sql\nSELECT * FROM Benutzer WHERE Alter > 25 AND Beruf = 'Ingenieur';\n```\n\nFalls du mehr Details hast oder eine andere Funktion nutzen möchtest, lass es mich wissen!"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1228,
+      "output_tokens": 283,
+      "latency_s": 6.5237135887146,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "Benutzer",
+            "conditions": [
+              {
+                "field": "Alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "Beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "call-862dd2be-0c25-476e-b2af-bfe2997823ec-3"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "Benutzer",
+            "conditions": [
+              {
+                "field": "Alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "Beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 1540,
+      "output_tokens": 50,
+      "latency_s": 36.230576038360596,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "Engineer"
+              }
+            ]
+          },
+          "id": "call-1f6e4cdf-f30d-47dd-93ec-da0e38f7e49d-4"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "users",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "Engineer"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 4870,
+      "output_tokens": 51,
+      "latency_s": 30.079389333724976,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde in der Datenbank Datensätze in der Benutzertabelle, bei denen das Alter größer als 25 ist und der Beruf 'Ingenieur' lautet."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-ee112cd1-d3aa-4f53-92cc-7b9f0f0735d4-0",
+          "function": {
+            "arguments": "{\"table\":\"Benutzer\",\"conditions\":[{\"field\":\"Alter\",\"operation\":\">\",\"value\":\"25\"},{\"field\":\"Beruf\",\"operation\":\"=\",\"value\":\"Ingenieur\"}]}",
+            "name": "database_query"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "tool_call_id": "call-ee112cd1-d3aa-4f53-92cc-7b9f0f0735d4-0"
+    },
+    {
+      "content": "Ich habe die Anfrage an die Datenbank-Funktion mit den Parametern für die Tabelle \"Benutzer\" und den Bedingungen (Alter > 25 und Beruf = \"Ingenieur\") gesendet. Es kam jedoch eine Fehlermeldung zurück: \"400 Bad Request: invalid parameters for function 'database_query'\".\n\nDas deutet darauf hin, dass die Parameter nicht exakt dem erwarteten Format der Funktion entsprechen. Möglicherweise liegt es an der Namensgebung der Tabelle/Felder (z. B. könnte die Tabelle \"users\" oder \"benutzer\" heißen, oder die Felder \"age\"/\"occupation\" statt \"Alter\"/\"Beruf\"), an der Art, wie der \"conditions\"-Array strukturiert ist, oder an einem internen Validierungsproblem.\n\nKannst du die genauen Tabellen- und Feldnamen aus dem Schema bestätigen oder weitere Details geben? Dann kann ich den Aufruf entsprechend anpassen. Alternativ kannst du die Anfrage direkt in der Datenbank ausführen, z. B. mit einer SQL-ähnlichen Query:\n\n```sql\nSELECT * FROM Benutzer WHERE Alter > 25 AND Beruf = 'Ingenieur';\n```\n\nFalls das nicht hilft, lass uns wissen, wie wir weitermachen sollen!",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-2c6661b0-0a87-461b-b7f5-ad99d4dbc532-1",
+          "function": {
+            "arguments": "{\"table\":\"Benutzer\",\"conditions\":[{\"field\":\"Alter\",\"operation\":\">\",\"value\":\"25\"},{\"field\":\"Beruf\",\"operation\":\"=\",\"value\":\"Ingenieur\"}]}",
+            "name": "database_query"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "tool_call_id": "call-2c6661b0-0a87-461b-b7f5-ad99d4dbc532-1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-9a95eed0-7e31-40ba-8678-777d0beb69e3-2",
+          "function": {
+            "arguments": "{\"table\":\"Benutzer\",\"conditions\":[{\"field\":\"Alter\",\"operation\":\">\",\"value\":\"25\"},{\"field\":\"Beruf\",\"operation\":\"=\",\"value\":\"Ingenieur\"}]}",
+            "name": "database_query"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "tool_call_id": "call-9a95eed0-7e31-40ba-8678-777d0beb69e3-2"
+    },
+    {
+      "content": "Ich habe den Funktionsaufruf für `database_query` mehrfach mit den angegebenen Parametern (Tabelle \"Benutzer\", Bedingungen Alter > 25 und Beruf = 'Ingenieur') versucht. Es kommt jedoch immer die Fehlermeldung \"400 Bad Request: invalid parameters for function 'database_query'\".\n\nDas deutet darauf hin, dass die Parameter nicht dem exakten Schema der Funktion entsprechen. Mögliche Ursachen:\n\n- Die Tabelle heißt möglicherweise anders (z. B. \"users\", \"benutzer\" oder \"User\").\n- Die Feldnamen sind anders (z. B. \"age\" statt \"Alter\", \"occupation\" oder \"job\" statt \"Beruf\").\n- Das \"conditions\"-Array muss möglicherweise anders strukturiert sein (z. B. als String oder mit anderen Keys).\n- Es gibt zusätzliche erforderliche Parameter oder Formatbeschränkungen (z. B. Wert als Zahl statt String).\n\nBitte überprüfe das genaue Datenbankschema (Tabellen- und Spaltennamen) und gib mir die korrekten Bezeichnungen. Dann kann ich den Aufruf anpassen.\n\nAlternativ kannst du die Abfrage direkt in der Datenbank ausführen, z. B.:\n\n```sql\nSELECT * FROM Benutzer WHERE Alter > 25 AND Beruf = 'Ingenieur';\n```\n\nFalls du mehr Details hast oder eine andere Funktion nutzen möchtest, lass es mich wissen!",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-862dd2be-0c25-476e-b2af-bfe2997823ec-3",
+          "function": {
+            "arguments": "{\"table\":\"Benutzer\",\"conditions\":[{\"field\":\"Alter\",\"operation\":\">\",\"value\":\"25\"},{\"field\":\"Beruf\",\"operation\":\"=\",\"value\":\"Ingenieur\"}]}",
+            "name": "database_query"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "tool_call_id": "call-862dd2be-0c25-476e-b2af-bfe2997823ec-3"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-1f6e4cdf-f30d-47dd-93ec-da0e38f7e49d-4",
+          "function": {
+            "arguments": "{\"table\":\"users\",\"conditions\":[{\"field\":\"age\",\"operation\":\">\",\"value\":\"25\"},{\"field\":\"occupation\",\"operation\":\"=\",\"value\":\"Engineer\"}]}",
+            "name": "database_query"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

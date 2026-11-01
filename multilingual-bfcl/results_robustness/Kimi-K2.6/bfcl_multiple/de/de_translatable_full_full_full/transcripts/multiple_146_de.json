@@ -1,0 +1,234 @@
+{
+  "id": "multiple_146_de",
+  "source_id": "multiple_146",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1785,
+  "total_output_tokens": 900,
+  "total_latency_s": 6.756584644317627,
+  "estimated_cost_usd": 0.00529575,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde Restaurants in meiner Nähe im Umkreis von 10 Meilen, die chinesische Küche in Seattle anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          "Chinesisch"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "functions.restaurant_find_nearby:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 324,
+      "output_tokens": 144,
+      "latency_s": 1.198164463043213,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "cuisine": "Chinese",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          },
+          "id": "functions.restaurant_find_nearby:1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "cuisine": "Chinese",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 517,
+      "output_tokens": 378,
+      "latency_s": 2.7039060592651367,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "cuisine": "Chinesisch",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          },
+          "id": "functions.restaurant_find_nearby:2"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "cuisine": "Chinesisch",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 944,
+      "output_tokens": 378,
+      "latency_s": 2.8545141220092773,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde Restaurants in meiner Nähe im Umkreis von 10 Meilen, die chinesische Küche in Seattle anbieten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_nearby:0",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, WA\",\"cuisine\":\"Chinese\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German to find restaurants nearby within a radius of 10 miles that offer Chinese cuisine in Seattle.\n\nI need to use the `restaurant_find_nearby` function with the following parameters:\n- location: \"Seattle, WA\" (I should include the state since the example shows \"Seattle, WA\")\n- cuisine: \"Chinese\" (The user said \"chinesische Küche\", which is \"Chinese cuisine\")\n- max_distance: 10 (The user explicitly requested 10 miles)\n\nAll required parameters are provided."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_find_nearby:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_nearby:1",
+          "function": {
+            "arguments": "{\"cuisine\":\"Chinese\",\"location\":\"Seattle, WA\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 error. Let me review the parameters.\n\nLooking at the function definition again:\n- location: string - \"Die Stadt und der Bundesstaat, z. B. Seattle, WA\" - this looks correct.\n- cuisine: string - \"Bevorzugte Art der Küche im Restaurant. Sprachen: Englisch, Deutsch.\" - I used \"Chinese\" which should be correct.\n- max_distance: number - \"Maximale Entfernung (in Meilen), innerhalb derer nach Restaurants gesucht werden soll. Der Standardwert ist 5.\" - I used 10.\n\nWait, maybe the location format should be exactly as specified. Let me check if there are any issues. Actually, the error says \"invalid parameters\". Could it be that I should use \"Seattle\" instead of \"Seattle, WA\"? Or perhaps a different format?\n\nActually, looking more carefully at the schema, all the parameters seem correct. Maybe the API itself had an issue, or maybe I need to check if the parameter names or values are exact.\n\nWait, looking at the example again: \"Die Stadt und der Bundesstaat, z. B. Seattle, WA\" - so \"Seattle, WA\" should be correct.\nCuisine: \"Chinese\" is in English, which matches \"Sprachen: Englisch, Deutsch.\"\nmax_distance: 10 is a valid number.\n\nThe error might be from the mock function. Let me try again or maybe I need to tell the user there was an issue. But the user asked for a function call. Let me try once more with the exact same parameters since they appear correct per the schema."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_find_nearby:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_nearby:2",
+          "function": {
+            "arguments": "{\"cuisine\": \"Chinesisch\", \"location\": \"Seattle, WA\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function keeps returning 400 errors. Let me re-examine the function schema very carefully.\n\nLooking at the `restaurant_find_nearby` schema:\n- location: string, description says \"Die Stadt und der Bundesstaat, z. B. Seattle, WA\"\n- cuisine: string, description says \"Bevorzugte Art der Küche im Restaurant. Sprachen: Englisch, Deutsch.\"\n- max_distance: number, description says \"Maximale Entfernung (in Meilen)... Der Standardwert ist 5.\"\n\nAll parameters look correct. But wait - could there be a format issue with the JSON or the values? No, the JSON is valid.\n\nActually, looking at the error message again: \"400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.\"\n\nThis looks like it might be a simulated error or there's something specific about how this function expects parameters. Let me check if maybe the location should be formatted differently. Or maybe the cuisine should be in German? The description says \"Sprachen: Englisch, Deutsch.\" so both should be accepted.\n\nWait, actually, maybe I should try using \"chinesisch\" in German for the cuisine? Let me try that.\n\nOr perhaps there's no actual restaurant database available and the function is designed to fail? But I should try German cuisine name since the user asked in German.\n\nActually, maybe it's the enum or validation. But the location is just a string. Let me try with \"Seattle\" only? No, the example clearly states \"Seattle, WA\".\n\nLet me try once more with cuisine in German."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

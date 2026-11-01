@@ -1,0 +1,173 @@
+{
+  "id": "multiple_146_de",
+  "source_id": "multiple_146",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 874,
+  "total_output_tokens": 1256,
+  "total_latency_s": 6.9854958057403564,
+  "estimated_cost_usd": 0.0058543,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde Restaurants in meiner Nähe im Umkreis von 10 Meilen, die chinesische Küche in Seattle anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          "Chinesisch"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "cuisine": "Chinese",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          },
+          "id": "functions.restaurant_find_nearby:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "cuisine": "Chinese",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 265,
+      "output_tokens": 300,
+      "latency_s": 2.1481549739837646,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "cuisine": "chinesisch",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          },
+          "id": "functions.restaurant_find_nearby:1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "cuisine": "chinesisch",
+            "location": "Seattle, WA",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 609,
+      "output_tokens": 956,
+      "latency_s": 4.837340831756592,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde Restaurants in meiner Nähe im Umkreis von 10 Meilen, die chinesische Küche in Seattle anbieten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_nearby:0",
+          "function": {
+            "arguments": "{\"cuisine\": \"Chinese\", \"location\": \"Seattle, WA\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find Chinese restaurants in Seattle within a 10-mile radius. I have the function `restaurant_find_nearby` which takes:\n- cuisine: string (preferred cuisine type)\n- location: string (city and state)\n- max_distance: number (optional, default is 5)\n\nThe user specified:\n- cuisine: \"chinesische Küche\" or \"Chinese\" - since the tool description says Languages: English, German, I should probably use English for cuisine type as that's more standard, but German might also work. Looking at the parameter description: \"Preferred type of cuisine in restaurant. Languages: English, German.\" So I can use either. I'll use \"Chinese\" to be safe, or \"chinesische Küche\" / \"chinesisch\". Actually, let me use \"Chinese\" since cuisine types are typically standardized in English in these systems, but the description explicitly says German is accepted too. Let me provide \"Chinese\" as it's the most standard.\n- location: \"Seattle, WA\" (the example shows this format)\n- max_distance: 10 (10 miles)\n\nSo the function call should be:\n{\n  \"cuisine\": \"Chinese\",\n  \"location\": \"Seattle, WA\",\n  \"max_distance\": 10\n}"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_find_nearby:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_find_nearby:1",
+          "function": {
+            "arguments": "{\"cuisine\": \"chinesisch\", \"location\": \"Seattle, WA\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. Let me re-examine the parameters. Perhaps the location format needs to be exactly as specified. The user said \"in Seattle\" which is in Washington state. The example says \"e.g., Seattle, WA\". \n\nWait, maybe the cuisine parameter should be in German since the user asked in German? No, the function description says \"Languages: English, German\" for both cuisine and location.\n\nLet me check if there's something wrong with the parameter values. Maybe \"Seattle, WA\" is correct. Maybe the cuisine should be exactly \"Chinese\" or maybe \"chinesisch\"? \n\nActually, looking at the error, it says \"invalid parameters\". Since max_distance is optional, maybe I should try without it? No, the user specifically asked for 10 miles.\n\nWait, maybe the location should just be \"Seattle\" without the state? But the example shows \"Seattle, WA\".\n\nLet me try with \"chinesisch\" for cuisine since the user asked in German and maybe the API expects the language to match? No, the description says both English and German are accepted.\n\nActually, looking more carefully at the schema:\n- cuisine: string, description says \"Preferred type of cuisine in restaurant. Languages: English, German.\"\n- location: string, description says \"The city and state, e.g. Seattle, WA Languages: English, German.\"\n\nMaybe I should try exactly as the user specified: \"Seattle\" for location? But the example includes state. \n\nOr maybe the issue is that I need to pass the arguments exactly as named. Let me check the schema again:\n- cuisine (required)\n- location (required) \n- max_distance (optional)\n\nWait, I see the issue! In my first call I used \"Chinese\", but maybe I should use the German term since that's what the user asked for? No, the function says both languages work.\n\nActually, let me reconsider. The API might be strict about parameter formatting. Perhaps \"Seattle\" without \", WA\"? Or perhaps \"Seattle, Washington\"? \n\nLet me try again with \"Seattle, WA\" but maybe the issue was something else. Actually, looking at the original call, I used valid JSON. Let me think... \n\nWait, could it be that the location should be \"Seattle\" (not \"Seattle, WA\") because the German user didn't specify state? But Seattle is ambiguous? Hmm.\n\nActually, I think the most likely issue is that I should try \"Chinese\" or maybe the system expects lowercase? Or maybe the cuisine should be \"chinese\" lowercase? No, that seems unlikely.\n\nLet me try calling with German terms since the user interface is German and perhaps the API validation is stricter than described.\n\nActually, looking back at the tools, I only have two functions. Let me re-read the restaurant_find_nearby schema:\n\n```json\n{\n  \"cuisine\": string,\n  \"location\": string,\n  \"max_distance\": number\n}\n```\n\nBoth cuisine and location are required. The user clearly specified Chinese cuisine and Seattle location. max_distance is 10.\n\nMaybe the issue is that \"Seattle\" alone isn't enough and it needs \"Seattle, WA\"? No, I used \"Seattle, WA\".\n\nMaybe the issue is that \"Chinese\" cuisine isn't recognized and I need to use \"chinese\" (lowercase)? Or \"Chinesisch\"?\n\nLet me try with location being more explicit or trying the German version. Actually, since the user wrote in German, maybe the system expects German inputs? The description says \"Languages: English, German\" but maybe the parameter enum or validation expects one of them.\n\nLet me try: cuisine=\"Chinesisch\", location=\"Seattle, WA\". Or maybe cuisine=\"chinesische Küche\".\n\nActually, I think I should just make the call again. The 400 might have been a temporary issue, or maybe I need to use exactly the format from the examples. Let me try with \"Chinese\" and \"Seattle, WA\" again but make sure the JSON is perfectly formatted. It was perfectly formatted though.\n\nWait... could it be that the location should NOT include the state? Let me check: \"The city and state, e.g. Seattle, WA\". So it should include it.\n\nMaybe max_distance needs to be an integer, not a number? 10 is an integer.\n\nMaybe cuisine should be in German: \"chinesisch\". Let me try that."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

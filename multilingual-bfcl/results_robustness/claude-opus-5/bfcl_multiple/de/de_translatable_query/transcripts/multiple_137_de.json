@@ -1,0 +1,383 @@
+{
+  "id": "multiple_137_de",
+  "source_id": "multiple_137",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "claude-opus-5",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 5,
+  "num_clarifications": 1,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 7567,
+  "total_output_tokens": 1154,
+  "total_latency_s": 16.072075366973877,
+  "estimated_cost_usd": 0.066685,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Suche nach anhängigen Klagen im Zusammenhang mit dem Unternehmen 'Gugel', die nach dem 1. Januar 2021 in Kalifornien eingereicht wurden."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuit_search": {
+        "company": [
+          "Google"
+        ],
+        "start_date": [
+          "2021-01-01",
+          "01/01/2021",
+          "Jan.1,2021",
+          "January 1, 2021"
+        ],
+        "location": [
+          "California",
+          "CA"
+        ],
+        "status": [
+          "ongoing",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugel",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "id": "toolu_017Pkku7V2kVFVW5VApyzBbV"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugel",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 1024,
+      "output_tokens": 127,
+      "latency_s": 1.7189321517944336,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Der Aufruf wurde abgelehnt – ich versuche es mit einem anderen Datumsformat:"
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugel",
+            "start_date": "January 1, 2021",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "id": "toolu_01GJxnwcmmp3v5Se5bJaUhEK"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugel",
+            "start_date": "January 1, 2021",
+            "location": "California",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 1194,
+      "output_tokens": 195,
+      "latency_s": 2.8451225757598877,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Auch das hat nicht funktioniert. Letzter Versuch mit einem weiteren Format:"
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugel",
+            "start_date": "01/01/2021",
+            "location": "CA",
+            "status": "ongoing"
+          },
+          "id": "toolu_019q7YwVrugCooYT94y8QVj5"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugel",
+            "start_date": "01/01/2021",
+            "location": "CA",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 1432,
+      "output_tokens": 230,
+      "latency_s": 3.3890886306762695,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Leider konnte ich die Suche nicht erfolgreich ausführen.\n\n**Was ich versucht habe:**\n\n| Versuch | `start_date` | `location` | Ergebnis |\n|---|---|---|---|\n| 1 | `2021-01-01` | `California` | 400 Bad Request |\n| 2 | `January 1, 2021` | `California` | 400 Bad Request |\n| 3 | `01/01/2021` | `CA` | 400 Bad Request |\n\nAlle drei Aufrufe enthielten die laut Definition erforderlichen Parameter (`company`, `start_date`, `location`) sowie den gültigen Status `ongoing` (= anhängig), wurden aber jeweils mit „invalid parameters\" abgewiesen.\n\n**Mögliche Ursachen:**\n- Der Dienst erwartet ein spezielles, nicht dokumentiertes Datumsformat.\n- Der Firmenname `Gugel` wird nicht erkannt. Falls Sie **Google** meinten (Gugel ist die eingedeutschte Schreibweise), sagen Sie mir bitte Bescheid – ich starte die Suche dann sofort mit dem korrekten Namen neu.\n- Es liegt eine vorübergehende Störung der Schnittstelle vor.\n\nMöchten Sie, dass ich es mit „Google\" als Unternehmensnamen erneut probiere?"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1705,
+      "output_tokens": 477,
+      "latency_s": 6.3032684326171875,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Google",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "id": "toolu_018XR2fGN2iUWyen9gH2hN1B"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Google",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 2212,
+      "output_tokens": 125,
+      "latency_s": 1.8156635761260986,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Suche nach anhängigen Klagen im Zusammenhang mit dem Unternehmen 'Gugel', die nach dem 1. Januar 2021 in Kalifornien eingereicht wurden."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_017Pkku7V2kVFVW5VApyzBbV",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Gugel",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_017Pkku7V2kVFVW5VApyzBbV"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISgwQKzwIIExgCKkCGLbuNMitpLIW2gG+PZwa3IZIzTK4H6vBDhYpv35wKV8XXzmXWjukjtqkQhIKS9ej44HmRIUQ9nM+Rc2OMW1YNMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAeK4mNcGwgFJCAkQABobAQ7MAlCJA083BWdVBCatCqmUA083C5C8BCatIAIyBBJxzyU6BJo7ND9CBDCXZX9KBFisX+NQA1oE2QXhVmAEaAFwAdoBYAoWcHJlZml4X2JlZm9yZV9ibG9ja192MRIghFGtRV0HMa/BL4jDoaaYGBEFS8nZbZrd5Ah8BVlyWUwiADIgwsATyGqckuIvlm89hhd2j4t6RMkCrcwJe/oeCYr7Th9IAxIMqgXpz46dsqrBEYbsGgwPGrvmv4NHPinrJ7kiMKe44jfcOC/+h+PDpLFqpKvzBZ1agxkvcQrgKgdtU2+i6ocAyz6u+5VF8CLEBgMvsCphlN1/IBdJnzA0wjbCxgSC1XVSQqYNfIHXe1hN0haiQoH1lOIzlUzySK1mHvCEOd1XrNgbE9BSrOU2QUkKoVaOXvWLgoEKP/jk64I+VCOt0m7tsZVOwUsCMwA++w3p0KnMYBgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Der Aufruf wurde abgelehnt – ich versuche es mit einem anderen Datumsformat:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01GJxnwcmmp3v5Se5bJaUhEK",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Gugel",
+            "start_date": "January 1, 2021",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01GJxnwcmmp3v5Se5bJaUhEK"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISnQUKnwMIExgCKkACfXOXkon3jEUxDJbtn+YZty/HebQEHOKZNa/rfR+KvogiPQd9W4IO/VHCvgLSveqNTCQuRtxbqtrh4COOzBeSMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAeW4mNcGwgFYCA4QABoqAQ7MAlCJA083BWdVBCatCqmUA083C5C8BCatBb4GCsjFA083C7cwBCatIAIyBBJxzyU6BJo7ND9CBDCXZX9KBFisX+NQA1oE2QXhVmAGaAFwAdoBoAEKFnByZWZpeF9iZWZvcmVfYmxvY2tfdjESIA2sv/g4Rl7Bxn1l2G5/U1KiDUuybv1CiT4fBhoLpHcZIkCGLbuNMitpLIW2gG+PZwa3IZIzTK4H6vBDhYpv35wKV8XXzmXWjukjtqkQhIKS9ej44HmRIUQ9nM+Rc2OMW1YNMiDCwBPIapyS4i+Wbz2GF3aPi3pEyQKtzAl7+h4JivtOH0gDEgxvy9JthTLxlO0baV0aDF9Qn/G6LNRsftIppiIwVd9HdZRk3eZDOyTu8+JRYPlkL2MiPIRRPi/2bbOuEubrKC0hTthS5FeMN85LHjaCKqoBqoo90WkANi54qRiERvQPHNV3RymlwJeCiSzluluenkakpZrTUqcqFzGEOIgmt5c4rBIQ7UEyxj9Q+Eq+lMxNFFiu88QNp/+YsOp7F1iE1rKIiSkMuZf99b2xNXF7wdSX2aU9IGN0NhxTD+mn8b9sgSS2VSsXH5iR38hyKUZOBCw4k6qkSzWIeNI3QVhYfUSMGC3VPwYzYlHcCZAgqmKXj7xtKH54IbZ7IqwYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Auch das hat nicht funktioniert. Letzter Versuch mit einem weiteren Format:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_019q7YwVrugCooYT94y8QVj5",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Gugel",
+            "start_date": "01/01/2021",
+            "location": "CA",
+            "status": "ongoing"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_019q7YwVrugCooYT94y8QVj5"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Leider konnte ich die Suche nicht erfolgreich ausführen.\n\n**Was ich versucht habe:**\n\n| Versuch | `start_date` | `location` | Ergebnis |\n|---|---|---|---|\n| 1 | `2021-01-01` | `California` | 400 Bad Request |\n| 2 | `January 1, 2021` | `California` | 400 Bad Request |\n| 3 | `01/01/2021` | `CA` | 400 Bad Request |\n\nAlle drei Aufrufe enthielten die laut Definition erforderlichen Parameter (`company`, `start_date`, `location`) sowie den gültigen Status `ongoing` (= anhängig), wurden aber jeweils mit „invalid parameters\" abgewiesen.\n\n**Mögliche Ursachen:**\n- Der Dienst erwartet ein spezielles, nicht dokumentiertes Datumsformat.\n- Der Firmenname `Gugel` wird nicht erkannt. Falls Sie **Google** meinten (Gugel ist die eingedeutschte Schreibweise), sagen Sie mir bitte Bescheid – ich starte die Suche dann sofort mit dem korrekten Namen neu.\n- Es liegt eine vorübergehende Störung der Schnittstelle vor.\n\nMöchten Sie, dass ich es mit „Google\" als Unternehmensnamen erneut probiere?",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_018XR2fGN2iUWyen9gH2hN1B",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "company": "Google",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "name": "lawsuit_search",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

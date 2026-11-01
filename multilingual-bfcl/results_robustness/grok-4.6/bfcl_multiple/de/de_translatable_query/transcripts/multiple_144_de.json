@@ -1,0 +1,140 @@
+{
+  "id": "multiple_144_de",
+  "source_id": "multiple_144",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 651,
+  "total_output_tokens": 43,
+  "total_latency_s": 19.272277355194092,
+  "estimated_cost_usd": 0.00156,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie hoch ist der Luftqualitätsindex in London am 2022/08/16?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "air_quality": {
+        "location": [
+          "London"
+        ],
+        "date": [
+          "2022-08-16",
+          "16/08/2022",
+          "Aug.16,2022",
+          "2022/08/16",
+          "16\\08\\2022"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "call tool air_quality with location is London date is 2022/08/16<|eos|>"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 300,
+      "output_tokens": 20,
+      "latency_s": 9.946722745895386,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality",
+          "arguments": {
+            "location": "London",
+            "date": "2022/08/16"
+          },
+          "id": "call-3f39b165-9022-4ab1-886c-d9ab42e44863-0"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality": {
+            "location": "London",
+            "date": "2022/08/16"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 351,
+      "output_tokens": 23,
+      "latency_s": 9.325554609298706,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie hoch ist der Luftqualitätsindex in London am 2022/08/16?"
+    },
+    {
+      "content": "call tool air_quality with location is London date is 2022/08/16<|eos|>",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-3f39b165-9022-4ab1-886c-d9ab42e44863-0",
+          "function": {
+            "arguments": "{\"location\":\"London\",\"date\":\"2022/08/16\"}",
+            "name": "air_quality"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

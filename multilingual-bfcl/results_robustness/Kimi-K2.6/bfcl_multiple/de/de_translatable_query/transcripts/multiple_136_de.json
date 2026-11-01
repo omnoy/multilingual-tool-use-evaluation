@@ -1,0 +1,183 @@
+{
+  "id": "multiple_136_de",
+  "source_id": "multiple_136",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1028,
+  "total_output_tokens": 603,
+  "total_latency_s": 4.704571485519409,
+  "estimated_cost_usd": 0.0033886000000000003,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Nenne mir die offizielle Rate der Gewaltkriminalität in San Francisco im Jahr 2020."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_crime_rate": {
+        "city": [
+          "San Francisco",
+          "San Francisco, CA",
+          "SF"
+        ],
+        "state": [
+          "California",
+          "CA"
+        ],
+        "type": [
+          "violent",
+          "Violent"
+        ],
+        "year": [
+          2020
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_crime_rate",
+          "arguments": {
+            "city": "San Francisco",
+            "state": "California",
+            "type": "violent crime",
+            "year": 2020
+          },
+          "id": "functions.get_crime_rate:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_crime_rate": {
+            "city": "San Francisco",
+            "state": "California",
+            "type": "violent crime",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_crime_rate'. Please review the function definition and try again.",
+      "input_tokens": 252,
+      "output_tokens": 475,
+      "latency_s": 2.838024377822876,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_crime_rate",
+          "arguments": {
+            "city": "San Francisco",
+            "state": "CA",
+            "type": "violent",
+            "year": 2020
+          },
+          "id": "functions.get_crime_rate:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_crime_rate": {
+            "city": "San Francisco",
+            "state": "CA",
+            "type": "violent",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 776,
+      "output_tokens": 128,
+      "latency_s": 1.8665471076965332,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Nenne mir die offizielle Rate der Gewaltkriminalität in San Francisco im Jahr 2020."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_crime_rate:0",
+          "function": {
+            "arguments": "{\"city\":\"San Francisco\",\"state\":\"California\",\"type\":\"violent crime\",\"year\":2020}",
+            "name": "get_crime_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the official rate of violent crime in San Francisco in the year 2020, in German.\n\nI need to use the `get_crime_rate` function.\n- city: \"San Francisco\"\n- state: California (this needs to be included even though the user wrote in German, the function expects English parameters based on the tool definition)\n- type: \"violent crime\" or something similar? The parameter is described as \"The type of crime\" and optional. The user's request says \"Gewaltkriminalität\" which means violent crime. I'll use a descriptive string, perhaps \"violent\" or \"violent crime\". Let me check if the function description gives any hints. No, it just says \"The type of crime.\" I'll use \"violent crime\" or \"violent\".\n- year: 2020\n\nActually, looking at the tool definition:\n- city: string\n- state: string\n- type?: string\n- year?: number\n\nI should provide \"San Francisco\" for city, \"California\" for state (or \"CA\"?), \"violent\" or \"violent crime\" for type, and 2020 for year.\n\nThe user prompt is in German, but the function parameters expect English strings for the location. I will map \"Gewaltkriminalität\" to \"violent crime\" or similar. I'll use \"violent\".\n\nLet me just be careful. The function description says \"The type of crime.\" It's optional. I should fill it with something that represents violent crime. \"violent\" seems reasonable. I'll use \"violent crime\".\n\nFor the state, \"California\" is the full name. Some systems accept abbreviations, but full name is safer.\n\nThe response should be just the function call because the instructions say \"respond with the correct function call exactly as specified in the tool definitions.\" Wait, the system says \"The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions.\"\n\nSo I should only output the function call, not an intro text in German or English. Just the JSON function call block."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_crime_rate'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_crime_rate:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_crime_rate:1",
+          "function": {
+            "arguments": "{\"city\": \"San Francisco\", \"state\": \"CA\", \"type\": \"violent\", \"year\": 2020}",
+            "name": "get_crime_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. This might be because the state name should be the abbreviation \"CA\" instead of \"California\", or because the type \"violent crime\" is not recognized/invalid.\n\nLet me try with \"CA\" for the state, and possibly no type or just \"violent\". Or maybe the city needs to match exactly.\n\nLet me try again with \"CA\" and \"violent\"."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

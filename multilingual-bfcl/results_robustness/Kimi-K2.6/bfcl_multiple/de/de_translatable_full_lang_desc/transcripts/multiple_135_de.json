@@ -1,0 +1,234 @@
+{
+  "id": "multiple_135_de",
+  "source_id": "multiple_135",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2110,
+  "total_output_tokens": 1181,
+  "total_latency_s": 8.384942293167114,
+  "estimated_cost_usd": 0.0067285,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wer war das Opfer in dem Gerichtsverfahren mit dem Aktenzeichen 2022/AL2562 in Kalifornien?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_case_info": {
+        "docket": [
+          "2022/AL2562"
+        ],
+        "court": [
+          "Kalifornien",
+          "CA"
+        ],
+        "info_type": [
+          "Opfer"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_case_info",
+          "arguments": {
+            "docket": "2022/AL2562",
+            "court": "Kalifornien",
+            "info_type": "victim"
+          },
+          "id": "functions.get_case_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_case_info": {
+            "docket": "2022/AL2562",
+            "court": "Kalifornien",
+            "info_type": "victim"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_case_info'. Please review the function definition and try again.",
+      "input_tokens": 283,
+      "output_tokens": 488,
+      "latency_s": 3.0418221950531006,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_case_info",
+          "arguments": {
+            "docket": "2022/AL2562",
+            "court": "California",
+            "info_type": "victim"
+          },
+          "id": "functions.get_case_info:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_case_info": {
+            "docket": "2022/AL2562",
+            "court": "California",
+            "info_type": "victim"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_case_info'. Please review the function definition and try again.",
+      "input_tokens": 816,
+      "output_tokens": 150,
+      "latency_s": 1.5968894958496094,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_case_info",
+          "arguments": {
+            "docket": "2022/AL2562",
+            "court": "Kalifornien",
+            "info_type": "Opfer"
+          },
+          "id": "functions.get_case_info:2"
+        }
+      ],
+      "decoded": [
+        {
+          "get_case_info": {
+            "docket": "2022/AL2562",
+            "court": "Kalifornien",
+            "info_type": "Opfer"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1011,
+      "output_tokens": 543,
+      "latency_s": 3.7462306022644043,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wer war das Opfer in dem Gerichtsverfahren mit dem Aktenzeichen 2022/AL2562 in Kalifornien?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_case_info:0",
+          "function": {
+            "arguments": "{\"docket\":\"2022/AL2562\",\"court\":\"Kalifornien\",\"info_type\":\"victim\"}",
+            "name": "get_case_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer fragt auf Deutsch nach dem Opfer in einem Gerichtsverfahren mit dem Aktenzeichen 2022/AL2562 in Kalifornien. \n\nIch habe die Funktion `get_case_info`, die folgende Parameter benötigt:\n- docket: \"2022/AL2562\"\n- court: \"Kalifornien\" (beschreibt den Gerichtsort, wir sollten hier \"Kalifornien\" oder \"California\" verwenden - da die Beschreibung sagt \"Languages: English, German\", sollte beides funktionieren, aber da der Benutzer auf Deutsch fragt, könnte ich \"Kalifornien\" verwenden)\n- info_type: \"victim\" oder \"Opfer\" (die Beschreibung sagt i.e., victim, accused, verdict etc.)\n\nDie Funktion kann auf Deutsch und Englisch verwendet werden. Da der Benutzer auf Deutsch fragt, sollte ich die Parameter entsprechend auf Deutsch oder Englisch übergeben. Die info_type sollte wahrscheinlich \"victim\" sein, da dies ein klar definierter Typ ist, aber \"Opfer\" könnte auch funktionieren, da die Dokumentation \"Languages: English, German\" angibt.\n\nIch werde die Funktion mit den Parametern aufrufen:\n- docket: \"2022/AL2562\"\n- court: \"Kalifornien\" (oder \"California\") - ich verwende \"Kalifornien\" passend zur Sprache des Benutzers\n- info_type: \"victim\"\n\nEigentlich sollte ich vielleicht bei court \"California\" verwenden, da es sich um einen offiziellen Gerichtsort handelt, aber die Dokumentation erlaubt Deutsch. Ich bleibe bei einer Mischung oder verwende \"California\" für den Court, da das wahrscheinlich der offizielle Name ist. Oder \"Kalifornien\" ist in Ordnung, da die Funktion Deutsch unterstützt.\n\nLass mich die Funktion aufrufen."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_case_info'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_case_info:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_case_info:1",
+          "function": {
+            "arguments": "{\"docket\":\"2022/AL2562\",\"court\":\"California\",\"info_type\":\"victim\"}",
+            "name": "get_case_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Funktionsaufruf mit \"Kalifornien\" und \"victim\" hat einen 400 Bad Request zurückgegeben. Das könnte bedeuten, dass die Parameter nicht korrekt waren. Vielleicht akzeptiert das System bestimmte Werte nicht. Lass mich versuchen, die Werte auf Englisch zu übergeben, da Gerichtsverfahren oft in englischen Datenbanken geführt werden.\n\nIch werde es mit \"California\" und \"victim\" versuchen."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_case_info'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_case_info:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_case_info:2",
+          "function": {
+            "arguments": "{\"docket\": \"2022/AL2562\", \"court\": \"Kalifornien\", \"info_type\": \"Opfer\"}",
+            "name": "get_case_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Auch das hat nicht funktioniert. Vielleicht ist das Aktenzeichen nicht korrekt formatiert oder existiert nicht in der Datenbank? Oder vielleicht ist \"victim\" nicht das richtige info_type Format. Lass mich nochmal überlegen.\n\nDie info_type Dokumentation sagt: \"Specify the information type needed for the case. i.e., victim, accused, verdict etc. Languages: English, German.\"\n\nVielleicht muss ich genau \"victim\" oder \"opfer\" verwenden. Lass mich erneut mit genaueren Parametern versuchen, oder vielleicht ist das Aktenzeichen das Problem. \n\nAber Moment - es könnte auch sein, dass die Funktion \"Kalifornien\" oder \"California\" als court nicht akzeptiert, weil es zu generisch ist (ein Bundesstaat, kein spezifisches Gericht). Die Beschreibung sagt \"Court in which the case was heard.\" Vielleicht muss es ein spezifisches Gericht sein wie \"Supreme Court of California\" oder ein bestimmter Bezirksgericht.\n\nAber ohne weitere Informationen weiß ich nicht, welches spezifische Gericht gemeint ist. Ich werde es nochmal mit den deutschen Begriffen versuchen, da die Anweisung sagt \"Understand the request in German and respond with the correct function call exactly as specified in the tool definitions.\"\n\nWarte - \"exactly as specified in the tool definitions\". Das könnte bedeuten, dass ich die parameter values genau so verwenden soll, wie sie in der Tool-Definition vorgegeben sind. Die Tool-Definition gibt keine enum-Werte vor, aber vielleicht sollte ich die deutschen Übersetzungen verwenden, da der Benutzer auf Deutsch gefragt hat und die Tool-Beschreibung sagt \"Languages: English, German.\"\n\nIch werde es mit \"Opfer\" als info_type versuchen. Und vielleicht \"Kalifornien\" als court.\n\nOder vielleicht ist das Aktenzeichen falsch formatiert? Nein, das sollte das sein, was der Benutzer angegeben hat.\n\nIch versuche es noch einmal mit \"Opfer\" und \"Kalifornien\"."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

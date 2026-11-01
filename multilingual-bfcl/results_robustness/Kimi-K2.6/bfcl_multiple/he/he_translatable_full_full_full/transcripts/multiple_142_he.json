@@ -1,0 +1,230 @@
+{
+  "id": "multiple_142_he",
+  "source_id": "multiple_142",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1953,
+  "total_output_tokens": 463,
+  "total_latency_s": 4.46914005279541,
+  "estimated_cost_usd": 0.00370735,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהי רמת הלחות במיאמי, פלורידה בשבעת הימים הקרובים?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "weather.humidity_forecast": {
+        "location": [
+          "מיאמי",
+          "מיאמי, פלורידה",
+          "פלורידה"
+        ],
+        "days": [
+          7
+        ],
+        "min_humidity": [
+          "",
+          0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "location": "Miami",
+            "days": 7
+          },
+          "id": "functions.weather_humidity_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "location": "Miami",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'weather_humidity_forecast'. Please review the function definition and try again.",
+      "input_tokens": 453,
+      "output_tokens": 147,
+      "latency_s": 1.3178048133850098,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "days": 7,
+            "location": "Miami, Florida"
+          },
+          "id": "functions.weather_humidity_forecast:1"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "days": 7,
+            "location": "Miami, Florida"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'weather_humidity_forecast'. Please review the function definition and try again.",
+      "input_tokens": 647,
+      "output_tokens": 159,
+      "latency_s": 1.5537052154541016,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "days": 7,
+            "location": "מיאמי"
+          },
+          "id": "functions.weather_humidity_forecast:2"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "days": 7,
+            "location": "מיאמי"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 853,
+      "output_tokens": 157,
+      "latency_s": 1.5976300239562988,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהי רמת הלחות במיאמי, פלורידה בשבעת הימים הקרובים?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.weather_humidity_forecast:0",
+          "function": {
+            "arguments": "{\"location\": \"Miami\", \"days\": 7}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the humidity forecast in Miami, Florida for the next seven days. I need to use the `weather_humidity_forecast` function.\n\nParameters:\n- location: \"Miami\" or \"Miami, Florida\" - I'll use \"Miami\" since the city is sufficient\n- days: 7\n- min_humidity: optional, not specified by user, so I'll leave it out\n\nSince the user asked in Hebrew, I should provide the location in English as the function supports English and Hebrew, and Miami is universally recognized in English."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'weather_humidity_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.weather_humidity_forecast:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.weather_humidity_forecast:1",
+          "function": {
+            "arguments": "{\"days\": 7, \"location\": \"Miami, Florida\"}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 error. Let me check the parameters again.\n\nThe function definition:\n- location: string, required, \"The city for which you want to get humidity. Languages: English, Hebrew.\"\n- days: number, required, \"The number of days for the forecast.\"\n- min_humidity: number, optional, \"The minimum humidity level (percentage) to filter the result.\"\n\nI passed \"Miami\" and 7. Both seem correct. Maybe the issue is something else, or maybe I need to try with Hebrew? Or maybe \"Miami, Florida\" instead? Let me try again."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'weather_humidity_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "functions.weather_humidity_forecast:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.weather_humidity_forecast:2",
+          "function": {
+            "arguments": "{\"days\": 7, \"location\": \"מיאמי\"}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting 400. Maybe the API has a different expectation. Let me try with a Hebrew location name, maybe the system expects Hebrew since the user asked in Hebrew? Or maybe there's a maximum on days? Let me try 5 days to see if 7 is too many. Actually, the schema says days is a number, no maximum specified.\n\nWait, maybe I should check if the parameter names are exact. The schema shows:\n- location\n- days\n- min_humidity\n\nThey match. Maybe the API service itself is down or has specific constraints. Let me try once more with Hebrew city name."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

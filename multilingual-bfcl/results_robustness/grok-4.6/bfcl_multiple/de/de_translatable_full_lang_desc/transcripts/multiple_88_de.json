@@ -1,0 +1,140 @@
+{
+  "id": "multiple_88_de",
+  "source_id": "multiple_88",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1365,
+  "total_output_tokens": 58,
+  "total_latency_s": 19.89823818206787,
+  "estimated_cost_usd": 0.003078,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde für mich die Anzahl der aktiven Spieler im Spiel „Welt der Kriegskunst“ im Jahr 2020."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "video_games.get_player_count": {
+        "game_title": [
+          "Welt der Kriegskunst"
+        ],
+        "year": [
+          2020
+        ],
+        "platform": [
+          "",
+          "PC"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "run tool video_games_get_player_count with game_title is Welt der Kriegskunst year is 2020<|eos|>"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 386,
+      "output_tokens": 28,
+      "latency_s": 10.056324005126953,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "video_games_get_player_count",
+          "arguments": {
+            "game_title": "Welt der Kriegskunst",
+            "year": 2020
+          },
+          "id": "call-6535a2d1-b2bf-4f73-aef4-a5f242badfad-0"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_get_player_count": {
+            "game_title": "Welt der Kriegskunst",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 979,
+      "output_tokens": 30,
+      "latency_s": 9.841914176940918,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde für mich die Anzahl der aktiven Spieler im Spiel „Welt der Kriegskunst“ im Jahr 2020."
+    },
+    {
+      "content": "run tool video_games_get_player_count with game_title is Welt der Kriegskunst year is 2020<|eos|>",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-6535a2d1-b2bf-4f73-aef4-a5f242badfad-0",
+          "function": {
+            "arguments": "{\"game_title\":\"Welt der Kriegskunst\",\"year\":2020}",
+            "name": "video_games_get_player_count"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

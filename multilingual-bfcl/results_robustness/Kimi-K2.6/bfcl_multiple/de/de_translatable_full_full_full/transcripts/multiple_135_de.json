@@ -1,0 +1,112 @@
+{
+  "id": "multiple_135_de",
+  "source_id": "multiple_135",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 368,
+  "total_output_tokens": 350,
+  "total_latency_s": 2.7801506519317627,
+  "estimated_cost_usd": 0.0017496,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wer war das Opfer in dem Gerichtsverfahren mit dem Aktenzeichen 2022/AL2562 in Kalifornien?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_case_info": {
+        "docket": [
+          "2022/AL2562"
+        ],
+        "court": [
+          "Kalifornien",
+          "CA"
+        ],
+        "info_type": [
+          "Opfer"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_case_info",
+          "arguments": {
+            "docket": "2022/AL2562",
+            "court": "Kalifornien",
+            "info_type": "Opfer"
+          },
+          "id": "functions.get_case_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_case_info": {
+            "docket": "2022/AL2562",
+            "court": "Kalifornien",
+            "info_type": "Opfer"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 368,
+      "output_tokens": 350,
+      "latency_s": 2.7801506519317627,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wer war das Opfer in dem Gerichtsverfahren mit dem Aktenzeichen 2022/AL2562 in Kalifornien?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_case_info:0",
+          "function": {
+            "arguments": "{\"docket\":\"2022/AL2562\",\"court\":\"Kalifornien\",\"info_type\":\"Opfer\"}",
+            "name": "get_case_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer fragt nach dem Opfer in einem Gerichtsverfahren mit dem Aktenzeichen 2022/AL2562 in Kalifornien. Ich muss die Funktion `get_case_info` verwenden.\n\nParameter:\n- docket: \"2022/AL2562\"\n- court: \"Kalifornien\" (der Benutzer hat Kalifornien geschrieben, das ist ein Standort/Bundesstaat, aber die Funktion erwartet ein Gericht. Ich sollte dennoch \"Kalifornien\" als court übergeben, da der Benutzer das so angegeben hat. Alternativ könnte ich \"California\" verwenden, aber da der Benutzer auf Deutsch schreibt und die Funktion auch Deutsch akzeptiert, nehme ich \"Kalifornien\").\n- info_type: \"Opfer\" (der Benutzer fragt nach dem Opfer, und die Funktion akzeptiert Deutsch. Also gebe ich \"Opfer\" an.)\n\nWarte, die Funktionsbeschreibung sagt: \"Gericht, vor dem das Verfahren verhandelt wurde.\" und akzeptiert Englisch/Deutsch. Da nur \"Kalifornien\" angegeben ist, ist das ziemlich allgemein, aber ich muss das so nehmen wie es vom Benutzer kommt.\n\nAlso: get_case_info(docket=\"2022/AL2562\", court=\"Kalifornien\", info_type=\"Opfer\")"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

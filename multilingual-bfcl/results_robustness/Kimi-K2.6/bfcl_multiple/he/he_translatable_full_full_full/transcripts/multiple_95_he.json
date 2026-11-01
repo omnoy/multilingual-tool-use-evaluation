@@ -1,0 +1,179 @@
+{
+  "id": "multiple_95_he",
+  "source_id": "multiple_95",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1600,
+  "total_output_tokens": 894,
+  "total_latency_s": 6.437835693359375,
+  "estimated_cost_usd": 0.005096,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "המר 200 אירו לדולרים אמריקאים לפי שער החליפין הנוכחי."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "currency_exchange.convert": {
+        "amount": [
+          200
+        ],
+        "from_currency": [
+          "EUR"
+        ],
+        "to_currency": [
+          "USD"
+        ],
+        "live_conversion": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "currency_exchange_convert",
+          "arguments": {
+            "amount": 200,
+            "from_currency": "אירו",
+            "to_currency": "דולר אמריקאי",
+            "live_conversion": true
+          },
+          "id": "functions.currency_exchange_convert:0"
+        }
+      ],
+      "decoded": [
+        {
+          "currency_exchange_convert": {
+            "amount": 200,
+            "from_currency": "אירו",
+            "to_currency": "דולר אמריקאי",
+            "live_conversion": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'currency_exchange_convert'. Please review the function definition and try again.",
+      "input_tokens": 403,
+      "output_tokens": 754,
+      "latency_s": 4.9887471199035645,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "currency_exchange_convert",
+          "arguments": {
+            "amount": 200,
+            "from_currency": "EUR",
+            "to_currency": "USD",
+            "live_conversion": true
+          },
+          "id": "functions.currency_exchange_convert:1"
+        }
+      ],
+      "decoded": [
+        {
+          "currency_exchange_convert": {
+            "amount": 200,
+            "from_currency": "EUR",
+            "to_currency": "USD",
+            "live_conversion": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1197,
+      "output_tokens": 140,
+      "latency_s": 1.4490885734558105,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "המר 200 אירו לדולרים אמריקאים לפי שער החליפין הנוכחי."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.currency_exchange_convert:0",
+          "function": {
+            "arguments": "{\"amount\": 200, \"from_currency\": \"אירו\", \"to_currency\": \"דולר אמריקאי\", \"live_conversion\": true}",
+            "name": "currency_exchange_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to convert 200 Euros to US Dollars using the current exchange rate.\n\nI need to use the `currency_exchange_convert` function.\nParameters:\n- amount: 200\n- from_currency: \"EUR\" or \"Euro\" or in Hebrew \"אירו\"\n- to_currency: \"USD\" or \"US Dollar\" or in Hebrew \"דולר אמריקאי\"\n- live_conversion: true (since the user asked for the current exchange rate - \"שער החליפין הנוכחי\")\n\nThe tool description says languages can be English or Hebrew. Let me use Hebrew terms as provided by the user or standard currency codes. The description says \"שפות: אנגלית, עברית\" for the currency parameters. I'll use Hebrew terms to match the user's request, or I could use EUR/USD. Actually, looking at the parameter descriptions: \"המטבע שממנו יש להמיר. שפות: אנגלית, עברית.\" So I can use either. I'll use \"אירו\" and \"דולר אמריקאי\" as the user specified, or the codes. Since the user wrote in Hebrew, I'll provide Hebrew terms or standard codes. Standard codes are usually more reliable, but the function explicitly supports Hebrew. Let me use \"אירו\" and \"דולר אמריקאי\" as requested. Actually, to be safe and precise, I'll use \"EUR\" and \"USD\" since those are universal, but the prompt says \"שפות: אנגלית, עברית\" so both should work. I'll use the Hebrew terms as the user used them.\n\nWait, \"דולרים אמריקאים\" vs \"דולר אמריקאי\" - singular might be better. But the user said \"דולרים אמריקאים\". I'll use \"דולר אמריקאי\" (singular) or maybe the function accepts plural. Actually, to match exactly I'll just use standard codes EUR and USD to avoid any ambiguity. No, the user specifically asked in Hebrew and the function supports Hebrew. Let me use:\n- from_currency: \"אירו\"\n- to_currency: \"דולר אמריקאי\" \n- amount: 200\n- live_conversion: true\n\nActually, looking at the user's input: \"דולרים אמריקאים\" (plural). The parameter is the currency name. I'll use \"USD\" to be absolutely safe, but since the instruction is to respond in the specified format and the user is Hebrew, I'll try Hebrew. But standard currency codes are safer for APIs. However, the schema says languages: English, Hebrew.\n\nLet me use:\nfrom_currency: \"EUR\"\nto_currency: \"USD\"\n\nOr:\nfrom_currency: \"אירו\"\nto_currency: \"דולר אמריקאי\"\n\nI think either is fine. I'll go with the Hebrew terms as the user explicitly asked in Hebrew. But actually, I should check if \"אירו\" is the standard Hebrew name (yes). And \"דולר אמריקאי\" is standard Hebrew for US Dollar. I'll use singular forms as they are currency names.\n\nActually, I'll provide both the function call. Since this is a forced function call scenario, I just need to output the JSON."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'currency_exchange_convert'. Please review the function definition and try again.",
+      "tool_call_id": "functions.currency_exchange_convert:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.currency_exchange_convert:1",
+          "function": {
+            "arguments": "{\"amount\": 200, \"from_currency\": \"EUR\", \"to_currency\": \"USD\", \"live_conversion\": true}",
+            "name": "currency_exchange_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. This likely means the Hebrew currency names weren't accepted, or there's an issue with the formatting. Let me try using standard ISO currency codes \"EUR\" and \"USD\" instead. Those are universally accepted for currency conversion APIs.\n\nAlso, the parameter names are: amount, from_currency, to_currency, live_conversion.\n\nLet me retry with:\n- amount: 200\n- from_currency: \"EUR\"\n- to_currency: \"USD\"\n- live_conversion: true"
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

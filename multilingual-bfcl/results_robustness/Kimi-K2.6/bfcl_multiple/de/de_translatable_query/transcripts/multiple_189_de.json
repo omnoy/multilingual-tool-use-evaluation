@@ -1,0 +1,122 @@
+{
+  "id": "multiple_189_de",
+  "source_id": "multiple_189",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 232,
+  "total_output_tokens": 386,
+  "total_latency_s": 2.4955055713653564,
+  "estimated_cost_usd": 0.0017644,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Rechne 3 Uhr nachmittags von der Zeitzone New Yorks in die Zeitzone Londons um."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "3pm"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "New York",
+          "New York, NY",
+          "NY",
+          "NYC",
+          "Eastern Standard Time",
+          "EST"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "London",
+          "British Summer Time",
+          "BST",
+          "Greenwich Mean Time",
+          "GMT"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "3pm",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          },
+          "id": "functions.timezone_convert:0"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "3pm",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 232,
+      "output_tokens": 386,
+      "latency_s": 2.4955055713653564,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Rechne 3 Uhr nachmittags von der Zeitzone New Yorks in die Zeitzone Londons um."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:0",
+          "function": {
+            "arguments": "{\"time\": \"3pm\", \"from_timezone\": \"America/New_York\", \"to_timezone\": \"Europe/London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to convert 3 PM from New York timezone to London timezone.\n\nI need to use the `timezone_convert` function.\n- from_timezone: \"New York\" or \"America/New_York\" - the tool description says \"The time zone you want to convert from.\" I should probably use a common format. Let me use \"America/New_York\" or \"New York\". Since the user said \"New Yorks\", I'll use \"America/New_York\" for precision, but common names like \"New York\" might work too. Actually, the examples in the description use formats like \"EST\", \"PST\", \"UTC+2\", \"America/New_York\". Let me use \"America/New_York\".\n- time: \"3pm\" (the example shows \"3pm\")\n- to_timezone: \"London\" or \"Europe/London\". I'll use \"Europe/London\".\n\nWait, let me check the tool again:\n- time: \"The local time you want to convert, e.g. 3pm\"\n- from_timezone: \"The time zone you want to convert from.\"\n- to_timezone: \"The time zone you want to convert to.\"\n\nI think \"America/New_York\" and \"Europe/London\" are safe choices. Or I could use \"EST\" but New York is currently EDT (Eastern Daylight Time) depending on the date, so using the city name is safer. The system should handle \"New York\" or \"America/New_York\". Let me provide \"America/New_York\" and \"Europe/London\".\n\nThe user wrote in German, but I just need to make the function call. The response should be just the function call as specified."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

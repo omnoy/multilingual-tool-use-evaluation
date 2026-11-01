@@ -1,0 +1,113 @@
+{
+  "id": "multiple_52_de",
+  "source_id": "multiple_52",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 227,
+  "total_output_tokens": 308,
+  "total_latency_s": 2.4414784908294678,
+  "estimated_cost_usd": 0.00144765,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich habe 100 Euro. Wie viel ist das in USD?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "currency_conversion": {
+        "amount": [
+          100
+        ],
+        "from_currency": [
+          "Euro",
+          "EUR"
+        ],
+        "to_currency": [
+          "USD",
+          "US-Dollar"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "currency_conversion",
+          "arguments": {
+            "amount": 100,
+            "from_currency": "Euro",
+            "to_currency": "USD"
+          },
+          "id": "functions.currency_conversion:0"
+        }
+      ],
+      "decoded": [
+        {
+          "currency_conversion": {
+            "amount": 100,
+            "from_currency": "Euro",
+            "to_currency": "USD"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 227,
+      "output_tokens": 308,
+      "latency_s": 2.4414784908294678,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich habe 100 Euro. Wie viel ist das in USD?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.currency_conversion:0",
+          "function": {
+            "arguments": "{\"amount\": 100, \"from_currency\": \"Euro\", \"to_currency\": \"USD\"}",
+            "name": "currency_conversion"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking to convert 100 Euros to USD. This is a currency conversion task. I need to use the currency_conversion function.\n\nParameters:\n- amount: 100\n- from_currency: \"Euro\" or \"EUR\" - the tool says \"Languages: English, German\", so I can probably use \"Euro\" since the user wrote in German.\n- to_currency: \"USD\" or \"US-Dollar\" - again, since German is supported, I could use either. But looking at standard currency codes, it might accept \"USD\" or \"US Dollar\". Let me use \"USD\" as it's the standard code and universally recognized, or perhaps \"US-Dollar\" in German. Actually, the parameter description says languages English and German are supported. I think \"Euro\" and \"USD\" should work, or \"Euro\" and \"US Dollar\". I'll use \"Euro\" and \"USD\" to be safe, or should I use German terms \"Euro\" and \"US-Dollar\"? Let me use standard terms. The function likely handles both. I'll use from_currency: \"Euro\" and to_currency: \"USD\" since both are understood.\n\nActually, looking more carefully: amount is 100, from_currency \"Euro\", to_currency \"USD\" (or US-Dollar). Let me just call it with \"Euro\" and \"USD\"."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

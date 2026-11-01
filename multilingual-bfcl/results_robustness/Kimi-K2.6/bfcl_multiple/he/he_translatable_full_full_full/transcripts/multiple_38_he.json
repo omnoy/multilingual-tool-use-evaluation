@@ -1,0 +1,117 @@
+{
+  "id": "multiple_38_he",
+  "source_id": "multiple_38",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 448,
+  "total_output_tokens": 278,
+  "total_latency_s": 1.8838868141174316,
+  "estimated_cost_usd": 0.0015375999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את הספר 'האלכימאי' בסניפי הספרייה בעיר ניו יורק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "library.search_book": {
+        "book_name": [
+          "האלכימאי"
+        ],
+        "city": [
+          "ניו יורק",
+          "ניו יורק, נ\"י",
+          "העיר ניו יורק",
+          "ניו יורק",
+          "נ\"י"
+        ],
+        "availability": [
+          "",
+          false
+        ],
+        "genre": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_book",
+          "arguments": {
+            "book_name": "האלכימאי",
+            "city": "ניו יורק"
+          },
+          "id": "functions.library_search_book:0"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_book": {
+            "book_name": "האלכימאי",
+            "city": "ניו יורק"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 448,
+      "output_tokens": 278,
+      "latency_s": 1.8838868141174316,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את הספר 'האלכימאי' בסניפי הספרייה בעיר ניו יורק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.library_search_book:0",
+          "function": {
+            "arguments": "{\"book_name\": \"האלכימאי\", \"city\": \"ניו יורק\"}",
+            "name": "library_search_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find the book 'האלכימאי' (The Alchemist) in library branches in New York city.\n\nI need to use the library_search_book function with:\n- book_name: 'האלכימאי'\n- city: 'ניו יורק'\n- availability: not specified, but since they just want to find it, I should probably use the default false, or maybe they want available copies? The request just says \"מצא את הספר\" so default is fine. But actually, usually when someone asks to find a book in a library, they might be interested in availability. However, the parameter is optional and defaults to false. I'll stick to the required parameters unless there's a clear indication.\n\nWait, looking at the request again - \"מצא את הספר 'האלכימאי' בסניפי הספרייה בעיר ניו יורק\" - this is a straightforward search. I'll use the required parameters: book_name and city.\n\nbook_name: האלכימאי\ncity: ניו יורק\n\nNo need to specify availability or genre unless requested."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

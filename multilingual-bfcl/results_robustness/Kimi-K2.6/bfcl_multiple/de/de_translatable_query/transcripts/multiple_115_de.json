@@ -1,0 +1,122 @@
+{
+  "id": "multiple_115_de",
+  "source_id": "multiple_115",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 427,
+  "total_output_tokens": 690,
+  "total_latency_s": 3.7389705181121826,
+  "estimated_cost_usd": 0.00316565,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts in Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_restaurants": {
+        "location": [
+          "Manhattan"
+        ],
+        "food_type": [
+          "Thai"
+        ],
+        "number": [
+          5
+        ],
+        "dietary_requirements": [
+          [
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "Thai",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          },
+          "id": "functions.find_restaurants:0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "Thai",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 427,
+      "output_tokens": 690,
+      "latency_s": 3.7389705181121826,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts in Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_restaurants:0",
+          "function": {
+            "arguments": "{\"location\": \"Manhattan\", \"food_type\": \"Thai\", \"number\": 5, \"dietary_requirements\": [\"vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find 5 restaurants in Manhattan that serve Thai food and offer a vegan menu.\n\nI need to use the `find_restaurants` function with these parameters:\n- location: \"Manhattan\"\n- food_type: \"Thai\" or \"thailändisch\" - but since the function likely expects English values for cuisine type, I should probably use \"Thai\"\n- number: 5\n- dietary_requirements: [\"vegan\"] or maybe just \"vegan\"? Looking at the spec, it says \"Special dietary requirements, e.g. vegan, gluten-free.\" and the type is \"string\". Wait, let me look again.\n\nActually looking at the parameter definition:\n- dietary_requirements: Special dietary requirements, e.g. vegan, gluten-free. Default: \"None\"\n- Type: array? Let me check... Actually in the JSON schema it says:\n```\n\"dietary_requirements\": {\"default\": \"None\", \"description\": \"Special dietary requirements, e.g. vegan, gluten-free.\", \"items\": ...? No, actually I need to look carefully.\n\nActually looking at the schema provided:\n- It's listed as `dietary_requirements?: Array<string>`? No wait, let me look again.\n\nThe schema shows:\n```\n\"dietary_requirements\": {\"default\": \"None\", \"description\": \"Special dietary requirements, e.g. vegan, gluten-free.\", \"items\": {\"type\": \"string\"}, \"type\": \"array\"}\n```\n\nWait no, the JSON shown is:\n```\n\"dietary_requirements\": {\"default\": \"None\", \"description\": \"Special dietary requirements, e.g. vegan, gluten-free.\", \"type\": \"array\", \"items\": {\"type\": \"string\"}}\n```\n\nActually in the raw text it says:\n`// Default: \"None\"` which suggests it might accept a string, but the type might be array. However, the examples given are \"vegan, gluten-free\" which could be comma-separated or array items.\n\nGiven the schema says `Array<string>`, I should pass an array: `[\"vegan\"]`.\n\nLet me construct the function call:\n- location: \"Manhattan\"\n- food_type: \"Thai\"\n- number: 5\n- dietary_requirements: [\"vegan\"]\n\nActually, the food_type should probably be \"Thai\" since that's the standard English cuisine type. \"thailändisch\" might work too but \"Thai\" is safer.\n\nWait, I need to check if the parameters are in German or English. The user writes in German but the function descriptions are in English. Usually the parameter values should be in English unless specified otherwise.\n\nSo:\n- location: \"Manhattan\"\n- food_type: \"Thai\"\n- number: 5\n- dietary_requirements: [\"vegan\"]\n\nActually, looking at the parameter descriptions again, it says:\n- `number`: Number of results to return.\n- `food_type`: The type of food preferred.\n- `location`: The specific location or area.\n- `dietary_requirements`: Special dietary requirements, e.g. vegan, gluten-free.\n\nI'll call with these parameters."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

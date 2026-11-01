@@ -1,0 +1,118 @@
+{
+  "id": "multiple_185_de",
+  "source_id": "multiple_185",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 267,
+  "total_output_tokens": 380,
+  "total_latency_s": 2.6943836212158203,
+  "estimated_cost_usd": 0.00177365,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde das nächstgelegene Sushi-Restaurant mit Terrasse in Boston."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant_search.find_closest": {
+        "location": [
+          "Boston",
+          "Boston, MA"
+        ],
+        "cuisine": [
+          "Sushi"
+        ],
+        "amenities": [
+          [
+            "Patio"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston, MA",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston, MA",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 267,
+      "output_tokens": 380,
+      "latency_s": 2.6943836212158203,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde das nächstgelegene Sushi-Restaurant mit Terrasse in Boston."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:0",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston, MA\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"Find the closest sushi restaurant with a patio in Boston.\"\n\nI need to use the `restaurant_search_find_closest` function.\n\nParameters:\n- cuisine: \"Sushi\"\n- location: \"Boston, MA\" (The user said Boston, and the example in the tool definition shows \"Boston, MA\")\n- amenities: [\"Patio\"] (The user specifically asked for \"Terrasse\" which is Patio in German)\n\nLet me check the enum values in amenities. The options are: \"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\". So \"Patio\" is correct.\n\nThe user didn't specify MA, but the tool example uses \"Boston, MA\" for the city. However, the user just said \"Boston\". Looking at the parameter description: \"The city, for instance Boston, MA\". I think \"Boston, MA\" is the safest choice as it's the standard format, but the user explicitly said \"Boston\". Let me provide \"Boston, MA\" to be more specific and match the example, though \"Boston\" might also work. Actually, since the parameter says \"The city, for instance Boston, MA\", it suggests the format should include state for US cities.\n\nWait, I should look at whether the function requires exactly what the user said or if I should disambiguate. The user said \"Boston\" which is in Massachusetts, so \"Boston, MA\" is appropriate and matches the example.\n\nActually, the user wrote \"Boston\" not \"Boston, MA\". But given the example in the schema explicitly shows \"Boston, MA\", I'll use that format to ensure proper geocoding."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

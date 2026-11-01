@@ -1,0 +1,171 @@
+{
+  "id": "multiple_108_de",
+  "source_id": "multiple_108",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 752,
+  "total_output_tokens": 397,
+  "total_latency_s": 3.0895941257476807,
+  "estimated_cost_usd": 0.0023024,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Berechne die Wärmekapazität bei konstantem Druck für Luft bei einer Temperatur von 298K und einem Volumen von 10 m^3."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calc_heat_capacity": {
+        "temp": [
+          298
+        ],
+        "volume": [
+          10
+        ],
+        "gas": [
+          "Luft",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          },
+          "id": "functions.calc_heat_capacity:0"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "input_tokens": 290,
+      "output_tokens": 130,
+      "latency_s": 1.365110158920288,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10
+          },
+          "id": "functions.calc_heat_capacity:1"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 462,
+      "output_tokens": 267,
+      "latency_s": 1.7244839668273926,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Berechne die Wärmekapazität bei konstantem Druck für Luft bei einer Temperatur von 298K und einem Volumen von 10 m^3."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calc_heat_capacity:0",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10, \"gas\": \"air\"}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to calculate the heat capacity at constant pressure for air at a temperature of 298 K and a volume of 10 m^3.\n\nI need to use the `calc_heat_capacity` function.\n- temp: 298 (Kelvin)\n- volume: 10 (m^3)\n- gas: \"air\" (optional, but specified in the request since it's German for air, though default is air already)\n\nLet me call the function with the required parameters."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "tool_call_id": "functions.calc_heat_capacity:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.calc_heat_capacity:1",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the parameters again.\n\nFunction: calc_heat_capacity\nParameters:\n- temp (number): The temperature of the gas in Kelvin. -> 298\n- volume (number): The volume of the gas in m^3. -> 10\n- gas (string, optional): Type of gas, with air as default. -> \"air\"\n\nWait, looking at the schema more carefully:\n```\n\"properties\": {\"gas\": {\"default\": \"air\", \"description\": \"Type of gas, with air as default.\", \"type\": \"string\"}, \"temp\": {\"description\": \"The temperature of the gas in Kelvin.\", \"type\": \"number\"}, \"volume\": {\"description\": \"The volume of the gas in m^3.\", \"type\": \"number\"}}, \"required\": [\"temp\", \"volume\"]\n```\n\nBoth temp and volume are required. I provided both. The types are number. 298 is an integer which is a valid number. 10 is also valid.\n\nMaybe the issue is something else. Let me try calling again, perhaps without the gas parameter since it's optional and the default is air anyway."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

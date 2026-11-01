@@ -1,0 +1,230 @@
+{
+  "id": "multiple_183_de",
+  "source_id": "multiple_183",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3511,
+  "total_output_tokens": 2301,
+  "total_latency_s": 15.333760261535645,
+  "estimated_cost_usd": 0.01253945,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie viele Kalorien hat das Rezept für Rindfleischlasagne von Foodnetwork.com?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_info.get_calories": {
+        "website": [
+          "Foodnetwork.com"
+        ],
+        "recipe": [
+          "Rindfleischlasagne",
+          "Rezept für Rindfleischlasagne"
+        ],
+        "optional_meal_time": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_info_get_calories",
+          "arguments": {
+            "recipe": "Beef Lasagna",
+            "website": "Foodnetwork.com"
+          },
+          "id": "functions.recipe_info_get_calories:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_info_get_calories": {
+            "recipe": "Beef Lasagna",
+            "website": "Foodnetwork.com"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_info_get_calories'. Please review the function definition and try again.",
+      "input_tokens": 382,
+      "output_tokens": 815,
+      "latency_s": 4.154388904571533,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_info_get_calories",
+          "arguments": {
+            "recipe": "Beef Lasagna",
+            "website": "foodnetwork.com",
+            "optional_meal_time": "Dinner"
+          },
+          "id": "functions.recipe_info_get_calories:1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_info_get_calories": {
+            "recipe": "Beef Lasagna",
+            "website": "foodnetwork.com",
+            "optional_meal_time": "Dinner"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_info_get_calories'. Please review the function definition and try again.",
+      "input_tokens": 1242,
+      "output_tokens": 600,
+      "latency_s": 3.516170024871826,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_info_get_calories",
+          "arguments": {
+            "recipe": "Rindfleischlasagne",
+            "website": "Foodnetwork.com"
+          },
+          "id": "functions.recipe_info_get_calories:2"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_info_get_calories": {
+            "recipe": "Rindfleischlasagne",
+            "website": "Foodnetwork.com"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1887,
+      "output_tokens": 886,
+      "latency_s": 7.663201332092285,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie viele Kalorien hat das Rezept für Rindfleischlasagne von Foodnetwork.com?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_info_get_calories:0",
+          "function": {
+            "arguments": "{\"recipe\": \"Beef Lasagna\", \"website\": \"Foodnetwork.com\"}",
+            "name": "recipe_info_get_calories"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the calorie count of a beef lasagna recipe from Foodnetwork.com. \n\nI need to use the `recipe_info_get_calories` function with:\n- recipe: \"Rindfleischlasagne\" or \"Beef Lasagna\" (since it's asking for beef lasagna, I should probably use the English name since the website is Foodnetwork.com which is an English site, but the user said \"Rindfleischlasagne\" - actually, looking at the parameter description, it says \"Name des Rezepts\" which is in German. I should probably use the recipe name as the user provided it or translate it. Since Foodnetwork.com is an English website, the recipe is likely called \"Beef Lasagna\" there. But the function parameter just says \"Name des Rezepts\". Let me think... I'll try with \"Rindfleischlasagne\" or maybe \"Beef Lasagna\". Since the user specifically asked for \"Rindfleischlasagne\", I should pass that, but since Foodnetwork.com is English... Actually, let me just pass \"Rindfleischlasagne\" as requested. Wait, but the site is English so it might need English. Let me reconsider.\n\nActually, looking at the function parameter, it just takes a string for the recipe name. Since the user asked for \"Rindfleischlasagne\" but the site Foodnetwork.com is English, the recipe is most likely called \"Beef Lasagna\" on that site. However, the tool might handle translation or matching. But to be safe and accurate, I should probably use the English recipe name since it's an English website.\n\nLet me use:\n- recipe: \"Beef Lasagna\" (since Food Network is an English site)\n- website: \"Foodnetwork.com\"\n- optional_meal_time: default (empty string) or perhaps \"Dinner\"\n\nActually, I can just use the German name because the tool might translate or search for it. But typically recipe sites use English names for English sites. Let me go with \"Beef Lasagna\" to be more accurate for an English website. Or I could just use what the user said \"Rindfleischlasagne\". \n\nHmm, the safest approach is to use the exact name as it would appear on the site. Since Foodnetwork.com is American/English, it would be \"Beef Lasagna\". I'll use that.\n\nWait, looking at the function description again: \"Die Kalorienmenge eines bestimmten Rezepts auf einer Website zum Thema Essen abrufen.\" This suggests the tool should be able to handle recipe retrieval from cooking websites. I'll pass \"Rindfleischlasagne\" as the user specified, but I'm concerned it won't find it on Foodnetwork.com.\n\nActually, let me reconsider. The user specifically asked for \"Rindfleischlasagne von Foodnetwork.com\". Even though the site is English, they used the German name. I'll pass \"Rindfleischlasagne\" as the recipe parameter since that's what they asked for, and \"Foodnetwork.com\" as the website.\n\nWait, actually I think \"Beef Lasagna\" is better because Foodnetwork.com definitely has recipes in English. But maybe the tool expects the exact recipe title on the site. I'll go with \"Beef Lasagna\". \n\nActually, I can just provide both? No, the parameter takes a single string. Let me go with \"Beef Lasagna\" since that's what it would be called on Foodnetwork.com.\n\nLet me double check: website should probably be \"Foodnetwork.com\" or \"foodnetwork.com\". The user wrote \"Foodnetwork.com\" so I'll use that.\n\nI'll not specify optional_meal_time since it's optional and defaults to empty string."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_info_get_calories'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_info_get_calories:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_info_get_calories:1",
+          "function": {
+            "arguments": "{\"recipe\": \"Beef Lasagna\", \"website\": \"foodnetwork.com\", \"optional_meal_time\": \"Dinner\"}",
+            "name": "recipe_info_get_calories"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the parameters. The function definition says:\n- recipe: string, name of the recipe\n- website: string, the food website where the recipe is located\n- optional_meal_time: optional, enum ['Breakfast', 'Lunch', 'Dinner']\n\nI used \"Beef Lasagna\" and \"Foodnetwork.com\". Maybe the parameter name was wrong? Let me check the schema again.\n\nActually, looking at the JSON schema:\n- recipe: string\n- website: string\n\nWait, I think I see the issue. The function parameters might expect exact field names. Let me look again.\n\nThe parameters are:\n- \"recipe\": string\n- \"website\": string\n\nBut maybe \"website\" needs to match something specific? Or maybe I need to include optional_meal_time? Or maybe the issue is something else.\n\nActually, looking at the previous call, I used the parameter names correctly. But it returned 400. Could it be that Foodnetwork.com is not supported or needs to be in a specific format? Or maybe the recipe needs to match exactly?\n\nLet me try again with \"Rindfleischlasagne\" as the recipe name, since that's what the user asked for. Or maybe use \"Beef Lasagna\" but with \"foodnetwork.com\" lowercase?\n\nActually, wait. Maybe the issue is that I need to use the parameter names as defined. Let me re-read the schema:\n```json\n{\n  \"recipe\": string,\n  \"website\": string,\n  \"optional_meal_time\": optional string enum\n}\n```\n\nMy call was:\n```json\n{\n  \"recipe\": \"Beef Lasagna\",\n  \"website\": \"Foodnetwork.com\"\n}\n```\n\nThis looks correct. The 400 error might mean the recipe wasn't found or the website format is wrong. Or perhaps I should try with \"Rindfleischlasagne\" or add the optional_meal_time as \"Dinner\".\n\nLet me try with \"Beef Lasagna\" and optional_meal_time \"Dinner\". Or maybe I should try the exact German name since the tool interface is in German and might handle German recipe names even on English sites.\n\nActually, maybe I should try \"Rindfleischlasagne\" as that's what the user asked for. Or perhaps the tool expects a URL format or specific domain format.\n\nOne more thought: maybe the parameter names in the actual function call need to match exactly, but I used \"recipe\" and \"website\" which is correct. \n\nLet me try with the recipe as \"Beef Lasagna\" and website as \"foodnetwork.com\" (lowercase), and add optional_meal_time: \"Dinner\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_info_get_calories'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_info_get_calories:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_info_get_calories:2",
+          "function": {
+            "arguments": "{\"recipe\": \"Rindfleischlasagne\", \"website\": \"Foodnetwork.com\"}",
+            "name": "recipe_info_get_calories"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting 400. Let me reconsider the parameters. Maybe I misread the schema. Let me look carefully at the function definition:\n\n```json\n{\n  \"description\": \"Die Kalorienmenge eines bestimmten Rezepts auf einer Website zum Thema Essen abrufen.\",\n  \"name\": \"recipe_info_get_calories\",\n  \"parameters\": {\n    \"description\": \"Parameters for retrieving calorie information from a recipe on a food website\",\n    \"properties\": {\n      \"optional_meal_time\": {\n        \"description\": \"Bestimmte Mahlzeit des Tages für das Rezept (optional, mögliche Werte sind 'Breakfast', 'Lunch', 'Dinner'). Der Standardwert ist ''\",\n        \"enum\": [\"Breakfast\", \"Lunch\", \"Dinner\"],\n        \"type\": \"string\"\n      },\n      \"recipe\": {\n        \"description\": \"Name des Rezepts.\",\n        \"type\": \"string\"\n      },\n      \"website\": {\n        \"description\": \"Die Website zum Thema Essen, auf der sich das Rezept befindet.\",\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"recipe\", \"website\"],\n    \"title\": \"recipe_calorie_params\",\n    \"type\": \"object\"\n  }\n}\n```\n\nWait... required parameters are \"recipe\" and \"website\". My call looks correct. But getting 400.\n\nMaybe there's an issue with the tool itself, or maybe \"Foodnetwork.com\" is not a valid value and it expects something else like specific supported sites.\n\nOr perhaps I need to check if there's another interpretation. Maybe the recipe needs to be provided in a specific way.\n\nActually, looking at the first error message again: \"400 Bad Request: invalid parameters for function 'recipe_info_get_calories'. Please review the function definition and try again.\"\n\nThis sounds like a validation error on the parameters themselves, not that the recipe wasn't found. Could it be that I used wrong parameter names? Let me check my JSON again.\n\nIn my first call:\n```json\n{\"recipe\": \"Beef Lasagna\", \"website\": \"Foodnetwork.com\"}\n```\n\nWait - maybe there's a typo in my understanding of the schema. Let me reread the function definition:\n```json\n\"recipe_info_get_calories\": {\n  \"parameters\": {\n    \"properties\": {\n      \"optional_meal_time\": ...,\n      \"recipe\": ...,\n      \"website\": ...\n    },\n    \"required\": [\"recipe\", \"website\"]\n  }\n}\n```\n\nHmm, that all looks correct. Unless... maybe the function name is wrong? No, it's recipe_info_get_calories.\n\nCould it be that the website needs to be something specific and not just any string? But the type is \"string\" with no enum.\n\nLet me try a third time. Maybe the parameter names need to be in a specific order? No, JSON objects are unordered.\n\nActually, maybe the tool assumes German inputs and doesn't accept English recipe names? No, that doesn't make sense for a parameter validation error.\n\nWait - could it be that \"Foodnetwork.com\" needs to be just \"foodnetwork\" without the TLD? Or maybe it checks against a list of supported websites.\n\nOr perhaps the issue is that I should use the German name since the tool was presented in German context? Let me try \"Rindfleischlasagne\".\n\nActually, let me think if there's any other reason for a 400. Maybe I need to provide all three parameters including optional_meal_time, even though it says optional? In some badly designed APIs, \"optional\" parameters in the schema are actually required when not using defaults properly. But the schema says `required: [\"recipe\", \"website\"]`.\n\nLet me try one more time with the German recipe name and maybe a different website format.\n\nActually, I'll try \"Rindfleischlasagne\" and \"Foodnetwork.com\" with no optional_meal_time, since the default should work.\n\nActually wait - maybe the problem is capitalization of the website or the fact that it has a dot? No, that shouldn't matter for a string parameter.\n\nLet me try once more."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

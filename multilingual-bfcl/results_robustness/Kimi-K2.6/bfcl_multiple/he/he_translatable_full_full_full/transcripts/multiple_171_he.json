@@ -1,0 +1,124 @@
+{
+  "id": "multiple_171_he",
+  "source_id": "multiple_171",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 319,
+  "total_output_tokens": 285,
+  "total_latency_s": 2.2984819412231445,
+  "estimated_cost_usd": 0.00144305,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מי ניצח במשחק הכדורסל בין הלייקרס לקליפרס ב-28 בינואר 2021?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "game_result.get_winner": {
+        "teams": [
+          [
+            "Lakers",
+            "Clippers"
+          ],
+          [
+            "Clippers",
+            "Lakers"
+          ]
+        ],
+        "date": [
+          "2021-01-28",
+          "01/28/2021",
+          "28 בינואר, 2021"
+        ],
+        "venue": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "game_result_get_winner",
+          "arguments": {
+            "teams": [
+              "Lakers",
+              "Clippers"
+            ],
+            "date": "2021-01-28"
+          },
+          "id": "functions.game_result_get_winner:0"
+        }
+      ],
+      "decoded": [
+        {
+          "game_result_get_winner": {
+            "teams": [
+              "Lakers",
+              "Clippers"
+            ],
+            "date": "2021-01-28"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 319,
+      "output_tokens": 285,
+      "latency_s": 2.2984819412231445,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מי ניצח במשחק הכדורסל בין הלייקרס לקליפרס ב-28 בינואר 2021?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.game_result_get_winner:0",
+          "function": {
+            "arguments": "{\"teams\": [\"Lakers\", \"Clippers\"], \"date\": \"2021-01-28\"}",
+            "name": "game_result_get_winner"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking who won the basketball game between the Lakers and the Clippers on January 28, 2021.\n\nI need to use the function `game_result_get_winner` with:\n- teams: [\"Lakers\", \"Clippers\"] (or the Hebrew names, but the function likely accepts English. However, the schema says \"שפות: אנגלית, עברית\" for the date, but for teams it just says list of two teams. I'll use English team names for safety, but actually the user wrote in Hebrew. The instructions say the user writes in Hebrew, understand the request and respond with correct function call. The function parameters don't specify language for teams, but usually team names work in English. I'll provide [\"Lakers\", \"Clippers\"] or maybe [\"הלייקרס\", \"קליפרס\"]. Let me use English names as they are more standard in sports APIs.)\n- date: \"2021-01-28\" (the user said 28 בינואר 2021 which is January 28, 2021)\n\nvenue is optional, default is empty string, so I don't need to include it.\n\nLet me construct the function call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,244 @@
+{
+  "id": "multiple_189_he",
+  "source_id": "multiple_189",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1982,
+  "total_output_tokens": 823,
+  "total_latency_s": 8.528546333312988,
+  "estimated_cost_usd": 0.0051749,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "המר את השעה 15:00 מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "15:00"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק",
+          "ניו יורק סיטי",
+          "שעון החוף המזרחי הסטנדרטי",
+          "EST"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "לונדון",
+          "שעון הקיץ הבריטי",
+          "BST",
+          "שעון גריניץ'",
+          "GMT"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "from_timezone": "New York",
+            "time": "15:00",
+            "to_timezone": "London"
+          },
+          "id": "functions.timezone_convert:0"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "from_timezone": "New York",
+            "time": "15:00",
+            "to_timezone": "London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 399,
+      "output_tokens": 154,
+      "latency_s": 1.4005627632141113,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "from_timezone": "New York",
+            "time": "3pm",
+            "to_timezone": "London"
+          },
+          "id": "functions.timezone_convert:1"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "from_timezone": "New York",
+            "time": "3pm",
+            "to_timezone": "London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 592,
+      "output_tokens": 360,
+      "latency_s": 3.071718454360962,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "from_timezone": "ניו יורק",
+            "time": "15:00",
+            "to_timezone": "לונדון"
+          },
+          "id": "functions.timezone_convert:2"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "from_timezone": "ניו יורק",
+            "time": "15:00",
+            "to_timezone": "לונדון"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 991,
+      "output_tokens": 309,
+      "latency_s": 4.056265115737915,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "המר את השעה 15:00 מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:0",
+          "function": {
+            "arguments": "{\"from_timezone\": \"New York\", \"time\": \"15:00\", \"to_timezone\": \"London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to convert 15:00 (3 PM) from New York timezone to London timezone.\n\nI need to use the `timezone_convert` function with:\n- from_timezone: New York timezone (can use \"New York\" or \"Eastern Time\" - let me use \"New York\" since the user mentioned it)\n- time: \"15:00\" or \"3pm\" - the user wrote 15:00 so I should use \"15:00\"\n- to_timezone: \"London\" since the user mentioned London\n\nLet me call the timezone_convert function."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "tool_call_id": "functions.timezone_convert:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:1",
+          "function": {
+            "arguments": "{\"from_timezone\": \"New York\", \"time\": \"3pm\", \"to_timezone\": \"London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the parameters. The function expects:\n- from_timezone: string\n- time: string (e.g., 3pm)\n- to_timezone: string\n\nMaybe the format of time should be \"3pm\" instead of \"15:00\"? Or maybe the timezone names need to be in a specific format. Let me try with \"3pm\" format and standard timezone names like \"America/New_York\" and \"Europe/London\", or maybe \"EST\"/\"EDT\" and \"GMT\"/\"BST\".\n\nActually, looking at the example in the schema: \"הזמן המקומי שברצונך להמיר, למשל 3pm\" - it specifically gives the example \"3pm\". So maybe I should use \"3pm\".\n\nAlso for timezones, maybe it wants city names but perhaps I should try \"Eastern Time\" and \"Greenwich Mean Time\" or specific timezone identifiers.\n\nWait, the schema says \"אזור הזמן שממנו ברצונך להמיר. שפות: אנגלית, עברית.\" and \"אזור הזמן שאליו ברצונך להמיר. שפות: אנגלית, עברית.\"\n\nLet me try with time as \"3pm\" or maybe keeping \"15:00\" should work. But given the example is 3pm, let me try \"3pm\". And for timezones, let me try more standard names."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "tool_call_id": "functions.timezone_convert:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.timezone_convert:2",
+          "function": {
+            "arguments": "{\"from_timezone\": \"ניו יורק\", \"time\": \"15:00\", \"to_timezone\": \"לונדון\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting 400. Maybe the timezone names need to be exact IANA timezone identifiers or abbreviations. Let me try \"America/New_York\" and \"Europe/London\"? Or maybe the tool expects Hebrew names? The schema says languages: English, Hebrew. But the example for time is 3pm.\n\nLet me try \"Eastern Time\" and \"Greenwich Mean Time\". Or maybe \"EST\" and \"GMT\" since London is on GMT/UTC (and during summer BST).\n\nActually, maybe the tool expects the city names in a different format. Let me try \"UTC-5\" and \"UTC+0\" or something.\n\nWait, the function definition says:\n- from_timezone: string, timezone to convert from, languages: English, Hebrew\n- time: string, local time to convert, e.g., 3pm\n- to_timezone: string, languages: English, Hebrew\n\nMaybe the issue is that \"New York\" needs to be \"EST\" or \"America/New_York\", and \"London\" needs to be \"GMT\".\n\nOr maybe the system expects me to use Hebrew? \"ניו יורק\", \"לונדון\"? But the user wrote in Hebrew and the schema says languages English, Hebrew.\n\nLet me try with Hebrew city names since the prior call failed."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

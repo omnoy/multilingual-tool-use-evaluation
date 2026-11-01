@@ -1,0 +1,110 @@
+{
+  "id": "multiple_144_de",
+  "source_id": "multiple_144",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 292,
+  "total_output_tokens": 240,
+  "total_latency_s": 1.7624483108520508,
+  "estimated_cost_usd": 0.0012374,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie hoch ist der Luftqualitätsindex in London am 2022/08/16?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "air_quality": {
+        "location": [
+          "London"
+        ],
+        "date": [
+          "2022-08-16",
+          "16/08/2022",
+          "Aug.16,2022",
+          "2022/08/16",
+          "16\\08\\2022"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality",
+          "arguments": {
+            "location": "London",
+            "date": "2022/08/16"
+          },
+          "id": "functions.air_quality:0"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality": {
+            "location": "London",
+            "date": "2022/08/16"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 292,
+      "output_tokens": 240,
+      "latency_s": 1.7624483108520508,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie hoch ist der Luftqualitätsindex in London am 2022/08/16?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.air_quality:0",
+          "function": {
+            "arguments": "{\"location\": \"London\", \"date\": \"2022/08/16\"}",
+            "name": "air_quality"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the air quality index in London on 2022/08/16. I need to use the `air_quality` function.\n\nParameters needed:\n- location: \"London\" (in German or English, the tool description says both are fine)\n- date: \"2022/08/16\" (the user provided this date)\n\nLet me check the date format. The user wrote \"2022/08/16\". The parameter description says \"Das Datum, für das Sie den Luftqualitätsindex abrufen möchten. Der Standardwert ist das heutige Datum. Sprachen: Englisch, Deutsch.\" It doesn't specify a strict format, butYYYY/MM/DD should be acceptable. However, looking at the schema, the date parameter is described as a string. The user's format seems reasonable, though typically APIs might prefer YYYY-MM-DD. But the user specifically asked for \"2022/08/16\", and the parameter accepts German/English date strings. I'll pass it as requested."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,198 @@
+{
+  "id": "multiple_183_de",
+  "source_id": "multiple_183",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 2011,
+  "total_output_tokens": 77,
+  "total_latency_s": 48.46576690673828,
+  "estimated_cost_usd": 0.004484,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie viele Kalorien hat das Rezept für Rindfleischlasagne von Foodnetwork.com?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_info.get_calories": {
+        "website": [
+          "Foodnetwork.com"
+        ],
+        "recipe": [
+          "Beef Lasagna",
+          "Beef Lasagna Recipe"
+        ],
+        "optional_meal_time": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "call tool recipe_info_get_calories with website is Foodnetwork.com recipe is Rindfleischlasagne<|eos|>"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 442,
+      "output_tokens": 24,
+      "latency_s": 12.697405815124512,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_info_get_calories",
+          "arguments": {
+            "website": "Foodnetwork.com",
+            "recipe": "Rindfleischlasagne"
+          },
+          "id": "call-3a1dcd59-8282-4fb3-85fd-5cd4be5b98c5-0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_info_get_calories": {
+            "website": "Foodnetwork.com",
+            "recipe": "Rindfleischlasagne"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_info_get_calories'. Please review the function definition and try again.",
+      "input_tokens": 497,
+      "output_tokens": 27,
+      "latency_s": 14.01790738105774,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_info_get_calories",
+          "arguments": {
+            "website": "foodnetwork.com",
+            "recipe": "Beef Lasagna"
+          },
+          "id": "call-5fc752b0-27f3-445e-8951-65e6ff15c5ab-1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_info_get_calories": {
+            "website": "foodnetwork.com",
+            "recipe": "Beef Lasagna"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1072,
+      "output_tokens": 26,
+      "latency_s": 21.75045371055603,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie viele Kalorien hat das Rezept für Rindfleischlasagne von Foodnetwork.com?"
+    },
+    {
+      "content": "call tool recipe_info_get_calories with website is Foodnetwork.com recipe is Rindfleischlasagne<|eos|>",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-3a1dcd59-8282-4fb3-85fd-5cd4be5b98c5-0",
+          "function": {
+            "arguments": "{\"website\":\"Foodnetwork.com\",\"recipe\":\"Rindfleischlasagne\"}",
+            "name": "recipe_info_get_calories"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_info_get_calories'. Please review the function definition and try again.",
+      "tool_call_id": "call-3a1dcd59-8282-4fb3-85fd-5cd4be5b98c5-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-5fc752b0-27f3-445e-8951-65e6ff15c5ab-1",
+          "function": {
+            "arguments": "{\"website\":\"foodnetwork.com\",\"recipe\":\"Beef Lasagna\"}",
+            "name": "recipe_info_get_calories"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

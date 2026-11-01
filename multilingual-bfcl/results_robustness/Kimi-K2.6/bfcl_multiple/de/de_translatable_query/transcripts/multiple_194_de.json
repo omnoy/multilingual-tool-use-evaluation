@@ -1,0 +1,167 @@
+{
+  "id": "multiple_194_de",
+  "source_id": "multiple_194",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1191,
+  "total_output_tokens": 462,
+  "total_latency_s": 4.169624328613281,
+  "estimated_cost_usd": 0.00297945,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Welche Öffnungszeiten hat das Metropolitan-Kunstmuseum am Samstag?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_museum_hours": {
+        "museum_name": [
+          "Metropolitan Museum of Art",
+          "The Met",
+          "Met Museum"
+        ],
+        "day": [
+          "Saturday"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_museum_hours",
+          "arguments": {
+            "museum_name": "The Metropolitan Museum of Art",
+            "day": "Saturday"
+          },
+          "id": "functions.get_museum_hours:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_museum_hours": {
+            "museum_name": "The Metropolitan Museum of Art",
+            "day": "Saturday"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_museum_hours'. Please review the function definition and try again.",
+      "input_tokens": 415,
+      "output_tokens": 319,
+      "latency_s": 2.3253073692321777,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_museum_hours",
+          "arguments": {
+            "museum_name": "Metropolitan Museum of Art",
+            "day": "Saturday"
+          },
+          "id": "functions.get_museum_hours:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_museum_hours": {
+            "museum_name": "Metropolitan Museum of Art",
+            "day": "Saturday"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 776,
+      "output_tokens": 143,
+      "latency_s": 1.8443169593811035,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Welche Öffnungszeiten hat das Metropolitan-Kunstmuseum am Samstag?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_museum_hours:0",
+          "function": {
+            "arguments": "{\"museum_name\": \"The Metropolitan Museum of Art\", \"day\": \"Saturday\"}",
+            "name": "get_museum_hours"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Die Benutzerin fragt nach den Öffnungszeiten des Metropolitan-Kunstmuseums (Metropolitan Museum of Art) am Samstag auf Deutsch. Ich muss die Funktion `get_museum_hours` aufrufen mit den Parametern:\n- museum_name: \"Metropolitan Museum of Art\" oder ähnlich - da der Benutzer \"Metropolitan-Kunstmuseum\" sagt, sollte ich einen angemessenen Namen verwenden. Ich werde \"The Metropolitan Museum of Art\" oder einfach \"Metropolitan Museum of Art\" verwenden.\n- day: \"Saturday\" (auf Englisch, wie in der Enum definiert)\n\nDie Funktion ist definiert als:\n```\n{\n  \"description\": \"Retrieve opening hours of a specified museum for the specified day.\",\n  \"name\": \"get_museum_hours\",\n  \"parameters\": {\n    \"description\": \"Parameters for retrieving the opening hours of a museum on a specific day\",\n    \"properties\": {\n      \"day\": {\n        \"enum\": [\"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\", \"Sunday\"],\n        \"type\": \"string\"\n      },\n      \"museum_name\": {\n        \"type\": \"string\"\n      }\n    },\n    \"required\": [\"museum_name\", \"day\"],\n    \"type\": \"object\"\n  }\n}\n```"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_museum_hours'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_museum_hours:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_museum_hours:1",
+          "function": {
+            "arguments": "{\"museum_name\": \"Metropolitan Museum of Art\", \"day\": \"Saturday\"}",
+            "name": "get_museum_hours"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Funktionsaufruf ist fehlgeschlagen mit einem 400 Bad Request. Das könnte daran liegen, dass der Name des Museums nicht exakt so in der Datenbank ist, oder es gibt ein Problem mit den Parametern. Lass mich es mit einem anderen Namen versuchen. Vielleicht \"Metropolitan Museum\" oder \"Metropolitan-Kunstmuseum\" oder einfach \"Metropolitan\". Ich werde \"Metropolitan Museum of Art\" ohne \"The\" versuchen."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

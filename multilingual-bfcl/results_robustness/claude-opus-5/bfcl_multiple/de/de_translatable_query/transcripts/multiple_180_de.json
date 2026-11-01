@@ -1,0 +1,222 @@
+{
+  "id": "multiple_180_de",
+  "source_id": "multiple_180",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "claude-opus-5",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 4014,
+  "total_output_tokens": 657,
+  "total_latency_s": 8.915305376052856,
+  "estimated_cost_usd": 0.036495,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Rufe die Spielerstatistiken von 'Zelda' auf der Switch für den Benutzer 'Säm' ab."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "game_stats.fetch_player_statistics": {
+        "game": [
+          "Zelda"
+        ],
+        "username": [
+          "Sam"
+        ],
+        "platform": [
+          "Switch",
+          "Nintendo Switch"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "game_stats_fetch_player_statistics",
+          "arguments": {
+            "game": "Zelda",
+            "username": "Säm",
+            "platform": "Switch"
+          },
+          "id": "toolu_01MTcQ9WtFRgW28h1s8kWzj4"
+        }
+      ],
+      "decoded": [
+        {
+          "game_stats_fetch_player_statistics": {
+            "game": "Zelda",
+            "username": "Säm",
+            "platform": "Switch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'game_stats_fetch_player_statistics'. Please review the function definition and try again.",
+      "input_tokens": 1094,
+      "output_tokens": 108,
+      "latency_s": 1.336470603942871,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Der Abruf ist fehlgeschlagen – die API hat die Parameter abgelehnt (400 Bad Request):\n\n```\ngame: \"Zelda\", username: \"Säm\", platform: \"Switch\"\n```\n\nMögliche Ursachen:\n- Der Umlaut im Benutzernamen „Säm\" wird eventuell nicht akzeptiert (Sonderzeichen).\n- Der Spieltitel „Zelda\" ist möglicherweise zu unpräzise (z. B. „The Legend of Zelda: Breath of the Wild\" oder „Tears of the Kingdom\").\n- Die Plattformbezeichnung muss evtl. anders lauten (z. B. „Nintendo Switch\").\n\nSag mir bitte, welche Schreibweise korrekt ist (exakter Benutzername, vollständiger Spieltitel), dann starte ich den Abruf erneut."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1252,
+      "output_tokens": 386,
+      "latency_s": 5.418744087219238,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "game_stats_fetch_player_statistics",
+          "arguments": {
+            "game": "Zelda",
+            "username": "Sam",
+            "platform": "Nintendo Switch"
+          },
+          "id": "toolu_01NEoBsmDs8QGhzRX8AvyCtp"
+        }
+      ],
+      "decoded": [
+        {
+          "game_stats_fetch_player_statistics": {
+            "game": "Zelda",
+            "username": "Sam",
+            "platform": "Nintendo Switch"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1668,
+      "output_tokens": 163,
+      "latency_s": 2.160090684890747,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Rufe die Spielerstatistiken von 'Zelda' auf der Switch für den Benutzer 'Säm' ab."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01MTcQ9WtFRgW28h1s8kWzj4",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "game": "Zelda",
+            "username": "Säm",
+            "platform": "Switch"
+          },
+          "name": "game_stats_fetch_player_statistics",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'game_stats_fetch_player_statistics'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01MTcQ9WtFRgW28h1s8kWzj4"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISkgUKzwIIExgCKkCwue8/YSDO/NJtHX3+AF0D5C2Mq7Cx1apOpRmQRzIpdv0uB4wS2DgJ6LOXK4Dgsae7JRiL4ULoPFQh6l5XRSz6Mg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAYS5mNcGwgFJCAkQABobAQ7MAomLA083BcZzBCatCqAOA083C+/GBCatIAIyBBJxzyU6BJo7ND9CBMn5xCpKBElrRddQBFoE2QXhVmAEaAFwAdoBYAoWcHJlZml4X2JlZm9yZV9ibG9ja192MRIgEbM6dAbpwLnLcmIz/XvGRQgHhinIRDS0bMZ+ZnMOGEciADIgwsATyGqckuIvlm89hhd2j4t6RMkCrcwJe/oeCYr7Th9IAxIMsYeQml4Nfm6xZJQ5GgxCtT6lLgPEmr9cdwoiMBwuoCml6iwzWBRVDXfUMzg8LwZljrg8BYnyRf7fgH6EFw66prx2TUJbyWqroDthiirvASxLg8OpIiQ4SdTrL3yMpYkkw6xY2G2HH/ouc1V6OuwzipadL7MouVs9Fm6cjU/FS4hmhzJYVQAwgU/l6H+tzm7YPy4ev0WDXLsej+vsL2brd5yNZdVapaPBIDhWcuITgpn+QsfNu3nbeo+wCGJvUiLeEIP029ZlmZWQZkl4NXMyBm2ApvHLaWreHwHNt2YIaUJjl2tujwiYclQOTWVuQzq+vZ8G5M8wt5GZNi+0UVli/XvGAfIUaQ1vva+3yxRiwgex0z6rS3TxHT2sjl5CA/J6vGClhLt9GsUTsFB5lJaFSgK0LU23pWm8IMFxNPJ0GAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Der Abruf ist fehlgeschlagen – die API hat die Parameter abgelehnt (400 Bad Request):\n\n```\ngame: \"Zelda\", username: \"Säm\", platform: \"Switch\"\n```\n\nMögliche Ursachen:\n- Der Umlaut im Benutzernamen „Säm\" wird eventuell nicht akzeptiert (Sonderzeichen).\n- Der Spieltitel „Zelda\" ist möglicherweise zu unpräzise (z. B. „The Legend of Zelda: Breath of the Wild\" oder „Tears of the Kingdom\").\n- Die Plattformbezeichnung muss evtl. anders lauten (z. B. „Nintendo Switch\").\n\nSag mir bitte, welche Schreibweise korrekt ist (exakter Benutzername, vollständiger Spieltitel), dann starte ich den Abruf erneut.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIShgUKnAMIExgCKkAypUe7h9THt0tIcc8S2BXkgJaDk99LsF53epzP2YWhKL0eX8KAP6iIJvq6L4ute7/Z8ZWhe5H92XwSe+IF7YESMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAYq5mNcGwgFVCA0QABonAQ7MAomLA083BcZzBCatCqAOA083C+/GBCatBSNSA083BQoXBCatIAIyBBJxzyU6BJo7ND9CBMn5xCpKBElrRddQBFoE2QXhVmAGaAFwAdoBoAEKFnByZWZpeF9iZWZvcmVfYmxvY2tfdjESIKx90W0p4nVRifmKv2BQ/EA81k11leYlPbcy3rnXb4WuIkCwue8/YSDO/NJtHX3+AF0D5C2Mq7Cx1apOpRmQRzIpdv0uB4wS2DgJ6LOXK4Dgsae7JRiL4ULoPFQh6l5XRSz6MiDCwBPIapyS4i+Wbz2GF3aPi3pEyQKtzAl7+h4JivtOH0gDEgx7+nmwAYYvv6YP3hMaDOTKoqnKYaod71ibniIwsydY1zxnUaXbFQTyvdiTr/N2VB9vOllNpDvzBBXmRQhYvU9if4Yfc5ojB5sFe3mvKpYBb/qGhGOLzoXVdT3FyXO++c97cMVsUtY/5RFUIZjqRbJa03Z7LZ5qyd0s1IV0T/UIYVtwHcQ4DtmeDROaJXk22G0sdWr8f6BMsdeEo+YdAOAZn2cotTPmaHGayXNiaA2LHXRr/US+qIhPwbRwpQKR33f1kiBhl6gGJX5g1mtAMuqNHB3UY7uDnayWPoU2ZlFBx4YUwwcXGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01NEoBsmDs8QGhzRX8AvyCtp",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "game": "Zelda",
+            "username": "Sam",
+            "platform": "Nintendo Switch"
+          },
+          "name": "game_stats_fetch_player_statistics",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

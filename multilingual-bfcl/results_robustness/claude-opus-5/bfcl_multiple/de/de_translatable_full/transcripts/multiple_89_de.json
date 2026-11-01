@@ -1,0 +1,299 @@
+{
+  "id": "multiple_89_de",
+  "source_id": "multiple_89",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full",
+  "model": "claude-opus-5",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3732,
+  "total_output_tokens": 439,
+  "total_latency_s": 5.949512958526611,
+  "estimated_cost_usd": 0.029635,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde ein gesundes Rezept fürs Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "Mittagessen",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "toolu_01FAx4kLy2UefMPP4mn345Es"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 1070,
+      "output_tokens": 112,
+      "latency_s": 1.3390040397644043,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "The search was rejected — likely because the ingredient names need to be in English. Let me try again:"
+      ],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "toolu_01K2Msm5pxg4Q63e1e47yRmo"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 1227,
+      "output_tokens": 167,
+      "latency_s": 2.103423595428467,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Still rejected. Let me try without the optional meal parameter (it defaults to lunch anyway):"
+      ],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          },
+          "id": "toolu_01RZxD54NrPx2VCpSGA1bBbu"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1435,
+      "output_tokens": 160,
+      "latency_s": 2.5070853233337402,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Finde ein gesundes Rezept fürs Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01FAx4kLy2UefMPP4mn345Es",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "name": "recipe_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01FAx4kLy2UefMPP4mn345Es"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIShAQKzwIIExgCKkA+FcY7QSwu/WOhN52wNLGs4yAebJtXP4Cfk/osmROoN2ItcAGizbpLBiCFYeIlxwI567hseYoA96ia/o5GeD1qMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAYC5mNcGwgFJCAkQABobAQ7MAusvA083BeyYBCatCpBYA083C4tNBCatIAIyBBJxzyU6BJo7ND9CBMzILN9KBG7bo8pQA1oE2QXhVmAEaAFwAdoBYAoWcHJlZml4X2JlZm9yZV9ibG9ja192MRIgG7+Ccu38x+neifbe/efGWgxrcHgSPZbQmh01xqYAQtkiADIgwsATyGqckuIvlm89hhd2j4t6RMkCrcwJe/oeCYr7Th9IAxIMUYSmk20RQkoQeHoBGgyW5hafOfWncKkujyQiMMWJjMtbVFqkoOQK/ns9Dq2KpBKXVub709R9xkoIvHgvjAOAhbO3VfnjZGQ3gH8qzCpiUPGrVcgs+sQlddj2FsVQ+zIBaC4DLkJclBg7zvmm4bihvXtQxopz0ZHhZ0EQQrXXoFuinL3bdstqM6IzEN8rK1kf39uooaR9NW5je21vBiQJ+cktnAQsVYRftnk7XRa2k58YAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "The search was rejected — likely because the ingredient names need to be in English. Let me try again:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01K2Msm5pxg4Q63e1e47yRmo",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "name": "recipe_search",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01K2Msm5pxg4Q63e1e47yRmo"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIS5AQKnwMIExgCKkBoBQw11IHTCJE5sAgpRXgQtrGx/fmIgNfs+XGVGUqMdrguzLEA974tmswuSRGlcXTNriyihynIgVN9VDduSoZ8Mg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAYO5mNcGwgFYCA4QABoqAQ7MAusvA083BeyYBCatCpBYA083C4tNBCatBW7gCodeA083C7XABCatIAIyBBJxzyU6BJo7ND9CBMzILN9KBG7bo8pQA1oE2QXhVmAGaAFwAdoBoAEKFnByZWZpeF9iZWZvcmVfYmxvY2tfdjESIGivJ6H0+G+1wWAjf/tOU6LH7HUFatpyl+v8mL7N4FH9IkA+FcY7QSwu/WOhN52wNLGs4yAebJtXP4Cfk/osmROoN2ItcAGizbpLBiCFYeIlxwI567hseYoA96ia/o5GeD1qMiDCwBPIapyS4i+Wbz2GF3aPi3pEyQKtzAl7+h4JivtOH0gDEgwgj1EH/PP2ky97YQYaDME8qRwu1pZ5TW2M1SIwo/67HsUM/wQSBFlUHoNI1ZF2Evf4uqSmacNQBMn0WQxpSKdfFfYdlm1nRYu/HBSaKnKTIvFAu/2twl0yZh8pYd+JmgxxvltYGYF2fDQ0lb1T7DPETF5tv1SxEKcuU5+bI88ttb6IP6TkaFHcwG4U1LNmPINpj92Mj4EoVf4nWzWnA+f0fhaq0ng+sfXwF3yO95o31kCuZVEXNF/G5/JbeOv7WDYYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Still rejected. Let me try without the optional meal parameter (it defaults to lunch anyway):",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01RZxD54NrPx2VCpSGA1bBbu",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          },
+          "name": "recipe_search",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

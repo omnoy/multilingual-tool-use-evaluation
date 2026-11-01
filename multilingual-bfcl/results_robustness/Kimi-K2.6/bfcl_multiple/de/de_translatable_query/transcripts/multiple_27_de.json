@@ -1,0 +1,113 @@
+{
+  "id": "multiple_27_de",
+  "source_id": "multiple_27",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 254,
+  "total_output_tokens": 236,
+  "total_latency_s": 1.5156095027923584,
+  "estimated_cost_usd": 0.0011853,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Was ist der kürzeste Weg von Paris, Frankreich, nach Rom, Italien, mit öffentlichen Verkehrsmitteln?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.shortest_path": {
+        "start_location": [
+          "Paris, France",
+          "Paris"
+        ],
+        "end_location": [
+          "Rome, Italy",
+          "Rome"
+        ],
+        "mode": [
+          "transit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "transit"
+          },
+          "id": "functions.maps_shortest_path:0"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "transit"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 254,
+      "output_tokens": 236,
+      "latency_s": 1.5156095027923584,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Was ist der kürzeste Weg von Paris, Frankreich, nach Rom, Italien, mit öffentlichen Verkehrsmitteln?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.maps_shortest_path:0",
+          "function": {
+            "arguments": "{\"start_location\":\"Paris, France\",\"end_location\":\"Rome, Italy\",\"mode\":\"transit\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the shortest path from Paris, France, to Rome, Italy, using public transportation. I need to use the `maps_shortest_path` function with:\n- start_location: \"Paris, Frankreich\" or \"Paris, France\" - I should use the English name or the German name? The function likely expects standard English place names, but it might also work with German names. To be safe, I'll use \"Paris, France\" since that's the standard English representation, or I could try \"Paris, Frankreich\" as the user said. Actually, looking at the function description, it says \"The name or coordinates of the start/end location.\" So either should work, but standard names are safer. I'll use \"Paris, France\" and \"Rome, Italy\" for maximum compatibility.\n- mode: \"transit\" for public transportation.\n\nThe mode options are: walk, bike, transit, drive. So public transportation = transit.\n\nLet me make the call."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

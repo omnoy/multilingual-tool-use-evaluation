@@ -1,0 +1,185 @@
+{
+  "id": "multiple_185_de",
+  "source_id": "multiple_185",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1037,
+  "total_output_tokens": 852,
+  "total_latency_s": 6.9926598072052,
+  "estimated_cost_usd": 0.00439315,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde das nächstgelegene Sushi-Restaurant mit Terrasse in Boston."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant_search.find_closest": {
+        "location": [
+          "Boston",
+          "Boston, MA"
+        ],
+        "cuisine": [
+          "Sushi"
+        ],
+        "amenities": [
+          [
+            "Patio"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston, Massachusetts",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston, Massachusetts",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "input_tokens": 331,
+      "output_tokens": 329,
+      "latency_s": 2.0355618000030518,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Es gab ein Problem mit der Anfrage. Ich versuche es noch einmal."
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 706,
+      "output_tokens": 523,
+      "latency_s": 4.957098007202148,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde das nächstgelegene Sushi-Restaurant mit Terrasse in Boston."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:0",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston, Massachusetts\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find the closest sushi restaurant with a terrace in Boston.\n\nLooking at the available functions:\n- `restaurant_search_find_closest`: This can find the nearest restaurant based on cuisine and location, and has an `amenities` parameter where \"Patio\" is available (which corresponds to terrace).\n\nParameters needed:\n- `cuisine`: \"Sushi\"\n- `location`: \"Boston\"\n- `amenities`: [\"Patio\"] (since the user asked for a terrace)\n\nI need to make the function call exactly as specified in the tool definition. The location is in English as shown in the example \"Boston, Massachusetts\", but the user just said \"Boston\". I should use \"Boston\" or perhaps \"Boston, Massachusetts\" to be more precise. The example shows \"Boston, Massachusetts\", but \"Boston\" should also work. I'll use \"Boston, Massachusetts\" to match the example format more closely, or just \"Boston\" as specified by the user. The user said \"in Boston\", so I'll use \"Boston, Massachusetts\" as the example suggests that format.\n\nActually, looking at the parameter definition: \"Die Stadt, zum Beispiel Boston, Massachusetts\". So I should format it as \"Boston, Massachusetts\".\n\nLet me construct the call:\n\n```\n{\n  \"cuisine\": \"Sushi\",\n  \"location\": \"Boston, Massachusetts\",\n  \"amenities\": [\"Patio\"]\n}\n```"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_search_find_closest:0"
+    },
+    {
+      "content": "Es gab ein Problem mit der Anfrage. Ich versuche es noch einmal.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:1",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request with invalid parameters. Let me review the parameters carefully.\n\nLooking at the function definition again:\n```\n\"parameters\": {\n  \"properties\": {\n    \"amenities\": {\n      \"items\": {\n        \"description\": \"Mögliche Restaurant-Ausstattungsmerkmale.\",\n        \"enum\": [\"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\"],\n        \"type\": \"string\"\n      },\n      \"type\": \"array\"\n    },\n    \"cuisine\": {\n      \"description\": \"Art der Speisen, zum Beispiel Sushi.\",\n      \"type\": \"string\"\n    },\n    \"location\": {\n      \"description\": \"Die Stadt, zum Beispiel Boston, Massachusetts\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\"cuisine\", \"location\"]\n}\n```\n\nThe parameters look correct. Cuisine is \"Sushi\", location is \"Boston, Massachusetts\", amenities is [\"Patio\"]. All required params are present and types match.\n\nWait - maybe the schema is strict about the array items? The enum values are exactly: \"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\". I used \"Patio\" which matches exactly.\n\nOr maybe the function doesn't accept `amenities` as a name? No, the property is clearly `amenities`.\n\nMaybe I should try without spaces or with slightly different formatting? Or maybe the API has an issue. But let me try again with the exact same parameters, or try \"Boston\" without Massachusetts.\n\nActually, maybe it's because I provided the parameters in a specific order or format? The JSON object order shouldn't matter.\n\nLet me try with just \"Boston\" as location instead of \"Boston, Massachusetts\", in case that's causing the issue. Or perhaps the amenities array needs to be passed differently.\n\nActually, looking more carefully at the schema - maybe the issue is that amenities is marked as having an empty array as default, and perhaps when provided, there's some validation issue.\n\nBut I should just retry. Maybe it was a transient error. Let me try again with the same parameters but ensure the JSON is properly formatted.\n\nActually, I think the issue might be with the location format. Let me try \"Boston\" exactly."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

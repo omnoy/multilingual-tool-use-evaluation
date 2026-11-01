@@ -1,0 +1,165 @@
+{
+  "id": "multiple_45_de",
+  "source_id": "multiple_45",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 657,
+  "total_output_tokens": 520,
+  "total_latency_s": 3.452345132827759,
+  "estimated_cost_usd": 0.0027041499999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Berechne, vor wie vielen Jahren die Eiszeit war?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "geology.get_era": {
+        "era_name": [
+          "Eiszeit"
+        ],
+        "calculate_years_ago": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geology_get_era",
+          "arguments": {
+            "era_name": "Ice age",
+            "calculate_years_ago": true
+          },
+          "id": "functions.geology_get_era:0"
+        }
+      ],
+      "decoded": [
+        {
+          "geology_get_era": {
+            "era_name": "Ice age",
+            "calculate_years_ago": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'geology_get_era'. Please review the function definition and try again.",
+      "input_tokens": 209,
+      "output_tokens": 195,
+      "latency_s": 1.6208760738372803,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geology_get_era",
+          "arguments": {
+            "era_name": "Eiszeit",
+            "calculate_years_ago": true
+          },
+          "id": "functions.geology_get_era:1"
+        }
+      ],
+      "decoded": [
+        {
+          "geology_get_era": {
+            "era_name": "Eiszeit",
+            "calculate_years_ago": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 448,
+      "output_tokens": 325,
+      "latency_s": 1.8314690589904785,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Berechne, vor wie vielen Jahren die Eiszeit war?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geology_get_era:0",
+          "function": {
+            "arguments": "{\"era_name\": \"Ice age\", \"calculate_years_ago\": true}",
+            "name": "geology_get_era"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"Calculate how many years ago the Ice Age was?\"\n\nI need to use the geology_get_era function with:\n- era_name: \"Ice age\" or \"Eiszeit\"? The parameter description says \"e.g Ice age Languages: English, German.\" So both English and German should work. I'll use \"Ice age\" as it's the example given, though \"Eiszeit\" should also work. Actually, looking at the description: \"The name of the geological era. e.g Ice age Languages: English, German.\" This suggests I can use either language. I'll use \"Ice age\" to be safe since it's the explicit example.\n- calculate_years_ago: true (since the user explicitly asks for years ago)\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'geology_get_era'. Please review the function definition and try again.",
+      "tool_call_id": "functions.geology_get_era:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.geology_get_era:1",
+          "function": {
+            "arguments": "{\"era_name\": \"Eiszeit\", \"calculate_years_ago\": true}",
+            "name": "geology_get_era"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check the parameters again.\n\nLooking at the function definition:\n- era_name: string, required - \"The name of the geological era. e.g Ice age Languages: English, German.\"\n- calculate_years_ago: boolean, optional, default False - \"True if years ago is to be calculated. False by default\"\n\nWait, the error says invalid parameters. Let me look at the schema carefully:\n\n```\n\"properties\": {\n  \"calculate_years_ago\": {\n    \"description\": \"True if years ago is to be calculated. False by default\",\n    \"type\": \"boolean\"\n  },\n  \"era_name\": {\n    \"description\": \"The name of the geological era. e.g Ice age Languages: English, German.\",\n    \"type\": \"string\"\n  }\n},\n\"required\": [\"era_name\"]\n```\n\nMy parameters look correct. Let me try \"Eiszeit\" instead since the user wrote in German and maybe the system expects the exact language parameter? Or perhaps I should try without the optional parameter to see if that's causing issues? Actually, boolean type should be fine.\n\nWait, let me re-read the error. \"400 Bad Request: invalid parameters for function 'geology_get_era'.\"\n\nMaybe the issue is that I need to send exactly what's expected. Let me try with German \"Eiszeit\" since that's what the user asked about."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

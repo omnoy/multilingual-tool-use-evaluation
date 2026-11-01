@@ -1,0 +1,127 @@
+{
+  "id": "multiple_190_de",
+  "source_id": "multiple_190",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 361,
+  "total_output_tokens": 573,
+  "total_latency_s": 2.7993741035461426,
+  "estimated_cost_usd": 0.00263495,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Buche ein Einzelzimmer für zwei Nächte im Hilton-Hotel in Chicago ab dem 10. Dezember 2022."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "Hilton-Hotel",
+          "Hilton"
+        ],
+        "location": [
+          "Chicago"
+        ],
+        "room_type": [
+          "Einzelzimmer",
+          "Einzelzimmer"
+        ],
+        "start_date": [
+          "2022-12-10",
+          "10/12/2022",
+          "Dez.10,2022",
+          "10. Dezember 2022",
+          "10. Dezember 2022"
+        ],
+        "nights": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "Einzelzimmer",
+            "nights": 2,
+            "start_date": "10. Dezember 2022"
+          },
+          "id": "functions.book_hotel:0"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "Einzelzimmer",
+            "nights": 2,
+            "start_date": "10. Dezember 2022"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 361,
+      "output_tokens": 573,
+      "latency_s": 2.7993741035461426,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Buche ein Einzelzimmer für zwei Nächte im Hilton-Hotel in Chicago ab dem 10. Dezember 2022."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.book_hotel:0",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hilton\", \"location\": \"Chicago\", \"room_type\": \"Einzelzimmer\", \"nights\": 2, \"start_date\": \"10. Dezember 2022\"}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to book a hotel room. Let me extract the details:\n- Hotel name: Hilton (Hilton-Hotel)\n- Location: Chicago\n- Room type: Einzelzimmer (single room)\n- Nights: zwei Nächte (2 nights)\n- Start date: 10. Dezember 2022 (December 10, 2022)\n\nI need to call the book_hotel function with these parameters. The function accepts:\n- hotel_name: string\n- location: string\n- room_type: string\n- nights: number\n- start_date: string\n\nSince the parameter descriptions say \"Languages: English, German\", I can provide the values in German as given by the user. However, for the date, I should probably keep it in a standard format. The user said \"10. Dezember 2022\". I can pass it as \"10. Dezember 2022\" or convert to \"10.12.2022\" or \"December 10, 2022\". Since the user specified German and the tool accepts German, I'll use the German format or a clear format. Actually, looking at the function descriptions again, it says \"The start date for the booking. Languages: English, German.\" so either should work. I'll use \"10. Dezember 2022\" to match what the user said, or perhaps \"10.12.2022\". But to be safe and clear, I'll use the German format as specified by the user: \"10. Dezember 2022\".\n\nWait, let me reconsider. Often dates in APIs can be ambiguous. But since this is a tool call and the description explicitly allows German, I'll use the German text. However, sometimes standardized format is better. But the instruction says to respond with the correct function call exactly as specified. I'll provide the values as extracted from the user's request.\n\nhotel_name: \"Hilton\" or \"Hilton-Hotel\"? The user said \"Hilton-Hotel\". I'll use \"Hilton\" as the core name, but \"Hilton-Hotel\" is also fine. Let me use \"Hilton\" since that's the actual hotel name brand.\nlocation: \"Chicago\"\nroom_type: \"Einzelzimmer\"\nnights: 2\nstart_date: \"10. Dezember 2022\"\n\nActually, looking at the user's message: \"im Hilton-Hotel in Chicago\". I'll use \"Hilton\" as the hotel_name. Or maybe \"Hilton-Hotel\". I think \"Hilton\" is cleaner.\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

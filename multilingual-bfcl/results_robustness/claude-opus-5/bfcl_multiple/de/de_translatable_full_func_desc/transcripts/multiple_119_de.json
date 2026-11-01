@@ -1,0 +1,656 @@
+{
+  "id": "multiple_119_de",
+  "source_id": "multiple_119",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "claude-opus-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 8,
+  "num_clarifications": 3,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 19061,
+  "total_output_tokens": 1440,
+  "total_latency_s": 19.505018711090088,
+  "estimated_cost_usd": 0.131305,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde Datensätze in der Datenbank in der Tabelle user, bei denen das Alter größer als 25 ist und der Beruf 'Ingenieur' lautet."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "database.query": {
+        "table": [
+          "user"
+        ],
+        "conditions": [
+          [
+            {
+              "field": [
+                "age"
+              ],
+              "operation": [
+                ">"
+              ],
+              "value": [
+                "25"
+              ]
+            },
+            {
+              "field": [
+                "job"
+              ],
+              "operation": [
+                "="
+              ],
+              "value": [
+                "engineer"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "toolu_014jKRJCPGx14EyBGZrSnwG7"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 1535,
+      "output_tokens": 119,
+      "latency_s": 1.3981192111968994,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Der Aufruf wurde abgelehnt. Ich versuche es noch einmal mit angepassten Feldbezeichnungen:"
+      ],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "toolu_011oekrtt79bV8mdcnjP1BMA"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 1693,
+      "output_tokens": 238,
+      "latency_s": 3.0239830017089844,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Beide Versuche, die Datenbankabfrage auszuführen, wurden mit der Fehlermeldung `400 Bad Request: invalid parameters` abgelehnt.\n\nIch habe folgende Abfrage versucht:\n- **Tabelle:** `user`\n- **Bedingung 1:** Alter (`age`) `>` `25`\n- **Bedingung 2:** Beruf (`job` bzw. `profession`) `=` `Ingenieur`\n\nDamit ich es erneut versuchen kann, bräuchte ich von dir noch eine Information: **Wie heißen die Felder in der Tabelle `user` genau?** Möglicherweise lauten sie z. B. `alter`/`beruf`, `user_age`/`occupation` oder ähnlich – die Abfrage scheint an den von mir geratenen Feldnamen zu scheitern. Sobald du mir die exakten Spaltennamen nennst, starte ich die Abfrage erneut."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1970,
+      "output_tokens": 442,
+      "latency_s": 6.234762907028198,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "toolu_013xn9c9xYEovoYCogbtq8YQ"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 2442,
+      "output_tokens": 119,
+      "latency_s": 1.6990242004394531,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Die Abfrage wird vom System weiterhin mit `400 Bad Request: invalid parameters` zurückgewiesen – sowohl mit dem Feldnamen `job` als auch mit `profession`.\n\nBitte teile mir die exakten Spaltennamen der Tabelle `user` mit (z. B. `alter`/`beruf`, `age`/`occupation`), damit ich die Abfrage korrekt ausführen kann."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2600,
+      "output_tokens": 151,
+      "latency_s": 2.1216819286346436,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "toolu_016sQHDvgCUDpqP53Vp86Kr9"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+      "input_tokens": 2781,
+      "output_tokens": 121,
+      "latency_s": 1.65189790725708,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [
+        "Die Abfrage schlägt mit allen bisher versuchten Feldnamen (`job`, `profession`, `occupation`) fehl – das System meldet jeweils `400 Bad Request: invalid parameters`.\n\nBitte nenne mir die exakten Spaltennamen der Tabelle `user`, dann führe ich die Abfrage sofort erneut aus."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2941,
+      "output_tokens": 128,
+      "latency_s": 1.891749382019043,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 8,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "database_query",
+          "arguments": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "id": "toolu_01AVKBUkwsQLviaWvv5wCJbT"
+        }
+      ],
+      "decoded": [
+        {
+          "database_query": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 3099,
+      "output_tokens": 122,
+      "latency_s": 1.4838001728057861,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Finde Datensätze in der Datenbank in der Tabelle user, bei denen das Alter größer als 25 ist und der Beruf 'Ingenieur' lautet."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_014jKRJCPGx14EyBGZrSnwG7",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_014jKRJCPGx14EyBGZrSnwG7"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAIShQUKzwIIExgCKkBMmi5vw81DJbwXxzvjhijmFMfUC8k3+zouTC6AGO27W10EcTJSYRC5AGSD0tRQI99BDPQvE6ZyFjuMLwmk1EhTMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAfC4mNcGwgFJCAkQABobAQ7MAl2nA083BYfHBCatCgIgA083C7/eBCatIAIyBBJxzyU6BJo7ND9CBEszkG9KBK9zFClQBFoE2QXhVmAEaAFwAdoBYAoWcHJlZml4X2JlZm9yZV9ibG9ja192MRIg/xS6dHwsJ4FHl6E3Dg0oSZ6i2vE3HEXeZSF9JNlP6QMiADIgwsATyGqckuIvlm89hhd2j4t6RMkCrcwJe/oeCYr7Th9IAxIMpXyyz2UwV/KOJfI+GgyuKivN3zYDKQ9XIYAiMDcf7uLtKPeMdimQNxwVJCQlnsdoxGEgqGAhGYigpqFiBjkksAZVypHFSEqbQrzdcyriAdNXi9a5u69KZZrYaIo0Yw9AzLlPEjWzSQu/DSvMygcxllaYf7FSGqFK9dZKB5GzG1O/a1ikXDN8664K2mSw6zlEqKkxD1G16lrWtJqLomFC5ajddRrZAAQrSawmy3NkeZ8uZM25nQzBpdK8ugHKoQwHW/RfL8eFadREGV1oiu5STYxpNbyzSeOuMst21N50gQbtekNIwdehI91sjTBj6V7yvZ5J/yccyv99m0XTvDSDO/lcixzLqxNQyfQEMNgsxgjRwOJX1wbpU8IoTT0ClqTLTk3AUZilE6qlJKHLGtym2RsYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Der Aufruf wurde abgelehnt. Ich versuche es noch einmal mit angepassten Feldbezeichnungen:",
+          "type": "text"
+        },
+        {
+          "id": "toolu_011oekrtt79bV8mdcnjP1BMA",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "profession",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_011oekrtt79bV8mdcnjP1BMA"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAISvwYKnwMIExgCKkAexdl9lJQxi7Gx2wjC6KtWKKv0C7XHnVNMUR3BSzLHRhOYOA3YwzgqSndHvktHJa6WnRiBAs9bJYMuo8SmhU/gMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiRlMDY1ZDFlMC1mODVhLTQyOGQtOWI0ZC1hMzk0NmNiNGY2ODCaAQ8KDWNsYXVkZS1vcHVzLTWoAfS4mNcGwgFYCA4QABoqAQ7MAl2nA083BYfHBCatCgIgA083C7/eBCatBR50Cr6aA083C3EcBCatIAIyBBJxzyU6BJo7ND9CBEszkG9KBK9zFClQBFoE2QXhVmAGaAFwAdoBoAEKFnByZWZpeF9iZWZvcmVfYmxvY2tfdjESIKASbKidu1zquoo0yhCJGzOzGoTezSOiTkgp/xiq7nQiIkBMmi5vw81DJbwXxzvjhijmFMfUC8k3+zouTC6AGO27W10EcTJSYRC5AGSD0tRQI99BDPQvE6ZyFjuMLwmk1EhTMiDCwBPIapyS4i+Wbz2GF3aPi3pEyQKtzAl7+h4JivtOH0gDEgzOnNgUPtTuUXu3Y5QaDCBYn1h4l+wul2fRhyIwedSmjUyakI6SZlv3l0ZTfXk7giB6AVhirulUFy7Ux6pVmAM85oTjs2mR1hPD+jZgKswCeph01friTjSHhbQI5CBsPtKlaRktDa02WLBMMwID5mwuGOJ/3fpVzylQGWF8E/4lnABT3Z7Js63UJx8cYNZmMqDEzsY1YaMtyvJmdw2BvOko1tQBMAp0WhwanmqMKjJ8R+1kSz8BeoaN5bdkyQrdZiNgL0HScCRXVZLfB6eND0eyhwqLww2VbhaajjXxuLEeipNGYVA+J420drcjLejFOX2CUduRofgUc809nggvvzu8RwbfKB0UfXjbYoliEP6GP4LCNL8A6+dmeBnrRKmos9ouqSBmDEkHOfXSr3wrzLJFLVt6w60oJIi3jIpNOUL0iQ4fgOgDSIboRkrG1PDMPZ1RTF3h2EQk8zi6Ax0mJarm6S2D+uGLsI97GGMirsyBfbbrwqnjyQZYmNZ2fkU5ZUsjolaW12LpiF5ys5SW+OOoHY2hqr2JMh4TNlMYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Beide Versuche, die Datenbankabfrage auszuführen, wurden mit der Fehlermeldung `400 Bad Request: invalid parameters` abgelehnt.\n\nIch habe folgende Abfrage versucht:\n- **Tabelle:** `user`\n- **Bedingung 1:** Alter (`age`) `>` `25`\n- **Bedingung 2:** Beruf (`job` bzw. `profession`) `=` `Ingenieur`\n\nDamit ich es erneut versuchen kann, bräuchte ich von dir noch eine Information: **Wie heißen die Felder in der Tabelle `user` genau?** Möglicherweise lauten sie z. B. `alter`/`beruf`, `user_age`/`occupation` oder ähnlich – die Abfrage scheint an den von mir geratenen Feldnamen zu scheitern. Sobald du mir die exakten Spaltennamen nennst, starte ich die Abfrage erneut.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_013xn9c9xYEovoYCogbtq8YQ",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "job",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_013xn9c9xYEovoYCogbtq8YQ"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Die Abfrage wird vom System weiterhin mit `400 Bad Request: invalid parameters` zurückgewiesen – sowohl mit dem Feldnamen `job` als auch mit `profession`.\n\nBitte teile mir die exakten Spaltennamen der Tabelle `user` mit (z. B. `alter`/`beruf`, `age`/`occupation`), damit ich die Abfrage korrekt ausführen kann.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_016sQHDvgCUDpqP53Vp86Kr9",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "age",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "occupation",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'database_query'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_016sQHDvgCUDpqP53Vp86Kr9"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Die Abfrage schlägt mit allen bisher versuchten Feldnamen (`job`, `profession`, `occupation`) fehl – das System meldet jeweils `400 Bad Request: invalid parameters`.\n\nBitte nenne mir die exakten Spaltennamen der Tabelle `user`, dann führe ich die Abfrage sofort erneut aus.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01AVKBUkwsQLviaWvv5wCJbT",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "table": "user",
+            "conditions": [
+              {
+                "field": "alter",
+                "operation": ">",
+                "value": "25"
+              },
+              {
+                "field": "beruf",
+                "operation": "=",
+                "value": "Ingenieur"
+              }
+            ]
+          },
+          "name": "database_query",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

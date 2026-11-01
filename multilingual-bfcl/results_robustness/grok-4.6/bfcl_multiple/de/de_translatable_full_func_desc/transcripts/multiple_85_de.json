@@ -1,0 +1,172 @@
+{
+  "id": "multiple_85_de",
+  "source_id": "multiple_85",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 3,
+  "num_clarifications": 2,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1535,
+  "total_output_tokens": 75,
+  "total_latency_s": 12.177363872528076,
+  "estimated_cost_usd": 0.0035199999999999997,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Rufe die Fußballergebnisse der Spiele von Real Madrid in La Liga für die letzten 5 Spieltage ab."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_scores.get_scores": {
+        "team": [
+          "Real Madrid"
+        ],
+        "league": [
+          "La Liga"
+        ],
+        "rounds": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "call tool soccer_scores_get_scores with team is Real Madrid league is La Liga rounds is 5<|eos|>"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 378,
+      "output_tokens": 24,
+      "latency_s": 5.169865131378174,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "call tool soccer_scores_get_scores with team is Real Madrid league is La Liga rounds is 5"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 673,
+      "output_tokens": 22,
+      "latency_s": 3.209218978881836,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          },
+          "id": "call-092166b9-859b-4c24-84d0-dfcdc67a7d0c-0"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 484,
+      "output_tokens": 29,
+      "latency_s": 3.7982797622680664,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Rufe die Fußballergebnisse der Spiele von Real Madrid in La Liga für die letzten 5 Spieltage ab."
+    },
+    {
+      "content": "call tool soccer_scores_get_scores with team is Real Madrid league is La Liga rounds is 5<|eos|>",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "call tool soccer_scores_get_scores with team is Real Madrid league is La Liga rounds is 5",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-092166b9-859b-4c24-84d0-dfcdc67a7d0c-0",
+          "function": {
+            "arguments": "{\"team\":\"Real Madrid\",\"league\":\"La Liga\",\"rounds\":5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

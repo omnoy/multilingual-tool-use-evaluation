@@ -1,0 +1,165 @@
+{
+  "id": "multiple_64_de",
+  "source_id": "multiple_64",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 830,
+  "total_output_tokens": 723,
+  "total_latency_s": 4.590543031692505,
+  "estimated_cost_usd": 0.0036804999999999997,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Gib mir den UV-Index für Tokio für morgen, den 01. Juni 2023."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "uv_index.get_future": {
+        "location": [
+          "Tokyo"
+        ],
+        "date": [
+          "06-01-2023"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "location": "Tokio",
+            "date": "06-01-2023"
+          },
+          "id": "functions.uv_index_get_future:0"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "location": "Tokio",
+            "date": "06-01-2023"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "input_tokens": 262,
+      "output_tokens": 263,
+      "latency_s": 1.7118470668792725,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "date": "06-01-2023",
+            "location": "Tokyo"
+          },
+          "id": "functions.uv_index_get_future:1"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "date": "06-01-2023",
+            "location": "Tokyo"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 568,
+      "output_tokens": 460,
+      "latency_s": 2.8786959648132324,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Gib mir den UV-Index für Tokio für morgen, den 01. Juni 2023."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.uv_index_get_future:0",
+          "function": {
+            "arguments": "{\"location\": \"Tokio\", \"date\": \"06-01-2023\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the UV index for Tokyo for tomorrow, June 1st, 2023.\n\nI need to use the `uv_index_get_future` function.\nParameters needed:\n- location: \"Tokio\" or \"Tokyo\" - I should probably use \"Tokio\" since that's what the user wrote, but the function expects a location. In English it's \"Tokyo\". Either should work, but since the user wrote in German and asked for \"Tokio\", I'll use \"Tokio\" to be safe, or perhaps \"Tokyo\" is more standard for the API. However, looking at the function definition, it just says \"The location to retrieve the UV index for.\" without specifying language. Since the user said \"Tokio\", I'll use \"Tokio\" as that's the German spelling and likely what the API expects if it's location-based. Actually, looking at the user's message, \"Tokio\" is the German spelling of Tokyo. I'll provide \"Tokio\" since the user specified it.\n- date: \"06-01-2023\" (format mm-dd-yyyy)\n\nLet's call the function."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "tool_call_id": "functions.uv_index_get_future:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.uv_index_get_future:1",
+          "function": {
+            "arguments": "{\"date\": \"06-01-2023\", \"location\": \"Tokyo\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function returned a 400 Bad Request. This is likely because the date format I used was wrong or the location name. Let me check the function definition again.\n\n`uv_index_get_future` parameters:\n- location: string - \"The location to retrieve the UV index for.\"\n- date: string - \"The date for the UV index, in the format mm-dd-yyyy.\"\n\nI used \"06-01-2023\" which is correct format. Perhaps the location needs to be \"Tokyo\" (English) instead of \"Tokio\" (German)? Or perhaps the date needs to be in the future relative to when the request is made, but that shouldn't cause a parameter error. Or perhaps the API doesn't like dates in the past? June 1, 2023 is in the past from today's perspective, but the user specifically asked for that date.\n\nWait, the user said \"morgen, den 01. Juni 2023\" which from the perspective of the conversation might be inconsistent (since I'm an AI and don't know the current date, but June 1, 2023 is likely in the past from now). However, the function is `uv_index_get_future` which implies future dates. But I should just use what the user asked.\n\nActually, looking at it again, the user wrote \"morgen, den 01. Juni 2023\" which literally translates to \"tomorrow, June 1, 2023\". Since the tool is `uv_index_get_future`, maybe it only accepts future dates, and June 1, 2023 is no longer in the future. But the error says \"invalid parameters\", which could be because the system detected the date is not in the future or there's some validation.\n\nBut looking at the other tools, `rainfall_prediction` expects format mm/dd/yyyy, and `snowfall_prediction` expects mm-dd-yyyy. The `uv_index_get_future` expects mm-dd-yyyy.\n\nLet me try with \"Tokyo\" instead of \"Tokio\" as location. Maybe the API only accepts English location names."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

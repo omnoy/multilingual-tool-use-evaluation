@@ -1,0 +1,257 @@
+{
+  "id": "multiple_89_de",
+  "source_id": "multiple_89",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2479,
+  "total_output_tokens": 743,
+  "total_latency_s": 5.198871850967407,
+  "estimated_cost_usd": 0.00532705,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde ein gesundes Rezept fürs Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "Mittagessen",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500,
+            "meal": "Mittagessen"
+          },
+          "id": "functions.recipe_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500,
+            "meal": "Mittagessen"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 538,
+      "output_tokens": 258,
+      "latency_s": 1.6714742183685303,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "functions.recipe_search:1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 835,
+      "output_tokens": 226,
+      "latency_s": 1.79512619972229,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          },
+          "id": "functions.recipe_search:2"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1106,
+      "output_tokens": 259,
+      "latency_s": 1.732271432876587,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde ein gesundes Rezept fürs Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:0",
+          "function": {
+            "arguments": "{\"ingredients\": [\"Hähnchen\", \"Pilze\"], \"calories\": 500, \"meal\": \"Mittagessen\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants a healthy lunch recipe with less than 500 calories that contains chicken and mushrooms.\n\nI need to use the `recipe_search` function.\n- ingredients: [\"Hähnchen\", \"Pilze\"] (or in English [\"chicken\", \"mushrooms\"] - but the function description says languages can be English or German, so German should work, but typically these systems work better with English. However, the user wrote in German and the tool accepts German. I'll use German terms as requested: \"Hähnchen\" and \"Pilze\")\n- calories: 500\n- meal: \"Mittagessen\" (optional, default is lunch, but I can specify it in German since the tool accepts German)\n\nActually, looking at the schema, meal can be \"Frühstück\", \"Mittagessen\" or \"Abendessen\" in German.\n\nLet me call the function with:\n- ingredients: [\"Hähnchen\", \"Pilze\"]\n- calories: 500\n- meal: \"Mittagessen\""
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_search:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:1",
+          "function": {
+            "arguments": "{\"ingredients\":[\"chicken\",\"mushrooms\"],\"calories\":500,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters.\n\nLooking at the recipe_search schema:\n- ingredients: array of strings\n- calories: number\n- meal: string (optional, default 'lunch')\n\nPerhaps the issue is with German ingredient names? Maybe the API expects English? Or maybe I need to format differently?\n\nLet me try with English ingredient names but keep meal in German as specified, or try all English. Actually the description says \"Sprachen: Englisch, Deutsch\" so both should work. But maybe the parameter \"Hähnchen\" doesn't match expected values. Let me try \"chicken\" and \"mushrooms\" instead, and \"lunch\" for meal to be safe. Or maybe the calorie value needs to be a specific type.\n\nWait, I should check if there was any syntax issue. No, it looked correct.\n\nLet me try with English terms since that might be safer."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_search:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:2",
+          "function": {
+            "arguments": "{\"ingredients\": [\"chicken\", \"mushrooms\"], \"calories\": 500}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting 400 Bad Request. Let me look more carefully at the function parameters.\n\nrecipe_search parameters:\n- ingredients: array of strings (required) - \"Eine Liste der Zutaten, die Sie im Rezept verwenden möchten.\"\n- calories: number (required) - \"Die maximale Kalorienzahl für das Rezept.\"\n- meal: string (optional) - \"Art der Mahlzeit... Standardwert: 'lunch'\"\n\nMaybe the calories needs to be an integer rather than a number? Or maybe there's an issue with how I'm passing the array? No, that should be fine.\n\nWait, maybe I need to provide the parameters differently? In the function definition, the parameters object has:\n- ingredients: {\"items\": {\"type\": \"string\"}, \"type\": \"array\"}\n- calories: {\"type\": \"number\"}\n- meal: {\"type\": \"string\"}\n\nThis all looks correct. Perhaps the function is just not working properly in this environment? But I need to interpret the result.\n\nLet me try without the optional meal parameter, to see if that's causing the issue."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

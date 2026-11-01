@@ -1,0 +1,165 @@
+{
+  "id": "multiple_155_de",
+  "source_id": "multiple_155",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 901,
+  "total_output_tokens": 534,
+  "total_latency_s": 4.227152109146118,
+  "estimated_cost_usd": 0.0029919499999999997,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wer hat das Neutron entdeckt? Gib mir ausführliche Informationen."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_discoverer": {
+        "discovery": [
+          "Neutron"
+        ],
+        "detail": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_discoverer",
+          "arguments": {
+            "discovery": "the neutron",
+            "detail": true
+          },
+          "id": "functions.get_discoverer:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_discoverer": {
+            "discovery": "the neutron",
+            "detail": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_discoverer'. Please review the function definition and try again.",
+      "input_tokens": 354,
+      "output_tokens": 149,
+      "latency_s": 2.0037951469421387,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_discoverer",
+          "arguments": {
+            "detail": true,
+            "discovery": "neutron"
+          },
+          "id": "functions.get_discoverer:1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_discoverer": {
+            "detail": true,
+            "discovery": "neutron"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 547,
+      "output_tokens": 385,
+      "latency_s": 2.2233569622039795,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wer hat das Neutron entdeckt? Gib mir ausführliche Informationen."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_discoverer:0",
+          "function": {
+            "arguments": "{\"discovery\":\"the neutron\",\"detail\":true}",
+            "name": "get_discoverer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"Who discovered the neutron? Give me detailed information.\"\n\nI need to use the `get_discoverer` function to find who discovered the neutron.\n\nRequired parameters:\n- discovery: \"the neutron\" (English, as specified in the tool description that languages are English or German, but typically function parameters should be in English unless specified otherwise - the description says \"Languages: English, German\" so either should work, but I'll use English to be safe)\n- detail: true (because the user asked for detailed information - \"ausführliche Informationen\")\n\nLet me call the function."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_discoverer'. Please review the function definition and try again.",
+      "tool_call_id": "functions.get_discoverer:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_discoverer:1",
+          "function": {
+            "arguments": "{\"detail\": true, \"discovery\": \"neutron\"}",
+            "name": "get_discoverer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call returned a 400 Bad Request. Let me review the function definition.\n\nLooking at the get_discoverer function:\n- discovery: string, description says \"The discovery for which the discoverer's information is needed. Languages: English, German.\"\n- detail: boolean, description says \"Optional flag to get additional details about the discoverer, such as birth date and nationality. Defaults to false.\"\n\nWait, looking more carefully at the schema:\ndetail has no default specified in the JSON schema (there's no default field), but the description says \"Defaults to false.\" However, the schema shows detail as a required parameter because it's listed in the required array? Let me check...\n\nActually looking at the schema:\n```\n\"parameters\": {\"properties\": {\"detail\": {\"description\": \"Optional flag to get additional details about the discoverer, such as birth date and nationality. Defaults to false.\", \"type\": \"boolean\"}, \"discovery\": {\"description\": \"The discovery for which the discoverer's information is needed. Languages: English, German.\", \"type\": \"string\"}}, \"required\": [\"detail\", \"discovery\"], \"title\": \"get_discoverer\", \"type\": \"object\"}\n```\n\nBoth are required. I provided both. Let me check if maybe the discovery should be in German or if there's an issue with the parameter names.\n\nWait, the schema says `detail` is boolean, `discovery` is string. I used `true` (proper JSON boolean) and \"the neutron\". \n\nMaybe the issue is that the API expects specific exact strings? Or maybe I should try with German? Let me try \"neutron\" or \"das Neutron\". The description says languages: English, German.\n\nLet me try with just \"neutron\" (without \"the\")."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

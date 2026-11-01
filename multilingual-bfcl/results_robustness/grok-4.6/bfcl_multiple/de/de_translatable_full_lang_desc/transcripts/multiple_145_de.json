@@ -1,0 +1,146 @@
+{
+  "id": "multiple_145_de",
+  "source_id": "multiple_145",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1245,
+  "total_output_tokens": 55,
+  "total_latency_s": 25.377639532089233,
+  "estimated_cost_usd": 0.00282,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie viel CO2 produziert ein benzinbetriebenes Auto jährlich, das 12,000 Meilen pro Jahr fährt und eine Kraftstoffeffizienz von 20 Meilen pro Gallone aufweist?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calculate_emissions": {
+        "distance": [
+          12000
+        ],
+        "fuel_type": [
+          "Benzin",
+          "Benzin"
+        ],
+        "fuel_efficiency": [
+          20
+        ],
+        "efficiency_reduction": [
+          "",
+          0.0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "run tool calculate_emissions with distance is 12000 fuel_type is Benzin fuel_efficiency is 20<|eos|>"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 594,
+      "output_tokens": 26,
+      "latency_s": 10.025299310684204,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_type": "Benzin",
+            "fuel_efficiency": 20
+          },
+          "id": "call-7711c995-d873-46ae-bb83-0383a692ce25-0"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_type": "Benzin",
+            "fuel_efficiency": 20
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 651,
+      "output_tokens": 29,
+      "latency_s": 15.35234022140503,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie viel CO2 produziert ein benzinbetriebenes Auto jährlich, das 12,000 Meilen pro Jahr fährt und eine Kraftstoffeffizienz von 20 Meilen pro Gallone aufweist?"
+    },
+    {
+      "content": "run tool calculate_emissions with distance is 12000 fuel_type is Benzin fuel_efficiency is 20<|eos|>",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-7711c995-d873-46ae-bb83-0383a692ce25-0",
+          "function": {
+            "arguments": "{\"distance\":12000,\"fuel_type\":\"Benzin\",\"fuel_efficiency\":20}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,110 @@
+{
+  "id": "multiple_118_de",
+  "source_id": "multiple_118",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 618,
+  "total_output_tokens": 197,
+  "total_latency_s": 1.387267827987671,
+  "estimated_cost_usd": 0.0013750999999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde in der IMDB-Datenbank alle Filme aus dem Jahr 2010, in denen Leonardo DiCaprio mitspielt."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "imdb.find_movies_by_actor": {
+        "actor_name": [
+          "Leonardo DiCaprio"
+        ],
+        "year": [
+          2010
+        ],
+        "category": [
+          "",
+          "alle"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          },
+          "id": "functions.imdb_find_movies_by_actor:0"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 618,
+      "output_tokens": 197,
+      "latency_s": 1.387267827987671,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde in der IMDB-Datenbank alle Filme aus dem Jahr 2010, in denen Leonardo DiCaprio mitspielt."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.imdb_find_movies_by_actor:0",
+          "function": {
+            "arguments": "{\"actor_name\": \"Leonardo DiCaprio\", \"year\": 2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find all movies from 2010 in which Leonardo DiCaprio acted, using the IMDB database.\n\nLooking at the available functions, I have `imdb_find_movies_by_actor` which is defined as:\n- Searches the database for all movies with a certain actor from a certain year.\n- Parameters:\n  - actor_name: string, required. Languages: English, German.\n  - year: number, required. The specific year to search in.\n  - category: string, optional. Default is 'all'. Languages: English, German.\n\nThe user provided:\n- actor_name: \"Leonardo DiCaprio\"\n- year: 2010\n- category: not specified, so default 'all' is fine.\n\nI need to make the function call with these parameters."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

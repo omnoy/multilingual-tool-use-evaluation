@@ -1,0 +1,230 @@
+{
+  "id": "multiple_54_de",
+  "source_id": "multiple_54",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2251,
+  "total_output_tokens": 965,
+  "total_latency_s": 6.662639141082764,
+  "estimated_cost_usd": 0.005998450000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ermittle die historischen Dividendenzahlungen von Äppel Ink für die letzten fünf Jahre."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.dividend_data": {
+        "company": [
+          "Äppel Ink",
+          "Äppel",
+          "Äppel Ink."
+        ],
+        "years": [
+          5
+        ],
+        "frequency": [
+          "",
+          "jährlich"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Apple Inc.",
+            "years": 5
+          },
+          "id": "functions.corporate_finance_dividend_data:0"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Apple Inc.",
+            "years": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+      "input_tokens": 321,
+      "output_tokens": 410,
+      "latency_s": 2.695056915283203,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Apple",
+            "years": 5
+          },
+          "id": "functions.corporate_finance_dividend_data:1"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Apple",
+            "years": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+      "input_tokens": 781,
+      "output_tokens": 315,
+      "latency_s": 2.307218313217163,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Äppel Ink",
+            "years": 5
+          },
+          "id": "functions.corporate_finance_dividend_data:2"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Äppel Ink",
+            "years": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1149,
+      "output_tokens": 240,
+      "latency_s": 1.6603639125823975,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ermittle die historischen Dividendenzahlungen von Äppel Ink für die letzten fünf Jahre."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.corporate_finance_dividend_data:0",
+          "function": {
+            "arguments": "{\"company\": \"Apple Inc.\", \"years\": 5}",
+            "name": "corporate_finance_dividend_data"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to retrieve historical dividend payments for \"Äppel Ink\" (Apple Inc.) for the last five years.\n\nLooking at the available functions, I have `corporate_finance_dividend_data` which is exactly what I need.\n\nParameters:\n- company: \"Äppel Ink\" or \"Apple Inc.\" - The tool description says languages: English, German, so I can use either. Since the user wrote \"Äppel Ink\" (which is clearly Apple Inc. in German transliteration), I should probably use \"Apple\" or \"Apple Inc.\" for better recognition, or I can use \"Äppel Ink\" since the tool accepts German. Actually, looking at the description, it says \"Das Unternehmen\" and accepts English and German. \"Äppel Ink\" is not standard German (it's a phonetic spelling of Apple Inc), so it might be safer to use \"Apple Inc.\" But the user specifically asked for \"Äppel Ink\". Let me use \"Apple Inc.\" since that's the actual company name and the tool likely recognizes English names better. However, since the user specifically wrote it that way, and the tool says German is accepted... Actually, let me just use \"Apple\" or \"Apple Inc.\" to be safe. But I should probably use exactly what the user said or translate it to the proper name. The user said \"Äppel Ink\" which is clearly Apple Inc. I'll use \"Apple Inc.\" since that's the standard English name.\n\nWait, I should check if I need to map it. The user wrote \"Äppel Ink\" in German phonetics. I think using \"Apple\" or \"Apple Inc.\" is the correct approach for the API.\n\n- years: 5\n- frequency: not specified by user, default is annually which seems appropriate.\n\nLet me make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+      "tool_call_id": "functions.corporate_finance_dividend_data:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.corporate_finance_dividend_data:1",
+          "function": {
+            "arguments": "{\"company\":\"Apple\",\"years\":5}",
+            "name": "corporate_finance_dividend_data"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me reconsider the parameters.\n\nThe tool definition says:\n- company: string, required, \"Das Unternehmen, für das Sie die Dividendendaten abrufen möchten. Sprachen: Englisch, Deutsch.\"\n- years: number, required, \"Anzahl der vergangenen Jahre, für die die Daten abgerufen werden sollen.\"\n- frequency: optional, enum [\"quarterly\", \"annually\"], default annually\n\nI passed \"Apple Inc.\" and 5. Maybe the issue is that I need to use the German name or maybe just \"Apple\"? Or maybe the parameters need to be formatted differently?\n\nWait, looking at the error, it says \"invalid parameters\". Let me check if I passed them correctly. I passed:\n- company: \"Apple Inc.\"\n- years: 5\n\nThat's correct according to the schema. Maybe the API only accepts German company names? The user asked in German about \"Äppel Ink\". Let me try with \"Apple\" or maybe \"Äppel Ink\" exactly as the user wrote it? Or maybe the system expects \"Apple\" without \"Inc.\"?\n\nActually, maybe the parameter name or structure is wrong? Let me try again with just \"Apple\". Or perhaps the company should be passed in German? The description says both English and German are accepted.\n\nLet me try \"Apple\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_dividend_data'. Please review the function definition and try again.",
+      "tool_call_id": "functions.corporate_finance_dividend_data:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.corporate_finance_dividend_data:2",
+          "function": {
+            "arguments": "{\"company\": \"Äppel Ink\", \"years\": 5}",
+            "name": "corporate_finance_dividend_data"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Still getting 400 Bad Request. Let me reconsider what could be wrong.\n\nMaybe the parameter \"years\" needs to be formatted differently? Or maybe the company name should be \"Äppel Ink\" exactly as the user wrote it?\n\nAlternatively, maybe the issue is that I should use the German translation \"Apple\" is the same in German. But \"Äppel Ink\" was a humorous/phonetic way the user wrote it.\n\nWait, could the parameter be that frequency needs to be specified even though it's optional? No, it says default is annually.\n\nLet me look more carefully at the schema:\n- company: string\n- years: number\n- frequency: optional enum\n\nMaybe the issue is that the function name is wrong? No, it's exactly `corporate_finance_dividend_data`.\n\nPerhaps the API expects German company names only despite saying English and German? Let me try \"Apple\" again? I already did.\n\nMaybe I should try \"Äppel Ink\" since that's exactly what the user wrote?"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

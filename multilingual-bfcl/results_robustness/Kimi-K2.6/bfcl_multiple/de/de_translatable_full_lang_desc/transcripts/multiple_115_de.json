@@ -1,0 +1,189 @@
+{
+  "id": "multiple_115_de",
+  "source_id": "multiple_115",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full_lang_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1170,
+  "total_output_tokens": 1304,
+  "total_latency_s": 7.97609806060791,
+  "estimated_cost_usd": 0.0063275,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_restaurants": {
+        "location": [
+          "Manhattan"
+        ],
+        "food_type": [
+          "Thailändisch"
+        ],
+        "number": [
+          5
+        ],
+        "dietary_requirements": [
+          [
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "thai",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          },
+          "id": "functions.find_restaurants:0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "thai",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.",
+      "input_tokens": 479,
+      "output_tokens": 165,
+      "latency_s": 2.178739547729492,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "thailändisch",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          },
+          "id": "functions.find_restaurants:1"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "thailändisch",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 691,
+      "output_tokens": 1139,
+      "latency_s": 5.797358512878418,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_restaurants:0",
+          "function": {
+            "arguments": "{\"location\":\"Manhattan\",\"food_type\":\"thai\",\"number\":5,\"dietary_requirements\":[\"vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find 5 restaurants in Manhattan that serve Thai food and have a vegan menu.\n\nLooking at the available functions, I need to use `find_restaurants` which has these parameters:\n- `location` (required): \"Manhattan\"\n- `food_type` (required): \"thai\" or \"Thailändisch\" (the tool description says languages are English or German, so either should work)\n- `number` (required): 5\n- `dietary_requirements` (optional, array of strings): Should include \"vegan\"\n\nLet me call the function with these parameters."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.",
+      "tool_call_id": "functions.find_restaurants:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_restaurants:1",
+          "function": {
+            "arguments": "{\"location\": \"Manhattan\", \"food_type\": \"thailändisch\", \"number\": 5, \"dietary_requirements\": [\"vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me review the parameters. Looking at the function definition again:\n\n```json\n{\n  \"description\": \"Locate nearby restaurants based on location and food preferences.\",\n  \"name\": \"find_restaurants\",\n  \"parameters\": {\n    \"properties\": {\n      \"dietary_requirements\": {\n        \"default\": \"None\",\n        \"description\": \"Special dietary requirements, e.g. vegan, gluten-free.\",\n        \"items\": {\"type\": \"string\"},\n        \"type\": \"array\"\n      },\n      \"food_type\": {\n        \"description\": \"The type of food preferred. Languages: English, German.\",\n        \"type\": \"string\"\n      },\n      \"location\": {\n        \"description\": \"The specific location or area. Languages: English, German.\",\n        \"type\": \"string\"\n      },\n      \"number\": {\n        \"description\": \"Number of results to return.\",\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\"location\", \"number\", \"food_type\"]\n  }\n}\n```\n\nWait, the schema says the type of `number` is `number` which in JSON Schema can mean any numeric type. But perhaps the issue is that I passed it as an integer in JSON but it might expect something else? No, 5 is a valid number.\n\nWait, maybe the issue is the `dietary_requirements` array format? Or maybe the location \"Manhattan\" is too broad? Or maybe the values need to be in German since the user wrote in German? Let's try with German terms or check if there's something else.\n\nActually, looking more carefully, the tool description says \"Languages: English, German\" for the parameters. So both should work.\n\nMaybe the issue is that `number` should be passed as a string? No, the schema says type: number.\n\nLet me re-read: `400 Bad Request: invalid parameters for function 'find_restaurants'.`\n\nCould it be that `number` is a reserved word or there's an issue with the parameter name? Or maybe I need to pass `dietary_requirements` differently?\n\nActually, wait. Looking at the `dietary_requirements` parameter in the schema: `default: \"None\"` but the type is `array`. That's inconsistent - default for an array should be `[]` or `null`, not `\"None\"`. But that shouldn't cause a problem when explicitly providing a value.\n\nMaybe the function requires the exact parameter structure but something about my JSON was wrong. Let me try again with the same parameters but ensuring proper JSON formatting. Actually, the formatting looked correct.\n\nLet me try passing the number as an integer again - maybe it needs to be a string? No, schema says number.\n\nLet me try with English terms for everything to be safe, or perhaps the API expects `dietary_requirements` to be formatted differently.\n\nActually, wait - maybe the issue is that in the original function schema, `number` is listed as the third parameter in required, but I should check if there's any constraint I missed. The description says \"Number of results to return\" and type is number.\n\nLet me try calling it again with slightly different formatting, or maybe the issue was a temporary API error. But wait - the error specifically says \"invalid parameters\", not server error.\n\nCould it be that the `food_type` needs to be capitalized? Or \"Thai\" instead of \"thai\"?\nCould it be that `dietary_requirements` should use \"vegan\" but maybe the API expects specific values?\n\nActually, let me look at the parameter order. In JSON, order doesn't matter.\n\nHmm, maybe the problem is with the `number` field name conflicting with something? Or perhaps the system expects the value 5 to be formatted differently.\n\nWait, maybe I should try without the optional parameter first to see if that's the issue? No, the optional parameter is just optional.\n\nActually, re-reading the error: `400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.`\n\nMaybe there's a strict validation issue. Let me look at the function definition one more time:\n- `location`: string\n- `food_type`: string  \n- `number`: number\n- `dietary_requirements`: array of strings, default \"None\"\n\nMy call was: `{\"location\": \"Manhattan\", \"food_type\": \"thai\", \"number\": 5, \"dietary_requirements\": [\"vegan\"]}`\n\nThis looks correct. But wait - maybe the API expects German words since the user wrote in German? Let me try with German terms. Or maybe the number needs to be passed as 5.0? No, that's silly.\n\nLooking at the `number` parameter: in the schema it's type `number`, but perhaps the backend expects an integer and there's a type mismatch in the API layer?\n\nActually, maybe I should try calling it again exactly as before - sometimes these things are transient or maybe I made a typo I didn't see. But no, the JSON looks valid.\n\nLet me try: location=\"Manhattan\", food_type=\"Thailändisch\", number=5, dietary_requirements=[\"vegan\"]\n\nActually, I should try without dietary_requirements first to isolate the issue."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

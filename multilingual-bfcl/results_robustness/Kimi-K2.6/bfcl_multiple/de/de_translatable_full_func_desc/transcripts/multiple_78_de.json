@@ -1,0 +1,217 @@
+{
+  "id": "multiple_78_de",
+  "source_id": "multiple_78",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1215,
+  "total_output_tokens": 767,
+  "total_latency_s": 4.584954261779785,
+  "estimated_cost_usd": 0.00422225,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Gib mir Informationen über das Naturhistorische Museum in London, einschließlich Öffnungszeiten, Ausstellungen und Barrierefreiheit."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "museum_info": {
+        "museum": [
+          "Naturhistorisches Museum"
+        ],
+        "city": [
+          "London"
+        ],
+        "features": [
+          [
+            "timings",
+            "exhibitions",
+            "accessibility"
+          ],
+          [
+            "exhibitions",
+            "timings",
+            "accessibility"
+          ],
+          [
+            "exhibitions",
+            "accessibility",
+            "timings"
+          ],
+          [
+            "accessibility",
+            "timings",
+            "exhibitions"
+          ],
+          [
+            "accessibility",
+            "exhibitions",
+            "timings"
+          ],
+          [
+            "timings",
+            "accessibility",
+            "exhibitions"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "museum_info",
+          "arguments": {
+            "museum": "Natural History Museum",
+            "city": "London",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          },
+          "id": "functions.museum_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "museum_info": {
+            "museum": "Natural History Museum",
+            "city": "London",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'museum_info'. Please review the function definition and try again.",
+      "input_tokens": 384,
+      "output_tokens": 408,
+      "latency_s": 2.511752128601074,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "museum_info",
+          "arguments": {
+            "museum": "Naturhistorisches Museum",
+            "city": "London",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          },
+          "id": "functions.museum_info:1"
+        }
+      ],
+      "decoded": [
+        {
+          "museum_info": {
+            "museum": "Naturhistorisches Museum",
+            "city": "London",
+            "features": [
+              "timings",
+              "exhibitions",
+              "accessibility"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 831,
+      "output_tokens": 359,
+      "latency_s": 2.073202133178711,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Gib mir Informationen über das Naturhistorische Museum in London, einschließlich Öffnungszeiten, Ausstellungen und Barrierefreiheit."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.museum_info:0",
+          "function": {
+            "arguments": "{\"museum\": \"Natural History Museum\", \"city\": \"London\", \"features\": [\"timings\", \"exhibitions\", \"accessibility\"]}",
+            "name": "museum_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants information about the Natural History Museum in London, including opening hours, exhibitions, and accessibility.\n\nI need to use the `museum_info` function. Let's map:\n- museum: \"Naturhistorisches Museum\" or \"Natural History Museum\"? The user wrote in German but referred to it as \"Naturhistorische Museum\" (in London). The actual name in London is \"Natural History Museum\". However, since the user asked in German, I should probably use the English name since that's the actual museum name. But I need to check if the function expects the local name. Looking at the function definition, it just says \"Der Name des Museums\". I should use \"Natural History Museum\" as that's the proper name, or I could use \"Naturhistorisches Museum\". Actually, looking carefully, the user said \"Naturhistorische Museum\" (feminine form, a bit grammatically off, should be \"Naturhistorisches Museum\"). But in London it's called \"Natural History Museum\". I'll use \"Natural History Museum\" since that's the official name and more likely to be recognized by the tool.\n- city: \"London\"\n- features: [\"timings\", \"exhibitions\", \"accessibility\"]\n\nWait, the parameter enum values are \"timings\", \"exhibitions\", \"accessibility\", \"events\", \"history\". The user asked for Öffnungszeiten (timings), Ausstellungen (exhibitions), and Barrierefreiheit (accessibility).\n\nSo the function call should be:\nmuseum_info(museum=\"Natural History Museum\", city=\"London\", features=[\"timings\", \"exhibitions\", \"accessibility\"])\n\nI need to make sure I only output the function call without markdown code blocks or extra text, exactly as specified."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'museum_info'. Please review the function definition and try again.",
+      "tool_call_id": "functions.museum_info:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.museum_info:1",
+          "function": {
+            "arguments": "{\"museum\": \"Naturhistorisches Museum\", \"city\": \"London\", \"features\": [\"timings\", \"exhibitions\", \"accessibility\"]}",
+            "name": "museum_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 error. Let me reconsider the parameters.\n\nWait, looking at the function definition again:\n- museum: string - The name of the museum\n- city: string - The city\n- features: array of strings with enum values\n\nMaybe the issue is that I used \"Natural History Museum\" but the system expects \"Naturhistorisches Museum\"? Or perhaps the city needs to match exactly? Or maybe I made an error in the JSON format?\n\nActually, looking at the function schema again:\n```\n\"features\": {\n  \"items\": {\n    \"description\": \"Merkmale des Museums, zu denen Informationen abgerufen werden sollen. Trennen Sie mehrere Merkmale durch Kommas.\",\n    \"enum\": [\"timings\", \"exhibitions\", \"accessibility\", \"events\", \"history\"],\n    \"type\": \"string\"\n  },\n  \"type\": \"array\"\n}\n```\n\nMy JSON looks correct. Let me try with \"Naturhistorisches Museum\" since the user referred to it that way. Or maybe the API is strict about something else. Let me try again with the German name since that's how the user referred to it, and perhaps the underlying database uses German names for museums.\n\nActually, maybe I should just try once more. The error might be due to the English name not being in the database, or maybe I need to check if the parameter types are correct. My JSON was valid.\n\nLet me try with the German name \"Naturhistorisches Museum\"."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

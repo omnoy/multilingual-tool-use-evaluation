@@ -1,0 +1,154 @@
+{
+  "id": "multiple_9_de",
+  "source_id": "multiple_9",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 726,
+  "total_output_tokens": 80,
+  "total_latency_s": 28.207743883132935,
+  "estimated_cost_usd": 0.0019320000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Berechne die Durchschnittsnote für den Schüler Dschon, der in verschiedenen Fächern diese Punktzahlen hat: {'math':90, 'science':75, 'history':82, 'music':89}."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calculate_average": {
+        "gradeDict": [
+          {
+            "math": [
+              90
+            ],
+            "science": [
+              75
+            ],
+            "history": [
+              82
+            ],
+            "music": [
+              89
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "<function_call>\n<name>calculate_average</name>\n<parameter name=\"gradeDict\">{\"math\":90,\"science\":75,\"history\":82,\"music\":89}</parameter>\n</function_call>"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 326,
+      "output_tokens": 45,
+      "latency_s": 19.02066969871521,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_average",
+          "arguments": {
+            "gradeDict": {
+              "math": 90,
+              "science": 75,
+              "history": 82,
+              "music": 89
+            }
+          },
+          "id": "call-1a6b4283-85aa-4d8a-8e32-bdf83e0c517a-0"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_average": {
+            "gradeDict": {
+              "math": 90,
+              "science": 75,
+              "history": 82,
+              "music": 89
+            }
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 400,
+      "output_tokens": 35,
+      "latency_s": 9.187074184417725,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Berechne die Durchschnittsnote für den Schüler Dschon, der in verschiedenen Fächern diese Punktzahlen hat: {'math':90, 'science':75, 'history':82, 'music':89}."
+    },
+    {
+      "content": "<function_call>\n<name>calculate_average</name>\n<parameter name=\"gradeDict\">{\"math\":90,\"science\":75,\"history\":82,\"music\":89}</parameter>\n</function_call>",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-1a6b4283-85aa-4d8a-8e32-bdf83e0c517a-0",
+          "function": {
+            "arguments": "{\"gradeDict\":{\"math\":90,\"science\":75,\"history\":82,\"music\":89}}",
+            "name": "calculate_average"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

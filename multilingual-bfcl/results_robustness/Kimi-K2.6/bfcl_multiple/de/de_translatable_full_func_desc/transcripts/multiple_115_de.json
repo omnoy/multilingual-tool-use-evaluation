@@ -1,0 +1,189 @@
+{
+  "id": "multiple_115_de",
+  "source_id": "multiple_115",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1560,
+  "total_output_tokens": 837,
+  "total_latency_s": 5.81679892539978,
+  "estimated_cost_usd": 0.004829999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_restaurants": {
+        "location": [
+          "Manhattan"
+        ],
+        "food_type": [
+          "Thailändisch"
+        ],
+        "number": [
+          5
+        ],
+        "dietary_requirements": [
+          [
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "Thai",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          },
+          "id": "functions.find_restaurants:0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "Thai",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.",
+      "input_tokens": 521,
+      "output_tokens": 471,
+      "latency_s": 3.7885172367095947,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "thailändisch",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          },
+          "id": "functions.find_restaurants:1"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "thailändisch",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1039,
+      "output_tokens": 366,
+      "latency_s": 2.0282816886901855,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_restaurants:0",
+          "function": {
+            "arguments": "{\"location\":\"Manhattan\",\"food_type\":\"Thai\",\"number\":5,\"dietary_requirements\":[\"vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find 5 restaurants in Manhattan that serve Thai food and have a vegan menu.\n\nI need to use the `find_restaurants` function with these parameters:\n- location: \"Manhattan\"\n- food_type: \"Thai\" (or \"thailändisch\" - but looking at the function definition, it should be the preferred type of food, so \"Thai\" seems appropriate, though I'll check if German is expected. The user wrote in German but the function parameter definitions seem to be in English. However, the parameter descriptions are in German. I'll use \"Thai\" since it's the standard food type name, or should I use \"thailändisch\"? Looking at the function description which is in German: \"Die bevorzugte Art von Speisen.\" I think the value should describe the food type. Since the user said \"thailändisches Essen\", I should probably pass \"Thai\" as it's the common term used in restaurant searches, but \"thailändisch\" would also work. Actually, looking at typical API designs, English terms like \"Thai\" are more standard for cuisine types. But since the user is German and the tool descriptions are German... I'll use \"Thai\" as it's the internationally recognized cuisine name.)\n- number: 5\n- dietary_requirements: Since they want vegan options, I'll use [\"vegan\"] (the parameter accepts an array of strings)\n\nLet me check the schema again:\n- location: string (required) -> \"Manhattan\"\n- food_type: string (required) -> \"Thai\" or \"thailändisch\". I'll go with \"Thai\" as cuisine types are typically in English in restaurant databases.\n- number: integer (required) -> 5\n- dietary_requirements: array of strings (optional, default \"None\") -> [\"vegan\"]\n\nActually, looking at the example in the schema description: \"Besondere Ernährungsanforderungen, z. B. vegan, glutenfrei.\" So passing \"vegan\" seems right.\n\nI'll make the function call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.",
+      "tool_call_id": "functions.find_restaurants:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.find_restaurants:1",
+          "function": {
+            "arguments": "{\"location\": \"Manhattan\", \"food_type\": \"thailändisch\", \"number\": 5, \"dietary_requirements\": [\"vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me review my parameters.\n\nWait, looking more carefully at the function definition:\n- `location`: string - \"Der genaue Standort oder das Gebiet.\" -> \"Manhattan\" seems fine.\n- `food_type`: string - \"Die bevorzugte Art von Speisen.\" -> I used \"Thai\". Maybe it should be something else?\n- `number`: integer - \"Anzahl der zurückzugebenden Ergebnisse.\" -> 5 is an integer.\n- `dietary_requirements`: array of strings, default \"None\" -> [\"vegan\"]\n\nThe dietary_requirements parameter says type: array of strings, but its items type isn't explicitly defined in the schema shown? Let me look again:\n`\"dietary_requirements\": {\"description\": \"Besondere Ernährungsanforderungen, z. B. vegan, glutenfrei.\", \"items\": {\"type\": \"string\"}, \"type\": \"array\"}`\n\nI think my parameters look correct according to the schema. But the error says invalid parameters. Maybe \"Manhattan\" isn't recognized and needs to be more specific? Or maybe `food_type` expects \"thailändisch\" in German?\n\nWait, looking at the error again - maybe the issue is that `number` isn't an integer somehow? No, I passed 5 which is an integer.\n\nLet me try again with \"thailändisch\" for the food_type since the tool descriptions are in German."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

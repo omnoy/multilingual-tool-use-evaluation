@@ -1,0 +1,109 @@
+{
+  "id": "multiple_83_he",
+  "source_id": "multiple_83",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 509,
+  "total_output_tokens": 345,
+  "total_latency_s": 2.4483556747436523,
+  "estimated_cost_usd": 0.0018635499999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה שערים כבש ליאונל מסי עבור ברצלונה עד היום?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "player_stats.get_all_time_goals": {
+        "player_name": [
+          "ליאונל מסי"
+        ],
+        "team_name": [
+          "ברצלונה"
+        ],
+        "competition": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "player_stats_get_all_time_goals",
+          "arguments": {
+            "player_name": "ליאונל מסי",
+            "team_name": "ברצלונה"
+          },
+          "id": "functions.player_stats_get_all_time_goals:0"
+        }
+      ],
+      "decoded": [
+        {
+          "player_stats_get_all_time_goals": {
+            "player_name": "ליאונל מסי",
+            "team_name": "ברצלונה"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 509,
+      "output_tokens": 345,
+      "latency_s": 2.4483556747436523,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה שערים כבש ליאונל מסי עבור ברצלונה עד היום?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.player_stats_get_all_time_goals:0",
+          "function": {
+            "arguments": "{\"player_name\":\"ליאונל מסי\",\"team_name\":\"ברצלונה\"}",
+            "name": "player_stats_get_all_time_goals"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user asks in Hebrew: \"How many goals did Lionel Messi score for Barcelona to date?\" (asking for all-time goals).\n\nI need to use the function `player_stats_get_all_time_goals`.\nParameters:\n- player_name: \"Lionel Messi\" (or in Hebrew \"ליאונל מסי\" - but the schema says languages: English, Hebrew. So Hebrew should be fine, but maybe English is safer for names. The schema explicitly allows Hebrew. I'll use \"ליאונל מסי\" or \"Lionel Messi\". Usually names work better in English with sports APIs, but since the prompt is in Hebrew and the schema says both are supported, I'll provide the Hebrew name as requested. Actually, to be most accurate and since the system is designed for Hebrew, I can pass the Hebrew name. But I might also consider if passing English is better. Let me check: schema says \"שפות: אנגלית, עברית.\" for player_name. So both fine. I'll use Hebrew name since the user used it.\n- team_name: \"ברצלונה\" (Hebrew for Barcelona). Again, schema supports Hebrew.\n- competition: optional, defaults to empty string ''.\n\nSo the call should be:\n{\n  \"player_name\": \"ליאונל מסי\",\n  \"team_name\": \"ברצלונה\"\n}\n\nWait, I should output exactly as specified. The function is available. Let me make the call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,109 @@
+{
+  "id": "multiple_79_de",
+  "source_id": "multiple_79",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 206,
+  "total_output_tokens": 299,
+  "total_latency_s": 1.8999199867248535,
+  "estimated_cost_usd": 0.0013917,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde Kunstausstellungen für den kommenden Monat im Museum für moderne Kunst in New York."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "exhibition_info": {
+        "museum_name": [
+          "Museum of Modern Art",
+          "MOMA",
+          "Museum of Modern Art, New York"
+        ],
+        "month": [
+          "",
+          1
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "exhibition_info",
+          "arguments": {
+            "museum_name": "Museum of Modern Art",
+            "month": 1
+          },
+          "id": "functions.exhibition_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "exhibition_info": {
+            "museum_name": "Museum of Modern Art",
+            "month": 1
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 206,
+      "output_tokens": 299,
+      "latency_s": 1.8999199867248535,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde Kunstausstellungen für den kommenden Monat im Museum für moderne Kunst in New York."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.exhibition_info:0",
+          "function": {
+            "arguments": "{\"museum_name\": \"Museum of Modern Art\", \"month\": 1}",
+            "name": "exhibition_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find art exhibitions for the coming month at the Museum of Modern Art in New York. They've written in German.\n\nI need to use the `exhibition_info` function. The parameters are:\n- museum_name (required): string - \"Museum of Modern Art\" or \"Museum für moderne Kunst\"? The user said \"Museum für moderne Kunst in New York\" which is the German name for MoMA (Museum of Modern Art). I should use the English name \"Museum of Modern Art\" since that's the actual museum name, or I could use what they provided. Looking at the function, it expects the name of the museum. I think \"Museum of Modern Art\" is the safest choice as it's the official name, though the German name would also likely work. Let me use \"Museum of Modern Art\" since it's in New York.\n- month (optional): number - default is 1. The user asked for \"the coming month\" which aligns with the default of 1.\n\nWait, actually the user wrote \"Museum für moderne Kunst in New York\" - this is clearly referring to MoMA. I should pass \"Museum of Modern Art\" as the museum_name because that's the actual name of the museum in New York.\n\nLet me make the function call."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

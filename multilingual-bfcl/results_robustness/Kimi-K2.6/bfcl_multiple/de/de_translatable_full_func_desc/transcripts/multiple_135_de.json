@@ -1,0 +1,112 @@
+{
+  "id": "multiple_135_de",
+  "source_id": "multiple_135",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 332,
+  "total_output_tokens": 383,
+  "total_latency_s": 2.5257296562194824,
+  "estimated_cost_usd": 0.0018474,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wer war das Opfer in dem Gerichtsverfahren mit dem Aktenzeichen 2022/AL2562 in Kalifornien?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_case_info": {
+        "docket": [
+          "2022/AL2562"
+        ],
+        "court": [
+          "Kalifornien",
+          "CA"
+        ],
+        "info_type": [
+          "Opfer"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_case_info",
+          "arguments": {
+            "docket": "2022/AL2562",
+            "court": "Kalifornien",
+            "info_type": "Opfer"
+          },
+          "id": "functions.get_case_info:0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_case_info": {
+            "docket": "2022/AL2562",
+            "court": "Kalifornien",
+            "info_type": "Opfer"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 332,
+      "output_tokens": 383,
+      "latency_s": 2.5257296562194824,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wer war das Opfer in dem Gerichtsverfahren mit dem Aktenzeichen 2022/AL2562 in Kalifornien?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.get_case_info:0",
+          "function": {
+            "arguments": "{\"docket\":\"2022/AL2562\",\"court\":\"Kalifornien\",\"info_type\":\"Opfer\"}",
+            "name": "get_case_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"Who was the victim in the court case with docket number 2022/AL2562 in California?\"\n\nI need to use the get_case_info function with:\n- docket: \"2022/AL2562\"\n- court: Since it's in California, I should use \"Kalifornien\" or perhaps \"California\". The function parameter expects a \"Gericht\" (court), not necessarily a state. But the user says \"in Kalifornien\" which is just the location/state. I should probably use \"California\" or \"Kalifornien\" as the court. Let me think about what makes sense. The function says \"Gericht, vor dem das Verfahren verhandelt wurde\" (Court where the case was tried). The user mentions \"in Kalifornien\" which is the state. I should probably use \"Kalifornien\" since the user asked in German, but \"California\" might also be acceptable. Actually, to be safe and accurate, I'll use \"Kalifornien\" to match the language of the query, or maybe I should just use \"California\" since that's the proper name. Hmm, typically these systems expect the place name as given by the user when possible. Let me use \"Kalifornien\" as that's what the user said.\n\nWait, actually, looking at the tool, there's no strict format specified for court names. I should just provide the court as \"Kalifornien\" since the user specified that.\n\n- info_type: The user asks \"Wer war das Opfer\" (Who was the victim), so info_type should be \"Opfer\" (Victim).\n\nLet me format the function call properly."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

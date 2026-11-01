@@ -1,0 +1,190 @@
+{
+  "id": "multiple_89_de",
+  "source_id": "multiple_89",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1100,
+  "total_output_tokens": 546,
+  "total_latency_s": 3.992220640182495,
+  "estimated_cost_usd": 0.003229,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde ein gesundes Rezept fürs Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "Mittagessen",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "functions.recipe_search:0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 371,
+      "output_tokens": 319,
+      "latency_s": 2.2157416343688965,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          },
+          "id": "functions.recipe_search:1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 729,
+      "output_tokens": 227,
+      "latency_s": 1.7764790058135986,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde ein gesundes Rezept fürs Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:0",
+          "function": {
+            "arguments": "{\"ingredients\": [\"chicken\", \"mushrooms\"], \"calories\": 500, \"meal\": \"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants a healthy lunch recipe with less than 500 calories that contains chicken and mushrooms.\n\nI need to use the `recipe_search` function with:\n- ingredients: [\"Hähnchen\", \"Pilze\"] (chicken and mushrooms)\n- calories: 500\n- meal: \"lunch\" (since they specified Mittagessen)\n\nThe ingredients should probably be in English since the function descriptions don't specify language, but looking at the tool definitions, they seem to expect English terms. However, sometimes these systems accept German too. But to be safe and accurate, let me use English terms \"chicken\" and \"mushrooms\", or should I keep German? \n\nActually, the user wrote in German and the instructions say to understand the request in German and respond with the correct function call. The function parameters are described in English but there's no strict requirement on the language of the ingredient strings. However, typically ingredient databases are in English. Let me use English translations to ensure the search works: \"chicken\" and \"mushrooms\".\n\nWait, looking again - I should just call the function. The parameters are:\n- calories: 500\n- ingredients: [\"chicken\", \"mushrooms\"] or [\"Hähnchen\", \"Pilze\"]\n- meal: \"lunch\"\n\nI'll use English ingredients as they're more likely to match a recipe database."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "functions.recipe_search:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.recipe_search:1",
+          "function": {
+            "arguments": "{\"ingredients\":[\"chicken\",\"mushrooms\"],\"calories\":500}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got a 400 Bad Request. Let me check the parameters again.\n\nLooking at the function definition:\n- ingredients: array of strings\n- calories: number\n- meal: string (optional, default 'lunch')\n\nI used:\n- ingredients: [\"chicken\", \"mushrooms\"]\n- calories: 500\n- meal: \"lunch\"\n\nThis looks correct. Maybe the issue is that I need to send it exactly as specified? Let me try without specifying meal since lunch is the default anyway. Or maybe the ingredients need to be in German? Or maybe the function expects the parameter names exactly?\n\nWait, I used the exact parameter names. Let me try again without the optional meal parameter since it's already the default.\n\nActually, looking at the JSON I sent, it looks correct. Maybe the back-end expects German ingredients? Let me try with German ingredient names. Or maybe it's a formatting issue.\n\nLet me try without the meal parameter first to see if that helps."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

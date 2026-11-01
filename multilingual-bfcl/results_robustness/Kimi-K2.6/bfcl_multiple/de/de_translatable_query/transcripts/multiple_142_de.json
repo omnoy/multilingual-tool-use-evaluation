@@ -1,0 +1,112 @@
+{
+  "id": "multiple_142_de",
+  "source_id": "multiple_142",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 264,
+  "total_output_tokens": 267,
+  "total_latency_s": 2.062926769256592,
+  "estimated_cost_usd": 0.0013188,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie hoch ist die Luftfeuchtigkeit in Miami, Florida, in den kommenden 7 Tagen?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "weather.humidity_forecast": {
+        "location": [
+          "Miami",
+          "Miami, Florida",
+          "FL"
+        ],
+        "days": [
+          7
+        ],
+        "min_humidity": [
+          "",
+          0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "location": "Miami",
+            "days": 7
+          },
+          "id": "functions.weather_humidity_forecast:0"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "location": "Miami",
+            "days": 7
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 264,
+      "output_tokens": 267,
+      "latency_s": 2.062926769256592,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie hoch ist die Luftfeuchtigkeit in Miami, Florida, in den kommenden 7 Tagen?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.weather_humidity_forecast:0",
+          "function": {
+            "arguments": "{\"location\":\"Miami\",\"days\":7}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Der Benutzer fragt auf Deutsch nach der Luftfeuchtigkeit in Miami, Florida für die nächsten 7 Tage. Ich muss die Funktion `weather_humidity_forecast` aufrufen.\n\nParameter:\n- location: \"Miami, Florida\" (oder einfach \"Miami\" - die Funktion erwartet \"The city that you want to get the humidity for.\" Ich werde \"Miami\" verwenden, da dies ausreichend ist, aber der Benutzer hat explizit \"Miami, Florida\" geschrieben. Beides sollte funktionieren, aber ich bleibe bei \"Miami\" oder verwende den vollständigen Namen. Da keine Einschränkung besteht, nehme ich \"Miami\".)\n- days: 7\n- min_humidity: nicht angegeben, also weglassen oder Default 0\n\nFunktionsaufruf:\n```json\n{\"location\": \"Miami\", \"days\": 7}\n``` (oder \"Miami, Florida\") - Ich gehe mit \"Miami\", da es eine Stadt ist."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

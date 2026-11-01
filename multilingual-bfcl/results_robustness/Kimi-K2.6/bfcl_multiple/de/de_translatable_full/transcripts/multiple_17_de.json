@@ -1,0 +1,118 @@
+{
+  "id": "multiple_17_de",
+  "source_id": "multiple_17",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 317,
+  "total_output_tokens": 249,
+  "total_latency_s": 1.8316497802734375,
+  "estimated_cost_usd": 0.00129715,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ermittle den Wechselkurs von Euro zu Dollar am 1. Januar 2022."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "currency_conversion.get_rate": {
+        "from_currency": [
+          "EUR",
+          "Euro"
+        ],
+        "to_currency": [
+          "Dollar",
+          "USD"
+        ],
+        "date": [
+          "2022-01-01",
+          "01/01/2022",
+          "1/1/2022",
+          "1. Jan. 2022",
+          "1. Januar 2022",
+          "2022-1-1"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "currency_conversion_get_rate",
+          "arguments": {
+            "from_currency": "EUR",
+            "to_currency": "USD",
+            "date": "2022-01-01"
+          },
+          "id": "functions.currency_conversion_get_rate:0"
+        }
+      ],
+      "decoded": [
+        {
+          "currency_conversion_get_rate": {
+            "from_currency": "EUR",
+            "to_currency": "USD",
+            "date": "2022-01-01"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 317,
+      "output_tokens": 249,
+      "latency_s": 1.8316497802734375,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ermittle den Wechselkurs von Euro zu Dollar am 1. Januar 2022."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.currency_conversion_get_rate:0",
+          "function": {
+            "arguments": "{\"from_currency\": \"EUR\", \"to_currency\": \"USD\", \"date\": \"2022-01-01\"}",
+            "name": "currency_conversion_get_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to know the exchange rate from Euro to Dollar on January 1, 2022.\n\nThe relevant function is `currency_conversion_get_rate`, which takes:\n- from_currency: \"EUR\" (Euro)\n- to_currency: \"USD\" (Dollar)\n- date: \"2022-01-01\" (January 1, 2022)\n\nThe date format in the example says \"Default is the current date\" and shows \"today\" as default. I need to provide the date in a proper format. The tool description says \"The date at which the conversion rate applies. Default is the current date.\" with default \"today\". It's safest to use ISO format \"2022-01-01\" but I should consider what format the API expects. Since the user asked in German \"1. Januar 2022\", I should convert it to a standard date string. ISO 8601 format (YYYY-MM-DD) is the most standard: \"2022-01-01\".\n\nLet me call the function."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

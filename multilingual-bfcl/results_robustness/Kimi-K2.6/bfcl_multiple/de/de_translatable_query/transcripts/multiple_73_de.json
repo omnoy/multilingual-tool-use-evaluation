@@ -1,0 +1,101 @@
+{
+  "id": "multiple_73_de",
+  "source_id": "multiple_73",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 166,
+  "total_output_tokens": 270,
+  "total_latency_s": 2.0058059692382812,
+  "estimated_cost_usd": 0.0012377,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wer war der Begründer des Buddhismus und wo ist er entstanden?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religion.get_origin": {
+        "religion": [
+          "Buddhism"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_get_origin",
+          "arguments": {
+            "religion": "Buddhism"
+          },
+          "id": "functions.religion_get_origin:0"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_get_origin": {
+            "religion": "Buddhism"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 166,
+      "output_tokens": 270,
+      "latency_s": 2.0058059692382812,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wer war der Begründer des Buddhismus und wo ist er entstanden?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.religion_get_origin:0",
+          "function": {
+            "arguments": "{\"religion\": \"Buddhism\"}",
+            "name": "religion_get_origin"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking in German: \"Who was the founder of Buddhism and where did it originate?\"\n\nI need to call the function `religion_get_origin` with the religion parameter set to \"Buddhism\" (or \"Buddhismus\" - but the function likely expects English names based on the parameter description, though it's not explicitly stated. Let me check... The parameter description says \"Name of the religion\" - I'll use \"Buddhism\" as it's the standard English name and most likely to work, though I should consider if the API might expect German. But given the function names are in English, \"Buddhism\" is the safer choice. Actually, looking at the schema, there's no enum or example, so I'll provide \"Buddhism\".\n\nWait, should I also call `religion_get_core_beliefs`? The user specifically asks about the founder and origin, so `religion_get_origin` is sufficient. But maybe providing core beliefs would be extra helpful? The user only asked for founder and origin though, so I'll stick to the relevant function to avoid unnecessary calls.\n\nFunction call:\n{\n  \"religion\": \"Buddhism\"\n}"
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

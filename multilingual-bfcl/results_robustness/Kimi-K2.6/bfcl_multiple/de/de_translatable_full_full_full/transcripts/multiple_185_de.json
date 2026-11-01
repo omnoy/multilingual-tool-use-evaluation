@@ -1,0 +1,248 @@
+{
+  "id": "multiple_185_de",
+  "source_id": "multiple_185",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2659,
+  "total_output_tokens": 1534,
+  "total_latency_s": 9.652448892593384,
+  "estimated_cost_usd": 0.00866205,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde das nächstgelegene Sushi-Restaurant mit Terrasse in Boston."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant_search.find_closest": {
+        "location": [
+          "Boston",
+          "Boston, MA"
+        ],
+        "cuisine": [
+          "Sushi"
+        ],
+        "amenities": [
+          [
+            "Patio"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston, Massachusetts",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston, Massachusetts",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "input_tokens": 357,
+      "output_tokens": 437,
+      "latency_s": 3.3834328651428223,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston, Massachusetts",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston, Massachusetts",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "input_tokens": 840,
+      "output_tokens": 576,
+      "latency_s": 2.8623082637786865,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "cuisine": "Sushi",
+            "location": "Boston",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "functions.restaurant_search_find_closest:2"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "cuisine": "Sushi",
+            "location": "Boston",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1462,
+      "output_tokens": 521,
+      "latency_s": 3.406707763671875,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde das nächstgelegene Sushi-Restaurant mit Terrasse in Boston."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:0",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston, Massachusetts\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user wants to find the closest sushi restaurant with a terrace in Boston, Massachusetts.\n\nLooking at the available functions, `restaurant_search_find_closest` is the appropriate one.\n\nRequired parameters:\n- `cuisine`: \"Sushi\" (English or German is accepted)\n- `location`: \"Boston, Massachusetts\" (the example given in the schema is \"Boston, Massachusetts\", but \"Boston\" might also work. I should probably use \"Boston\" or \"Boston, Massachusetts\". The user said \"Boston\", I'll use \"Boston\" or \"Boston, Massachusetts\". The schema example says \"Boston, Massachusetts\", but German is also accepted theoretically? No, schema says \"Englisch, Deutsch\", but the example specifically gives \"Boston, Massachusetts\". I'll use \"Boston, Massachusetts\" to be safe, or just \"Boston\" should work. Actually, the user said \"Boston\", but the parameter description gives the example \"Boston, Massachusetts\". I'll provide \"Boston, Massachusetts\" to be precise.\n\nOptional parameters:\n- `amenities`: This is an array of strings. The options are \"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\". The user asked for a terrace (\"Terrasse\"). The closest option in the enum is \"Patio\". I will include \"Patio\" in the amenities array.\n\nSo the function call should be:\n{\n  \"cuisine\": \"Sushi\",\n  \"location\": \"Boston, Massachusetts\",\n  \"amenities\": [\"Patio\"]\n}\n\nWait, the user wrote in German. The schema says for cuisine: \"Sprachen: Englisch, Deutsch.\" So \"Sushi\" is fine, it's the same in both. For location: \"Sprachen: Englisch, Deutsch.\" So \"Boston\" is fine.\n\nI will make the function call with the arguments:\n- cuisine: \"Sushi\"\n- location: \"Boston, Massachusetts\"\n- amenities: [\"Patio\"]"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_search_find_closest:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:1",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston, Massachusetts\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. I need to review the parameters.\n\nCould it be that I need to pass location exactly as the user said, i.e., \"Boston\"? Or perhaps the amenities enum values are case-sensitive and I used \"Patio\" which is correct according to the schema.\n\nWait, looking at the schema again:\n```\n\"amenities\": {\"description\": \"Bevorzugte Ausstattungsmerkmale des Restaurants. Der Standardwert ist ein leeres Array.\", \"items\": {\"enum\": [\"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\"], \"type\": \"string\"}, \"type\": \"array\"}\n```\n\nLet me try again with just the required parameters to see if it's an issue with the optional parameter? No, I need to include amenities because the user specifically asked for a terrace.\n\nMaybe the location should just be \"Boston\"? The user said \"in Boston\". The schema example was \"Boston, Massachusetts\". Let me try \"Boston\".\n\nActually, the 400 error could be because the function itself is having issues, but let me try again exactly with the schema.\n\nWait, the tool definition says:\n```\n\"restaurant_search_find_closest\": {\n  \"description\": \"Ermittle das nächstgelegene Sushi-Restaurant anhand bestimmter Kriterien, etwa ob eine Terrasse vorhanden ist.\",\n  \"parameters\": {\n    \"properties\": {\n      \"cuisine\": {\"description\": \"Art der Speisen, zum Beispiel Sushi. Sprachen: Englisch, Deutsch.\", \"type\": \"string\"},\n      \"location\": {\"description\": \"Die Stadt, zum Beispiel Boston, Massachusetts Sprachen: Englisch, Deutsch.\", \"type\": \"string\"},\n      \"amenities\": {\"description\": \"Bevorzugte Ausstattungsmerkmale des Restaurants. Der Standardwert ist ein leeres Array.\", \"items\": {\"enum\": [\"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\"], \"type\": \"string\"}, \"type\": \"array\"}\n    },\n    \"required\": [\"location\", \"cuisine\"]\n  }\n}\n```\n\nLet me try again with \"Boston, Massachusetts\" and amenities [\"Patio\"].\n\nOr maybe \"Patio\" should be lowercase? The enum says exactly \"Patio\", \"Wi-Fi\", etc., capitalized.\n\nAnother thought: maybe the backend doesn't like that location doesn't have a state? But the example says \"Boston, Massachusetts\".\n\nLet me just retry. It might have been a transient error."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "tool_call_id": "functions.restaurant_search_find_closest:1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.restaurant_search_find_closest:2",
+          "function": {
+            "arguments": "{\"cuisine\": \"Sushi\", \"location\": \"Boston\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Okay, it failed again. Let me reconsider the parameters. Maybe the problem is that `amenities` should be optional, but perhaps there's something else wrong.\n\nWait, could it be that `amenities` values are expected in German? The schema says the enum items are [\"Patio\", \"Wi-Fi\", \"Happy Hour\", \"Wheelchair Accessible\"], which are English words. But maybe the API expects \"Terrasse\"? However, the schema explicitly defines the enum values, so I must use one of those.\n\nCould the issue be with the `location`? Maybe the API only accepts German locations? No, \"Boston\" should work.\n\nLet me check if maybe the `location` should just be \"Boston\" without \", Massachusetts\". Or maybe the cuisine should be in German? But \"Sushi\" is the same.\n\nAnother thought: is it possible the 400 error is coming from the function implementation itself (e.g., an issue with the external API it calls), and not my parameter formatting? The message says \"invalid parameters\", which suggests the function implementation rejected the parameters.\n\nLet me try without `amenities` to see if that's the issue. If it works without amenities, then the problem is with amenities. If it still fails, then maybe location or cuisine format is wrong.\n\nActually, the user specifically wants a terrace, so I need to include it. But for debugging purposes:\n\nAlternatively, maybe the `amenities` array needs to be passed differently? But it's standard JSON array.\n\nWait, looking at the function name: `restaurant_search_find_closest`. Maybe the system is checking parameters against some specific format.\n\nCould it be that \"Patio\" should be exactly as written, which I did.\n\nCould it be that `cuisine` must be lowercase? \"Sushi\" vs \"sushi\"? The schema doesn't specify.\n\nCould it be that the location is in German? \"Boston\" is a proper noun so it's the same.\n\nLet me try with `location: \"Boston\"` instead of \"Boston, Massachusetts\".\n\nOr maybe try with `amenities: [\"Terrasse\"]` even though it's not in the enum? No, the schema explicitly restricts it. But maybe the function definition was translated and the actual backend expects German terms despite the schema saying English? The schema is the contract I must follow.\n\nLet me try `location: \"Boston\"` exactly."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

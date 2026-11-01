@@ -1,0 +1,171 @@
+{
+  "id": "multiple_24_he",
+  "source_id": "multiple_24",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K2.6",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1474,
+  "total_output_tokens": 888,
+  "total_latency_s": 6.141890525817871,
+  "estimated_cost_usd": 0.0049523,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו המסלול המהיר ביותר מלונדון לאדינבורו כדי לשחק באליפות השחמט? כמו כן ספק הערכה של המרחק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "route_planner.calculate_route": {
+        "start": [
+          "לונדון"
+        ],
+        "destination": [
+          "אדינבורו"
+        ],
+        "method": [
+          "המהיר ביותר",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          },
+          "id": "functions.route_planner_calculate_route:0"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'route_planner_calculate_route'. Please review the function definition and try again.",
+      "input_tokens": 415,
+      "output_tokens": 593,
+      "latency_s": 3.705050468444824,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "לונדון",
+            "destination": "אדינבורו"
+          },
+          "id": "functions.route_planner_calculate_route:1"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "לונדון",
+            "destination": "אדינבורו"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1059,
+      "output_tokens": 295,
+      "latency_s": 2.436840057373047,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו המסלול המהיר ביותר מלונדון לאדינבורו כדי לשחק באליפות השחמט? כמו כן ספק הערכה של המרחק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.route_planner_calculate_route:0",
+          "function": {
+            "arguments": "{\"start\":\"London\",\"destination\":\"Edinburgh\",\"method\":\"fastest\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The user is asking for the fastest route from London to Edinburgh for a chess championship, and they want an estimate of the distance.\n\nLet me break this down:\n1. Route from London to Edinburgh - fastest method\n2. Chess championship event - they might want details about a chess club too\n\nFor the route, I need to use `route_planner_calculate_route` with:\n- start: \"לונדון\" or \"London\" \n- destination: \"אדינבורו\" or \"Edinburgh\"\n- method: \"fastest\" (default is fastest, but they specifically asked for fastest)\n\nFor chess club details, I could potentially use `chess_club_details_find`, but the user didn't specify a specific chess club name. They mentioned \"אליפות השחמט\" (chess championship) as the event, but not a specific club name. The function requires both name and city. Since I don't know the specific chess club, I probably cannot call this function reliably.\n\nActually, let me re-read. They said \"כדי לשחק באליפות השחמט\" - to play in the chess championship. They might be hinting at an event at a chess club. But without a specific club name, I cannot use the chess club function.\n\nWait, should I just provide the route and mention that I need more details for the chess club? Or should I try to call both? The function requires a name parameter for the chess club. I don't have a specific name.\n\nLet me just call the route planner. The user wants the fastest route, so I'll specify method: \"fastest\" explicitly even though it's the default.\n\nStart: London (or לונדון)\nDestination: Edinburgh (or אדינבורו)\n\nBoth English and Hebrew are acceptable per the parameter descriptions.\n\nActually, looking more carefully - should I try to call chess_club_details_find with some generic name? No, that doesn't make sense. I'll stick with the route planner.\n\nWait, I could call route_planner with London and Edinburgh. Let me do that.\n\nActually, thinking again - the user explicitly asks for the route AND distance estimate. The route planner should ideally provide both. Let me call it.\n\nSince the system says \"Respond with the correct function call exactly as specified in the tool definitions\", I should make the function call.\n\nLet me check if I can call both... I think for chess_club_details_find I really do need a specific club name. The user didn't provide one. So I'll only call route_planner_calculate_route.\n\nParameters:\n- start: \"London\"\n- destination: \"Edinburgh\"\n- method: \"fastest\" (even though it's default, they explicitly requested the fastest)"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'route_planner_calculate_route'. Please review the function definition and try again.",
+      "tool_call_id": "functions.route_planner_calculate_route:0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "functions.route_planner_calculate_route:1",
+          "function": {
+            "arguments": "{\"start\": \"לונדון\", \"destination\": \"אדינבורו\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The function call failed with a 400 Bad Request. Let me check what might be wrong. The parameters seem correct: start, destination, and method are all provided and of the correct types. Unless... maybe the Hebrew text needs to be in Hebrew? The description says \"Languages: English, Hebrew.\" Let me try with Hebrew city names, or maybe there's an issue with the JSON formatting?\n\nWait, actually, looking at the parameter definitions again:\n- start: string, \"The starting point of the journey. Languages: English, Hebrew.\"\n- destination: string, \"The destination of the journey. Languages: English, Hebrew.\"\n- method: enum [\"fastest\", \"shortest\", \"balanced\"], default \"fastest\"\n\nMy JSON looks correct. Maybe I should try without the method parameter since it's default? Or maybe try Hebrew names? Let me try again with Hebrew names. Or perhaps the issue is something else entirely.\n\nActually, let me try with simpler formatting. Maybe the issue is that I passed the method parameter when it's not needed? No, that shouldn't cause a 400.\n\nLet me try with Hebrew text, or just retry. Sometimes 400 errors can happen if the backend has specific validation. Let me try without explicit method since \"fastest\" is default anyway."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

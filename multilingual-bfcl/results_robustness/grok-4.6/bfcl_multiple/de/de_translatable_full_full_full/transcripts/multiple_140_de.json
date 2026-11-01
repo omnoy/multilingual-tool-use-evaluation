@@ -1,0 +1,146 @@
+{
+  "id": "multiple_140_de",
+  "source_id": "multiple_140",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "grok-4.6",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1232,
+  "total_output_tokens": 114,
+  "total_latency_s": 34.589990854263306,
+  "estimated_cost_usd": 0.003148,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde die Klagen, die im Jahr 2020 gegen das Unternehmen Gugel in Kalifornien eingereicht wurden."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuits_search": {
+        "company_name": [
+          "Gugel"
+        ],
+        "location": [
+          "Kalifornien",
+          "Kalifornien"
+        ],
+        "year": [
+          2020
+        ],
+        "case_type": [
+          "",
+          "alle"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "<function_call>\n<name>lawsuits_search</name>\n<parameter>\n<key>company_name</key>\n<value>Gugel</value>\n</parameter>\n<parameter>\n<key>location</key>\n<value>Kalifornien</value>\n</parameter>\n<parameter>\n<key>year</key>\n<value>2020</value>\n</parameter>\n</function_call>"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 559,
+      "output_tokens": 85,
+      "latency_s": 16.867849349975586,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuits_search",
+          "arguments": {
+            "company_name": "Gugel",
+            "location": "Kalifornien",
+            "year": 2020
+          },
+          "id": "call-90ca4487-36c0-4f48-bfc1-fac2126fadde-0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuits_search": {
+            "company_name": "Gugel",
+            "location": "Kalifornien",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 673,
+      "output_tokens": 29,
+      "latency_s": 17.72214150428772,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde die Klagen, die im Jahr 2020 gegen das Unternehmen Gugel in Kalifornien eingereicht wurden."
+    },
+    {
+      "content": "<function_call>\n<name>lawsuits_search</name>\n<parameter>\n<key>company_name</key>\n<value>Gugel</value>\n</parameter>\n<parameter>\n<key>location</key>\n<value>Kalifornien</value>\n</parameter>\n<parameter>\n<key>year</key>\n<value>2020</value>\n</parameter>\n</function_call>",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-90ca4487-36c0-4f48-bfc1-fac2126fadde-0",
+          "function": {
+            "arguments": "{\"company_name\":\"Gugel\",\"location\":\"Kalifornien\",\"year\":2020}",
+            "name": "lawsuits_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

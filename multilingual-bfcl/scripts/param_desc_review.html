@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parameter Description Review</title>
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --border: #d9dde3; --text: #1d2330; --muted: #6b7380;
+  --accent: #2f6fed; --accent-weak: #e7eefd; --add: #1f8a4c; --add-bg: #e6f5ec; --del: #c23b3b; --del-bg: #fbeaea;
+  --warn: #a96500; --warn-bg: #fff4e0; --chip: #eef0f4; --mark: #ffe08a; --mark-text: #3a2a00;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#14171c; --panel:#1d2128; --border:#343a45; --text:#e3e6ec; --muted:#98a0ad; --accent:#6c9cff; --accent-weak:#24304a;
+    --add:#5fd08f; --add-bg:#173326; --del:#ff8080; --del-bg:#3a1d1f; --warn:#f0b35a; --warn-bg:#3a2d15; --chip:#2a2f38; --mark:#7a5a10; --mark-text:#fff3d0; }
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+button, select, input, textarea { font:inherit; color:inherit; }
+button { background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:5px 11px; cursor:pointer; }
+button:hover { border-color:var(--accent); }
+button:disabled { opacity:.45; cursor:default; }
+button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+button.small { font-size:12px; padding:2px 8px; }
+select, input[type=text], textarea { background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:5px 8px; }
+textarea { width:100%; resize:vertical; min-height:34px; font-size:13px; }
+header { position:sticky; top:0; z-index:5; background:var(--panel); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+header .title { font-weight:600; margin-right:6px; }
+.filters { display:flex; flex-wrap:wrap; gap:12px; align-items:center; width:100%; font-size:13px; }
+.filters label { display:flex; gap:5px; align-items:center; }
+#search, #keywords { width:200px; }
+.stats { margin-left:auto; color:var(--muted); font-variant-numeric:tabular-nums; font-size:13px; }
+#saveStatus { font-size:12px; color:var(--muted); width:100%; text-align:right; }
+#saveStatus.err { color:var(--del); }
+main { max-width:1000px; margin:0 auto; padding:16px 16px 90px; }
+.welcome, .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px 18px; margin-bottom:14px; }
+.welcome { max-width:720px; margin:40px auto; }
+code { background:var(--chip); padding:1px 5px; border-radius:4px; font-family: ui-monospace, Consolas, monospace; }
+.fn-head { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; }
+.fn-title { font-family: ui-monospace, Consolas, monospace; font-weight:600; font-size:18px; word-break:break-all; }
+.tag { font-size:12px; padding:2px 8px; border-radius:10px; background:var(--chip); color:var(--muted); }
+.tag.ok { background:var(--add-bg); color:var(--add); }
+.tag.warn { background:var(--warn-bg); color:var(--warn); }
+.fn-desc { color:var(--muted); margin:6px 0 0; }
+.fn-desc li { margin:2px 0; }
+details.uses { margin-top:8px; font-size:13px; }
+details.uses summary { cursor:pointer; color:var(--muted); }
+details.uses table { border-collapse:collapse; width:100%; margin-top:6px; }
+details.uses td { border-top:1px solid var(--border); padding:4px 6px; vertical-align:top; }
+details.uses td:first-child { font-family: ui-monospace, Consolas, monospace; white-space:nowrap; width:1%; }
+.gt { color:var(--add); font-size:11px; white-space:nowrap; }
+.box { background:var(--panel); border:1px solid var(--border); border-left:4px solid var(--border); border-radius:8px; padding:9px 12px; margin-bottom:8px; }
+.box.flag { border-left-color:var(--mark); }
+.box.changed { border-left-color:var(--warn); }
+.box.changed textarea { border-color:var(--warn); background:var(--warn-bg); }
+.box-head { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:5px; }
+.pname { font-family: ui-monospace, Consolas, monospace; font-weight:600; }
+.ptype, .usage { font-size:12px; color:var(--muted); }
+.req { font-size:11px; color:var(--warn); }
+.variant { font-size:11px; color:var(--del); }
+.spacer { flex:1; }
+.orig { font-size:12px; color:var(--muted); margin-top:4px; white-space:pre-wrap; }
+.orig b { font-weight:600; }
+mark { background:var(--mark); color:var(--mark-text); border-radius:3px; padding:0 1px; }
+.dflt { display:flex; gap:8px; align-items:center; font-size:12px; margin-top:6px; }
+.dflt code { font-size:12px; }
+.dflt.removed code { text-decoration:line-through; color:var(--del); background:var(--del-bg); }
+.dflt.removed .lbl { color:var(--del); }
+.noparams { color:var(--muted); font-style:italic; }
+nav.bottom { position:fixed; left:0; right:0; bottom:0; background:var(--panel); border-top:1px solid var(--border); padding:10px 16px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; }
+#jump { max-width:360px; }
+nav.bottom label { display:flex; gap:5px; align-items:center; }
+.kbd { font-size:11px; color:var(--muted); }
+.muted { color:var(--muted); }
+[hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<header>
+  <span class="title">Param Description Review</span>
+  <button id="openBtn" class="primary">Open data folder…</button>
+  <button id="reopenBtn" hidden></button>
+  <select id="fileSelect" hidden></select>
+  <span class="stats" id="stats"></span>
+  <div class="filters" id="filters" hidden>
+    <label><input type="checkbox" id="onlyFlagged"> Only highlighted</label>
+    <label><input type="checkbox" id="onlyDefaults"> Only with defaults</label>
+    <label><input type="checkbox" id="onlyChanged"> Only edited</label>
+    <label><input type="checkbox" id="onlyUnreviewed"> Only unreviewed</label>
+    <label>Highlight words <input type="text" id="keywords" value="example, i.e., default, e.g." title="Comma-separated, case-insensitive"></label>
+    <label>Search <input type="text" id="search" placeholder="function, param, text…"></label>
+  </div>
+  <div id="saveStatus"></div>
+</header>
+
+<main>
+  <div class="welcome" id="welcome">
+    <h3>Getting started</h3>
+    <p>Click <b>Open data folder…</b> and choose <code>multilingual-bfcl/data</code> (grant edit access when asked).
+      The page lists every English <code>en/*.jsonl</code> under <code>data/benchmarks</code>, defaulting to
+      <code>bfcl_multiple/en/en_translatable.jsonl</code>.</p>
+    <p>Every function offered anywhere in the benchmark (ground-truth and distractor functions alike) is collected and
+      de-duplicated by name; each unique function gets its own page. Edit any parameter description, or tick
+      <b>Remove default</b>. Parameters whose description contains a highlight word get a yellow edge.
+      If the same function name has different descriptions for a parameter in different entries, each variant gets its own box.</p>
+    <p>Every change is saved to <code>data/param_desc_reviews/&lt;benchmark&gt;/&lt;file&gt;.param_desc.csv</code>,
+      one row per function × parameter × original description. An existing CSV is loaded on open, so you can resume.</p>
+    <p class="muted">Requires Chrome or Edge (File System Access API).</p>
+  </div>
+  <div id="page"></div>
+</main>
+
+<nav class="bottom" id="nav" hidden>
+  <button id="prevBtn">← Prev</button>
+  <select id="jump"></select>
+  <button id="nextBtn" class="primary">Next →</button>
+  <button id="nextUnrevBtn">Next unreviewed ⇥</button>
+  <label><input type="checkbox" id="reviewedCb"> Reviewed</label>
+  <span class="kbd">Alt+← / Alt+→ to move</span>
+</nav>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const el = (tag, attrs = {}, ...kids) => {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, "");
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(String(k)));
+  return e;
+};
+const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const uniq = a => [...new Set(a)];
+
+// ---------- IndexedDB (remember folder handle) ----------
+function idb() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open("param-desc-review", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("kv");
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  });
+}
+async function idbGet(k) { try { const db = await idb(); return await new Promise(r => { const q = db.transaction("kv").objectStore("kv").get(k); q.onsuccess = () => r(q.result); q.onerror = () => r(undefined); }); } catch { return undefined; } }
+async function idbSet(k, v) { try { const db = await idb(); db.transaction("kv", "readwrite").objectStore("kv").put(v, k); } catch {} }
+
+// ---------- CSV ----------
+const CSV_COLS = ["function", "param", "type", "required", "flagged", "n_entries", "entry_ids", "original_description", "edited_description",
+  "description_changed", "has_default", "default_value", "remove_default", "function_reviewed", "updated_at"];
+function csvCell(v) { const s = v == null ? "" : String(v); return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+function toCSV(rows) { return [CSV_COLS.join(","), ...rows.map(r => CSV_COLS.map(c => csvCell(r[c])).join(","))].join("\r\n") + "\r\n"; }
+function parseCSV(text) {
+  text = text.replace(/^﻿/, "");
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true;
+    else if (c === ",") { row.push(cell); cell = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
+    else cell += c;
+  }
+  if (cell !== "" || row.length) { row.push(cell); rows.push(row); }
+  const head = rows.shift() || [];
+  return rows.filter(r => r.length > 1).map(r => Object.fromEntries(head.map((h, i) => [h, r[i] ?? ""])));
+}
+
+// ---------- state ----------
+let root = null;      // data/ folder handle
+let files = [];       // English jsonl files [{path, name, handle}]
+let cur = null;       // {file, funcs, visible: [func], pos}
+// func:  {name, descs: [string], uses: [{id, query, isGT}], params: [group], reviewed, reviewedAt}
+// group: {key, fn, param, types, requiredCount, orig, text, defaults: [json], hasDefault, removeDefault, ids: [id], updatedAt}
+
+function setStatus(msg, err) { const s = $("saveStatus"); s.textContent = msg; s.classList.toggle("err", !!err); }
+
+async function scanDir(dir, prefix, depth) {
+  const out = [];
+  if (depth > 4) return out;
+  for await (const [name, h] of dir.entries()) {
+    if (h.kind === "directory") {
+      if (/^(backups?|old|\.)/i.test(name)) continue;
+      out.push(...await scanDir(h, prefix + name + "/", depth + 1));
+    } else if (name.endsWith(".jsonl") && /(^|\/)en\/$/.test(prefix)) out.push({ path: prefix + name, name, handle: h });
+  }
+  return out;
+}
+const benchOf = f => f.path.includes("/") ? f.path.split("/")[0] : "";
+const csvName = f => f.name.replace(/\.jsonl$/, "") + ".param_desc.csv";
+const csvRel = f => "param_desc_reviews/" + (benchOf(f) ? benchOf(f) + "/" : "") + csvName(f);
+async function csvDir(f, create) {
+  let d = await root.getDirectoryHandle("param_desc_reviews", { create });
+  if (benchOf(f)) d = await d.getDirectoryHandle(benchOf(f), { create });
+  return d;
+}
+
+async function useRoot(handle) {
+  let bench;
+  try { bench = await handle.getDirectoryHandle("benchmarks"); }
+  catch { setStatus(`“${handle.name}” has no benchmarks/ subfolder — please open the multilingual-bfcl/data folder.`, true); return; }
+  root = handle;
+  files = (await scanDir(bench, "", 0)).sort((a, b) => a.path.localeCompare(b.path));
+  if (!files.length) { setStatus("No en/*.jsonl files found under data/benchmarks.", true); return; }
+  const sel = $("fileSelect"); sel.innerHTML = "";
+  for (const f of files) sel.append(el("option", { value: f.path }, f.path));
+  sel.hidden = false; $("reopenBtn").hidden = true; $("openBtn").textContent = "Change folder…";
+  await idbSet("root", handle);
+  const last = await idbGet("lastFile");
+  const start = files.find(f => f.path === last) || files.find(f => f.path === "bfcl_multiple/en/en_translatable.jsonl") || files[0];
+  sel.value = start.path;
+  await loadFile(start);
+}
+
+async function readJsonl(handle) {
+  const text = await (await handle.getFile()).text();
+  const out = [], bad = [];
+  text.split(/\r?\n/).forEach((line, i) => {
+    if (!line.trim()) return;
+    try { out.push(JSON.parse(line)); } catch { bad.push(i + 1); }
+  });
+  return { entries: out, bad };
+}
+
+const gkey = (fn, param, orig) => `${fn}\u0001${param}\u0001${orig}`;
+
+function collectFuncs(entries) {
+  const byName = new Map();
+  for (const e of entries) {
+    const msgs = (e.messages && e.messages[0]) || [];
+    const query = msgs.filter(m => m.role === "user").map(m => m.content).join(" ⏎ ");
+    const gtNames = new Set((e.ground_truth || []).flatMap(c => Object.keys(c || {})));
+    for (const f of e.function || []) {
+      let fn = byName.get(f.name);
+      if (!fn) byName.set(f.name, fn = { name: f.name, descs: [], uses: [], groups: new Map(), reviewed: false, reviewedAt: "" });
+      if (!fn.descs.includes(f.description || "")) fn.descs.push(f.description || "");
+      if (!fn.uses.some(u => u.id === e.id)) fn.uses.push({ id: e.id, query, isGT: gtNames.has(f.name) });
+      const walk = (props, required, prefix) => {
+        for (const [p, s] of Object.entries(props || {})) {
+          if (!s || typeof s !== "object") continue;
+          const param = prefix + p, orig = s.description || "", k = gkey(f.name, param, orig);
+          let g = fn.groups.get(k);
+          if (!g) fn.groups.set(k, g = { key: k, fn: f.name, param, types: [], requiredCount: 0, orig, text: orig,
+            defaults: [], hasDefault: false, removeDefault: false, ids: [], updatedAt: "" });
+          if (!g.ids.includes(e.id)) g.ids.push(e.id);
+          if (s.type && !g.types.includes(s.type)) g.types.push(s.type);
+          if ((required || []).includes(p)) g.requiredCount++;
+          if (Object.prototype.hasOwnProperty.call(s, "default")) {
+            g.hasDefault = true;
+            const dv = JSON.stringify(s.default);
+            if (!g.defaults.includes(dv)) g.defaults.push(dv);
+          }
+          if (s.properties) walk(s.properties, s.required, param + ".");
+          if (s.items && typeof s.items === "object" && s.items.properties) walk(s.items.properties, s.items.required, param + "[].");
+        }
+      };
+      walk(f.parameters && f.parameters.properties, f.parameters && f.parameters.required, "");
+    }
+  }
+  const funcs = [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
+  for (const fn of funcs) {
+    fn.params = [...fn.groups.values()];  // insertion order = first-seen parameter order
+    const variants = new Map();
+    for (const g of fn.params) variants.set(g.param, (variants.get(g.param) || 0) + 1);
+    for (const g of fn.params) g.nVariants = variants.get(g.param);
+    fn.params.forEach(g => { g.variantNo = fn.params.filter(x => x.param === g.param).indexOf(g) + 1; });
+    delete fn.groups;
+  }
+  return funcs;
+}
+
+async function loadFile(f) {
+  setStatus("Loading " + f.path + "…");
+  const { entries, bad } = await readJsonl(f.handle);
+  const funcs = collectFuncs(entries);
+  let resumed = 0;
+  try {
+    const fh = await (await csvDir(f, false)).getFileHandle(csvName(f));
+    const groups = new Map(funcs.flatMap(fn => fn.params.map(g => [g.key, g])));
+    const fnByName = new Map(funcs.map(fn => [fn.name, fn]));
+    for (const r of parseCSV(await (await fh.getFile()).text())) {
+      // Also accepts the older per-entry CSV (same function/param/original_description columns).
+      const g = groups.get(gkey(r.function, r.param, r.original_description));
+      if (g) {
+        if (r.description_changed === "true" && g.text === g.orig) { g.text = r.edited_description; resumed++; }
+        if (r.remove_default === "true" && g.hasDefault && !g.removeDefault) { g.removeDefault = true; resumed++; }
+        if (r.updated_at > g.updatedAt) g.updatedAt = r.updated_at;
+      }
+      const fn = fnByName.get(r.function);
+      if (fn && r.function_reviewed === "true") fn.reviewed = true;
+    }
+  } catch { /* no CSV yet */ }
+  cur = { file: f, funcs, visible: funcs, pos: 0 };
+  await idbSet("lastFile", f.path);
+  $("welcome").hidden = true; $("filters").hidden = false; $("nav").hidden = false;
+  const lastFn = await idbGet("lastFn:" + f.path);
+  buildKw();
+  applyFilters(lastFn);
+  setStatus(`Loaded ${entries.length} entries → ${funcs.length} unique functions, ${funcs.reduce((n, fn) => n + fn.params.length, 0)} parameter descriptions from ${f.path}`
+    + (resumed ? ` · resumed ${resumed} edit(s) from data/${csvRel(f)}` : "")
+    + (bad.length ? ` · ⚠ ${bad.length} unparseable line(s): ${bad.slice(0, 10).join(", ")}` : ""), bad.length > 0);
+}
+
+// ---------- highlighting ----------
+let kwRe = null;
+function buildKw() {
+  const words = $("keywords").value.split(",").map(s => s.trim()).filter(Boolean);
+  kwRe = words.length ? new RegExp("(" + words.map(escapeRe).join("|") + ")", "gi") : null;
+}
+const hasKw = s => !!kwRe && (kwRe.lastIndex = 0, kwRe.test(s));
+const isFlagged = g => hasKw(g.orig) || hasKw(g.text);
+function highlighted(text) {
+  const frag = document.createDocumentFragment();
+  if (!kwRe) { frag.append(text); return frag; }
+  let last = 0, m; kwRe.lastIndex = 0;
+  while ((m = kwRe.exec(text))) {
+    frag.append(text.slice(last, m.index), el("mark", {}, m[0]));
+    last = m.index + m[0].length;
+    if (!m[0].length) kwRe.lastIndex++;
+  }
+  frag.append(text.slice(last));
+  return frag;
+}
+
+// ---------- filtering & navigation ----------
+const changed = g => g.text !== g.orig || g.removeDefault;
+const fnFlagged = fn => fn.params.some(isFlagged);
+const fnChanged = fn => fn.params.some(changed);
+
+function applyFilters(keepName) {
+  if (!cur) return;
+  const curName = keepName || (cur.visible[cur.pos] && cur.visible[cur.pos].name);
+  const onlyFlag = $("onlyFlagged").checked, onlyDef = $("onlyDefaults").checked, onlyCh = $("onlyChanged").checked, onlyUnrev = $("onlyUnreviewed").checked;
+  const q = $("search").value.trim().toLowerCase();
+  cur.visible = cur.funcs.filter(fn => (!onlyFlag || fnFlagged(fn)) && (!onlyDef || fn.params.some(g => g.hasDefault))
+    && (!onlyCh || fnChanged(fn)) && (!onlyUnrev || !fn.reviewed)
+    && (!q || fn.name.toLowerCase().includes(q) || fn.descs.some(d => d.toLowerCase().includes(q))
+      || fn.params.some(g => [g.param, g.orig, g.text].some(s => s.toLowerCase().includes(q)))));
+  const i = cur.visible.findIndex(fn => fn.name === curName);
+  cur.pos = i >= 0 ? i : 0;
+  buildJump();
+  renderPage();
+}
+
+const jumpLabel = fn => `${fn.reviewed ? "✓" : "·"} ${fnChanged(fn) ? "✎" : " "} ${fnFlagged(fn) ? "●" : " "} ${fn.name}`;
+function buildJump() {
+  const sel = $("jump"); sel.innerHTML = "";
+  cur.visible.forEach((fn, i) => sel.append(el("option", { value: i }, jumpLabel(fn))));
+  sel.value = cur.pos;
+}
+function refreshJumpOption() {
+  const opt = $("jump").options[cur.pos];
+  if (opt) opt.textContent = jumpLabel(cur.visible[cur.pos]);
+}
+
+function go(i) {
+  if (!cur || i < 0 || i >= cur.visible.length) return;
+  flushSave();
+  cur.pos = i; $("jump").value = i;
+  renderPage();
+  window.scrollTo(0, 0);
+}
+
+// ---------- rendering ----------
+function renderPage() {
+  const page = $("page"); page.innerHTML = "";
+  const fn = cur.visible[cur.pos];
+  $("prevBtn").disabled = !fn || cur.pos === 0;
+  $("nextBtn").disabled = !fn || cur.pos >= cur.visible.length - 1;
+  if (!fn) { page.append(el("div", { class: "card muted" }, "No functions match the current filters.")); $("reviewedCb").checked = false; updateStats(); return; }
+  idbSet("lastFn:" + cur.file.path, fn.name);
+  $("reviewedCb").checked = fn.reviewed;
+
+  const nGT = fn.uses.filter(u => u.isGT).length;
+  const head = el("div", { class: "card" },
+    el("div", { class: "fn-head" },
+      el("span", { class: "fn-title" }, fn.name),
+      el("span", { class: "tag" }, `${cur.pos + 1} / ${cur.visible.length}`),
+      el("span", { class: "tag" }, `in ${fn.uses.length} entr${fn.uses.length === 1 ? "y" : "ies"}`),
+      el("span", { class: "tag" + (nGT ? " ok" : "") }, nGT ? `ground truth in ${nGT}` : "distractor only"),
+      fn.descs.length > 1 ? el("span", { class: "tag warn" }, `${fn.descs.length} description variants`) : null,
+      fn.reviewed ? el("span", { class: "tag ok" }, "reviewed") : null),
+    fn.descs.length > 1 ? el("ul", { class: "fn-desc" }, fn.descs.map(d => el("li", {}, d))) : el("p", { class: "fn-desc" }, fn.descs[0]),
+    el("details", { class: "uses" }, el("summary", {}, "Entries using this function"),
+      el("table", {}, fn.uses.map(u => el("tr", {}, el("td", {}, u.id), el("td", {}, u.query), el("td", {}, u.isGT ? el("span", { class: "gt" }, "ground truth") : ""))))));
+  page.append(head);
+  if (!fn.params.length) page.append(el("div", { class: "card noparams" }, "This function has no parameters."));
+  for (const g of fn.params) page.append(buildBox(g, fn));
+  updateStats();
+}
+
+function buildBox(g, fn) {
+  const ta = el("textarea", { rows: Math.min(8, Math.max(1, Math.ceil(g.text.length / 100))) });
+  ta.value = g.text;
+  ta.addEventListener("input", () => { g.text = ta.value; touched(g); scheduleSave(); });
+  ta.addEventListener("blur", () => flushSave());
+  const orig = el("div", { class: "orig" });
+  const revert = el("button", { class: "small", title: "Restore the original description and default" }, "Revert");
+  revert.addEventListener("click", () => { g.text = g.orig; ta.value = g.orig; g.removeDefault = false; touched(g); flushSave(); });
+  const n = fn.uses.length;
+  const box = el("div", { class: "box" },
+    el("div", { class: "box-head" },
+      el("span", { class: "pname" }, g.param), el("span", { class: "ptype" }, g.types.join(" | ")),
+      g.requiredCount ? el("span", { class: "req" }, g.requiredCount === g.ids.length ? "required" : `required in ${g.requiredCount}/${g.ids.length}`) : null,
+      g.nVariants > 1 ? el("span", { class: "variant" }, `variant ${g.variantNo}/${g.nVariants}`) : null,
+      el("span", { class: "spacer" }),
+      g.ids.length < n ? el("span", { class: "usage", title: g.ids.join(", ") }, `in ${g.ids.length} of ${n} entries`) : null,
+      revert),
+    ta, orig);
+  if (g.hasDefault) {
+    const cb = el("input", { type: "checkbox" }); cb.checked = g.removeDefault;
+    cb.addEventListener("change", () => { g.removeDefault = cb.checked; touched(g); flushSave(); });
+    box.append(el("label", { class: "dflt" }, cb, el("span", { class: "lbl" }, "Remove default"), g.defaults.map(d => el("code", {}, d))));
+  }
+  g.box = box; g.parts = { orig, revert };
+  refreshBox(g);
+  return box;
+}
+
+function refreshBox(g) {
+  const { orig, revert } = g.parts, box = g.box;
+  box.classList.toggle("changed", changed(g));
+  box.classList.toggle("flag", isFlagged(g));
+  revert.hidden = !changed(g);
+  orig.innerHTML = "";
+  if (g.text !== g.orig) orig.append(el("b", {}, "Original: "), highlighted(g.orig || "(empty)"));
+  else if (hasKw(g.orig)) orig.append(highlighted(g.orig));
+  const d = box.querySelector(".dflt");
+  if (d) { d.classList.toggle("removed", g.removeDefault); d.querySelector("input").checked = g.removeDefault; }
+}
+
+function touched(g) { dirty = true; g.updatedAt = new Date().toISOString(); refreshBox(g); refreshJumpOption(); updateStats(); }
+
+function updateStats() {
+  if (!cur) return;
+  const all = cur.funcs.flatMap(fn => fn.params);
+  $("stats").textContent = `${cur.funcs.filter(fn => fn.reviewed).length}/${cur.funcs.length} functions reviewed · `
+    + `${cur.funcs.filter(fnFlagged).length} with highlights · ${all.filter(g => g.text !== g.orig).length} descriptions edited · `
+    + `${all.filter(g => g.removeDefault).length}/${all.filter(g => g.hasDefault).length} defaults removed`;
+}
+
+// ---------- saving ----------
+function buildRows() {
+  return cur.funcs.flatMap(fn => fn.params.map(g => ({
+    function: g.fn, param: g.param, type: g.types.join("|"), required: g.requiredCount ? "true" : "false",
+    flagged: isFlagged(g) ? "true" : "false", n_entries: g.ids.length, entry_ids: g.ids.join(" "),
+    original_description: g.orig, edited_description: g.text, description_changed: g.text !== g.orig ? "true" : "false",
+    has_default: g.hasDefault ? "true" : "false", default_value: g.defaults.join(" | "),
+    remove_default: g.removeDefault ? "true" : "false", function_reviewed: fn.reviewed ? "true" : "false",
+    updated_at: [g.updatedAt, fn.reviewedAt].sort().pop(),
+  })));
+}
+let saveTimer = null, saving = Promise.resolve(), dirty = false;
+function scheduleSave() { dirty = true; clearTimeout(saveTimer); saveTimer = setTimeout(flushSave, 400); setStatus("Unsaved changes…"); }
+function flushSave() {
+  clearTimeout(saveTimer);
+  if (!dirty) return saving;
+  // Serialize writes so two createWritable() calls never overlap.
+  saving = saving.then(async () => {
+    if (!dirty || !cur) return;
+    dirty = false;
+    const f = cur.file;
+    try {
+      const fh = await (await csvDir(f, true)).getFileHandle(csvName(f), { create: true });
+      const w = await fh.createWritable();
+      await w.write("﻿" + toCSV(buildRows()));
+      await w.close();
+      setStatus(`Saved → data/${csvRel(f)} at ${new Date().toLocaleTimeString()}`);
+    } catch (err) { dirty = true; setStatus("Save failed: " + err.message, true); }
+  });
+  return saving;
+}
+const markDirtyAndSave = () => { dirty = true; return flushSave(); };
+
+// ---------- wiring ----------
+$("openBtn").addEventListener("click", async () => {
+  try { await flushSave(); await useRoot(await window.showDirectoryPicker({ id: "param-desc-review", mode: "readwrite" })); }
+  catch (err) { if (err.name !== "AbortError") setStatus(err.message, true); }
+});
+$("reopenBtn").addEventListener("click", async () => {
+  const h = await idbGet("root");
+  if (!h) return;
+  if ((await h.requestPermission({ mode: "readwrite" })) === "granted") await useRoot(h);
+  else setStatus("Permission denied — use Open data folder…", true);
+});
+$("fileSelect").addEventListener("change", async ev => {
+  await flushSave();
+  const f = files.find(x => x.path === ev.target.value);
+  if (f) await loadFile(f);
+});
+$("prevBtn").addEventListener("click", () => go(cur.pos - 1));
+$("nextBtn").addEventListener("click", () => go(cur.pos + 1));
+$("jump").addEventListener("change", ev => go(+ev.target.value));
+$("nextUnrevBtn").addEventListener("click", () => {
+  const n = cur.visible.length;
+  for (let k = 1; k <= n; k++) { const i = (cur.pos + k) % n; if (!cur.visible[i].reviewed) return go(i); }
+  alert("Every function in the current view is marked reviewed.");
+});
+$("reviewedCb").addEventListener("change", ev => {
+  const fn = cur.visible[cur.pos]; if (!fn) return;
+  fn.reviewed = ev.target.checked; fn.reviewedAt = new Date().toISOString();
+  refreshJumpOption(); updateStats(); markDirtyAndSave();
+  const tagSpot = $("page").querySelector(".fn-head");
+  const t = tagSpot && [...tagSpot.querySelectorAll(".tag.ok")].find(x => x.textContent === "reviewed");
+  if (fn.reviewed && !t && tagSpot) tagSpot.append(el("span", { class: "tag ok" }, "reviewed"));
+  if (!fn.reviewed && t) t.remove();
+});
+for (const id of ["onlyFlagged", "onlyDefaults", "onlyChanged", "onlyUnreviewed"]) $(id).addEventListener("change", () => applyFilters());
+let searchTimer = null;
+$("search").addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => applyFilters(), 200); });
+$("keywords").addEventListener("change", () => { if (!cur) return; buildKw(); applyFilters(); markDirtyAndSave(); });
+document.addEventListener("keydown", ev => {
+  if (!cur || !ev.altKey || (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight")) return;
+  ev.preventDefault();
+  go(cur.pos + (ev.key === "ArrowRight" ? 1 : -1));
+});
+window.addEventListener("beforeunload", ev => { if (dirty) { flushSave(); ev.preventDefault(); ev.returnValue = ""; } });
+
+(async () => {
+  const h = await idbGet("root");
+  if (h && h.name) { const b = $("reopenBtn"); b.textContent = `Reopen “${h.name}”`; b.hidden = false; }
+})();
+window.__paramReview = { useRoot, flushSave, go, state: () => cur };
+</script>
+</body>
+</html>

@@ -17,7 +17,8 @@ LocalizationLevel controls scope:
   - QUERY : Only the user-facing query is translated. Ground-truth parameter
             values are left unchanged. Function definitions stay in English.
   - FULL  : The query AND the *textual* ground-truth parameter values are
-            translated. Function names, parameter names, descriptions, enum
+            translated, including strings nested inside array or object
+            candidates (e.g. [["tomatoes", "lettuce"]] or {"industries": [...]}). Function names, parameter names, descriptions, enum
             values, numbers, dates, identifiers, etc. all stay unchanged — only
             natural-language argument values are localized.
 """
@@ -29,7 +30,7 @@ import json
 import re
 import sys
 from enum import Enum
-from typing import Any
+from typing import Any, Callable
 
 from multilingual_bfcl.localization.locale_config import Locale
 
@@ -180,32 +181,112 @@ def collect_query_texts(question: list[list[dict[str, str]]]) -> list[str]:
     ]
 
 
-def collect_textual_values(ground_truth: list[dict]) -> list[str]:
-    """Ordered list of ground-truth argument values worth translating.
-
-    Ground-truth format: [{func_name: {param: [acceptable_value, ...]}}].
-    Only non-empty natural-language strings are collected; the order here is the
-    exact order in which apply_translation() puts the translations back.
-    """
-    values: list[str] = []
-    for call in ground_truth:
-        for params in call.values():
-            for value_list in params.values():
-                for v in value_list:
-                    if is_translatable_string(v):
-                        values.append(v)
-    return values
-
-
-def _param_descriptions(functions: list[dict[str, Any]]) -> dict[tuple[str, str], str]:
-    """Map (function_name, param_name) -> parameter description for context lookup."""
-    out: dict[tuple[str, str], str] = {}
+def _param_schemas(functions: list[dict[str, Any]]) -> dict[tuple[str, str], dict]:
+    """Map (function_name, param_name) -> parameter schema for context lookup."""
+    out: dict[tuple[str, str], dict] = {}
     for func in functions:
         name = func.get("name", "")
         props = func.get("parameters", {}).get("properties", {})
         for param, pdef in props.items():
-            out[(name, param)] = pdef.get("description", "")
+            if isinstance(pdef, dict):
+                out[(name, param)] = pdef
     return out
+
+
+# A visitor receives (param_label, description, string) for every translatable
+# string and returns its replacement.
+Visitor = Callable[[str, str, str], str]
+
+
+def walk_value(value: Any, schema: dict, label: str, desc: str, visit: Visitor) -> Any:
+    """Recursively rebuild `value`, passing every translatable string through `visit`.
+
+    Handles the nested ground-truth shapes as well as plain strings:
+      - array candidates:   ["Sam", "Alice", "Jack"]          (items schema)
+      - nested params:      {"min": [300000], "max": [400000]} (properties schema)
+      - lists of objects:   [{"field": ["age"], ...}, ...]
+    Dict KEYS are never translated. Traversal order is deterministic (list order,
+    then dict insertion order), so collecting and applying line up positionally.
+    Enum-constrained values (the schema, or an array's items schema, has "enum")
+    are never visited: the model must call the function with the English value.
+    """
+    if isinstance(value, str):
+        if "enum" in schema or not is_translatable_string(value):
+            return value
+        return visit(label, desc, value)
+    if isinstance(value, list):
+        items = schema.get("items")
+        child = items if (schema.get("type") in ("array", "list", "tuple")
+                          and isinstance(items, dict)) else schema
+        # Array items: the parent's description ("Items to buy") is more telling than
+        # the generic items one ("an item"), so it wins when present.
+        child_desc = desc or child.get("description", "")
+        return [walk_value(v, child, label, child_desc, visit) for v in value]
+    if isinstance(value, dict):
+        props = schema.get("properties")
+        if not isinstance(props, dict):
+            items = schema.get("items")
+            props = items.get("properties") if isinstance(items, dict) else None
+        props = props if isinstance(props, dict) else {}
+        out = {}
+        for key, sub in value.items():
+            sub_schema = props.get(key) if isinstance(props.get(key), dict) else {}
+            sub_desc = sub_schema.get("description") or desc
+            out[key] = walk_value(sub, sub_schema, f"{label}.{key}", sub_desc, visit)
+        return out
+    return value
+
+
+def walk_ground_truth(
+    ground_truth: list[dict],
+    visit: Visitor,
+    functions: list[dict[str, Any]] | None = None,
+) -> list[dict]:
+    """Return a copy of `ground_truth` with every translatable string (at any
+    nesting depth) replaced by visit(param_label, description, string).
+
+    Ground-truth format: [{func_name: {param: [acceptable_value, ...]}}], where an
+    acceptable value may itself be a string, a list, or a dict of nested params.
+    """
+    schemas = _param_schemas(functions or [])
+    new_gt: list[dict] = []
+    for call in ground_truth:
+        new_call = {}
+        for func_name, params in call.items():
+            if not isinstance(params, dict):
+                new_call[func_name] = params
+                continue
+            new_params = {}
+            for param, value_list in params.items():
+                schema = schemas.get((func_name, param), {})
+                desc = schema.get("description", "")
+                if isinstance(value_list, list):
+                    # Top level is the list of acceptable candidates — each candidate
+                    # has the param's own schema (not its items schema).
+                    new_params[param] = [
+                        walk_value(v, schema, param, desc, visit) for v in value_list
+                    ]
+                else:
+                    new_params[param] = walk_value(value_list, schema, param, desc, visit)
+            new_call[func_name] = new_params
+        new_gt.append(new_call)
+    return new_gt
+
+
+def collect_textual_values(ground_truth: list[dict]) -> list[str]:
+    """Ordered list of ground-truth argument values worth translating.
+
+    Includes strings nested inside array / object candidates. The order here is
+    the exact order in which apply_translation() puts the translations back.
+    """
+    values: list[str] = []
+
+    def visit(_label: str, _desc: str, s: str) -> str:
+        values.append(s)
+        return s
+
+    walk_ground_truth(ground_truth, visit)
+    return values
 
 
 def collect_textual_value_contexts(
@@ -215,20 +296,17 @@ def collect_textual_value_contexts(
 
     Returns objects {"param", "description", "value"} in the SAME order as
     collect_textual_values, so apply_translation can still map results back
-    positionally. The description is looked up from the test case's function defs.
+    positionally. The description is looked up from the test case's function defs
+    (for nested values: the nested property's / array items' description, falling
+    back to the parent parameter's). Nested params are labelled "parent.child".
     """
-    descs = _param_descriptions(test_case.get("function", []))
     items: list[dict[str, str]] = []
-    for call in ground_truth:
-        for func_name, params in call.items():
-            for param, value_list in params.items():
-                for v in value_list:
-                    if is_translatable_string(v):
-                        items.append({
-                            "param": param,
-                            "description": descs.get((func_name, param), ""),
-                            "value": v,
-                        })
+
+    def visit(label: str, desc: str, s: str) -> str:
+        items.append({"param": label, "description": desc, "value": s})
+        return s
+
+    walk_ground_truth(ground_truth, visit, test_case.get("function", []))
     return items
 
 
@@ -274,14 +352,24 @@ def is_natural_language_param(
     """Whether a parameter should carry a language descriptor.
 
     `gt_values` is the parameter's ground-truth value list, or None when the
-    parameter does not appear in the ground truth (a distractor param). Enums are
+    parameter does not appear in the ground truth (a distractor param). Strings
+    nested inside array/object candidates count as natural-language values. Enums are
     always rejected; otherwise ground truth decides when present, and the schema
     type is the fallback when it is absent.
     """
     if _has_enum(pdef):
         return False
     if gt_values is not None:
-        return any(is_translatable_string(v) for v in gt_values)
+        # Look at every candidate at any depth, so array/object values such as
+        # [["Sam", "Alice"]] or [{"industries": ["health"]}] count too.
+        found: list[str] = []
+
+        def visit(_label: str, _desc: str, s: str) -> str:
+            found.append(s)
+            return s
+
+        walk_value(gt_values, {}, "", "", visit)
+        return bool(found)
     return _is_textual_schema(pdef)
 
 
@@ -443,13 +531,7 @@ def apply_translation(
             )
             return None
         vi = iter(values)
-        for call in ground_truth:
-            for params in call.values():
-                for key, value_list in params.items():
-                    params[key] = [
-                        next(vi) if is_translatable_string(v) else v
-                        for v in value_list
-                    ]
+        ground_truth = walk_ground_truth(ground_truth, lambda _l, _d, _s: next(vi))
 
     entry = {k: copy.deepcopy(v) for k, v in test_case.items() if k != "ground_truth"}
     entry[mkey] = new_messages

@@ -8,7 +8,8 @@ which is written (translated or not, per level) into the output entry.
 
 Levels:
   --level query   translate only the user query; ground truth unchanged.
-  --level full    translate query + textual ground-truth parameter values
+  --level full    translate query + textual ground-truth parameter values, including
+                  strings nested in array/object values (e.g. [["Sam", "Alice"]])
                   (function names, descriptions, enums, numbers stay in English).
 
 Outputs (under data/benchmarks/<category>/):

@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ground Truth Review</title>
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --border: #d9dde3; --text: #1d2330; --muted: #6b7380;
+  --accent: #2f6fed; --accent-weak: #e7eefd; --add: #1f8a4c; --add-bg: #e6f5ec; --del: #c23b3b; --del-bg: #fbeaea;
+  --warn: #a96500; --warn-bg: #fff4e0; --chip: #eef0f4;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#14171c; --panel:#1d2128; --border:#343a45; --text:#e3e6ec; --muted:#98a0ad; --accent:#6c9cff; --accent-weak:#24304a;
+    --add:#5fd08f; --add-bg:#173326; --del:#ff8080; --del-bg:#3a1d1f; --warn:#f0b35a; --warn-bg:#3a2d15; --chip:#2a2f38; }
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+button, select, input, textarea { font:inherit; color:inherit; }
+button { background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:5px 11px; cursor:pointer; }
+button:hover { border-color:var(--accent); }
+button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+button.danger { color:var(--del); }
+button.danger.on { background:var(--del); color:#fff; border-color:var(--del); }
+button.icon { padding:2px 7px; line-height:1.2; }
+select, input[type=text], textarea { background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:5px 8px; }
+textarea { width:100%; resize:vertical; }
+header { position:sticky; top:0; z-index:5; background:var(--panel); border-bottom:1px solid var(--border); padding:10px 16px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+header .title { font-weight:600; margin-right:6px; }
+#fileSelect { max-width:380px; }
+.counter { margin-left:auto; display:flex; align-items:center; gap:10px; font-variant-numeric:tabular-nums; }
+.counter .big { font-weight:600; font-size:15px; }
+.bar { width:160px; height:8px; background:var(--chip); border-radius:4px; overflow:hidden; }
+.bar > div { height:100%; background:var(--accent); width:0; transition:width .2s; }
+#saveStatus { font-size:12px; color:var(--muted); width:100%; text-align:right; }
+#saveStatus.err { color:var(--del); }
+main { max-width:1500px; margin:0 auto; padding:16px; display:grid; grid-template-columns: minmax(0,3fr) minmax(0,2fr); gap:16px; }
+@media (max-width: 1000px) { main { grid-template-columns: 1fr; } }
+.card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:14px; }
+.card h2 { font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:0 0 10px; font-weight:600; }
+.entry-head { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.entry-head .id { font-weight:600; font-size:16px; font-family: ui-monospace, Consolas, monospace; }
+.tag { font-size:12px; padding:2px 8px; border-radius:10px; background:var(--chip); color:var(--muted); }
+.tag.ok { background:var(--add-bg); color:var(--add); }
+.tag.rm { background:var(--del-bg); color:var(--del); }
+.tag.chg { background:var(--warn-bg); color:var(--warn); }
+.removed-banner { display:none; background:var(--del-bg); color:var(--del); border:1px solid var(--del); border-radius:8px; padding:8px 12px; margin-bottom:14px; font-weight:600; }
+.is-removed .removed-banner { display:block; }
+.is-removed .editable-zone { opacity:.45; }
+.msg { margin-bottom:10px; }
+.msg .role { font-size:12px; color:var(--muted); margin-bottom:3px; display:flex; gap:8px; align-items:center; }
+.msg textarea { min-height:44px; font-size:15px; }
+.msg.changed textarea { border-color:var(--warn); background:var(--warn-bg); }
+.param .pdesc-ed { margin:0 0 8px; }
+.param .pdesc-ed textarea { font-size:12px; min-height:28px; padding:3px 7px; }
+.pdesc-row { display:flex; gap:6px; align-items:flex-start; }
+.pdesc-row textarea { flex:1; }
+.dflt { display:flex; gap:6px; align-items:center; font-size:12px; margin-top:4px; }
+.dflt:empty { display:none; }
+.dflt .lbl { color:var(--muted); }
+.dflt .enum-chip.gone { color:var(--del); background:var(--del-bg); border-color:var(--del); }
+.dflt .gone-lbl { color:var(--del); }
+details.pdescs {margin:8px 0 4px 18px; padding-left:10px; border-left:2px solid var(--border); }
+details.pdescs > summary { cursor:pointer; font-size:12px; color:var(--muted); margin-bottom:6px; }
+details.pdescs .msg textarea { font-size:13px; min-height:30px; }
+#funcDescs > .msg { margin-bottom:16px; }
+.msg .orig { font-size:12px; color:var(--muted); margin-top:3px; white-space:pre-wrap; }
+.fn-name { font-family: ui-monospace, Consolas, monospace; font-weight:600; font-size:15px; }
+.fn-desc { color:var(--muted); font-size:13px; margin:2px 0 10px; }
+.param { border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.param.added-param { border-color:var(--add); }
+.param-head { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:6px; }
+.param-head .pname { font-family: ui-monospace, Consolas, monospace; font-weight:600; }
+.param-head .ptype { font-size:12px; color:var(--muted); }
+.param-head .req { font-size:11px; color:var(--warn); }
+.param-head .spacer { flex:1; }
+.param-desc { font-size:12px; color:var(--muted); margin:-2px 0 8px; }
+.values { display:flex; flex-direction:column; gap:6px; }
+.val { display:flex; gap:6px; align-items:center; }
+.val input, .val textarea { flex:1; min-width:0; }
+.val textarea { font-family: ui-monospace, Consolas, monospace; font-size:13px; min-height:34px; }
+.val .vtype { font-size:11px; color:var(--muted); width:40px; text-align:right; flex-shrink:0; }
+.val.added input, .val.added textarea { border-color:var(--add); background:var(--add-bg); }
+.val.invalid input, .val.invalid textarea { border-color:var(--del); background:var(--del-bg); }
+.empty-hint { font-size:11px; color:var(--muted); }
+.enum-box { margin:-2px 0 8px; font-size:12px; }
+.enum-row { display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-bottom:3px; }
+.enum-row .lbl { color:var(--muted); margin-right:2px; }
+.enum-chip { font-family: ui-monospace, Consolas, monospace; font-size:12px; background:var(--chip); border:1px solid var(--border); border-radius:5px; padding:1px 7px; }
+button.enum-chip:hover { border-color:var(--accent); }
+.enum-chip.in { background:var(--accent-weak); border-color:var(--accent); color:var(--accent); }
+.val .off-enum { font-size:11px; color:var(--warn); white-space:nowrap; flex-shrink:0; }
+.removed-list { margin-top:6px; display:flex; flex-wrap:wrap; gap:6px; }
+.removed-list .rv { font-size:12px; background:var(--del-bg); color:var(--del); border-radius:6px; padding:2px 4px 2px 8px; display:flex; gap:4px; align-items:center; }
+.removed-list .rv s { white-space:pre-wrap; }
+.removed-list .rv button { border:none; background:transparent; color:var(--del); padding:0 4px; font-size:12px; text-decoration:underline; }
+.add-row { display:flex; gap:6px; margin-top:8px; }
+.add-row input { flex:1; min-width:0; }
+.add-param-row { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+.summary { font-size:13px; }
+.summary .none { color:var(--muted); }
+.summary ul { margin:4px 0 0; padding-left:18px; }
+.summary .a { color:var(--add); } .summary .r { color:var(--del); } .summary .w { color:var(--warn); }
+.ref .q { white-space:pre-wrap; background:var(--chip); border-radius:8px; padding:8px 10px; margin-bottom:8px; font-size:14px; }
+.ref .q .role { display:block; font-size:11px; color:var(--muted); }
+.ref table { border-collapse:collapse; width:100%; font-size:13px; }
+.ref td { border-top:1px solid var(--border); padding:5px 6px; vertical-align:top; }
+.ref td:first-child { font-family: ui-monospace, Consolas, monospace; white-space:nowrap; color:var(--muted); width:1%; }
+.ref .chipv { display:inline-block; background:var(--chip); border-radius:5px; padding:1px 6px; margin:1px 4px 1px 0; font-family: ui-monospace, Consolas, monospace; white-space:pre-wrap; word-break:break-word; }
+details.funcs summary { cursor:pointer; color:var(--muted); font-size:13px; }
+details.funcs .fdef { margin-top:8px; font-size:12px; }
+details.funcs .fdef b { font-family: ui-monospace, Consolas, monospace; }
+details.funcs .fdef ul { margin:2px 0 0; padding-left:18px; color:var(--muted); }
+nav.bottom { position:sticky; bottom:0; background:var(--panel); border-top:1px solid var(--border); padding:10px 16px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; }
+nav.bottom #jump { max-width:320px; }
+.notes textarea { min-height:38px; }
+.welcome { grid-column:1 / -1; max-width:720px; margin:40px auto; }
+.welcome code { background:var(--chip); padding:1px 5px; border-radius:4px; }
+.muted { color:var(--muted); }
+.kbd { font-size:11px; color:var(--muted); }
+[hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<header>
+  <span class="title">GT Review</span>
+  <button id="openBtn" class="primary">Open data folder…</button>
+  <button id="reopenBtn" hidden></button>
+  <select id="fileSelect" hidden></select>
+  <div class="counter" id="counter" hidden>
+    <span class="big" id="countText">0 / 0 tagged</span>
+    <div class="bar"><div id="barFill"></div></div>
+    <span class="muted" id="countDetail"></span>
+  </div>
+  <div id="saveStatus"></div>
+</header>
+
+<main id="main">
+  <div class="card welcome" id="welcome">
+    <h2>Getting started</h2>
+    <p>Click <b>Open data folder…</b> and choose <code>multilingual-bfcl/data</code> (grant edit access when asked).
+      The page lists every translated <code>.jsonl</code> under <code>data/benchmarks</code>. English files (<code>en/</code>) are used as the reference panel.</p>
+    <p>For each data file, review results are written to <code>data/gt_reviews/&lt;benchmark&gt;/&lt;file&gt;.review.csv</code>
+      (e.g. <code>gt_reviews/bfcl_multiple/he_translatable_full.review.csv</code>), one row per entry id.
+      The CSV is saved whenever you move to another entry or file; existing CSVs are loaded so you can resume.</p>
+    <p>An entry counts as <b>tagged</b> once it has a row in the CSV (i.e. once you've moved on from it). Use <b>Untag</b> to drop the row.</p>
+    <p class="muted">Requires Chrome or Edge (File System Access API).</p>
+  </div>
+
+  <section id="editCol" hidden>
+    <div class="card">
+      <div class="entry-head">
+        <span class="id" id="entryId"></span>
+        <span class="tag" id="entryPos"></span>
+        <span class="tag" id="entryMeta"></span>
+        <span class="tag" id="entryState"></span>
+      </div>
+    </div>
+    <div id="entryWrap">
+      <div class="removed-banner">This entry is marked for removal.</div>
+      <div class="editable-zone">
+        <div class="card">
+          <h2>Query</h2>
+          <div id="messages"></div>
+        </div>
+        <div class="card">
+          <h2>Ground truth</h2>
+          <div id="gt"></div>
+        </div>
+        <div class="card">
+          <h2>Function &amp; parameter descriptions</h2>
+          <div id="funcDescs"></div>
+        </div>
+      </div>
+      <div class="card notes">
+        <h2>Notes</h2>
+        <textarea id="notes" placeholder="Optional comment saved to the CSV"></textarea>
+      </div>
+      <div class="card">
+        <h2>Changes in this entry</h2>
+        <div class="summary" id="summary"></div>
+      </div>
+    </div>
+  </section>
+
+  <aside id="refCol" hidden>
+    <div class="card ref">
+      <h2>English source <span id="refId" class="muted" style="text-transform:none"></span></h2>
+      <div id="refBody"></div>
+    </div>
+    <div class="card">
+      <details class="funcs" id="funcs"><summary>Available functions</summary><div id="funcsBody"></div></details>
+    </div>
+  </aside>
+</main>
+
+<nav class="bottom" id="nav" hidden>
+  <button id="prevBtn">← Prev</button>
+  <select id="jump"></select>
+  <button id="nextBtn" class="primary">Next →</button>
+  <button id="nextUntaggedBtn">Next untagged ⇥</button>
+  <button id="removeBtn" class="danger">Remove entry</button>
+  <button id="resetBtn">Reset entry</button>
+  <button id="untagBtn">Untag</button>
+  <button id="saveBtn">Save now</button>
+  <span class="kbd">Ctrl+Enter = next · Ctrl+Shift+Enter = prev</span>
+</nav>
+
+<script>
+"use strict";
+// ---------- tiny helpers ----------
+const $ = id => document.getElementById(id);
+const el = (tag, attrs = {}, ...kids) => {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, "");
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(String(k)));
+  return e;
+};
+const clone = x => JSON.parse(JSON.stringify(x));
+const key = v => JSON.stringify(v);
+const typeName = v => v === null ? "null" : Array.isArray(v) ? "list" : typeof v === "object" ? "dict"
+  : typeof v === "number" ? (Number.isInteger(v) ? "int" : "float") : typeof v === "boolean" ? "bool" : "str";
+const showVal = v => typeof v === "string" ? (v === "" ? '"" (may omit)' : v) : JSON.stringify(v);
+
+// ---------- IndexedDB (remember folder handle) ----------
+function idb() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open("gt-review", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("kv");
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  });
+}
+async function idbGet(k) { try { const db = await idb(); return await new Promise(r => { const q = db.transaction("kv").objectStore("kv").get(k); q.onsuccess = () => r(q.result); q.onerror = () => r(undefined); }); } catch { return undefined; } }
+async function idbSet(k, v) { try { const db = await idb(); db.transaction("kv", "readwrite").objectStore("kv").put(v, k); } catch {} }
+
+// ---------- CSV ----------
+const CSV_COLS = ["id", "source_id", "file", "tagged_at", "entry_removed", "has_changes", "query_changes", "function_desc_changes", "param_desc_changes", "removed_defaults",
+  "removed_values", "added_values", "removed_params", "added_params", "final_ground_truth", "notes"];
+function csvCell(v) { const s = v == null ? "" : String(v); return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+function toCSV(rows) { return [CSV_COLS.join(","), ...rows.map(r => CSV_COLS.map(c => csvCell(r[c])).join(","))].join("\r\n") + "\r\n"; }
+function parseCSV(text) {
+  text = text.replace(/^﻿/, "");
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true;
+    else if (c === ",") { row.push(cell); cell = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
+    else cell += c;
+  }
+  if (cell !== "" || row.length) { row.push(cell); rows.push(row); }
+  const head = rows.shift() || [];
+  return rows.filter(r => r.length > 1).map(r => Object.fromEntries(head.map((h, i) => [h, r[i] ?? ""])));
+}
+
+// ---------- state ----------
+let root = null;          // FileSystemDirectoryHandle chosen by user
+let files = [];           // [{path, name, dir, handle}]
+let enCache = new Map();  // path -> Map(id -> entry)
+let cur = null;           // {file, entries, rows: Map(id->row), en: Map, idx}
+let work = null;          // editable copy of current entry
+let parseWarnings = [];
+
+// ---------- folder & files ----------
+async function scanDir(dir, prefix, depth) {
+  const out = [];
+  if (depth > 4) return out;
+  for await (const [name, h] of dir.entries()) {
+    if (h.kind === "directory") {
+      if (/^(backups?|old|\.)/i.test(name)) continue;
+      out.push(...await scanDir(h, prefix + name + "/", depth + 1));
+    } else if (name.endsWith(".jsonl")) out.push({ path: prefix + name, name, dir, handle: h });
+  }
+  return out;
+}
+const isEnglish = f => /(^|\/)en\//.test(f.path);
+const csvName = f => f.name.replace(/\.jsonl$/, "") + ".review.csv";
+// Reviews live in <data>/gt_reviews/<benchmark>/<file>.review.csv
+const benchOf = f => f.path.includes("/") ? f.path.split("/")[0] : "";
+const reviewRel = f => "gt_reviews/" + (benchOf(f) ? benchOf(f) + "/" : "") + csvName(f);
+async function reviewDir(f, create) {
+  let d = await root.getDirectoryHandle("gt_reviews", { create });
+  if (benchOf(f)) d = await d.getDirectoryHandle(benchOf(f), { create });
+  return d;
+}
+
+async function useRoot(handle) {
+  let bench;
+  try { bench = await handle.getDirectoryHandle("benchmarks"); }
+  catch { setStatus(`“${handle.name}” has no benchmarks/ subfolder — please open the multilingual-bfcl/data folder.`, true); return; }
+  root = handle;
+  setStatus("Scanning folder…");
+  files = (await scanDir(bench, "", 0)).sort((a, b) => a.path.localeCompare(b.path));
+  enCache.clear();
+  const sel = $("fileSelect"); sel.innerHTML = "";
+  const translated = files.filter(f => !isEnglish(f));
+  if (!translated.length) { setStatus("No translated .jsonl files found in this folder.", true); return; }
+  for (const f of translated) sel.append(el("option", { value: f.path }, f.path));
+  sel.hidden = false; $("reopenBtn").hidden = true;
+  await idbSet("root", handle);
+  const last = await idbGet("lastFile:" + root.name);
+  const start = translated.find(f => f.path === last) || translated[0];
+  sel.value = start.path;
+  await loadFile(start);
+}
+
+async function readJsonl(handle) {
+  const text = await (await handle.getFile()).text();
+  const out = [], bad = [];
+  text.split(/\r?\n/).forEach((line, i) => {
+    if (!line.trim()) return;
+    try { out.push(JSON.parse(line)); }
+    catch {
+      // Tolerate several JSON objects concatenated on one line.
+      const parts = line.replace(/}\s*{"id"/g, '}\n{"id"').split("\n");
+      let ok = parts.length > 1;
+      const tmp = [];
+      for (const p of parts) { try { tmp.push(JSON.parse(p)); } catch { ok = false; } }
+      if (ok) out.push(...tmp); else bad.push(i + 1);
+    }
+  });
+  return { entries: out, bad };
+}
+
+async function englishFor(f) {
+  // .../<bench>/<lang>/file.jsonl -> .../<bench>/en/*.jsonl
+  const parts = f.path.split("/");
+  const benchPrefix = parts.slice(0, -2).join("/");
+  const enFile = files.find(x => isEnglish(x) && x.path.startsWith(benchPrefix ? benchPrefix + "/en/" : "en/"));
+  if (!enFile) return new Map();
+  if (!enCache.has(enFile.path)) {
+    const { entries } = await readJsonl(enFile.handle);
+    enCache.set(enFile.path, new Map(entries.map(e => [e.id, e])));
+  }
+  return enCache.get(enFile.path);
+}
+
+async function loadFile(f) {
+  setStatus("Loading " + f.path + "…");
+  const { entries, bad } = await readJsonl(f.handle);
+  parseWarnings = bad;
+  const rows = new Map();
+  try {
+    const ch = await (await reviewDir(f, false)).getFileHandle(csvName(f));
+    for (const r of parseCSV(await (await ch.getFile()).text())) if (r.id) rows.set(r.id, r);
+  } catch { /* no CSV yet */ }
+  const en = await englishFor(f);
+  cur = { file: f, entries, rows, en, idx: 0 };
+  await idbSet("lastFile:" + root.name, f.path);
+  const lastIdx = await idbGet("lastIdx:" + f.path);
+  const firstUntagged = entries.findIndex(e => !rows.has(e.id));
+  cur.idx = Number.isInteger(lastIdx) && lastIdx < entries.length ? lastIdx : Math.max(0, firstUntagged);
+  $("welcome").hidden = true; $("editCol").hidden = false; $("refCol").hidden = false; $("nav").hidden = false; $("counter").hidden = false;
+  openEntry(cur.idx);
+  setStatus(`Loaded ${entries.length} entries from ${f.path}` + (rows.size ? ` · resumed ${rows.size} tagged from data/${reviewRel(f)}` : "")
+    + (bad.length ? ` · ⚠ ${bad.length} unparseable line(s): ${bad.slice(0, 10).join(", ")}` : ""), bad.length > 0);
+}
+
+// ---------- entry working copy ----------
+function userMessages(entry) { return (entry.messages && entry.messages[0]) || []; }
+
+function openEntry(i) {
+  cur.idx = i;
+  idbSet("lastIdx:" + cur.file.path, i);
+  const e = cur.entries[i];
+  const row = cur.rows.get(e.id);
+  work = freshWork(e);
+  if (row) {
+    work.removed = row.entry_removed === "true";
+    work.notes = row.notes || "";
+    try { if (row.final_ground_truth) work.gt = JSON.parse(row.final_ground_truth); } catch {}
+    try { for (const qc of JSON.parse(row.query_changes || "[]")) if (work.messages[qc.index]) work.messages[qc.index].content = qc.new; } catch {}
+    try { for (const fc of JSON.parse(row.function_desc_changes || "[]")) if (fc.name in work.funcDescs) work.funcDescs[fc.name] = fc.new; } catch {}
+    try { for (const pc of JSON.parse(row.param_desc_changes || "[]")) if (work.paramDescs[pc.function] && pc.param in work.paramDescs[pc.function]) work.paramDescs[pc.function][pc.param] = pc.new; } catch {}
+    try { for (const rd of JSON.parse(row.removed_defaults || "[]")) work.removedDefaults.add(pkey(rd.function, rd.param)); } catch {}
+  }
+  render();
+}
+
+function freshWork(e) {
+  return {
+    removed: false, notes: "", messages: clone(userMessages(e)), gt: clone(e.ground_truth || []), invalid: new Set(), removedDefaults: new Set(),
+    funcDescs: Object.fromEntries((e.function || []).map(f => [f.name, f.description || ""])),
+    paramDescs: Object.fromEntries((e.function || []).map(f => [f.name,
+      Object.fromEntries(Object.entries(paramProps(f)).map(([p, s]) => [p, (s && s.description) || ""]))])),
+  };
+}
+const paramProps = f => (f && f.parameters && f.parameters.properties) || {};
+
+function computeDiff() {
+  const e = cur.entries[cur.idx];
+  const origMsgs = userMessages(e);
+  const query_changes = [];
+  work.messages.forEach((m, i) => { if (origMsgs[i] && m.content !== origMsgs[i].content) query_changes.push({ index: i, role: m.role, old: origMsgs[i].content, new: m.content }); });
+  const removed = {}, added = {}, removedParams = [], addedParams = [];
+  const orig = e.ground_truth || [];
+  const n = Math.max(orig.length, work.gt.length);
+  for (let c = 0; c < n; c++) {
+    const o = orig[c] || {}, w = work.gt[c] || {};
+    for (const fn of new Set([...Object.keys(o), ...Object.keys(w)])) {
+      const op = o[fn] || {}, wp = w[fn] || {};
+      for (const p of new Set([...Object.keys(op), ...Object.keys(wp)])) {
+        const k = `${fn}.${p}`;
+        const ov = op[p], wv = wp[p];
+        if (ov && !wv) { removedParams.push(k); if (ov.length) removed[k] = ov; continue; }
+        if (!ov && wv) { addedParams.push(k); if (wv.length) added[k] = wv; continue; }
+        const oK = new Set(ov.map(key)), wK = new Set(wv.map(key));
+        const r = ov.filter(v => !wK.has(key(v))), a = wv.filter(v => !oK.has(key(v)));
+        if (r.length) removed[k] = r;
+        if (a.length) added[k] = a;
+      }
+    }
+  }
+  const function_desc_changes = (e.function || [])
+    .filter(f => work.funcDescs[f.name] !== (f.description || ""))
+    .map(f => ({ name: f.name, old: f.description || "", new: work.funcDescs[f.name] }));
+  const param_desc_changes = [];
+  for (const f of e.function || []) for (const [p, s] of Object.entries(paramProps(f))) {
+    const o = (s && s.description) || "", w = work.paramDescs[f.name][p];
+    if (w !== o) param_desc_changes.push({ function: f.name, param: p, old: o, new: w });
+  }
+  const removed_defaults = [];
+  for (const f of e.function || []) for (const [p, s] of Object.entries(paramProps(f)))
+    if (s && s.default !== undefined && work.removedDefaults.has(pkey(f.name, p))) removed_defaults.push({ function: f.name, param: p, old: s.default });
+  const has = query_changes.length || function_desc_changes.length || param_desc_changes.length || removed_defaults.length || Object.keys(removed).length || Object.keys(added).length || removedParams.length || addedParams.length;
+  return { query_changes, function_desc_changes, param_desc_changes, removed_defaults, removed, added, removedParams, addedParams, has: !!has };
+}
+
+function buildRow() {
+  const e = cur.entries[cur.idx];
+  const d = computeDiff();
+  const j = x => (Array.isArray(x) ? x.length : Object.keys(x).length) ? JSON.stringify(x) : "";
+  return {
+    id: e.id, source_id: e.source_id || "", file: cur.file.path, tagged_at: new Date().toISOString(),
+    entry_removed: work.removed ? "true" : "false", has_changes: d.has || work.removed ? "true" : "false",
+    query_changes: j(d.query_changes), function_desc_changes: j(d.function_desc_changes), param_desc_changes: j(d.param_desc_changes), removed_defaults: j(d.removed_defaults), removed_values: j(d.removed), added_values: j(d.added),
+    removed_params: j(d.removedParams), added_params: j(d.addedParams),
+    final_ground_truth: JSON.stringify(work.gt), notes: work.notes,
+  };
+}
+
+async function writeCSV() {
+  const f = cur.file;
+  const order = new Map(cur.entries.map((e, i) => [e.id, i]));
+  const rows = [...cur.rows.values()].sort((a, b) => (order.get(a.id) ?? 1e9) - (order.get(b.id) ?? 1e9));
+  const fh = await (await reviewDir(f, true)).getFileHandle(csvName(f), { create: true });
+  const w = await fh.createWritable();
+  await w.write("﻿" + toCSV(rows));
+  await w.close();
+  setStatus(`Saved ${rows.length} rows → data/${reviewRel(f)} at ${new Date().toLocaleTimeString()}`);
+}
+
+async function commitCurrent() {
+  if (!cur || !work) return true;
+  if (work.invalid.size) { alert("Some values are not valid JSON (red boxes). Fix or delete them before moving on."); return false; }
+  cur.rows.set(cur.entries[cur.idx].id, buildRow());
+  try { await writeCSV(); } catch (err) { setStatus("Save failed: " + err.message, true); alert("Saving the CSV failed: " + err.message); return false; }
+  return true;
+}
+
+async function go(i) {
+  if (!cur || i < 0 || i >= cur.entries.length) return;
+  if (!(await commitCurrent())) return;
+  openEntry(i);
+  window.scrollTo({ top: 0 });
+}
+
+// ---------- rendering ----------
+function setStatus(msg, err) { const s = $("saveStatus"); s.textContent = msg; s.classList.toggle("err", !!err); }
+
+function updateCounter() {
+  const n = cur.entries.length;
+  const tagged = cur.entries.filter(e => cur.rows.has(e.id)).length;
+  let changed = 0, removed = 0;
+  for (const r of cur.rows.values()) { if (r.entry_removed === "true") removed++; else if (r.has_changes === "true") changed++; }
+  $("countText").textContent = `${tagged} / ${n} tagged`;
+  $("barFill").style.width = (n ? 100 * tagged / n : 0) + "%";
+  $("countDetail").textContent = `${changed} changed · ${removed} removed`;
+}
+
+function updateJump() {
+  const j = $("jump"); j.innerHTML = "";
+  cur.entries.forEach((e, i) => {
+    const r = cur.rows.get(e.id);
+    const mark = !r ? "○" : r.entry_removed === "true" ? "✕" : r.has_changes === "true" ? "✎" : "✓";
+    j.append(el("option", { value: i }, `${mark} ${i + 1}. ${e.id}`));
+  });
+  j.value = cur.idx;
+}
+
+function render() {
+  const e = cur.entries[cur.idx];
+  const row = cur.rows.get(e.id);
+  $("entryId").textContent = e.id;
+  $("entryPos").textContent = `${cur.idx + 1} of ${cur.entries.length}`;
+  $("entryMeta").textContent = [e.locale, e.localization_level].filter(Boolean).join(" · ") || cur.file.name;
+  const st = $("entryState");
+  st.className = "tag " + (!row ? "" : row.entry_removed === "true" ? "rm" : row.has_changes === "true" ? "chg" : "ok");
+  st.textContent = !row ? "untagged" : row.entry_removed === "true" ? "tagged · removed" : row.has_changes === "true" ? "tagged · changed" : "tagged · OK";
+  $("entryWrap").classList.toggle("is-removed", work.removed);
+  $("removeBtn").classList.toggle("on", work.removed);
+  $("removeBtn").textContent = work.removed ? "Entry removed (undo)" : "Remove entry";
+  $("untagBtn").disabled = !row;
+  $("prevBtn").disabled = cur.idx === 0;
+  $("nextBtn").disabled = cur.idx === cur.entries.length - 1;
+  $("notes").value = work.notes;
+  pdescEditors = new Map();
+  renderMessages();
+  renderGT();
+  renderFuncDescs();
+  renderRef();
+  renderSummary();
+  updateCounter();
+  updateJump();
+}
+
+function renderMessages() {
+  const box = $("messages"); box.innerHTML = "";
+  const orig = userMessages(cur.entries[cur.idx]);
+  work.messages.forEach((m, i) => {
+    const o = orig[i] ? orig[i].content : "";
+    const origLine = el("div", { class: "orig" });
+    const wrap = el("div", { class: "msg" });
+    const ta = el("textarea", { dir: "auto", rows: Math.min(8, Math.max(2, Math.ceil((m.content || "").length / 90))) });
+    ta.value = m.content;
+    const sync = () => {
+      const changed = m.content !== o;
+      wrap.classList.toggle("changed", changed);
+      origLine.textContent = changed ? "Original: " + o : "";
+    };
+    ta.addEventListener("input", () => { m.content = ta.value; sync(); renderSummary(); });
+    const revert = el("button", { class: "icon", title: "Revert to original", onclick: () => { m.content = o; ta.value = o; sync(); renderSummary(); } }, "↺");
+    wrap.append(el("div", { class: "role" }, `${m.role}${work.messages.length > 1 ? " · turn " + (i + 1) : ""}`, revert), ta, origLine);
+    sync();
+    box.append(wrap);
+  });
+  if (!work.messages.length) box.append(el("div", { class: "muted" }, "(no messages)"));
+}
+
+// Editors for the same parameter (GT box + descriptions card) stay in sync through this registry.
+let pdescEditors = new Map(); // key -> Map(wrapEl -> refreshFn)
+const pkey = (fn, p) => fn + "\u0000" + p;
+function notifyParam(k) {
+  const m = pdescEditors.get(k); if (!m) return;
+  for (const [w, r] of m) { if (w.isConnected) r(); else m.delete(w); }
+}
+function enParamSchema(fn, p) {
+  const e = cur.entries[cur.idx];
+  const en = cur.en.get(e.source_id || e.id.replace(/_(he|de|zh|[a-z]{2})$/, ""));
+  const f = en && (en.function || []).find(x => x.name === fn);
+  return paramProps(f)[p];
+}
+// Editable parameter description + schema default (with remove/restore).
+function paramDescEditor(fn, p, sp, enP, label) {
+  const po = (sp && sp.description) || "";
+  const k = pkey(fn, p);
+  const wrap = el("div", { class: "msg pdesc-ed" });
+  const ta = el("textarea", { dir: "auto", rows: Math.min(4, Math.max(1, Math.ceil(po.length / 90))), placeholder: "(no description)" });
+  const porig = el("div", { class: "orig" });
+  const dfl = el("div", { class: "dflt" });
+  const cur_ = () => (work.paramDescs[fn] && work.paramDescs[fn][p] !== undefined) ? work.paramDescs[fn][p] : po;
+  const refresh = () => {
+    const v = cur_();
+    if (ta.value !== v) ta.value = v;
+    wrap.classList.toggle("changed", v !== po);
+    porig.textContent = v !== po ? "Original: " + po : "";
+    dfl.innerHTML = "";
+    if (sp && sp.default !== undefined) {
+      const removed = work.removedDefaults.has(k);
+      dfl.append(el("span", { class: "lbl" }, "Default:"),
+        el(removed ? "s" : "span", { class: "enum-chip" + (removed ? " gone" : "") }, showVal(sp.default)),
+        removed ? el("span", { class: "gone-lbl" }, "removed") : null,
+        el("button", { class: "icon" + (removed ? "" : " danger"), onclick: () => {
+          if (removed) work.removedDefaults.delete(k); else work.removedDefaults.add(k);
+          notifyParam(k); renderSummary();
+        } }, removed ? "restore default" : "remove default"));
+    }
+  };
+  const set = v => { (work.paramDescs[fn] ||= {})[p] = v; notifyParam(k); renderSummary(); };
+  ta.addEventListener("input", () => set(ta.value));
+  const revert = el("button", { class: "icon", title: "Revert description to original", onclick: () => set(po) }, "↺");
+  if (label) wrap.append(el("div", { class: "role" }, label, revert), ta);
+  else wrap.append(el("div", { class: "pdesc-row" }, ta, revert));
+  wrap.append(porig);
+  if (enP && (enP.description || "") !== po) wrap.append(el("div", { class: "orig" }, "English: " + (enP.description || "")));
+  wrap.append(dfl);
+  if (!pdescEditors.has(k)) pdescEditors.set(k, new Map());
+  pdescEditors.get(k).set(wrap, refresh);
+  refresh();
+  return wrap;
+}
+
+function renderFuncDescs() {
+  const box = $("funcDescs"); box.innerHTML = "";
+  const e = cur.entries[cur.idx];
+  const sid = e.source_id || e.id.replace(/_(he|de|zh|[a-z]{2})$/, "");
+  const en = cur.en.get(sid);
+  const gtFns = new Set(work.gt.flatMap(c => Object.keys(c)));
+  for (const f of e.function || []) {
+    const o = f.description || "";
+    const enF = en && (en.function || []).find(x => x.name === f.name);
+    const origLine = el("div", { class: "orig" });
+    const wrap = el("div", { class: "msg" });
+    const ta = el("textarea", { dir: "auto", rows: Math.min(6, Math.max(2, Math.ceil(o.length / 90))) });
+    ta.value = work.funcDescs[f.name];
+    const sync = () => {
+      const changed = work.funcDescs[f.name] !== o;
+      wrap.classList.toggle("changed", changed);
+      origLine.textContent = changed ? "Original: " + o : "";
+      document.querySelectorAll(".fn-desc").forEach(d => { if (d.dataset.fn === f.name) d.textContent = work.funcDescs[f.name]; });
+    };
+    ta.addEventListener("input", () => { work.funcDescs[f.name] = ta.value; sync(); renderSummary(); });
+    const revert = el("button", { class: "icon", title: "Revert to original", onclick: () => { work.funcDescs[f.name] = o; ta.value = o; sync(); renderSummary(); } }, "↺");
+    wrap.append(el("div", { class: "role" }, el("span", { class: "fn-name", style: "font-size:13px" }, f.name),
+      gtFns.has(f.name) ? el("span", { class: "tag ok" }, "ground-truth function") : null, revert), ta, origLine);
+    if (enF && (enF.description || "") !== o) wrap.append(el("div", { class: "orig" }, "English: " + (enF.description || "")));
+    sync();
+    box.append(wrap);
+
+    // Parameter descriptions (collapsed unless this is the GT function or something was edited)
+    const props = paramProps(f);
+    const names = Object.keys(props);
+    if (names.length) {
+      const enProps = paramProps(enF);
+      const anyChanged = names.some(p => work.paramDescs[f.name][p] !== ((props[p] && props[p].description) || ""));
+      const det = el("details", { class: "pdescs" }, el("summary", {}, `Parameter descriptions (${names.length})`));
+      det.open = gtFns.has(f.name) || anyChanged;
+      for (const p of names) {
+        const req = ((f.parameters && f.parameters.required) || []).includes(p);
+        det.append(paramDescEditor(f.name, p, props[p], enProps[p],
+          el("span", {}, el("span", { class: "pname", style: "font-family:ui-monospace,Consolas,monospace" }, p),
+            ` ${props[p] && props[p].type ? props[p].type : ""}${req ? " · required" : ""}`)));
+      }
+      wrap.append(det);
+    }
+  }
+  if (!(e.function || []).length) box.append(el("div", { class: "muted" }, "(no functions)"));
+}
+
+function fnSchema(name) { return (cur.entries[cur.idx].function || []).find(f => f.name === name); }
+
+function renderGT() {
+  const box = $("gt"); box.innerHTML = "";
+  const orig = cur.entries[cur.idx].ground_truth || [];
+  work.gt.forEach((call, ci) => {
+    for (const fn of Object.keys(call)) {
+      const schema = fnSchema(fn);
+      box.append(el("div", { class: "fn-name" }, fn + "(…)"));
+      box.append(el("div", { class: "fn-desc", dir: "auto", "data-fn": fn }, schema ? work.funcDescs[fn] : "⚠ function not found in this entry's function list"));
+      const origParams = (orig[ci] && orig[ci][fn]) || {};
+      for (const p of Object.keys(call[fn])) box.append(renderParam(ci, fn, p, schema, origParams[p]));
+      // add-parameter row
+      const props = (schema && schema.parameters && schema.parameters.properties) || {};
+      const missing = Object.keys(props).filter(p => !(p in call[fn]));
+      const sel = el("select", {}, el("option", { value: "" }, "+ add parameter…"), ...missing.map(p => el("option", { value: p }, p)), el("option", { value: "__custom" }, "custom name…"));
+      sel.addEventListener("change", () => {
+        let p = sel.value;
+        if (p === "__custom") p = (prompt("Parameter name:") || "").trim();
+        if (p && !(p in call[fn])) { call[fn][p] = []; renderGT(); renderSummary(); }
+        else sel.value = "";
+      });
+      box.append(el("div", { class: "add-param-row" }, sel));
+    }
+  });
+  if (!work.gt.length) box.append(el("div", { class: "muted" }, "(no ground truth)"));
+}
+
+// Enum constraints of a parameter schema: direct enum, list-item enum, and enums on nested dict fields.
+function enumInfo(ps) {
+  const info = { direct: null, items: null, nested: [] };
+  if (!ps) return info;
+  if (Array.isArray(ps.enum)) info.direct = ps.enum;
+  if (ps.items && Array.isArray(ps.items.enum)) info.items = ps.items.enum;
+  const walk = (s, path) => {
+    if (!s || typeof s !== "object") return;
+    for (const [k, sub] of Object.entries(s.properties || {})) {
+      const pth = path ? path + "." + k : k;
+      if (Array.isArray(sub.enum)) info.nested.push({ path: pth, values: sub.enum });
+      if (sub.items && Array.isArray(sub.items.enum)) info.nested.push({ path: pth + "[]", values: sub.items.enum });
+      walk(sub, pth); walk(sub.items, pth + "[]");
+    }
+  };
+  walk(ps, ""); walk(ps.items, "[]");
+  return info;
+}
+// Returns a warning string if v violates the enum, else "".
+function enumWarning(info, v) {
+  if (v === "") return "";
+  const has = (list, x) => list.some(e => key(e) === key(x));
+  if (info.direct && !Array.isArray(v) && !has(info.direct, v)) return "⚠ not in enum";
+  if (info.items && Array.isArray(v)) {
+    const bad = v.filter(x => !has(info.items, x));
+    if (bad.length) return "⚠ not in enum: " + bad.map(showVal).join(", ");
+  }
+  return "";
+}
+
+function renderParam(ci, fn, p, schema, origVals) {
+  const vals = work.gt[ci][fn][p];
+  const ps = schema && schema.parameters && schema.parameters.properties ? schema.parameters.properties[p] : null;
+  const required = schema && schema.parameters && (schema.parameters.required || []).includes(p);
+  const box = el("div", { class: "param" + (origVals ? "" : " added-param") });
+  const origK = new Set((origVals || []).map(key));
+  const head = el("div", { class: "param-head" },
+    el("span", { class: "pname" }, p),
+    el("span", { class: "ptype" }, ps ? ps.type || "" : "(not in schema)"),
+    required ? el("span", { class: "req" }, "required") : null,
+    !origVals ? el("span", { class: "tag ok" }, "new param") : null,
+    el("span", { class: "spacer" }),
+    el("button", { class: "icon danger", title: "Delete this parameter from the ground truth", onclick: () => { delete work.gt[ci][fn][p]; renderGT(); renderSummary(); } }, "delete param"));
+  box.append(head);
+  if (ps) box.append(paramDescEditor(fn, p, ps, enParamSchema(fn, p), null));
+
+  const ei = enumInfo(ps);
+  if (ei.direct || ei.items || ei.nested.length) {
+    const eb = el("div", { class: "enum-box" });
+    const curK = new Set(vals.map(key));
+    if (ei.direct) eb.append(el("div", { class: "enum-row" }, el("span", { class: "lbl" }, "Allowed values (click to add):"),
+      ei.direct.map(ev => curK.has(key(ev))
+        ? el("span", { class: "enum-chip in", title: "Already a ground-truth value" }, showVal(ev))
+        : el("button", { class: "enum-chip", title: "Add as acceptable value", onclick: () => { vals.push(clone(ev)); rerender(); } }, showVal(ev)))));
+    if (ei.items) {
+      const used = new Set(vals.filter(Array.isArray).flat().map(key));
+      eb.append(el("div", { class: "enum-row" }, el("span", { class: "lbl" }, "Each list item one of:"),
+        ei.items.map(ev => el("span", { class: "enum-chip" + (used.has(key(ev)) ? " in" : "") }, showVal(ev)))));
+    }
+    for (const n of ei.nested) eb.append(el("div", { class: "enum-row" }, el("span", { class: "lbl" }, `${n.path} one of:`),
+      n.values.map(ev => el("span", { class: "enum-chip" }, showVal(ev)))));
+    box.append(eb);
+  }
+
+  const list = el("div", { class: "values" });
+  const removedBox = el("div", { class: "removed-list" });
+  const refreshRemoved = () => {
+    removedBox.innerHTML = "";
+    const curK = new Set(vals.map(key));
+    for (const v of origVals || []) if (!curK.has(key(v))) {
+      removedBox.append(el("span", { class: "rv", dir: "auto" }, el("s", {}, showVal(v)),
+        el("button", { title: "Restore value", onclick: () => { vals.push(clone(v)); rerender(); } }, "restore")));
+    }
+  };
+  const rerender = () => { const nb = renderParam(ci, fn, p, schema, origVals); box.replaceWith(nb); renderSummary(); };
+
+  vals.forEach((v, vi) => {
+    const isStr = typeof v === "string";
+    const row = el("div", { class: "val" + (origK.has(key(v)) ? "" : " added") });
+    const text = isStr ? v : JSON.stringify(v);
+    const input = isStr || text.length < 60 ? el("input", { type: "text", dir: "auto", placeholder: isStr ? '(empty string = parameter may be omitted)' : "" })
+      : el("textarea", { rows: 2 });
+    input.value = text;
+    const ik = `${ci}|${fn}|${p}|${vi}`;
+    const warn = el("span", { class: "off-enum" });
+    const checkEnum = () => { const w = enumWarning(ei, vals[vi]); warn.textContent = w; warn.title = w ? "This value isn't one of the schema's enum options" : ""; };
+    checkEnum();
+    input.addEventListener("input", () => {
+      if (isStr) vals[vi] = input.value;
+      else {
+        try { vals[vi] = JSON.parse(input.value); work.invalid.delete(ik); row.classList.remove("invalid"); }
+        catch { work.invalid.add(ik); row.classList.add("invalid"); return; }
+      }
+      row.classList.toggle("added", !origK.has(key(vals[vi])));
+      checkEnum(); refreshRemoved(); renderSummary();
+    });
+    row.append(el("span", { class: "vtype" }, typeName(v)), input, warn,
+      el("button", { class: "icon danger", title: "Delete value", onclick: () => { work.invalid.delete(ik); vals.splice(vi, 1); rerender(); } }, "✕"));
+    list.append(row);
+  });
+  if (!vals.length) list.append(el("div", { class: "empty-hint" }, "No values — add at least one, or delete the parameter."));
+  box.append(list);
+
+  // add value
+  const allStr = vals.length ? vals.every(v => typeof v === "string") : !ps || ps.type === "string";
+  const typeSel = el("select", { title: "How to interpret the new value" },
+    el("option", { value: "str" }, "text"), el("option", { value: "json" }, "number/bool/list/dict (JSON)"));
+  typeSel.value = allStr ? "str" : "json";
+  const addIn = el("input", { type: "text", dir: "auto", placeholder: "new acceptable value" });
+  const doAdd = () => {
+    let v = addIn.value;
+    if (typeSel.value === "json") { try { v = JSON.parse(v); } catch { alert("Not valid JSON: " + v); return; } }
+    else if (v === "" && !confirm('Add an empty string ("") — meaning the parameter may be omitted?')) return;
+    if (vals.some(x => key(x) === key(v))) { alert("That value is already listed."); return; }
+    vals.push(v); rerender();
+  };
+  addIn.addEventListener("keydown", ev => { if (ev.key === "Enter" && !ev.ctrlKey) { ev.preventDefault(); doAdd(); } });
+  box.append(el("div", { class: "add-row" }, addIn, typeSel, el("button", { onclick: doAdd }, "+ Add value")));
+  box.append(removedBox);
+  refreshRemoved();
+  return box;
+}
+
+function renderSummary() {
+  const d = computeDiff();
+  const box = $("summary"); box.innerHTML = "";
+  const items = [];
+  if (work.removed) items.push(el("li", { class: "r" }, "Entry marked for removal"));
+  for (const q of d.query_changes) items.push(el("li", { class: "w", dir: "auto" }, `Query (${q.role}, turn ${q.index + 1}) edited`));
+  for (const f of d.function_desc_changes) items.push(el("li", { class: "w" }, `Function description edited: ${f.name}`));
+  for (const p of d.param_desc_changes) items.push(el("li", { class: "w" }, `Parameter description edited: ${p.function}.${p.param}`));
+  for (const r of d.removed_defaults) items.push(el("li", { class: "r" }, `Default removed: ${r.function}.${r.param} (was ${showVal(r.old)})`));
+  for (const k of d.removedParams) items.push(el("li", { class: "r" }, `Removed parameter ${k}`));
+  for (const k of d.addedParams) items.push(el("li", { class: "a" }, `Added parameter ${k}`));
+  for (const [k, vs] of Object.entries(d.removed)) if (!d.removedParams.includes(k)) items.push(el("li", { class: "r", dir: "auto" }, `− ${k}: ${vs.map(showVal).join(" | ")}`));
+  for (const [k, vs] of Object.entries(d.added)) items.push(el("li", { class: "a", dir: "auto" }, `+ ${k}: ${vs.map(showVal).join(" | ")}`));
+  for (const call of work.gt) for (const fn of Object.keys(call)) for (const p of Object.keys(call[fn]))
+    if (!call[fn][p].length) items.push(el("li", { class: "w" }, `⚠ ${fn}.${p} has no values`));
+  box.append(items.length ? el("ul", {}, items) : el("div", { class: "none" }, "No changes — moving on tags this entry as OK."));
+}
+
+function renderRef() {
+  const e = cur.entries[cur.idx];
+  const sid = e.source_id || e.id.replace(/_(he|de|zh|[a-z]{2})$/, "");
+  const en = cur.en.get(sid);
+  $("refId").textContent = en ? "· " + sid : "";
+  const body = $("refBody"); body.innerHTML = "";
+  if (!en) body.append(el("div", { class: "muted" }, `No English entry found for "${sid}".`));
+  else {
+    for (const m of userMessages(en)) body.append(el("div", { class: "q" }, el("span", { class: "role" }, m.role), m.content));
+    for (const call of en.ground_truth || []) for (const fn of Object.keys(call)) {
+      body.append(el("div", { class: "fn-name", style: "margin:10px 0 4px" }, fn));
+      const t = el("table");
+      for (const [p, vs] of Object.entries(call[fn]))
+        t.append(el("tr", {}, el("td", {}, p), el("td", {}, ...vs.map(v => el("span", { class: "chipv" }, showVal(v))))));
+      body.append(t);
+    }
+  }
+  const fb = $("funcsBody"); fb.innerHTML = "";
+  for (const f of e.function || []) {
+    const props = (f.parameters && f.parameters.properties) || {};
+    const req = (f.parameters && f.parameters.required) || [];
+    fb.append(el("div", { class: "fdef", dir: "auto" }, el("b", {}, f.name), " — " + (f.description || ""),
+      el("ul", {}, Object.entries(props).map(([p, s]) => el("li", {}, `${p}${req.includes(p) ? "*" : ""} (${s.type || "?"}): ${s.description || ""}`)))));
+  }
+}
+
+// ---------- events ----------
+$("openBtn").addEventListener("click", async () => {
+  if (!window.showDirectoryPicker) {
+    const msg = "This browser can't open folders (no File System Access API). Open this file in desktop Chrome or Edge.";
+    setStatus(msg, true); alert(msg); return;
+  }
+  if (cur && !(await commitCurrent())) return;
+  try { await useRoot(await window.showDirectoryPicker({ id: "gt-review", mode: "readwrite" })); }
+  catch (err) { if (err.name !== "AbortError") setStatus("Could not open folder: " + err.message, true); }
+});
+$("reopenBtn").addEventListener("click", async () => {
+  const h = await idbGet("root");
+  if (!h) return;
+  if ((await h.requestPermission({ mode: "readwrite" })) === "granted") await useRoot(h);
+});
+$("fileSelect").addEventListener("change", async ev => {
+  const f = files.find(x => x.path === ev.target.value);
+  if (!(await commitCurrent())) { ev.target.value = cur.file.path; return; }
+  await loadFile(f);
+});
+$("prevBtn").addEventListener("click", () => go(cur.idx - 1));
+$("nextBtn").addEventListener("click", () => go(cur.idx + 1));
+$("jump").addEventListener("change", ev => { const i = +ev.target.value; ev.target.value = cur.idx; go(i); });
+$("nextUntaggedBtn").addEventListener("click", () => {
+  const n = cur.entries.length;
+  for (let k = 1; k <= n; k++) { const i = (cur.idx + k) % n; if (!cur.rows.has(cur.entries[i].id)) return go(i); }
+  alert("All entries in this file are tagged.");
+});
+$("removeBtn").addEventListener("click", () => { work.removed = !work.removed; $("entryWrap").classList.toggle("is-removed", work.removed); $("removeBtn").classList.toggle("on", work.removed); $("removeBtn").textContent = work.removed ? "Entry removed (undo)" : "Remove entry"; renderSummary(); });
+$("resetBtn").addEventListener("click", () => {
+  if (!confirm("Discard all edits to this entry and restore the original query and ground truth?")) return;
+  const e = cur.entries[cur.idx];
+  work = freshWork(e);
+  render();
+});
+$("untagBtn").addEventListener("click", async () => {
+  const id = cur.entries[cur.idx].id;
+  if (!cur.rows.has(id) || !confirm(`Remove the CSV row for ${id}? (It will be re-tagged when you move on, unless you jump without moving.)`)) return;
+  cur.rows.delete(id);
+  try { await writeCSV(); } catch (err) { setStatus("Save failed: " + err.message, true); }
+  openEntry(cur.idx);
+});
+$("saveBtn").addEventListener("click", async () => { if (await commitCurrent()) render(); });
+$("notes").addEventListener("input", ev => { work.notes = ev.target.value; });
+document.addEventListener("keydown", ev => {
+  if (!cur || !(ev.ctrlKey || ev.metaKey) || ev.key !== "Enter") return;
+  ev.preventDefault();
+  go(cur.idx + (ev.shiftKey ? -1 : 1));
+});
+window.addEventListener("beforeunload", ev => {
+  if (!cur || !work) return;
+  const row = cur.rows.get(cur.entries[cur.idx].id);
+  const now = buildRow();
+  const same = row && ["entry_removed", "query_changes", "function_desc_changes", "param_desc_changes", "removed_defaults", "final_ground_truth", "notes"].every(k => (row[k] || "") === (now[k] || ""));
+  if (!same && (computeDiff().has || work.removed || work.notes)) { ev.preventDefault(); ev.returnValue = ""; }
+});
+
+// Offer to reopen the last folder (permission must be re-granted by a click).
+(async () => {
+  const h = await idbGet("root");
+  if (h && h.name) { const b = $("reopenBtn"); b.textContent = `Reopen “${h.name}”`; b.hidden = false; }
+})();
+// Exposed for scripted testing.
+window.__gtReview = { useRoot };
+</script>
+</body>
+</html>

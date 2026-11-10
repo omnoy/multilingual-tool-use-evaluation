@@ -66,6 +66,9 @@ mark { background:var(--mark); color:var(--mark-text); border-radius:3px; paddin
 .dflt code { font-size:12px; }
 .dflt.removed code { text-decoration:line-through; color:var(--del); background:var(--del-bg); }
 .dflt.removed .lbl { color:var(--del); }
+.enum-row { display:flex; flex-wrap:wrap; gap:4px; align-items:center; font-size:12px; margin-top:6px; }
+.enum-row .lbl { color:var(--muted); margin-right:2px; }
+.enum-chip { font-family: ui-monospace, Consolas, monospace; background:var(--accent-weak); color:var(--accent); border-radius:5px; padding:1px 7px; }
 .noparams { color:var(--muted); font-style:italic; }
 nav.bottom { position:fixed; left:0; right:0; bottom:0; background:var(--panel); border-top:1px solid var(--border); padding:10px 16px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; }
 #jump { max-width:360px; }
@@ -87,7 +90,7 @@ nav.bottom label { display:flex; gap:5px; align-items:center; }
     <label><input type="checkbox" id="onlyDefaults"> Only with defaults</label>
     <label><input type="checkbox" id="onlyChanged"> Only edited</label>
     <label><input type="checkbox" id="onlyUnreviewed"> Only unreviewed</label>
-    <label>Highlight words <input type="text" id="keywords" value="example, i.e., default, e.g." title="Comma-separated, case-insensitive"></label>
+    <label>Highlight words <input type="text" id="keywords" autocomplete="off" value="example, i.e, e.g, default, /\boptions?\b/" title="Comma-separated, case-insensitive substrings. Wrap an entry in /.../ for a regex (e.g. /\boptions?\b/ matches option/options but not optional)."></label>
     <label>Search <input type="text" id="search" placeholder="function, param, text…"></label>
   </div>
   <div id="saveStatus"></div>
@@ -243,7 +246,11 @@ function collectFuncs(entries) {
           const param = prefix + p, orig = s.description || "", k = gkey(f.name, param, orig);
           let g = fn.groups.get(k);
           if (!g) fn.groups.set(k, g = { key: k, fn: f.name, param, types: [], requiredCount: 0, orig, text: orig,
-            defaults: [], hasDefault: false, removeDefault: false, ids: [], updatedAt: "" });
+            defaults: [], hasDefault: false, removeDefault: false, ids: [], updatedAt: "", enumVals: [], itemEnumVals: [] });
+          // Allowed values: on the parameter itself, or on its array items. Union across occurrences.
+          for (const v of Array.isArray(s.enum) ? s.enum : []) if (!g.enumVals.includes(v)) g.enumVals.push(v);
+          const ie = s.items && typeof s.items === "object" && Array.isArray(s.items.enum) ? s.items.enum : [];
+          for (const v of ie) if (!g.itemEnumVals.includes(v)) g.itemEnumVals.push(v);
           if (!g.ids.includes(e.id)) g.ids.push(e.id);
           if (s.type && !g.types.includes(s.type)) g.types.push(s.type);
           if ((required || []).includes(p)) g.requiredCount++;
@@ -306,11 +313,20 @@ async function loadFile(f) {
 // ---------- highlighting ----------
 let kwRe = null;
 function buildKw() {
+  // Plain entries match as case-insensitive substrings; /.../ entries are regular expressions.
   const words = $("keywords").value.split(",").map(s => s.trim()).filter(Boolean);
-  kwRe = words.length ? new RegExp("(" + words.map(escapeRe).join("|") + ")", "gi") : null;
+  const parts = [];
+  for (const w of words) {
+    const m = w.match(/^\/(.+)\/$/);
+    if (!m) { parts.push(escapeRe(w)); continue; }
+    try { new RegExp(m[1]); parts.push(m[1]); } catch { setStatus(`Ignoring invalid regex in highlight words: ${w}`, true); }
+  }
+  kwRe = parts.length ? new RegExp("(" + parts.map(p => "(?:" + p + ")").join("|") + ")", "gi") : null;
 }
 const hasKw = s => !!kwRe && (kwRe.lastIndex = 0, kwRe.test(s));
-const isFlagged = g => hasKw(g.orig) || hasKw(g.text);
+// Only string-typed parameters are highlighted: those with a highlight word, or with a default value.
+const isString = g => g.types.includes("string");
+const isFlagged = g => isString(g) && (g.hasDefault || hasKw(g.orig) || hasKw(g.text));
 function highlighted(text) {
   const frag = document.createDocumentFragment();
   if (!kwRe) { frag.append(text); return frag; }
@@ -368,7 +384,7 @@ function renderPage() {
   const page = $("page"); page.innerHTML = "";
   const fn = cur.visible[cur.pos];
   $("prevBtn").disabled = !fn || cur.pos === 0;
-  $("nextBtn").disabled = !fn || cur.pos >= cur.visible.length - 1;
+  $("nextBtn").disabled = !fn;
   if (!fn) { page.append(el("div", { class: "card muted" }, "No functions match the current filters.")); $("reviewedCb").checked = false; updateStats(); return; }
   idbSet("lastFn:" + cur.file.path, fn.name);
   $("reviewedCb").checked = fn.reviewed;
@@ -409,6 +425,10 @@ function buildBox(g, fn) {
       g.ids.length < n ? el("span", { class: "usage", title: g.ids.join(", ") }, `in ${g.ids.length} of ${n} entries`) : null,
       revert),
     ta, orig);
+  const enumRow = (label, vals) => el("div", { class: "enum-row" }, el("span", { class: "lbl" }, label),
+    vals.map(v => el("span", { class: "enum-chip" }, typeof v === "string" ? v : JSON.stringify(v))));
+  if (g.enumVals.length) box.append(enumRow("Allowed values:", g.enumVals));
+  if (g.itemEnumVals.length) box.append(enumRow("Allowed item values:", g.itemEnumVals));
   if (g.hasDefault) {
     const cb = el("input", { type: "checkbox" }); cb.checked = g.removeDefault;
     cb.addEventListener("change", () => { g.removeDefault = cb.checked; touched(g); flushSave(); });
@@ -425,8 +445,8 @@ function refreshBox(g) {
   box.classList.toggle("flag", isFlagged(g));
   revert.hidden = !changed(g);
   orig.innerHTML = "";
-  if (g.text !== g.orig) orig.append(el("b", {}, "Original: "), highlighted(g.orig || "(empty)"));
-  else if (hasKw(g.orig)) orig.append(highlighted(g.orig));
+  if (g.text !== g.orig) orig.append(el("b", {}, "Original: "), isString(g) ? highlighted(g.orig || "(empty)") : (g.orig || "(empty)"));
+  else if (isFlagged(g)) orig.append(highlighted(g.orig));
   const d = box.querySelector(".dflt");
   if (d) { d.classList.toggle("removed", g.removeDefault); d.querySelector("input").checked = g.removeDefault; }
 }
@@ -490,23 +510,35 @@ $("fileSelect").addEventListener("change", async ev => {
   const f = files.find(x => x.path === ev.target.value);
   if (f) await loadFile(f);
 });
+// Like gt_review: moving forward (Next / Next unreviewed / Alt+→) marks the function you leave as reviewed.
+// Prev and the jump dropdown leave it untouched; untick the checkbox to undo.
+function setReviewed(fn, val) {
+  if (!fn || fn.reviewed === val) return;
+  fn.reviewed = val; fn.reviewedAt = new Date().toISOString();
+  $("reviewedCb").checked = val;
+  refreshJumpOption(); updateStats(); markDirtyAndSave();
+  const tagSpot = $("page").querySelector(".fn-head");
+  const t = tagSpot && [...tagSpot.querySelectorAll(".tag.ok")].find(x => x.textContent === "reviewed");
+  if (val && !t && tagSpot) tagSpot.append(el("span", { class: "tag ok" }, "reviewed"));
+  if (!val && t) t.remove();
+}
+function goNext() {
+  if (!cur) return;
+  const fn = cur.visible[cur.pos];
+  setReviewed(fn, true);
+  if (cur.pos < cur.visible.length - 1) go(cur.pos + 1);
+  else setStatus("Marked the last function reviewed — no further functions in this view.");
+}
 $("prevBtn").addEventListener("click", () => go(cur.pos - 1));
-$("nextBtn").addEventListener("click", () => go(cur.pos + 1));
+$("nextBtn").addEventListener("click", goNext);
 $("jump").addEventListener("change", ev => go(+ev.target.value));
 $("nextUnrevBtn").addEventListener("click", () => {
+  setReviewed(cur.visible[cur.pos], true);
   const n = cur.visible.length;
   for (let k = 1; k <= n; k++) { const i = (cur.pos + k) % n; if (!cur.visible[i].reviewed) return go(i); }
   alert("Every function in the current view is marked reviewed.");
 });
-$("reviewedCb").addEventListener("change", ev => {
-  const fn = cur.visible[cur.pos]; if (!fn) return;
-  fn.reviewed = ev.target.checked; fn.reviewedAt = new Date().toISOString();
-  refreshJumpOption(); updateStats(); markDirtyAndSave();
-  const tagSpot = $("page").querySelector(".fn-head");
-  const t = tagSpot && [...tagSpot.querySelectorAll(".tag.ok")].find(x => x.textContent === "reviewed");
-  if (fn.reviewed && !t && tagSpot) tagSpot.append(el("span", { class: "tag ok" }, "reviewed"));
-  if (!fn.reviewed && t) t.remove();
-});
+$("reviewedCb").addEventListener("change", ev => setReviewed(cur.visible[cur.pos], ev.target.checked));
 for (const id of ["onlyFlagged", "onlyDefaults", "onlyChanged", "onlyUnreviewed"]) $(id).addEventListener("change", () => applyFilters());
 let searchTimer = null;
 $("search").addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => applyFilters(), 200); });
@@ -514,7 +546,7 @@ $("keywords").addEventListener("change", () => { if (!cur) return; buildKw(); ap
 document.addEventListener("keydown", ev => {
   if (!cur || !ev.altKey || (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight")) return;
   ev.preventDefault();
-  go(cur.pos + (ev.key === "ArrowRight" ? 1 : -1));
+  if (ev.key === "ArrowRight") goNext(); else go(cur.pos - 1);
 });
 window.addEventListener("beforeunload", ev => { if (dirty) { flushSave(); ev.preventDefault(); ev.returnValue = ""; } });
 

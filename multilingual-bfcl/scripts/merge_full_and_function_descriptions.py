@@ -17,7 +17,7 @@ the merge is a straight per-id combine. Ground truth is stored inline on each en
 (there is no separate possible_answer/ file). The script verifies that the two sources'
 function definitions are structurally identical (ignoring descriptions) before merging.
 
-Output (under data/benchmarks/bfcl_multiple/):
+Output (under data/benchmarks/<--benchmark>/, default bfcl_multiple):
   <locale>/<output>.jsonl
 
 Usage:
@@ -34,7 +34,7 @@ from pathlib import Path
 from typing import Any
 
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent
-DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks" / "bfcl_multiple"
+BENCHMARKS_ROOT = PACKAGE_ROOT / "data" / "benchmarks"
 
 DEFAULT_LEVEL = "full_and_function_descriptions"
 
@@ -69,6 +69,8 @@ def main() -> None:
         description="Merge translated function descriptions with a translated query/GT benchmark.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
+    parser.add_argument("--benchmark", default="bfcl_multiple",
+                        help="Benchmark folder under data/benchmarks/.")
     parser.add_argument("--locale", required=True,
                         help="Language for translated function definitions.")
     parser.add_argument("--desc-source", required=True,
@@ -81,6 +83,7 @@ def main() -> None:
     parser.add_argument("--level", default=DEFAULT_LEVEL,
                         help="localization_level tag written onto each merged entry.")
     args = parser.parse_args()
+    DATA_ROOT = BENCHMARKS_ROOT / args.benchmark
 
     desc = _index(_load_jsonl(DATA_ROOT / args.locale / f"{args.desc_source}.jsonl"))
     query = _index(_load_jsonl(DATA_ROOT / args.locale / f"{args.query_source}.jsonl"))

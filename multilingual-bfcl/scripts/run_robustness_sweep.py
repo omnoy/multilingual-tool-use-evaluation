@@ -88,7 +88,7 @@ def main() -> None:
                              "prefix). Default: every .jsonl in the language folder.")
     parser.add_argument("--limit", default="0",
                         help="Forwarded --limit (default 0 = full file).")
-    parser.add_argument("--parallel", action="store_true",
+    parser.add_argument("--parallel", action="store_false",
                         help="Run every (model, benchmark) pair as its own concurrent process.")
     parser.add_argument("--recompute-stats", action="store_true",
                         help="No API calls: rebuild statistics.csv and summary.json from "

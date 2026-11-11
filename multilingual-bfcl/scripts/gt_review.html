@@ -89,6 +89,14 @@ details.pdescs .msg textarea { font-size:13px; min-height:30px; }
 .enum-chip { font-family: ui-monospace, Consolas, monospace; font-size:12px; background:var(--chip); border:1px solid var(--border); border-radius:5px; padding:1px 7px; }
 button.enum-chip:hover { border-color:var(--accent); }
 .enum-chip.in { background:var(--accent-weak); border-color:var(--accent); color:var(--accent); }
+.enum-opt { display:inline-flex; align-items:center; }
+.enum-opt .x { border:none; background:transparent; color:var(--muted); padding:0 4px 0 2px; font-size:13px; line-height:1; }
+.enum-opt .x:hover { color:var(--del); }
+.enum-row.edited .enum-chip { border-color:var(--warn); }
+.enum-row .gone-lbl { color:var(--del); }
+.enum-chip.gone { color:var(--del); background:var(--del-bg); border-color:var(--del); }
+input.enum-add { width:110px; padding:1px 6px; font-size:12px; }
+.enum-box .orig { font-size:12px; color:var(--muted); margin-bottom:4px; }
 .val .off-enum { font-size:11px; color:var(--warn); white-space:nowrap; flex-shrink:0; }
 .removed-list { margin-top:6px; display:flex; flex-wrap:wrap; gap:6px; }
 .removed-list .rv { font-size:12px; background:var(--del-bg); color:var(--del); border-radius:6px; padding:2px 4px 2px 8px; display:flex; gap:4px; align-items:center; }
@@ -239,7 +247,7 @@ async function idbGet(k) { try { const db = await idb(); return await new Promis
 async function idbSet(k, v) { try { const db = await idb(); db.transaction("kv", "readwrite").objectStore("kv").put(v, k); } catch {} }
 
 // ---------- CSV ----------
-const CSV_COLS = ["id", "source_id", "file", "tagged_at", "entry_removed", "has_changes", "query_changes", "function_desc_changes", "param_desc_changes", "removed_defaults",
+const CSV_COLS = ["id", "source_id", "file", "tagged_at", "entry_removed", "has_changes", "query_changes", "function_desc_changes", "param_desc_changes", "removed_defaults", "enum_changes",
   "removed_values", "added_values", "removed_params", "added_params", "final_ground_truth", "notes"];
 function csvCell(v) { const s = v == null ? "" : String(v); return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
 function toCSV(rows) { return [CSV_COLS.join(","), ...rows.map(r => CSV_COLS.map(c => csvCell(r[c])).join(","))].join("\r\n") + "\r\n"; }
@@ -379,13 +387,14 @@ function openEntry(i) {
     try { for (const fc of JSON.parse(row.function_desc_changes || "[]")) if (fc.name in work.funcDescs) work.funcDescs[fc.name] = fc.new; } catch {}
     try { for (const pc of JSON.parse(row.param_desc_changes || "[]")) if (work.paramDescs[pc.function] && pc.param in work.paramDescs[pc.function]) work.paramDescs[pc.function][pc.param] = pc.new; } catch {}
     try { for (const rd of JSON.parse(row.removed_defaults || "[]")) work.removedDefaults.add(pkey(rd.function, rd.param)); } catch {}
+    try { for (const ec of JSON.parse(row.enum_changes || "[]")) work.enumEdits[enumKey(ec.function, ec.param, ec.scope)] = ec.new; } catch {}
   }
   render();
 }
 
 function freshWork(e) {
   return {
-    removed: false, notes: "", messages: clone(userMessages(e)), gt: clone(e.ground_truth || []), invalid: new Set(), removedDefaults: new Set(),
+    removed: false, notes: "", messages: clone(userMessages(e)), gt: clone(e.ground_truth || []), invalid: new Set(), removedDefaults: new Set(), enumEdits: {},
     funcDescs: Object.fromEntries((e.function || []).map(f => [f.name, f.description || ""])),
     paramDescs: Object.fromEntries((e.function || []).map(f => [f.name,
       Object.fromEntries(Object.entries(paramProps(f)).map(([p, s]) => [p, (s && s.description) || ""]))])),
@@ -428,8 +437,19 @@ function computeDiff() {
   const removed_defaults = [];
   for (const f of e.function || []) for (const [p, s] of Object.entries(paramProps(f)))
     if (s && s.default !== undefined && work.removedDefaults.has(pkey(f.name, p))) removed_defaults.push({ function: f.name, param: p, old: s.default });
-  const has = query_changes.length || function_desc_changes.length || param_desc_changes.length || removed_defaults.length || Object.keys(removed).length || Object.keys(added).length || removedParams.length || addedParams.length;
-  return { query_changes, function_desc_changes, param_desc_changes, removed_defaults, removed, added, removedParams, addedParams, has: !!has };
+  const enum_changes = [];
+  for (const f of e.function || []) for (const [p, s] of Object.entries(paramProps(f))) {
+    const si = enumInfo(s);
+    for (const [scope, orig] of [["enum", si.direct], ["items.enum", si.items]]) {
+      const k = enumKey(f.name, p, scope);
+      if (!orig || !(k in work.enumEdits)) continue;
+      const nv = work.enumEdits[k];
+      if (nv !== null && key(nv) === key(orig)) continue;
+      enum_changes.push({ function: f.name, param: p, scope, removed: nv === null, old: orig, new: nv });
+    }
+  }
+  const has = query_changes.length || function_desc_changes.length || param_desc_changes.length || removed_defaults.length || enum_changes.length || Object.keys(removed).length || Object.keys(added).length || removedParams.length || addedParams.length;
+  return { query_changes, function_desc_changes, param_desc_changes, removed_defaults, enum_changes, removed, added, removedParams, addedParams, has: !!has };
 }
 
 function buildRow() {
@@ -439,7 +459,7 @@ function buildRow() {
   return {
     id: e.id, source_id: e.source_id || "", file: cur.file.path, tagged_at: new Date().toISOString(),
     entry_removed: work.removed ? "true" : "false", has_changes: d.has || work.removed ? "true" : "false",
-    query_changes: j(d.query_changes), function_desc_changes: j(d.function_desc_changes), param_desc_changes: j(d.param_desc_changes), removed_defaults: j(d.removed_defaults), removed_values: j(d.removed), added_values: j(d.added),
+    query_changes: j(d.query_changes), function_desc_changes: j(d.function_desc_changes), param_desc_changes: j(d.param_desc_changes), removed_defaults: j(d.removed_defaults), enum_changes: j(d.enum_changes), removed_values: j(d.removed), added_values: j(d.added),
     removed_params: j(d.removedParams), added_params: j(d.addedParams),
     final_ground_truth: JSON.stringify(work.gt), notes: work.notes,
   };
@@ -575,7 +595,7 @@ function paramDescEditor(fn, p, sp, enP, label) {
       const removed = work.removedDefaults.has(k);
       dfl.append(el("span", { class: "lbl" }, "Default:"),
         el(removed ? "s" : "span", { class: "enum-chip" + (removed ? " gone" : "") }, showVal(sp.default)),
-        removed ? el("span", { class: "gone-lbl" }, "removed") : null,
+        ...(removed ? [el("span", { class: "gone-lbl" }, "removed")] : []),
         el("button", { class: "icon" + (removed ? "" : " danger"), onclick: () => {
           if (removed) work.removedDefaults.delete(k); else work.removedDefaults.add(k);
           notifyParam(k); renderSummary();
@@ -689,6 +709,12 @@ function enumInfo(ps) {
   walk(ps, ""); walk(ps.items, "[]");
   return info;
 }
+const enumKey = (fn, p, scope) => fn + "\u0000" + p + "\u0000" + scope;
+function effectiveEnum(fn, p, scope, schemaVals) {
+  if (!schemaVals) return null;
+  const k = enumKey(fn, p, scope);
+  return k in work.enumEdits ? work.enumEdits[k] : schemaVals;
+}
 // Returns a warning string if v violates the enum, else "".
 function enumWarning(info, v) {
   if (v === "") return "";
@@ -717,19 +743,50 @@ function renderParam(ci, fn, p, schema, origVals) {
   box.append(head);
   if (ps) box.append(paramDescEditor(fn, p, ps, enParamSchema(fn, p), null));
 
-  const ei = enumInfo(ps);
-  if (ei.direct || ei.items || ei.nested.length) {
+  const schemaEi = enumInfo(ps);
+  // Effective enums after the reviewer's edits (null = enum removed).
+  const ei = { ...schemaEi,
+    direct: effectiveEnum(fn, p, "enum", schemaEi.direct),
+    items: effectiveEnum(fn, p, "items.enum", schemaEi.items) };
+  if (schemaEi.direct || schemaEi.items || ei.nested.length) {
     const eb = el("div", { class: "enum-box" });
     const curK = new Set(vals.map(key));
-    if (ei.direct) eb.append(el("div", { class: "enum-row" }, el("span", { class: "lbl" }, "Allowed values (click to add):"),
-      ei.direct.map(ev => curK.has(key(ev))
+    const used = new Set(vals.filter(Array.isArray).flat().map(key));
+    const enumRow = (scope, orig, effective, label, chipFor) => {
+      const k = enumKey(fn, p, scope);
+      const edited = k in work.enumEdits;
+      const setEnum = v => { if (v === undefined) delete work.enumEdits[k]; else work.enumEdits[k] = v; rerender(); };
+      if (effective === null) {
+        eb.append(el("div", { class: "enum-row" }, el("span", { class: "lbl" }, label),
+          el("span", { class: "gone-lbl" }, "enum removed: any value allowed"),
+          el("s", { class: "enum-chip gone" }, orig.map(showVal).join(" | ")),
+          el("button", { class: "icon", onclick: () => setEnum(undefined) }, "restore enum")));
+        return;
+      }
+      const row = el("div", { class: "enum-row" + (edited ? " edited" : "") }, el("span", { class: "lbl" }, label));
+      for (const ev of effective) row.append(el("span", { class: "enum-opt" }, chipFor(ev),
+        el("button", { class: "x", title: "Remove this option from the enum", onclick: () => setEnum(effective.filter(x => key(x) !== key(ev))) }, "×")));
+      const allStr = orig.every(x => typeof x === "string");
+      const addIn = el("input", { type: "text", dir: "auto", class: "enum-add", placeholder: "+ option" });
+      addIn.addEventListener("keydown", ev => {
+        if (ev.key !== "Enter" || ev.ctrlKey) return;
+        ev.preventDefault();
+        let v = addIn.value; if (v === "") return;
+        if (!allStr) { try { v = JSON.parse(v); } catch {} }
+        if (effective.some(x => key(x) === key(v))) return;
+        setEnum([...effective, v]);
+      });
+      row.append(addIn,
+        el("button", { class: "icon danger", title: "Drop the enum constraint entirely (plain string)", onclick: () => setEnum(null) }, "remove enum"),
+        ...(edited ? [el("button", { class: "icon", title: "Undo enum edits", onclick: () => setEnum(undefined) }, "reset")] : []));
+      eb.append(row);
+      if (edited) eb.append(el("div", { class: "orig" }, "Original options: " + orig.map(showVal).join(" | ")));
+    };
+    if (schemaEi.direct) enumRow("enum", schemaEi.direct, ei.direct, "Allowed values (click to add):", ev => curK.has(key(ev))
         ? el("span", { class: "enum-chip in", title: "Already a ground-truth value" }, showVal(ev))
-        : el("button", { class: "enum-chip", title: "Add as acceptable value", onclick: () => { vals.push(clone(ev)); rerender(); } }, showVal(ev)))));
-    if (ei.items) {
-      const used = new Set(vals.filter(Array.isArray).flat().map(key));
-      eb.append(el("div", { class: "enum-row" }, el("span", { class: "lbl" }, "Each list item one of:"),
-        ei.items.map(ev => el("span", { class: "enum-chip" + (used.has(key(ev)) ? " in" : "") }, showVal(ev)))));
-    }
+        : el("button", { class: "enum-chip", title: "Add as acceptable value", onclick: () => { vals.push(clone(ev)); rerender(); } }, showVal(ev)));
+    if (schemaEi.items) enumRow("items.enum", schemaEi.items, ei.items, "Each list item one of:",
+      ev => el("span", { class: "enum-chip" + (used.has(key(ev)) ? " in" : "") }, showVal(ev)));
     for (const n of ei.nested) eb.append(el("div", { class: "enum-row" }, el("span", { class: "lbl" }, `${n.path} one of:`),
       n.values.map(ev => el("span", { class: "enum-chip" }, showVal(ev)))));
     box.append(eb);
@@ -802,6 +859,9 @@ function renderSummary() {
   for (const q of d.query_changes) items.push(el("li", { class: "w", dir: "auto" }, `Query (${q.role}, turn ${q.index + 1}) edited`));
   for (const f of d.function_desc_changes) items.push(el("li", { class: "w" }, `Function description edited: ${f.name}`));
   for (const p of d.param_desc_changes) items.push(el("li", { class: "w" }, `Parameter description edited: ${p.function}.${p.param}`));
+  for (const c of d.enum_changes) items.push(el("li", { class: c.removed ? "r" : "w", dir: "auto" }, c.removed
+    ? `Enum removed: ${c.function}.${c.param}${c.scope === "items.enum" ? " (list items)" : ""}`
+    : `Enum edited: ${c.function}.${c.param}${c.scope === "items.enum" ? " (list items)" : ""} → ${c.new.map(showVal).join(" | ")}`));
   for (const r of d.removed_defaults) items.push(el("li", { class: "r" }, `Default removed: ${r.function}.${r.param} (was ${showVal(r.old)})`));
   for (const k of d.removedParams) items.push(el("li", { class: "r" }, `Removed parameter ${k}`));
   for (const k of d.addedParams) items.push(el("li", { class: "a" }, `Added parameter ${k}`));
@@ -891,7 +951,7 @@ window.addEventListener("beforeunload", ev => {
   if (!cur || !work) return;
   const row = cur.rows.get(cur.entries[cur.idx].id);
   const now = buildRow();
-  const same = row && ["entry_removed", "query_changes", "function_desc_changes", "param_desc_changes", "removed_defaults", "final_ground_truth", "notes"].every(k => (row[k] || "") === (now[k] || ""));
+  const same = row && ["entry_removed", "query_changes", "function_desc_changes", "param_desc_changes", "removed_defaults", "enum_changes", "final_ground_truth", "notes"].every(k => (row[k] || "") === (now[k] || ""));
   if (!same && (computeDiff().has || work.removed || work.notes)) { ev.preventDefault(); ev.returnValue = ""; }
 });
 

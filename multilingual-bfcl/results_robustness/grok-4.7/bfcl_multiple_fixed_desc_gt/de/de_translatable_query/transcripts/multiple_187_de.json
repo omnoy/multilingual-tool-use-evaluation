@@ -1,0 +1,185 @@
+{
+  "id": "multiple_187_de",
+  "source_id": "multiple_187",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1408,
+  "total_output_tokens": 74,
+  "total_latency_s": 9.882107496261597,
+  "estimated_cost_usd": 0.00326,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Prüfe die Preise für Tomaten und Kopfsalat bei Houl Fuds in Los Angeles."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "whole_foods.check_price": {
+        "location": [
+          "Los Angeles",
+          "LA"
+        ],
+        "items": [
+          [
+            "tomatoes",
+            "lettuce"
+          ],
+          [
+            "lettuce",
+            "tomatoes"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "whole_foods_check_price",
+          "arguments": {
+            "location": "Los Angeles",
+            "items": [
+              "Tomaten",
+              "Kopfsalat"
+            ]
+          },
+          "id": "call-3237de49-4f11-4baa-b458-723793c74277-0"
+        }
+      ],
+      "decoded": [
+        {
+          "whole_foods_check_price": {
+            "location": "Los Angeles",
+            "items": [
+              "Tomaten",
+              "Kopfsalat"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'whole_foods_check_price'. Please review the function definition and try again.",
+      "input_tokens": 556,
+      "output_tokens": 31,
+      "latency_s": 4.6792755126953125,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Ich prüfe die Preise erneut mit den englischen Produktbezeichnungen."
+      ],
+      "tool_calls": [
+        {
+          "name": "whole_foods_check_price",
+          "arguments": {
+            "location": "Los Angeles",
+            "items": [
+              "tomatoes",
+              "lettuce"
+            ]
+          },
+          "id": "call-01ba7e7d-bda3-48ba-b2f6-c8a45f4500b8-1"
+        }
+      ],
+      "decoded": [
+        {
+          "whole_foods_check_price": {
+            "location": "Los Angeles",
+            "items": [
+              "tomatoes",
+              "lettuce"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 852,
+      "output_tokens": 43,
+      "latency_s": 5.202831983566284,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Prüfe die Preise für Tomaten und Kopfsalat bei Houl Fuds in Los Angeles."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-3237de49-4f11-4baa-b458-723793c74277-0",
+          "function": {
+            "arguments": "{\"location\":\"Los Angeles\",\"items\":[\"Tomaten\",\"Kopfsalat\"]}",
+            "name": "whole_foods_check_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'whole_foods_check_price'. Please review the function definition and try again.",
+      "tool_call_id": "call-3237de49-4f11-4baa-b458-723793c74277-0"
+    },
+    {
+      "content": "Ich prüfe die Preise erneut mit den englischen Produktbezeichnungen.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-01ba7e7d-bda3-48ba-b2f6-c8a45f4500b8-1",
+          "function": {
+            "arguments": "{\"location\":\"Los Angeles\",\"items\":[\"tomatoes\",\"lettuce\"]}",
+            "name": "whole_foods_check_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

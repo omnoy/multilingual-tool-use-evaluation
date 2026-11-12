@@ -1,0 +1,431 @@
+{
+  "id": "multiple_166_de",
+  "source_id": "multiple_166",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "grok-4.7",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 10,
+  "num_clarifications": 8,
+  "num_failed_calls": 2,
+  "final_error_type": "no_function_call",
+  "total_input_tokens": 16975,
+  "total_output_tokens": 778,
+  "total_latency_s": 145.19392466545105,
+  "estimated_cost_usd": 0.038618,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde mir für dieses Wochenende ein klassisches Konzert in Los Angeles mit günstigen Eintrittskarten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.search": {
+        "genre": [
+          "klassisch"
+        ],
+        "location": [
+          "Los Angeles"
+        ],
+        "date": [
+          "dieses Wochenende",
+          "Wochenende"
+        ],
+        "price_range": [
+          "cheap"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"type\":\"function\",\"name\":\"concert_search\",\"parameters\":{\"genre\":\"classical\",\"location\":\"Los Angeles\",\"date\":\"dieses Wochenende\",\"price_range\":\"cheap\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 539,
+      "output_tokens": 41,
+      "latency_s": 3.1912853717803955,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "{\"name\": \"concert_search\", \"parameters\": {\"genre\": \"classical\", \"location\": \"Los Angeles\", \"date\": \"dieses Wochenende\", \"price_range\": \"cheap\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 609,
+      "output_tokens": 40,
+      "latency_s": 10.345393419265747,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "I will call the concert search tool."
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_search",
+          "arguments": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "dieses Wochenende",
+            "price_range": "cheap"
+          },
+          "id": "call-d456d677-163d-4487-99db-584ac3f12df5-0"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_search": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "dieses Wochenende",
+            "price_range": "cheap"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_search'. Please review the function definition and try again.",
+      "input_tokens": 1246,
+      "output_tokens": 43,
+      "latency_s": 3.8493566513061523,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1504,
+      "output_tokens": 0,
+      "latency_s": 56.53900218009949,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "{\"type\":\"function\",\"name\":\"concert_search\",\"parameters\":{\"genre\":\"classical\",\"location\":\"Los Angeles\",\"date\":\"this weekend\",\"price_range\":\"cheap\"}}"
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_search",
+          "arguments": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "dieses Wochenende",
+            "price_range": "cheap\n\nThat looks correct based on the tool definition. Perhaps \"classical\" isn't right and they want something else. Or date format.\n\nThe instruction says: \"You use tools via function calls\" and the format shown is:\n\n```\n[tool_name][arg]value[/arg]...\n```\n\nWait, looking at the initial system message more carefully... The user's message shows the format in the \"Current user question:\" but the available tools are JSON schema.\n\nThe error says \"invalid parameters for function 'concert_search'\". So the function was called but parameters were invalid.\n\nPossible issues:\n1. date value \"dieses Wochenende\" - the description says examples include \"dieses Wochenende\" so that should work\n2. Maybe price_range needs to be exactly one of the enum values - \"cheap\" is valid\n3. Maybe location needs a specific format\n\nLet me try date as \"this weekend\" since the English examples in one description say \"this weekend\".\n\nLooking at the German description: \"z. B. dieses Wochenende, heute, morgen oder eine Datumszeichenfolge.\"\n\nHmm. Perhaps I need to pass all required fields correctly. Let me try again with \"this weekend\".\n\nAlso the system says \"respond with the correct function call exactly as specified in the tool definitions.\"\n\nMaybe the invoke format needs to be different. The successful format from the conversation that got \"invalid parameters\" was the invoke format, so that reached the function. The \"no function call\" errors were when I used JSON.\n\nSo I need to fix the parameters. Let me try genre as \"Klassik\" or \"classical music\", date as \"this weekend\".\n\nI'll try date=\"this weekend\" and genre=\"classical\"."
+          },
+          "id": "call-5b6742bd-8a32-45b5-ba1d-beb9fe653ea2-0"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_search": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "dieses Wochenende",
+            "price_range": "cheap\n\nThat looks correct based on the tool definition. Perhaps \"classical\" isn't right and they want something else. Or date format.\n\nThe instruction says: \"You use tools via function calls\" and the format shown is:\n\n```\n[tool_name][arg]value[/arg]...\n```\n\nWait, looking at the initial system message more carefully... The user's message shows the format in the \"Current user question:\" but the available tools are JSON schema.\n\nThe error says \"invalid parameters for function 'concert_search'\". So the function was called but parameters were invalid.\n\nPossible issues:\n1. date value \"dieses Wochenende\" - the description says examples include \"dieses Wochenende\" so that should work\n2. Maybe price_range needs to be exactly one of the enum values - \"cheap\" is valid\n3. Maybe location needs a specific format\n\nLet me try date as \"this weekend\" since the English examples in one description say \"this weekend\".\n\nLooking at the German description: \"z. B. dieses Wochenende, heute, morgen oder eine Datumszeichenfolge.\"\n\nHmm. Perhaps I need to pass all required fields correctly. Let me try again with \"this weekend\".\n\nAlso the system says \"respond with the correct function call exactly as specified in the tool definitions.\"\n\nMaybe the invoke format needs to be different. The successful format from the conversation that got \"invalid parameters\" was the invoke format, so that reached the function. The \"no function call\" errors were when I used JSON.\n\nSo I need to fix the parameters. Let me try genre as \"Klassik\" or \"classical music\", date as \"this weekend\".\n\nI'll try date=\"this weekend\" and genre=\"classical\"."
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_search'. Please review the function definition and try again.",
+      "input_tokens": 928,
+      "output_tokens": 428,
+      "latency_s": 10.333858728408813,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "{\"type\":\"function\",\"name\":\"concert_search\",\"parameters\":{\"genre\":\"klassisch\",\"location\":\"Los Angeles\",\"date\":\"dieses Wochenende\",\"price_range\":\"cheap\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1634,
+      "output_tokens": 42,
+      "latency_s": 11.119787216186523,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [
+        "{\"name\":\"concert_search\",\"parameters\":{\"genre\":\"classical\",\"location\":\"Los Angeles\",\"date\":\"this weekend\",\"price_range\":\"cheap\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2050,
+      "output_tokens": 35,
+      "latency_s": 7.292735815048218,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 8,
+      "text": [
+        "{\"type\":\"function\",\"name\":\"concert_search\",\"parameters\":{\"genre\":\"Klassik\",\"location\":\"Los Angeles\",\"date\":\"dieses Wochenende\",\"price_range\":\"cheap\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2466,
+      "output_tokens": 42,
+      "latency_s": 18.47162628173828,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 9,
+      "text": [
+        "<function_calls>\n<invoke name=\"concert_search\">\n<parameter name=\"genre\">classical</parameter>\n<parameter name=\"location\">Los Angeles</parameter>\n<parameter name=\"date\">dieses Wochenende</parameter>\n<parameter name=\"price_range\">cheap</parameter>\n</invoke>\n</function_calls>"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2654,
+      "output_tokens": 67,
+      "latency_s": 9.485150337219238,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 10,
+      "text": [
+        "{\"name\": \"concert_search\", \"arguments\": {\"genre\": \"classical\", \"location\": \"Los Angeles\", \"date\": \"dieses Wochenende\", \"price_range\": \"cheap\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 3345,
+      "output_tokens": 40,
+      "latency_s": 14.565728664398193,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde mir für dieses Wochenende ein klassisches Konzert in Los Angeles mit günstigen Eintrittskarten."
+    },
+    {
+      "content": "{\"type\":\"function\",\"name\":\"concert_search\",\"parameters\":{\"genre\":\"classical\",\"location\":\"Los Angeles\",\"date\":\"dieses Wochenende\",\"price_range\":\"cheap\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "{\"name\": \"concert_search\", \"parameters\": {\"genre\": \"classical\", \"location\": \"Los Angeles\", \"date\": \"dieses Wochenende\", \"price_range\": \"cheap\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "I will call the concert search tool.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-d456d677-163d-4487-99db-584ac3f12df5-0",
+          "function": {
+            "arguments": "{\"genre\":\"classical\",\"location\":\"Los Angeles\",\"date\":\"dieses Wochenende\",\"price_range\":\"cheap\"}",
+            "name": "concert_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_search'. Please review the function definition and try again.",
+      "tool_call_id": "call-d456d677-163d-4487-99db-584ac3f12df5-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "{\"type\":\"function\",\"name\":\"concert_search\",\"parameters\":{\"genre\":\"classical\",\"location\":\"Los Angeles\",\"date\":\"this weekend\",\"price_range\":\"cheap\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-5b6742bd-8a32-45b5-ba1d-beb9fe653ea2-0",
+          "function": {
+            "arguments": "{\"genre\":\"classical\",\"location\":\"Los Angeles\",\"date\":\"dieses Wochenende\",\"price_range\":\"cheap\\n\\nThat looks correct based on the tool definition. Perhaps \\\"classical\\\" isn't right and they want something else. Or date format.\\n\\nThe instruction says: \\\"You use tools via function calls\\\" and the format shown is:\\n\\n```\\n[tool_name][arg]value[/arg]...\\n```\\n\\nWait, looking at the initial system message more carefully... The user's message shows the format in the \\\"Current user question:\\\" but the available tools are JSON schema.\\n\\nThe error says \\\"invalid parameters for function 'concert_search'\\\". So the function was called but parameters were invalid.\\n\\nPossible issues:\\n1. date value \\\"dieses Wochenende\\\" - the description says examples include \\\"dieses Wochenende\\\" so that should work\\n2. Maybe price_range needs to be exactly one of the enum values - \\\"cheap\\\" is valid\\n3. Maybe location needs a specific format\\n\\nLet me try date as \\\"this weekend\\\" since the English examples in one description say \\\"this weekend\\\".\\n\\nLooking at the German description: \\\"z. B. dieses Wochenende, heute, morgen oder eine Datumszeichenfolge.\\\"\\n\\nHmm. Perhaps I need to pass all required fields correctly. Let me try again with \\\"this weekend\\\".\\n\\nAlso the system says \\\"respond with the correct function call exactly as specified in the tool definitions.\\\"\\n\\nMaybe the invoke format needs to be different. The successful format from the conversation that got \\\"invalid parameters\\\" was the invoke format, so that reached the function. The \\\"no function call\\\" errors were when I used JSON.\\n\\nSo I need to fix the parameters. Let me try genre as \\\"Klassik\\\" or \\\"classical music\\\", date as \\\"this weekend\\\".\\n\\nI'll try date=\\\"this weekend\\\" and genre=\\\"classical\\\".\"}",
+            "name": "concert_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_search'. Please review the function definition and try again.",
+      "tool_call_id": "call-5b6742bd-8a32-45b5-ba1d-beb9fe653ea2-0"
+    },
+    {
+      "content": "{\"type\":\"function\",\"name\":\"concert_search\",\"parameters\":{\"genre\":\"klassisch\",\"location\":\"Los Angeles\",\"date\":\"dieses Wochenende\",\"price_range\":\"cheap\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "{\"name\":\"concert_search\",\"parameters\":{\"genre\":\"classical\",\"location\":\"Los Angeles\",\"date\":\"this weekend\",\"price_range\":\"cheap\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "{\"type\":\"function\",\"name\":\"concert_search\",\"parameters\":{\"genre\":\"Klassik\",\"location\":\"Los Angeles\",\"date\":\"dieses Wochenende\",\"price_range\":\"cheap\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "<function_calls>\n<invoke name=\"concert_search\">\n<parameter name=\"genre\">classical</parameter>\n<parameter name=\"location\">Los Angeles</parameter>\n<parameter name=\"date\">dieses Wochenende</parameter>\n<parameter name=\"price_range\">cheap</parameter>\n</invoke>\n</function_calls>",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "{\"name\": \"concert_search\", \"arguments\": {\"genre\": \"classical\", \"location\": \"Los Angeles\", \"date\": \"dieses Wochenende\", \"price_range\": \"cheap\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

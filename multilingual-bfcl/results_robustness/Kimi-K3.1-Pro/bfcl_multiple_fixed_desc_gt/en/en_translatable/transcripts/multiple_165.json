@@ -1,0 +1,169 @@
+{
+  "id": "multiple_165",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1069,
+  "total_output_tokens": 373,
+  "total_latency_s": 4.207968235015869,
+  "estimated_cost_usd": 0.005868,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Find the price of a used Gibson Les Paul guitar in excellent condition in the Chicago area."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "guitar_price.find": {
+        "model": [
+          "Gibson Les Paul"
+        ],
+        "condition": [
+          "Excellent"
+        ],
+        "location": [
+          "Chicago",
+          "Chicago area"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "guitar_price_find",
+          "arguments": {
+            "model": "Gibson Les Paul",
+            "condition": "Excellent",
+            "location": "Chicago, IL"
+          },
+          "id": "call_00336a436f574de3aa96f82e"
+        }
+      ],
+      "decoded": [
+        {
+          "guitar_price_find": {
+            "model": "Gibson Les Paul",
+            "condition": "Excellent",
+            "location": "Chicago, IL"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'guitar_price_find'. Please review the function definition and try again.",
+      "input_tokens": 429,
+      "output_tokens": 152,
+      "latency_s": 1.4689242839813232,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "guitar_price_find",
+          "arguments": {
+            "model": "Gibson Les Paul",
+            "condition": "Excellent",
+            "location": "Chicago"
+          },
+          "id": "call_13cf937e6f4c40928084edfd"
+        }
+      ],
+      "decoded": [
+        {
+          "guitar_price_find": {
+            "model": "Gibson Les Paul",
+            "condition": "Excellent",
+            "location": "Chicago"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 640,
+      "output_tokens": 221,
+      "latency_s": 2.739043951034546,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Find the price of a used Gibson Les Paul guitar in excellent condition in the Chicago area."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_00336a436f574de3aa96f82e",
+          "function": {
+            "arguments": "{\"model\": \"Gibson Les Paul\", \"condition\": \"Excellent\", \"location\": \"Chicago, IL\"}",
+            "name": "guitar_price_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond by using tool guitar_price_find. Should have model Gibson Les Paul condition Excellent location Chicago area likely Chicago. I'll call. Then give price. Should be careful location string Chicago, IL or Chicago area? User asks Chicago area. Use \"Chicago, IL\". Model \"Gibson Les Paul\", condition Excellent. Call the tool."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'guitar_price_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_00336a436f574de3aa96f82e"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_13cf937e6f4c40928084edfd",
+          "function": {
+            "arguments": "{\"model\": \"Gibson Les Paul\", \"condition\": \"Excellent\", \"location\": \"Chicago\"}",
+            "name": "guitar_price_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I have error invalid parameters though schema fits. Should retry. Perhaps exact model naming? Tool expects model of specific used guitar model, \"Gibson Les Paul Standard\" perhaps. Location \"Chicago\". Condition Excellent. Error perhaps API requires full exact \"Gibson Les Paul Standard\" and location Chicago, Illinois? I should try with Chicago and model. Should not need tell error if retry. Use model Gibson Les Paul Standard? User asked generic Les Paul, perhaps tool has known models and locations. Should try exact model and location Chicago. Could model \"Gibson Les Paul\" valid? The only unacceptable could location Chicago, IL? Tool docs no format. Retry original except location \"Chicago\"."
+    }
+  ],
+  "system_prompt": null
+}

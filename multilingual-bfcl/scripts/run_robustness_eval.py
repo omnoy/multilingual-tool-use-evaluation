@@ -49,7 +49,7 @@ Outputs (under <output-dir>/<model>/<category>/<lang-dir>/<benchmark>/):
   summary.json                  aggregate counts + total_estimated_cost_usd for the run
 
 The cost column is derived from the recorded token counts using per-1M-token prices
-from a CSV (model_prices.csv by default; override with --prices, or override the price
+from a CSV (model_data.csv by default; override with --prices, or override the price
 for all models with --price-input/--price-output). A model absent from the CSV is
 unpriced (cost 0) and a warning is printed. Pass --recompute-stats to rebuild
 statistics.csv + summary.json (including cost) from existing transcripts WITHOUT calling
@@ -165,7 +165,7 @@ def ensure_model_config(
 
 
 # USD per 1M tokens (input, output), keyed by deployment name. Loaded from a prices
-# CSV (model_prices.csv by default) at startup; see load_price_table / --prices.
+# CSV (model_data.csv by default) at startup; see load_price_table / --prices.
 _PRICING_PER_MTOK: dict[str, tuple[float, float]] = {}
 
 # Populated from --price-input / --price-output when both are given; applies to any
@@ -173,7 +173,7 @@ _PRICING_PER_MTOK: dict[str, tuple[float, float]] = {}
 _PRICE_OVERRIDE: tuple[float, float] | None = None
 
 # Default prices file (per-1M-token USD), alongside the package root.
-DEFAULT_PRICES_CSV = PACKAGE_ROOT / "model_prices.csv"
+DEFAULT_PRICES_CSV = PACKAGE_ROOT / "model_data.csv"
 
 
 def load_price_table(path: Path) -> dict[str, tuple[float, float]]:

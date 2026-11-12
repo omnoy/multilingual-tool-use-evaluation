@@ -1,0 +1,170 @@
+{
+  "id": "multiple_27",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 848,
+  "total_output_tokens": 311,
+  "total_latency_s": 8.23837423324585,
+  "estimated_cost_usd": 0.004806,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "What is the shortest path from Paris, France to Rome, Italy by using a public transportation?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.shortest_path": {
+        "start_location": [
+          "Paris, France",
+          "Paris"
+        ],
+        "end_location": [
+          "Rome, Italy",
+          "Rome"
+        ],
+        "mode": [
+          "transit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "public transportation"
+          },
+          "id": "call_890b4aeffac7440c936e1739"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "public transportation"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "input_tokens": 324,
+      "output_tokens": 141,
+      "latency_s": 4.5096516609191895,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "transit"
+          },
+          "id": "call_dd4fcf0b342c42c0b7885e74"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "transit"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 524,
+      "output_tokens": 170,
+      "latency_s": 3.72872257232666,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "What is the shortest path from Paris, France to Rome, Italy by using a public transportation?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_890b4aeffac7440c936e1739",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, France\", \"end_location\": \"Rome, Italy\", \"mode\": \"public transportation\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond with shortest path public transportation Paris France to Rome Italy using tool. Should maps_shortest_path start Paris France end Rome Italy mode public transportation. Perhaps then provide route. I should call the tool. Should be careful tool output likely weird simplistic. Kimi will call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "tool_call_id": "call_890b4aeffac7440c936e1739"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_dd4fcf0b342c42c0b7885e74",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, France\", \"end_location\": \"Rome, Italy\", \"mode\": \"transit\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool 400 invalid parameters though matches? Should figure accepted mode perhaps \"transit\" or \"public_transport\". Tool definition generic. Perhaps use mode \"public transit\" or \"transit\". Perhaps start/end exact? Paris, France etc. Error invalid parameters perhaps mode expected only set modes. Could try \"public transportation\" is user phrasing. Perhaps shortest path supports driving walking bicycling transit. Try mode \"transit\"."
+    }
+  ],
+  "system_prompt": null
+}

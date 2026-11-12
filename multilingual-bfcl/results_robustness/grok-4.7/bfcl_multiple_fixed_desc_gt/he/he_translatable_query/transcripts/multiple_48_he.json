@@ -1,0 +1,186 @@
+{
+  "id": "multiple_48_he",
+  "source_id": "multiple_48",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 882,
+  "total_output_tokens": 68,
+  "total_latency_s": 8.393137454986572,
+  "estimated_cost_usd": 0.002172,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי ספרייה ידידותית לחיות מחמד עם מתקנים לאנשים עם מוגבלות בעיר ניו יורק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "library.find_nearby": {
+        "location": [
+          "New York City",
+          "NYC",
+          "New York City, NY"
+        ],
+        "preferences": [
+          [
+            "Pet-friendly",
+            "Disabled Access"
+          ],
+          [
+            "Disabled Access",
+            "Pet-friendly"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_find_nearby",
+          "arguments": {
+            "location": "New York",
+            "preferences": [
+              "Pet-friendly",
+              "Disabled Access"
+            ]
+          },
+          "id": "call-035087b7-df65-4135-87b7-ec226317c572-0"
+        }
+      ],
+      "decoded": [
+        {
+          "library_find_nearby": {
+            "location": "New York",
+            "preferences": [
+              "Pet-friendly",
+              "Disabled Access"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'library_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 342,
+      "output_tokens": 28,
+      "latency_s": 2.9740426540374756,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "I'll try the search again with a clearer city name."
+      ],
+      "tool_calls": [
+        {
+          "name": "library_find_nearby",
+          "arguments": {
+            "location": "New York City",
+            "preferences": [
+              "Pet-friendly",
+              "Disabled Access"
+            ]
+          },
+          "id": "call-afacb0d7-420a-4c82-b79f-e1225c63aae5-1"
+        }
+      ],
+      "decoded": [
+        {
+          "library_find_nearby": {
+            "location": "New York City",
+            "preferences": [
+              "Pet-friendly",
+              "Disabled Access"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 540,
+      "output_tokens": 40,
+      "latency_s": 5.419094800949097,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי ספרייה ידידותית לחיות מחמד עם מתקנים לאנשים עם מוגבלות בעיר ניו יורק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-035087b7-df65-4135-87b7-ec226317c572-0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"preferences\":[\"Pet-friendly\",\"Disabled Access\"]}",
+            "name": "library_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'library_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call-035087b7-df65-4135-87b7-ec226317c572-0"
+    },
+    {
+      "content": "I'll try the search again with a clearer city name.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-afacb0d7-420a-4c82-b79f-e1225c63aae5-1",
+          "function": {
+            "arguments": "{\"location\":\"New York City\",\"preferences\":[\"Pet-friendly\",\"Disabled Access\"]}",
+            "name": "library_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

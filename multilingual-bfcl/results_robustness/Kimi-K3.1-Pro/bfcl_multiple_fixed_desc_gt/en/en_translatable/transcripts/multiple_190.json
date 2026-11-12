@@ -1,0 +1,188 @@
+{
+  "id": "multiple_190",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1222,
+  "total_output_tokens": 472,
+  "total_latency_s": 4.656088829040527,
+  "estimated_cost_usd": 0.007164,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Book a single room for two nights at the Hilton Hotel in Chicago, starting from 10th December 2022."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "Hilton Hotel",
+          "Hilton"
+        ],
+        "location": [
+          "Chicago"
+        ],
+        "room_type": [
+          "single",
+          "Single"
+        ],
+        "start_date": [
+          "2022-12-10",
+          "10/12/2022",
+          "Dec.10,2022",
+          "10th December 2022",
+          "10 December 2022"
+        ],
+        "nights": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton Hotel",
+            "location": "Chicago",
+            "room_type": "single room",
+            "start_date": "2022-12-10",
+            "nights": 2
+          },
+          "id": "call_004ae1323a114025b3bf83e2"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton Hotel",
+            "location": "Chicago",
+            "room_type": "single room",
+            "start_date": "2022-12-10",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'book_hotel'. Please review the function definition and try again.",
+      "input_tokens": 477,
+      "output_tokens": 211,
+      "latency_s": 2.474189281463623,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton Hotel",
+            "location": "Chicago",
+            "room_type": "single",
+            "start_date": "2022-12-10",
+            "nights": 2
+          },
+          "id": "call_776e81f06e40499d83567cee"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton Hotel",
+            "location": "Chicago",
+            "room_type": "single",
+            "start_date": "2022-12-10",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 745,
+      "output_tokens": 261,
+      "latency_s": 2.1818995475769043,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Book a single room for two nights at the Hilton Hotel in Chicago, starting from 10th December 2022."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_004ae1323a114025b3bf83e2",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hilton Hotel\", \"location\": \"Chicago\", \"room_type\": \"single room\", \"start_date\": \"2022-12-10\", \"nights\": 2}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond with tool book_hotel. Should parse parameters: hotel_name Hilton Hotel, location Chicago, nights 2, room_type single room (or single), start_date 2022-12-10. Should use function. Date past? Current system no date, but user asks 2022. Tool likely executes. Kimi should just call. Perhaps book start_date \"10th December 2022\" or ISO. Use ISO. Single room."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'book_hotel'. Please review the function definition and try again.",
+      "tool_call_id": "call_004ae1323a114025b3bf83e2"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_776e81f06e40499d83567cee",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hilton Hotel\", \"location\": \"Chicago\", \"room_type\": \"single\", \"start_date\": \"2022-12-10\", \"nights\": 2}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I'll respond to user? Tool failed 400 invalid params. Should figure possible issue. I must adhere. Could be date format? room type \"single\" not \"single room\"? Date could past? Tool function definitions proper. Should retry likely date \"10th December 2022\" perhaps expected? hotel_name \"Hilton\" vs Hilton Hotel? The tool expects specific. Usually tasks in tool benchmark use booking. Invalid parameter likely room_type not \"single room\" but \"single\". I'll inspect typical tool behavior? I have no more schema. Could try values. Should not expose failure if can retry. Try start_date \"2022-12-10\", room_type \"single\", hotel_name \"Hilton Hotel\"."
+    }
+  ],
+  "system_prompt": null
+}

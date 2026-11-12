@@ -1,7 +1,7 @@
 """
 Token pricing helpers for cost reporting.
 
-Prices are USD per 1M tokens, read from model_prices.csv (rows `model,input,output`)
+Prices are USD per 1M tokens, read from model_data.csv (rows `model,input,output`)
 at the package root. The CSV holds list (synchronous) prices; the Batch API discount
 is applied here, at estimate time, via `batch=True`.
 """
@@ -12,7 +12,7 @@ import csv
 from pathlib import Path
 
 _PACKAGE_ROOT = Path(__file__).parent.parent.parent
-DEFAULT_PRICES_CSV = _PACKAGE_ROOT / "model_prices.csv"
+DEFAULT_PRICES_CSV = _PACKAGE_ROOT / "model_data.csv"
 
 # Azure OpenAI Global Batch is billed at 50% of the standard per-token price.
 BATCH_DISCOUNT = 0.5

@@ -1,0 +1,169 @@
+{
+  "id": "multiple_156",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1122,
+  "total_output_tokens": 260,
+  "total_latency_s": 9.272576093673706,
+  "estimated_cost_usd": 0.004843999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "What was Albert Einstein's contribution to science on March 17, 1915?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "historical_contrib.get_contrib": {
+        "scientist": [
+          "Albert Einstein"
+        ],
+        "date": [
+          "1915-03-17",
+          "03/17/1915",
+          "Mar.17,1915"
+        ],
+        "category": [
+          "",
+          "all"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17",
+            "category": "science"
+          },
+          "id": "call_9984b75c48064e4ba85dd205"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17",
+            "category": "science"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "input_tokens": 452,
+      "output_tokens": 153,
+      "latency_s": 4.5799174308776855,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17"
+          },
+          "id": "call_bf00a6f354ca494c8387927e"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 670,
+      "output_tokens": 107,
+      "latency_s": 4.6926586627960205,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "What was Albert Einstein's contribution to science on March 17, 1915?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9984b75c48064e4ba85dd205",
+          "function": {
+            "arguments": "{\"scientist\": \"Albert Einstein\", \"date\": \"1915-03-17\", \"category\": \"science\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond on historical contribution scientist date. Must use tool historical_contrib_get_contrib. Should category optional, likely science? Tool description \"field of contribution\". User asks science. Call scientist Albert Einstein date 1915-03-17 perhaps category \"science\" or omit. Should use. Let's inspect perhaps returns actual."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "tool_call_id": "call_9984b75c48064e4ba85dd205"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_bf00a6f354ca494c8387927e",
+          "function": {
+            "arguments": "{\"scientist\": \"Albert Einstein\", \"date\": \"1915-03-17\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool 400 invalid params perhaps category expected \"physics\"? Or schema has issue \"date yyyy-mm-dd\" yes. Scientist \"Albert Einstein\". Could retry without category as optional."
+    }
+  ],
+  "system_prompt": null
+}

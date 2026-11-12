@@ -34,7 +34,7 @@ Usage:
     python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --model gpt-5.6-terra --dry-run
 
 Cost: an estimate (tiktoken-based) is printed before submitting, and the actual cost
-(from the API's reported token usage) after retrieval. Both use model_prices.csv list
+(from the API's reported token usage) after retrieval. Both use model_data.csv list
 prices, with the Batch API discount applied unless --no-batch.
 
 Requirements:

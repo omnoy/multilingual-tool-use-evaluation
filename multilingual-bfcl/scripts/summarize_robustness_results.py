@@ -4,10 +4,11 @@ summarize_robustness_results.py — collect every robustness-run summary into on
 Walks results_robustness/<model>/<category>/<lang>/<benchmark>/summary.json (skipping
 the "old" directory) and writes one row per summary:
 
-    model_family, model_name, language, experiment,
+    model_family, model_name, benchmark, language, experiment,
     max_retries_acc, first_attempt_acc, average_attempts, cost
 
-Rows are ordered model_family -> model_name -> language (English first, then
+Rows are ordered model_family -> model_name -> benchmark (the category folder, e.g.
+bfcl_multiple; alphabetical) -> language (English first, then
 alphabetical) -> experiment (en_translatable, query, full, full_func_desc,
 full_lang_desc, full_full_full; unknown variations go last, alphabetically).
 
@@ -44,6 +45,7 @@ FAMILY_PREFIXES = {
 COLUMNS = [
     "model_family",
     "model_name",
+    "benchmark",
     "language",
     "experiment",
     "max_retries_acc",
@@ -76,6 +78,7 @@ def sort_key(row: dict) -> tuple:
     return (
         row["model_family"].lower(),
         row["model_name"].lower(),
+        row["benchmark"],
         (lang != "en", lang),
         (exp_rank, exp),
     )
@@ -89,11 +92,13 @@ def collect_rows(results_dir: Path) -> list[dict]:
             continue
         summary = json.loads(path.read_text(encoding="utf-8"))
         model = summary.get("model", rel.parts[0])
+        category = summary.get("category", rel.parts[1])
         lang = summary.get("lang_dir", rel.parts[2])
         benchmark = summary.get("benchmark", rel.parts[3])
         rows.append({
             "model_family": model_family(model),
             "model_name": model,
+            "benchmark": category,
             "language": lang,
             "experiment": experiment_name(benchmark, lang),
             "max_retries_acc": f'{summary.get("success_rate"):.4f}',

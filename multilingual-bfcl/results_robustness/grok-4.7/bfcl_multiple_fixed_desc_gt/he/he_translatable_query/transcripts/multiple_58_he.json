@@ -1,0 +1,256 @@
+{
+  "id": "multiple_58_he",
+  "source_id": "multiple_58",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 4,
+  "num_clarifications": 1,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1495,
+  "total_output_tokens": 134,
+  "total_latency_s": 14.415658235549927,
+  "estimated_cost_usd": 0.003794,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חפש מומחים לדיני גירושין בלוס אנג'לס"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawyer.search": {
+        "location": [
+          "Los Angeles",
+          "Los Angeles, CA",
+          "LA"
+        ],
+        "expertise": [
+          "Divorce"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_search",
+          "arguments": {
+            "location": "Los Angeles, CA",
+            "expertise": "divorce law"
+          },
+          "id": "call-c0792694-1aa0-4509-9c7a-db9c609c3676-0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_search": {
+            "location": "Los Angeles, CA",
+            "expertise": "divorce law"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawyer_search'. Please review the function definition and try again.",
+      "input_tokens": 254,
+      "output_tokens": 23,
+      "latency_s": 2.9765944480895996,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_search",
+          "arguments": {
+            "location": "Los Angeles, California",
+            "expertise": "Divorce Law"
+          },
+          "id": "call-0cf47699-aa1f-4be8-8387-6f5ecb8d3703-1"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_search": {
+            "location": "Los Angeles, California",
+            "expertise": "Divorce Law"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawyer_search'. Please review the function definition and try again.",
+      "input_tokens": 461,
+      "output_tokens": 22,
+      "latency_s": 1.8374004364013672,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "נראה שיש בעיה טכנית בחיפוש כרגע. נסה שוב מאוחר יותר, או ציין עיר ומדינה בפורמט אחר (למשל \"Los Angeles, CA\") יחד עם תחום המומחיות."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 347,
+      "output_tokens": 57,
+      "latency_s": 2.2294697761535645,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "I'll search for divorce law experts in Los Angeles."
+      ],
+      "tool_calls": [
+        {
+          "name": "lawyer_search",
+          "arguments": {
+            "location": "Los Angeles, CA",
+            "expertise": "divorce"
+          },
+          "id": "call-3e741a72-5508-4fae-a269-71bf4f1457ec-2"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_search": {
+            "location": "Los Angeles, CA",
+            "expertise": "divorce"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 433,
+      "output_tokens": 32,
+      "latency_s": 7.3721935749053955,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חפש מומחים לדיני גירושין בלוס אנג'לס"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-c0792694-1aa0-4509-9c7a-db9c609c3676-0",
+          "function": {
+            "arguments": "{\"location\":\"Los Angeles, CA\",\"expertise\":\"divorce law\"}",
+            "name": "lawyer_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawyer_search'. Please review the function definition and try again.",
+      "tool_call_id": "call-c0792694-1aa0-4509-9c7a-db9c609c3676-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-0cf47699-aa1f-4be8-8387-6f5ecb8d3703-1",
+          "function": {
+            "arguments": "{\"location\":\"Los Angeles, California\",\"expertise\":\"Divorce Law\"}",
+            "name": "lawyer_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawyer_search'. Please review the function definition and try again.",
+      "tool_call_id": "call-0cf47699-aa1f-4be8-8387-6f5ecb8d3703-1"
+    },
+    {
+      "content": "נראה שיש בעיה טכנית בחיפוש כרגע. נסה שוב מאוחר יותר, או ציין עיר ומדינה בפורמט אחר (למשל \"Los Angeles, CA\") יחד עם תחום המומחיות.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "I'll search for divorce law experts in Los Angeles.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-3e741a72-5508-4fae-a269-71bf4f1457ec-2",
+          "function": {
+            "arguments": "{\"location\":\"Los Angeles, CA\",\"expertise\":\"divorce\"}",
+            "name": "lawyer_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

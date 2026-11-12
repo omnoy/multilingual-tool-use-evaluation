@@ -1,0 +1,170 @@
+{
+  "id": "multiple_27",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1062,
+  "total_output_tokens": 203,
+  "total_latency_s": 2.5521624088287354,
+  "estimated_cost_usd": 0.00255432,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "What is the shortest path from Paris, France to Rome, Italy by using a public transportation?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.shortest_path": {
+        "start_location": [
+          "Paris, France",
+          "Paris"
+        ],
+        "end_location": [
+          "Rome, Italy",
+          "Rome"
+        ],
+        "mode": [
+          "transit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "public transportation"
+          },
+          "id": "call_03ca27cc0c634ec992725c45"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "public transportation"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "input_tokens": 471,
+      "output_tokens": 86,
+      "latency_s": 1.17496919631958,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "It seems the public transportation mode wasn't accepted. Let me try a slightly different approach and also check what modes might be available by testing with a different format."
+      ],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "transit"
+          },
+          "id": "call_bf39d0207ad94ffc8a864429"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "transit"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 591,
+      "output_tokens": 117,
+      "latency_s": 1.3771932125091553,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "What is the shortest path from Paris, France to Rome, Italy by using a public transportation?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_03ca27cc0c634ec992725c45",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, France\", \"end_location\": \"Rome, Italy\", \"mode\": \"public transportation\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "tool_call_id": "call_03ca27cc0c634ec992725c45"
+    },
+    {
+      "content": "It seems the public transportation mode wasn't accepted. Let me try a slightly different approach and also check what modes might be available by testing with a different format.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_bf39d0207ad94ffc8a864429",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, France\", \"end_location\": \"Rome, Italy\", \"mode\": \"transit\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": null
+}

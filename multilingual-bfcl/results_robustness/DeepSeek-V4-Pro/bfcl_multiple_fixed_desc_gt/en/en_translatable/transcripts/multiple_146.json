@@ -1,0 +1,291 @@
+{
+  "id": "multiple_146",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 4,
+  "num_clarifications": 0,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 2744,
+  "total_output_tokens": 383,
+  "total_latency_s": 8.015751838684082,
+  "estimated_cost_usd": 0.0061074,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Find restaurants near me within 10 miles that offer Chinese cuisine in Seattle."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          "Chinese"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nI'll help you find Chinese restaurants near Seattle within 10 miles. Let me search for that now."
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, Washington",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call_94613620e8c247a1a589711f"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, Washington",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 485,
+      "output_tokens": 107,
+      "latency_s": 1.1869144439697266,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "It seems like there was an issue with the parameters. Let me try again with just the required parameters."
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, Washington",
+            "cuisine": "Chinese"
+          },
+          "id": "call_62f146c3372e487bb561157f"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, Washington",
+            "cuisine": "Chinese"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 628,
+      "output_tokens": 89,
+      "latency_s": 2.405879259109497,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "It appears the function may require the parameters in a different format. Let me try adjusting the location parameter:"
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "cuisine": "Chinese",
+            "location": "Seattle, WA"
+          },
+          "id": "call_ffa3cc468c2a45c2ba256b89"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "cuisine": "Chinese",
+            "location": "Seattle, WA"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 753,
+      "output_tokens": 89,
+      "latency_s": 1.8891773223876953,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Let me also try including the max_distance parameter with the exact format expected:"
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "cuisine": "Chinese",
+            "location": "Seattle",
+            "max_distance": 10
+          },
+          "id": "call_37280ec3fc6b4e85981ef6e0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "cuisine": "Chinese",
+            "location": "Seattle",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 878,
+      "output_tokens": 98,
+      "latency_s": 2.533780813217163,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Find restaurants near me within 10 miles that offer Chinese cuisine in Seattle."
+    },
+    {
+      "content": "\n\nI'll help you find Chinese restaurants near Seattle within 10 miles. Let me search for that now.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_94613620e8c247a1a589711f",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, Washington\", \"cuisine\": \"Chinese\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_94613620e8c247a1a589711f"
+    },
+    {
+      "content": "It seems like there was an issue with the parameters. Let me try again with just the required parameters.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_62f146c3372e487bb561157f",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, Washington\", \"cuisine\": \"Chinese\"}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_62f146c3372e487bb561157f"
+    },
+    {
+      "content": "It appears the function may require the parameters in a different format. Let me try adjusting the location parameter:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ffa3cc468c2a45c2ba256b89",
+          "function": {
+            "arguments": "{\"cuisine\": \"Chinese\", \"location\": \"Seattle, WA\"}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_ffa3cc468c2a45c2ba256b89"
+    },
+    {
+      "content": "Let me also try including the max_distance parameter with the exact format expected:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_37280ec3fc6b4e85981ef6e0",
+          "function": {
+            "arguments": "{\"cuisine\": \"Chinese\", \"location\": \"Seattle\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": null
+}

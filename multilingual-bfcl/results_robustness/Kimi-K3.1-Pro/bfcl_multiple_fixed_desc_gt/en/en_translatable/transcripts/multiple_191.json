@@ -1,0 +1,197 @@
+{
+  "id": "multiple_191",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1537,
+  "total_output_tokens": 527,
+  "total_latency_s": 4.069404602050781,
+  "estimated_cost_usd": 0.008344,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Book a luxury room in Hotel Paradise, Las Vegas, with a city view for 3 days starting from May 12, 2022."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "Hotel Paradise"
+        ],
+        "location": [
+          "Las Vegas",
+          "Las Vegas, NV",
+          "LV"
+        ],
+        "room_type": [
+          "luxury",
+          "Luxury"
+        ],
+        "start_date": [
+          "05-12-2022",
+          "2022-05-12",
+          "12/05/2022",
+          "May.12,2022",
+          "May 12, 2022"
+        ],
+        "stay_duration": [
+          3
+        ],
+        "view": [
+          "city",
+          "city view"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hotel Paradise",
+            "location": "Las Vegas",
+            "room_type": "luxury room",
+            "start_date": "05-12-2022",
+            "stay_duration": 3,
+            "view": "city view"
+          },
+          "id": "call_7d6b6400b6ce400b939ede4c"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hotel Paradise",
+            "location": "Las Vegas",
+            "room_type": "luxury room",
+            "start_date": "05-12-2022",
+            "stay_duration": 3,
+            "view": "city view"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'book_hotel'. Please review the function definition and try again.",
+      "input_tokens": 644,
+      "output_tokens": 192,
+      "latency_s": 1.4667375087738037,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hotel Paradise",
+            "location": "Las Vegas",
+            "room_type": "Luxury",
+            "start_date": "05-12-2022",
+            "stay_duration": 3,
+            "view": "City"
+          },
+          "id": "call_0306d79e29044d1a98cf7cdd"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hotel Paradise",
+            "location": "Las Vegas",
+            "room_type": "Luxury",
+            "start_date": "05-12-2022",
+            "stay_duration": 3,
+            "view": "City"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 893,
+      "output_tokens": 335,
+      "latency_s": 2.6026670932769775,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Book a luxury room in Hotel Paradise, Las Vegas, with a city view for 3 days starting from May 12, 2022."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_7d6b6400b6ce400b939ede4c",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hotel Paradise\", \"location\": \"Las Vegas\", \"room_type\": \"luxury room\", \"start_date\": \"05-12-2022\", \"stay_duration\": 3, \"view\": \"city view\"}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to booking tool. Should convert date 05-12-2022. hotel Hotel Paradise location Las Vegas room_type luxury room, start 05-12-2022 duration 3, view city. Just call. Should consider task direct. Use book_hotel."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'book_hotel'. Please review the function definition and try again.",
+      "tool_call_id": "call_7d6b6400b6ce400b939ede4c"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0306d79e29044d1a98cf7cdd",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hotel Paradise\", \"location\": \"Las Vegas\", \"room_type\": \"Luxury\", \"start_date\": \"05-12-2022\", \"stay_duration\": 3, \"view\": \"City\"}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid parameters. Kimi will retry perhaps parameter exact expected values. Function says room_type string, date MM-DD-YYYY. Perhaps \"Luxury\" not \"luxury room\"; view \"City view\" or \"city\"? I'll reason. Could be backend accepts fixed enumerations? I'll try again. I must not give up after error; inspect definition. Correct formatted all. hotel_name Hotel Paradise, location Las Vegas, room_type luxury room, start_date 05-12-2022, stay_duration 3, view city view. Why invalid? Possibly tool backend doesn't accept past date? Request from unknown current but 2022 past. Yet invalid parameters likely output issue? Could be no results? I'll retry dates? User explicitly May 12 2022. Function definition exact. Could use room_type \"Luxury\" and view \"City\". I can attempt modified. Should be careful no booking unwanted duplicates; failed no booking. I'll use \"Luxury\" and \"City\"."
+    }
+  ],
+  "system_prompt": null
+}

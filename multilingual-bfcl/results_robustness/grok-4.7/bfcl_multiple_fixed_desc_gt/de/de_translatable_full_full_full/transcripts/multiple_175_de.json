@@ -1,0 +1,163 @@
+{
+  "id": "multiple_175_de",
+  "source_id": "multiple_175",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1550,
+  "total_output_tokens": 49,
+  "total_latency_s": 11.323169708251953,
+  "estimated_cost_usd": 0.003394,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wer ist die bestplatzierte Spielerin im Damentennis?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sports_ranking.get_top_player": {
+        "sport": [
+          "Tennis"
+        ],
+        "gender": [
+          "Frauen"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_ranking_get_top_player",
+          "arguments": {
+            "sport": "tennis",
+            "gender": "women"
+          },
+          "id": "call-b66e4de1-6ebd-4ba0-8eb3-eea920426fe7-0"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_ranking_get_top_player": {
+            "sport": "tennis",
+            "gender": "women"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sports_ranking_get_top_player'. Please review the function definition and try again.",
+      "input_tokens": 748,
+      "output_tokens": 24,
+      "latency_s": 3.3256518840789795,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_ranking_get_top_player",
+          "arguments": {
+            "sport": "Tennis",
+            "gender": "Frauen"
+          },
+          "id": "call-8f78f3c2-5b61-48f2-9042-4180e45c4f11-1"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_ranking_get_top_player": {
+            "sport": "Tennis",
+            "gender": "Frauen"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 802,
+      "output_tokens": 25,
+      "latency_s": 7.997517824172974,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wer ist die bestplatzierte Spielerin im Damentennis?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-b66e4de1-6ebd-4ba0-8eb3-eea920426fe7-0",
+          "function": {
+            "arguments": "{\"sport\":\"tennis\",\"gender\":\"women\"}",
+            "name": "sports_ranking_get_top_player"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sports_ranking_get_top_player'. Please review the function definition and try again.",
+      "tool_call_id": "call-b66e4de1-6ebd-4ba0-8eb3-eea920426fe7-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-8f78f3c2-5b61-48f2-9042-4180e45c4f11-1",
+          "function": {
+            "arguments": "{\"sport\":\"Tennis\",\"gender\":\"Frauen\"}",
+            "name": "sports_ranking_get_top_player"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

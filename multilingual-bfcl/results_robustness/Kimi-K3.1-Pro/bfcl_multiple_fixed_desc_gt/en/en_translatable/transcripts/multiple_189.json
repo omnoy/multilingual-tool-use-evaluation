@@ -1,0 +1,179 @@
+{
+  "id": "multiple_189",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 874,
+  "total_output_tokens": 283,
+  "total_latency_s": 5.7792582511901855,
+  "estimated_cost_usd": 0.0045780000000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Convert time 3pm from New York time zone to London time zone."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "3pm"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "New York",
+          "New York, NY",
+          "NY",
+          "NYC",
+          "Eastern Standard Time",
+          "EST"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "London",
+          "British Summer Time",
+          "BST",
+          "Greenwich Mean Time",
+          "GMT"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "3:00 PM",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          },
+          "id": "call_ed85857b6be94c5da1fd77fe"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "3:00 PM",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 331,
+      "output_tokens": 157,
+      "latency_s": 1.5795962810516357,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "3pm",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          },
+          "id": "call_814f37d733bf4d9daf25b01e"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "3pm",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 543,
+      "output_tokens": 126,
+      "latency_s": 4.19966197013855,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Convert time 3pm from New York time zone to London time zone."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ed85857b6be94c5da1fd77fe",
+          "function": {
+            "arguments": "{\"time\": \"3:00 PM\", \"from_timezone\": \"America/New_York\", \"to_timezone\": \"Europe/London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need answer use timezone tool. Should consider input time \"3pm\" from_timezone New York to London. Should call. But ambiguity daylight saving? Tool likely handles. I should simply call time \"3pm\", from_timezone \"America/New_York\" or \"New York\", to \"Europe/London\". Tool schema strings. Should convert. I'll call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "tool_call_id": "call_ed85857b6be94c5da1fd77fe"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_814f37d733bf4d9daf25b01e",
+          "function": {
+            "arguments": "{\"time\": \"3pm\", \"from_timezone\": \"New York\", \"to_timezone\": \"London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool invalid. Perhaps try expected time zone names \"New York\" \"London\", time \"3pm\". User only needs answer. Could call again. Use from_timezone \"New York\", to_timezone \"London\", time \"3pm\"."
+    }
+  ],
+  "system_prompt": null
+}

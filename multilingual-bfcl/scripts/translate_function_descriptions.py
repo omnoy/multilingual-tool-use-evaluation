@@ -50,7 +50,7 @@ Usage:
 
 Cost: an estimate (tiktoken-based) is printed before submitting, and the actual cost
 (from the API's reported token usage) after the results arrive. Both use
-model_prices.csv list prices, with the Batch API discount applied unless --no-batch.
+model_data.csv list prices, with the Batch API discount applied unless --no-batch.
 
 Environment (multilingual-bfcl/.env):
     AZURE_OPENAI_ENDPOINT=...      # …/openai/v1 (or the resource root)

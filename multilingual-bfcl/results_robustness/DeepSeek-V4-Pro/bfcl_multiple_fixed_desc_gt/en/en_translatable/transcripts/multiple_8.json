@@ -1,0 +1,301 @@
+{
+  "id": "multiple_8",
+  "source_id": null,
+  "locale": null,
+  "localization_level": null,
+  "benchmark": "en_translatable",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2652,
+  "total_output_tokens": 522,
+  "total_latency_s": 7.21808934211731,
+  "estimated_cost_usd": 0.00643104,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Find a 3 bedroom villa for sale within $300,000 to $400,000 budget in San Diego."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "realestate.find_properties": {
+        "location": [
+          "SD",
+          "San Diego",
+          "San Diego, CA",
+          "CA"
+        ],
+        "propertyType": [
+          "villa"
+        ],
+        "bedrooms": [
+          3
+        ],
+        "budget": [
+          {
+            "min": [
+              300000
+            ],
+            "max": [
+              400000
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nI'll help you find a 3-bedroom villa in San Diego within your budget range of $300,000 to $400,000. Let me search for available properties and also get a valuation estimate for comparison."
+      ],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call_d18b0c41b4394d359b7ae2ab"
+        },
+        {
+          "name": "property_valuation_get",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "age": 0
+          },
+          "id": "call_cfd02c60cb2849c68b6f89d4"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        },
+        {
+          "property_valuation_get": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "age": 0
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'property_valuation_get'. Please review the function definition and try again.",
+      "input_tokens": 619,
+      "output_tokens": 246,
+      "latency_s": 2.810715675354004,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "It looks like there was an error with the parameters. Let me correct my approach and try again."
+      ],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call_190221ffa97946ab97a540fe"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "input_tokens": 931,
+      "output_tokens": 135,
+      "latency_s": 2.461347818374634,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Let me try once more with the parameters adjusted. It seems the \"San Diego, California\" format might need to be simpler."
+      ],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, CA",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call_bb0d9bde810d4040a26fb049"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, CA",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1102,
+      "output_tokens": 141,
+      "latency_s": 1.9460258483886719,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": "Find a 3 bedroom villa for sale within $300,000 to $400,000 budget in San Diego."
+    },
+    {
+      "content": "\n\nI'll help you find a 3-bedroom villa in San Diego within your budget range of $300,000 to $400,000. Let me search for available properties and also get a valuation estimate for comparison.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d18b0c41b4394d359b7ae2ab",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": {\"min\": 300000, \"max\": 400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_cfd02c60cb2849c68b6f89d4",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"age\": 0}",
+            "name": "property_valuation_get"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "tool_call_id": "call_d18b0c41b4394d359b7ae2ab"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'property_valuation_get'. Please review the function definition and try again.",
+      "tool_call_id": "call_cfd02c60cb2849c68b6f89d4"
+    },
+    {
+      "content": "It looks like there was an error with the parameters. Let me correct my approach and try again.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_190221ffa97946ab97a540fe",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": {\"min\": 300000, \"max\": 400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "tool_call_id": "call_190221ffa97946ab97a540fe"
+    },
+    {
+      "content": "Let me try once more with the parameters adjusted. It seems the \"San Diego, California\" format might need to be simpler.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_bb0d9bde810d4040a26fb049",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, CA\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": {\"min\": 300000, \"max\": 400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": null
+}

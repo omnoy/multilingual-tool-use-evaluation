@@ -1,0 +1,142 @@
+{
+  "id": "multiple_108_de",
+  "source_id": "multiple_108",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 858,
+  "total_output_tokens": 55,
+  "total_latency_s": 6.9298317432403564,
+  "estimated_cost_usd": 0.002046,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Berechne die Wärmekapazität von Luft bei konstantem Druck, wenn ihre Temperatur 298K und ihr Volumen 10 m^3 beträgt."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calc_heat_capacity": {
+        "temp": [
+          298
+        ],
+        "volume": [
+          10
+        ],
+        "gas": [
+          "air",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"calc_heat_capacity\", \"parameters\": {\"temp\": 298, \"volume\": 10, \"gas\": \"air\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 399,
+      "output_tokens": 31,
+      "latency_s": 2.381575345993042,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          },
+          "id": "call-c22e0be4-6bd2-460c-87c2-8621cc0d7c7c-0"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 459,
+      "output_tokens": 24,
+      "latency_s": 4.5482563972473145,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Berechne die Wärmekapazität von Luft bei konstantem Druck, wenn ihre Temperatur 298K und ihr Volumen 10 m^3 beträgt."
+    },
+    {
+      "content": "{\"name\": \"calc_heat_capacity\", \"parameters\": {\"temp\": 298, \"volume\": 10, \"gas\": \"air\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-c22e0be4-6bd2-460c-87c2-8621cc0d7c7c-0",
+          "function": {
+            "arguments": "{\"temp\":298,\"volume\":10,\"gas\":\"air\"}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,169 @@
+{
+  "id": "multiple_60_he",
+  "source_id": "multiple_60",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1507,
+  "total_output_tokens": 275,
+  "total_latency_s": 5.534362316131592,
+  "estimated_cost_usd": 0.005764,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה תהיה הלחות והטמפרטורה בעיר ניו יורק בעוד 7 ימים?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "humidity_temperature_forecast": {
+        "location": [
+          "העיר ניו יורק",
+          "ניו יורק",
+          "ניו יורק סיטי",
+          "ניו יורק, ניו יורק",
+          "ניו יורק סיטי, ניו יורק"
+        ],
+        "days": [
+          7
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "New York",
+            "days": 7
+          },
+          "id": "call_e26fe103b5134a98b3820c0e"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "New York",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'humidity_temperature_forecast'. Please review the function definition and try again.",
+      "input_tokens": 654,
+      "output_tokens": 138,
+      "latency_s": 1.3882932662963867,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "ניו יורק",
+            "days": 7
+          },
+          "id": "call_3fec99a9a0d948198e044470"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "ניו יורק",
+            "days": 7
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 853,
+      "output_tokens": 137,
+      "latency_s": 4.146069049835205,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה תהיה הלחות והטמפרטורה בעיר ניו יורק בעוד 7 ימים?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e26fe103b5134a98b3820c0e",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"days\": 7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond in Hebrew and use the humidity tool. User: What will humidity and temp be in New York City in 7 days? Tool needs location and days. I should call humidity_temperature_forecast with location New York perhaps \"ניו יורק\" or English \"New York\" supported. days 7. Should be exact. No other."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'humidity_temperature_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_e26fe103b5134a98b3820c0e"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3fec99a9a0d948198e044470",
+          "function": {
+            "arguments": "{\"location\": \"ניו יורק\", \"days\": 7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi got 400 invalid params. Should understand possibly location should Hebrew or city exact? Tool says languages English Hebrew. days integer. Both valid. Could be max days? User says 7 days future maybe days=8? But invalid parameters not results. Should retry perhaps location=\"ניו יורק\" days=7. I can."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

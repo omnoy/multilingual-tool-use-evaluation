@@ -273,11 +273,17 @@ def walk_ground_truth(
     return new_gt
 
 
-def collect_textual_values(ground_truth: list[dict]) -> list[str]:
+def collect_textual_values(
+    ground_truth: list[dict],
+    functions: list[dict[str, Any]] | None = None,
+) -> list[str]:
     """Ordered list of ground-truth argument values worth translating.
 
     Includes strings nested inside array / object candidates. The order here is
     the exact order in which apply_translation() puts the translations back.
+    Pass the entry's `functions` so enum-constrained values are skipped exactly as
+    in collect_textual_value_contexts (what the model is sent); without them every
+    string counts, enums included.
     """
     values: list[str] = []
 
@@ -285,8 +291,41 @@ def collect_textual_values(ground_truth: list[dict]) -> list[str]:
         values.append(s)
         return s
 
-    walk_ground_truth(ground_truth, visit)
+    walk_ground_truth(ground_truth, visit, functions)
     return values
+
+
+def dedupe_candidates(gt: list[dict]) -> tuple[list[dict], int]:
+    """Drop exact-duplicate candidates per parameter (first occurrence kept).
+
+    Translation can map two English candidates (["Criminal Law"], ["criminal law"])
+    to the same localized string. Returns (new_gt, number_of_candidates_removed).
+    """
+    removed = 0
+    out = []
+    for call in gt:
+        new_call = {}
+        for func_name, params in call.items():
+            if not isinstance(params, dict):
+                new_call[func_name] = params
+                continue
+            new_params = {}
+            for param, candidates in params.items():
+                if not isinstance(candidates, list):
+                    new_params[param] = candidates
+                    continue
+                seen: set[str] = set()
+                kept = []
+                for c in candidates:
+                    k = json.dumps(c, ensure_ascii=False, sort_keys=True)
+                    if k not in seen:
+                        seen.add(k)
+                        kept.append(c)
+                removed += len(candidates) - len(kept)
+                new_params[param] = kept
+            new_call[func_name] = new_params
+        out.append(new_call)
+    return out, removed
 
 
 def collect_textual_value_contexts(
@@ -522,7 +561,11 @@ def apply_translation(
     # --- ground truth (translated only for FULL) ---
     ground_truth = copy.deepcopy(test_case.get("ground_truth", []))
     if level == LocalizationLevel.FULL:
-        expected_values = collect_textual_values(ground_truth)
+        # Same walk (functions included, so enums are skipped) as build_input used
+        # to collect the values, so the translations line up positionally —
+        # top-level and nested strings alike.
+        functions = test_case.get("function", [])
+        expected_values = collect_textual_values(ground_truth, functions)
         if len(values) != len(expected_values):
             print(
                 f"[WARN] {new_id}: expected {len(expected_values)} "
@@ -531,7 +574,8 @@ def apply_translation(
             )
             return None
         vi = iter(values)
-        ground_truth = walk_ground_truth(ground_truth, lambda _l, _d, _s: next(vi))
+        ground_truth = walk_ground_truth(ground_truth, lambda _l, _d, _s: next(vi), functions)
+        ground_truth, _ = dedupe_candidates(ground_truth)
 
     entry = {k: copy.deepcopy(v) for k, v in test_case.items() if k != "ground_truth"}
     entry[mkey] = new_messages

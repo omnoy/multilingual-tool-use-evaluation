@@ -1,0 +1,165 @@
+{
+  "id": "multiple_181_he",
+  "source_id": "multiple_181",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1955,
+  "total_output_tokens": 304,
+  "total_latency_s": 3.090167999267578,
+  "estimated_cost_usd": 0.0069500000000000004,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תשיג לי את הפרטים של המשחק האחרון ששיחקה ליברפול. כלול את הסטטיסטיקות שלו."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer.get_last_match": {
+        "team_name": [
+          "ליברפול"
+        ],
+        "include_stats": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_get_last_match",
+          "arguments": {
+            "team_name": "Liverpool",
+            "include_stats": true
+          },
+          "id": "call_906636097dcb4fea8952c8fe"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_get_last_match": {
+            "team_name": "Liverpool",
+            "include_stats": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'soccer_get_last_match'. Please review the function definition and try again.",
+      "input_tokens": 874,
+      "output_tokens": 146,
+      "latency_s": 1.2901313304901123,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_get_last_match",
+          "arguments": {
+            "team_name": "ליברפול",
+            "include_stats": true
+          },
+          "id": "call_f846a51c90bc4cfb935010ea"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_get_last_match": {
+            "team_name": "ליברפול",
+            "include_stats": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1081,
+      "output_tokens": 158,
+      "latency_s": 1.8000366687774658,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תשיג לי את הפרטים של המשחק האחרון ששיחקה ליברפול. כלול את הסטטיסטיקות שלו."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_906636097dcb4fea8952c8fe",
+          "function": {
+            "arguments": "{\"team_name\": \"Liverpool\", \"include_stats\": true}",
+            "name": "soccer_get_last_match"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond tool call exactly soccer_get_last_match with team Liverpool include_stats true. User Hebrew asks get details last match played Liverpool include stats. Should call in commentary. No prose likely. Make sure tool correct. team_name languages EN HE. Use \"Liverpool\" or \"ליברפול\". Tool perhaps understands both. Best English \"Liverpool\". include_stats true."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'soccer_get_last_match'. Please review the function definition and try again.",
+      "tool_call_id": "call_906636097dcb4fea8952c8fe"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f846a51c90bc4cfb935010ea",
+          "function": {
+            "arguments": "{\"team_name\": \"ליברפול\", \"include_stats\": true}",
+            "name": "soccer_get_last_match"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool failed invalid parameters perhaps team should Hebrew? Should inspect? It says team_name string include stats boolean. Called valid. Could be backend accepted only exact club \"Liverpool FC\" or Hebrew \"ליברפול\". I'll try again per error. Should determine likely issue. Perhaps include_stats should not? User explicitly wants stats. Could call Hebrew team. Perhaps functions tool unusual? Should try team_name \"ליברפול\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

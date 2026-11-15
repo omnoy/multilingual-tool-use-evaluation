@@ -1,0 +1,156 @@
+{
+  "id": "multiple_80_de",
+  "source_id": "multiple_80",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1389,
+  "total_output_tokens": 354,
+  "total_latency_s": 4.114662170410156,
+  "estimated_cost_usd": 0.006318,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde ein örtliches Gitarrengeschäft in Näschwill, das auch Geigenunterricht anbietet."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "music_shop.find_nearby": {
+        "location": [
+          "Näschwill, TN",
+          "Näschwill"
+        ],
+        "services": [
+          [
+            "Violin Lessons"
+          ]
+        ],
+        "instruments": [
+          [
+            "Guitars"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "music_shop_find_nearby({\"instruments\":[\"Guitars\"],\"location\":\"Näschwill\",\"services\":[\"Violin Lessons\"]})"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 563,
+      "output_tokens": 221,
+      "latency_s": 1.78883695602417,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "music_shop_find_nearby",
+          "arguments": {
+            "location": "Näschwill",
+            "instruments": [
+              "Guitars"
+            ],
+            "services": [
+              "Violin Lessons"
+            ]
+          },
+          "id": "call_cd8681c4439a4bc1b28cb630"
+        }
+      ],
+      "decoded": [
+        {
+          "music_shop_find_nearby": {
+            "location": "Näschwill",
+            "instruments": [
+              "Guitars"
+            ],
+            "services": [
+              "Violin Lessons"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 826,
+      "output_tokens": 133,
+      "latency_s": 2.3258252143859863,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde ein örtliches Gitarrengeschäft in Näschwill, das auch Geigenunterricht anbietet."
+    },
+    {
+      "content": "music_shop_find_nearby({\"instruments\":[\"Guitars\"],\"location\":\"Näschwill\",\"services\":[\"Violin Lessons\"]})",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond in German with exact function call specified. Should understand: Find local guitar shop in Näschwill that also offers violin lessons. Tool music_shop_find_nearby requires location city and state, instruments array, services. Location \"Näschwill\" odd perhaps typo? Should call exactly. instruments Guitars, services Violin Lessons, location \"Näschwill\" (no state provided). Perhaps location string \"Näschwill\" as is. I must not invent. User says local guitar shop in Näschwill. Could be \"Näschwill\" fictitious. Use call. Make sure no prose. Location perhaps \"Näschwill\" sufficient despite tool says city and state. Could ask missing state? But tools often expect direct. I have exact place. Set instruments [\"Guitars\"], services [\"Violin Lessons\"], location \"Näschwill\"."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cd8681c4439a4bc1b28cb630",
+          "function": {
+            "arguments": "{\"location\": \"Näschwill\", \"instruments\": [\"Guitars\"], \"services\": [\"Violin Lessons\"]}",
+            "name": "music_shop_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need actual tool call syntax, not prose. Should call functions.music_shop_find_nearby. This is straightforward. Should consider location requirement and typo? User says error no function call, so call proper. Use tool."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

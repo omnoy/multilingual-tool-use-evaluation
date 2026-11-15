@@ -1,0 +1,189 @@
+{
+  "id": "multiple_115_de",
+  "source_id": "multiple_115",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1555,
+  "total_output_tokens": 457,
+  "total_latency_s": 3.235867738723755,
+  "estimated_cost_usd": 0.00768,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts in Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_restaurants": {
+        "location": [
+          "Manhattan"
+        ],
+        "food_type": [
+          "Thai"
+        ],
+        "number": [
+          5
+        ],
+        "dietary_requirements": [
+          [
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "Thailändisch",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          },
+          "id": "call_b71f82c8a89c46bab48871ce"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "Thailändisch",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.",
+      "input_tokens": 611,
+      "output_tokens": 276,
+      "latency_s": 1.8223357200622559,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "Thai",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          },
+          "id": "call_a5d6f030b98249f6887b1072"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "Thai",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 944,
+      "output_tokens": 181,
+      "latency_s": 1.413532018661499,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts in Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b71f82c8a89c46bab48871ce",
+          "function": {
+            "arguments": "{\"location\": \"Manhattan\", \"food_type\": \"Thailändisch\", \"number\": 5, \"dietary_requirements\": [\"vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond to the German user asking find 5 restaurants near location Manhattan Thai food vegan menu. Should have exact function call per definitions. Should use find_restaurants location Manhattan food_type thailändisch probably \"Thai\" or \"thailändisch\", number 5, dietary_requirements [\"vegan\"] perhaps. Should understand desired correct function. No need clarifying. Call. Could set food_type \"Thailändisch\", location \"Manhattan\", number 5, dietary_requirements [\"vegan\"]. I should exactly call. Make sure German user. Tool likely English food type but okay. Use \"Thai\" perhaps examples? The instruction: correct function exactly specified. I'll output dietary_requirements [\"vegan\"], food_type \"thailändisch\", location \"Manhattan\", number 5. I should not add commentary."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.",
+      "tool_call_id": "call_b71f82c8a89c46bab48871ce"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a5d6f030b98249f6887b1072",
+          "function": {
+            "arguments": "{\"location\": \"Manhattan\", \"food_type\": \"Thai\", \"number\": 5, \"dietary_requirements\": [\"vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "400 bad request invalid parameters. Should retry. What caused? food_type thailändisch? number integer okay. dietary requirements expects array perhaps \"vegan\". Could be location? Parameters match. Perhaps tool schema weird dietary_requirements default None array. Could be user asks Thai food vegan menu. Should correct call perhaps food_type \"Thai\", dietary [\"vegan\"]. I should retry with English."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

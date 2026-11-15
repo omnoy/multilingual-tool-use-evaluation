@@ -1,0 +1,174 @@
+{
+  "id": "multiple_174_he",
+  "source_id": "multiple_174",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1421,
+  "total_output_tokens": 398,
+  "total_latency_s": 3.485382318496704,
+  "estimated_cost_usd": 0.006822,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו הדירוג של מנצ'סטר יונייטד בפרמייר ליג?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sports_ranking": {
+        "team": [
+          "מנצ'סטר יונייטד",
+          "מאן יונייטד",
+          "מאן יו",
+          "MUFC"
+        ],
+        "league": [
+          "פרמייר ליג"
+        ],
+        "season": [
+          "",
+          2024
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_ranking",
+          "arguments": {
+            "team": "Manchester United",
+            "league": "Premier League"
+          },
+          "id": "call_289624bb08f24f1b9aa84d54"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_ranking": {
+            "team": "Manchester United",
+            "league": "Premier League"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sports_ranking'. Please review the function definition and try again.",
+      "input_tokens": 582,
+      "output_tokens": 198,
+      "latency_s": 1.6234185695648193,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sports_ranking",
+          "arguments": {
+            "team": "מנצ'סטר יונייטד",
+            "league": "פרמייר ליג",
+            "season": 2024
+          },
+          "id": "call_478b7a38c04043ef99f2cee5"
+        }
+      ],
+      "decoded": [
+        {
+          "sports_ranking": {
+            "team": "מנצ'סטר יונייטד",
+            "league": "פרמייר ליג",
+            "season": 2024
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 839,
+      "output_tokens": 200,
+      "latency_s": 1.8619637489318848,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו הדירוג של מנצ'סטר יונייטד בפרמייר ליג?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_289624bb08f24f1b9aa84d54",
+          "function": {
+            "arguments": "{\"team\": \"Manchester United\", \"league\": \"Premier League\"}",
+            "name": "sports_ranking"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond with function call exactly as specified. User Hebrew: \"מהו הדירוג של מנצ'סטר יונייטד בפרמייר ליג?\" = What is ranking of Manchester United in Premier League? Should call sports_ranking league Premier League? Tool parameters strings. I should use team \"מנצ'סטר יונייטד\" or English \"Manchester United\", league \"פרמייר ליג\" or \"Premier League\". Season optional defaults current 2024. I should call. Should have no other text likely. Use English likely function robust. Exact schema."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sports_ranking'. Please review the function definition and try again.",
+      "tool_call_id": "call_289624bb08f24f1b9aa84d54"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_478b7a38c04043ef99f2cee5",
+          "function": {
+            "arguments": "{\"team\": \"מנצ'סטר יונייטד\", \"league\": \"פרמייר ליג\", \"season\": 2024}",
+            "name": "sports_ranking"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid params. Perhaps Hebrew names expected? Definition league שם הליגה team שם הקבוצה. Could be order irrelevant. season optional integer defaults current 2024. 400 due function backend perhaps accepted specific values? Should try with Hebrew or include season. Should respond function call exactly? I can retry. sports_ranking requires league/team. Use \"מנצ'סטר יונייטד\", \"פרמייר ליג\", season 2024 perhaps."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

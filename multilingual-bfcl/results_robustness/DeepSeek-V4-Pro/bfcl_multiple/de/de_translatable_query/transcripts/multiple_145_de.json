@@ -1,0 +1,177 @@
+{
+  "id": "multiple_145_de",
+  "source_id": "multiple_145",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1628,
+  "total_output_tokens": 198,
+  "total_latency_s": 2.698955774307251,
+  "estimated_cost_usd": 0.0035217600000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie viel CO2 produziert ein benzinbetriebenes Auto jährlich, das 12,000 Meilen pro Jahr fährt und eine Kraftstoffeffizienz von 20 Meilen pro Gallone hat?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calculate_emissions": {
+        "distance": [
+          12000
+        ],
+        "fuel_type": [
+          "gas",
+          "gasoline"
+        ],
+        "fuel_efficiency": [
+          20
+        ],
+        "efficiency_reduction": [
+          "",
+          0.0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_type": "benzin",
+            "fuel_efficiency": 20
+          },
+          "id": "call_fa260f5a35964b5c80f9e94d"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_type": "benzin",
+            "fuel_efficiency": 20
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calculate_emissions'. Please review the function definition and try again.",
+      "input_tokens": 756,
+      "output_tokens": 83,
+      "latency_s": 1.3629841804504395,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Es sieht so aus, als ob der Parameter `fuel_type` nicht korrekt war. Lassen Sie mich das mit dem englischen Begriff erneut versuchen:"
+      ],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_type": "gasoline",
+            "fuel_efficiency": 20
+          },
+          "id": "call_98f0b1f6dea2474d9f48b520"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_type": "gasoline",
+            "fuel_efficiency": 20
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 872,
+      "output_tokens": 115,
+      "latency_s": 1.3359715938568115,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie viel CO2 produziert ein benzinbetriebenes Auto jährlich, das 12,000 Meilen pro Jahr fährt und eine Kraftstoffeffizienz von 20 Meilen pro Gallone hat?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fa260f5a35964b5c80f9e94d",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_type\": \"benzin\", \"fuel_efficiency\": 20}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calculate_emissions'. Please review the function definition and try again.",
+      "tool_call_id": "call_fa260f5a35964b5c80f9e94d"
+    },
+    {
+      "content": "Es sieht so aus, als ob der Parameter `fuel_type` nicht korrekt war. Lassen Sie mich das mit dem englischen Begriff erneut versuchen:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_98f0b1f6dea2474d9f48b520",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_type\": \"gasoline\", \"fuel_efficiency\": 20}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,197 @@
+{
+  "id": "multiple_64_de",
+  "source_id": "multiple_64",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1938,
+  "total_output_tokens": 443,
+  "total_latency_s": 5.360008478164673,
+  "estimated_cost_usd": 0.008306000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Gib mir den UV-Index für Tokio für morgen, den 01. Juni 2023."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "uv_index.get_future": {
+        "location": [
+          "Tokyo"
+        ],
+        "date": [
+          "06-01-2023"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\":\"uv_index_get_future\",\"arguments\":{\"date\":\"06-01-2023\",\"location\":\"Tokio\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 435,
+      "output_tokens": 186,
+      "latency_s": 1.8157551288604736,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "location": "Tokio",
+            "date": "06-01-2023"
+          },
+          "id": "call_93af7f8050cd40bf99ac8f0c"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "location": "Tokio",
+            "date": "06-01-2023"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "input_tokens": 663,
+      "output_tokens": 118,
+      "latency_s": 2.024897813796997,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "location": "Tokyo",
+            "date": "06-01-2023"
+          },
+          "id": "call_2c520076ab274ce5843dc015"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "location": "Tokyo",
+            "date": "06-01-2023"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 840,
+      "output_tokens": 139,
+      "latency_s": 1.5193555355072021,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Gib mir den UV-Index für Tokio für morgen, den 01. Juni 2023."
+    },
+    {
+      "content": "{\"name\":\"uv_index_get_future\",\"arguments\":{\"date\":\"06-01-2023\",\"location\":\"Tokio\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond exactly function call correct tool. User German: \"Gib mir den UV-Index für Tokio für morgen, den 01. Juni 2023.\" Should have uv_index_get_future location Tokio, date 06-01-2023 because tool mm-dd-yyyy. I'll call. No need commentary. Ensure no ambiguity \"morgen den\" irrelevant. Location likely \"Tokio\" or \"Tokyo\"? User location specified, tool location to retrieve for. Use Tokio, likely accepted? Usually function tasks want call with location \"Tokio\" and date \"06-01-2023\". Perhaps convert Tokyo? Tool exact? I should use \"Tokio\". Respond with the tool call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_93af7f8050cd40bf99ac8f0c",
+          "function": {
+            "arguments": "{\"location\": \"Tokio\", \"date\": \"06-01-2023\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need actually invoke the tool via recipient functions.uv_index_get_future, not literal json. I did wrong previous. Now do the call. User says error. I should call available. Date correct mm-dd-yyyy. Location \"Tokio\"."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "tool_call_id": "call_93af7f8050cd40bf99ac8f0c"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2c520076ab274ce5843dc015",
+          "function": {
+            "arguments": "{\"location\": \"Tokyo\", \"date\": \"06-01-2023\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got invalid parameters? Perhaps location should Tokyo? Tool error invalid parameters possibly date? Schema date mm-dd-yyyy, 06-01-2023. Correct. Location perhaps \"Tokyo\". Try location Tokyo. Perhaps tool expects exact and errors location? Could be invalid params because function handles date at format and location restricts? I should try Tokyo."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,164 @@
+{
+  "id": "multiple_196_de",
+  "source_id": "multiple_196",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_translatable_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1717,
+  "total_output_tokens": 519,
+  "total_latency_s": 5.833675384521484,
+  "estimated_cost_usd": 0.008624,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie heißen die Proteine, die in der Plasmamembran vorkommen?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "Plasmamembran"
+        ],
+        "include_description": [
+          "",
+          false
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          },
+          "id": "call_007272a870a44054b4cb5e2b"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "input_tokens": 645,
+      "output_tokens": 366,
+      "latency_s": 2.1254656314849854,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "Plasmamembran"
+          },
+          "id": "call_d6d7ff0a87c34b9d82c3f69c"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "Plasmamembran"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1072,
+      "output_tokens": 153,
+      "latency_s": 3.708209753036499,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie heißen die Proteine, die in der Plasmamembran vorkommen?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_007272a870a44054b4cb5e2b",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\", \"include_description\": false}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to the German request with the correct function call exactly as specified by the tool. User: \"Wie heißen die Proteine, die in der Plasmamembran vorkommen?\" = What are the names of the proteins that occur in the plasma membrane? I'll call cellbio_get_proteins with cell_compartment \"Plasmamembran\" or \"plasma membrane\"? Should determine expected. Tool description English, compartment specific. User German, understand and respond correct function call. Should probably have {\"cell_compartment\":\"Plasmamembran\"} maybe include_description? User asks names only, so no descriptions. Should choose exact compartment string. I should call the tool. Could use \"plasma membrane\" as standard. Many such tasks expect mapping German to English? I'll inspect tools: cellbio_get_proteins cell_compartment string, include_description default false. User asks \"Wie heißen die Proteine, die in der Plasmamembran vorkommen?\" I need function call exactly. Likely cellbio_get_proteins(cell_compartment=\"plasma membrane\"). Should not respond prose. Should set include_description false perhaps optional. Since only names, false. Compartment could be \"Plasmamembran\" and backend maybe expects German? Usually tool tasks generated with functions and example user. Should infer from other tasks pattern. They want function call. Use English \"plasma membrane\" likely accepted. Now invoke."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "tool_call_id": "call_007272a870a44054b4cb5e2b"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d6d7ff0a87c34b9d82c3f69c",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"Plasmamembran\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid parameters. Could be compartment expected \"Plasmamembran\"? Or include_description boolean weird? Definition valid. Should retry with German compartment and perhaps omit include_description. User German, tool perhaps backend expects exact \"Plasmamembran\". Should review: cell_compartment string, include_description default false. 400 invalid parameters could be invalid compartment not schema? Usually tool returns invalid parameters if wrong enum hidden? I need try \"Plasmamembran\". Use only required."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,247 @@
+{
+  "id": "multiple_73_he",
+  "source_id": "multiple_73",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 4,
+  "num_clarifications": 1,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2352,
+  "total_output_tokens": 506,
+  "total_latency_s": 5.814330101013184,
+  "estimated_cost_usd": 0.009764,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מי היה מייסד הבודהיזם והיכן הוא נוסד?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religion.get_origin": {
+        "religion": [
+          "בודהיזם"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"religion\":\"Buddhism\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 317,
+      "output_tokens": 112,
+      "latency_s": 1.5871798992156982,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_get_origin",
+          "arguments": {
+            "religion": "Buddhism"
+          },
+          "id": "call_0293c931763141d39dfc0340"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_get_origin": {
+            "religion": "Buddhism"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religion_get_origin'. Please review the function definition and try again.",
+      "input_tokens": 471,
+      "output_tokens": 113,
+      "latency_s": 1.2559373378753662,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_get_origin",
+          "arguments": {
+            "religion": "buddhism"
+          },
+          "id": "call_a01e4b40bcd6498db5f8f32c"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_get_origin": {
+            "religion": "buddhism"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religion_get_origin'. Please review the function definition and try again.",
+      "input_tokens": 643,
+      "output_tokens": 219,
+      "latency_s": 2.081244945526123,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_get_origin",
+          "arguments": {
+            "religion": "בודהיזם"
+          },
+          "id": "call_24a5b195742543d181eba384"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_get_origin": {
+            "religion": "בודהיזם"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 921,
+      "output_tokens": 62,
+      "latency_s": 0.8899679183959961,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מי היה מייסד הבודהיזם והיכן הוא נוסד?"
+    },
+    {
+      "content": "{\"religion\":\"Buddhism\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond in Hebrew user asks \"Who was the founder of Buddhism and where was it founded?\" I'll call religion_get_origin exactly specified. Religion \"Buddhism\" or perhaps \"בודהיזם\"? Tool name strings perhaps should use English? User in Hebrew and instructions understand request Hebrew and respond correct function call exactly. I'll call function religion_get_origin religion likely \"Buddhism\". I should not answer without tool. Call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0293c931763141d39dfc0340",
+          "function": {
+            "arguments": "{\"religion\": \"Buddhism\"}",
+            "name": "religion_get_origin"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need learn that previous assistant response plain JSON not actual tool invocation. Should now use recipient functions.religion_get_origin with args. Must comply. User message error says 400 no function call made, respond by calling one. I call tool. Religion field perhaps \"Buddhism\". Do that."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religion_get_origin'. Please review the function definition and try again.",
+      "tool_call_id": "call_0293c931763141d39dfc0340"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a01e4b40bcd6498db5f8f32c",
+          "function": {
+            "arguments": "{\"religion\": \"buddhism\"}",
+            "name": "religion_get_origin"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I have invalid parameters though religion string matches. Perhaps values expected Hebrew \"בודהיזם\" or \"בודהדיזם\"? Tool definition says name of religion, usually English accepted? It returned invalid params, could be tool quirks expects \"buddhism\" lowercase? Should try correct. I need not respond. Could use \"בודהיזם\" because user Hebrew perhaps tool only accepts specified religion names? I need inspect typical tasks. Functions religion_get_origin and core beliefs. Likely valid religions list? They often expect calls with exact religion maybe user Hebrew demands Hebrew response but tool arguments in English usually \"Buddhism\". Yet returned invalid parameters. Could be naming target issue? I did actual tool call and tool got invalid parameters. Should infer acceptable enum maybe \"buddhism\". Try lowercase."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religion_get_origin'. Please review the function definition and try again.",
+      "tool_call_id": "call_a01e4b40bcd6498db5f8f32c"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_24a5b195742543d181eba384",
+          "function": {
+            "arguments": "{\"religion\": \"בודהיזם\"}",
+            "name": "religion_get_origin"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Now try Hebrew \"בודהיזם\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

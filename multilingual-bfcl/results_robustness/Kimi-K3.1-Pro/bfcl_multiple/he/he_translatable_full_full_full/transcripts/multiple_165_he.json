@@ -1,0 +1,173 @@
+{
+  "id": "multiple_165_he",
+  "source_id": "multiple_165",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1564,
+  "total_output_tokens": 380,
+  "total_latency_s": 3.1442387104034424,
+  "estimated_cost_usd": 0.006928,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את המחיר של גיטרת גיבסון לס פול משומשת במצב מצוין באזור שיקגו."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "guitar_price.find": {
+        "model": [
+          "גיבסון לס פול"
+        ],
+        "condition": [
+          "Excellent"
+        ],
+        "location": [
+          "שיקגו",
+          "אזור שיקגו"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "guitar_price_find",
+          "arguments": {
+            "model": "Gibson Les Paul",
+            "condition": "Excellent",
+            "location": "Chicago"
+          },
+          "id": "call_9bade0713eb649bc87cf2c3d"
+        }
+      ],
+      "decoded": [
+        {
+          "guitar_price_find": {
+            "model": "Gibson Les Paul",
+            "condition": "Excellent",
+            "location": "Chicago"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'guitar_price_find'. Please review the function definition and try again.",
+      "input_tokens": 675,
+      "output_tokens": 155,
+      "latency_s": 1.411996841430664,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "guitar_price_find",
+          "arguments": {
+            "model": "גיבסון לס פול",
+            "condition": "Excellent",
+            "location": "שיקגו"
+          },
+          "id": "call_97b98d1253aa4139aabf61e3"
+        }
+      ],
+      "decoded": [
+        {
+          "guitar_price_find": {
+            "model": "גיבסון לס פול",
+            "condition": "Excellent",
+            "location": "שיקגו"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 889,
+      "output_tokens": 225,
+      "latency_s": 1.7322418689727783,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את המחיר של גיטרת גיבסון לס פול משומשת במצב מצוין באזור שיקגו."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9bade0713eb649bc87cf2c3d",
+          "function": {
+            "arguments": "{\"model\": \"Gibson Les Paul\", \"condition\": \"Excellent\", \"location\": \"Chicago\"}",
+            "name": "guitar_price_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Hebrew? User asks find price used Gibson Les Paul guitar excellent condition Chicago. Should call guitar_price_find parameters model Gibson Les Paul perhaps English or Hebrew, condition Excellent, location Chicago. Should have exact function. I should tool call only likely. Make sure model \"Gibson Les Paul\" and location \"Chicago\". Condition enum Excellent. Do that."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'guitar_price_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_9bade0713eb649bc87cf2c3d"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_97b98d1253aa4139aabf61e3",
+          "function": {
+            "arguments": "{\"model\": \"גיבסון לס פול\", \"condition\": \"Excellent\", \"location\": \"שיקגו\"}",
+            "name": "guitar_price_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid parameters. Should examine definitions. model language English Hebrew. condition correct. location correct. Could be specific expected Hebrew? Perhaps \"גיבסון לס פול\", location \"שיקגו\". The tool descriptions Hebrew, examples no. Should retry. Perhaps condition \"Excellent\" okay. Could model should be \"Gibson Les Paul Standard\"? User says Gibson Les Paul. Invalid parameters perhaps location must be \"שיקגו\" or model Hebrew? Should try likely Hebrew exact user terms. I have ability call again. Should not ask. Use model \"גיבסון לס פול\", location \"שיקגו\", condition Excellent."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

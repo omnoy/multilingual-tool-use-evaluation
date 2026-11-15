@@ -1,6 +1,10 @@
 """
 translate_nested_ground_truth.py — Retroactively translate nested ground-truth values.
 
+Legacy repair only: translate_benchmark.py --level full now translates nested
+ground-truth values itself (and dedupes after translation), so new locales do not
+need this script. Use it only on files produced by the old translator.
+
 Before the translator learned to walk nested values, `--level full` translated only
 top-level string candidates. Strings nested inside array or object candidates stayed
 in English, e.g.
@@ -80,6 +84,7 @@ from multilingual_bfcl.localization.translator import (  # noqa: E402
     _param_schemas,
     collect_query_texts,
     collect_textual_values,
+    dedupe_candidates,
     messages_key,
     walk_value,
 )
@@ -182,40 +187,6 @@ def map_nested(entry_gt: list[dict], mapping: dict[str, str]) -> list[dict]:
             }
         out.append(new_call)
     return out
-
-
-def dedupe_candidates(gt: list[dict]) -> tuple[list[dict], int]:
-    """Drop exact-duplicate candidates per parameter (first occurrence kept).
-
-    Same rule as dedupe_ground_truth.py, top level only: translation can map two
-    English candidates (["Criminal Law"], ["criminal law"]) to the same string.
-    Returns (new_gt, number_of_candidates_removed).
-    """
-    removed = 0
-    out = []
-    for call in gt:
-        new_call = {}
-        for func_name, params in call.items():
-            if not isinstance(params, dict):
-                new_call[func_name] = params
-                continue
-            new_params = {}
-            for param, candidates in params.items():
-                if not isinstance(candidates, list):
-                    new_params[param] = candidates
-                    continue
-                seen: set[str] = set()
-                kept = []
-                for c in candidates:
-                    k = json.dumps(c, ensure_ascii=False, sort_keys=True)
-                    if k not in seen:
-                        seen.add(k)
-                        kept.append(c)
-                removed += len(candidates) - len(kept)
-                new_params[param] = kept
-            new_call[func_name] = new_params
-        out.append(new_call)
-    return out, removed
 
 
 def _enum_values(schema: dict) -> list | None:

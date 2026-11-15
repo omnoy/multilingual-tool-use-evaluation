@@ -1,0 +1,154 @@
+{
+  "id": "multiple_115_de",
+  "source_id": "multiple_115",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_translatable_full_full_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1760,
+  "total_output_tokens": 322,
+  "total_latency_s": 3.0356950759887695,
+  "estimated_cost_usd": 0.00674,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_restaurants": {
+        "location": [
+          "Manhattan"
+        ],
+        "food_type": [
+          "Thailändisch"
+        ],
+        "number": [
+          5
+        ],
+        "dietary_requirements": [
+          [
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"dietary_requirements\":[\"vegan\"],\"food_type\":\"Thailändisch\",\"location\":\"Manhattan\",\"number\":5}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 769,
+      "output_tokens": 180,
+      "latency_s": 1.6750948429107666,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "Thailändisch",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          },
+          "id": "call_355274908a804938bb4367e1"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "Thailändisch",
+            "number": 5,
+            "dietary_requirements": [
+              "vegan"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 991,
+      "output_tokens": 142,
+      "latency_s": 1.360600233078003,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich möchte 5 Restaurants in der Nähe meines Standorts Manhattan finden, die thailändisches Essen und eine vegane Speisekarte anbieten."
+    },
+    {
+      "content": "{\"dietary_requirements\":[\"vegan\"],\"food_type\":\"Thailändisch\",\"location\":\"Manhattan\",\"number\":5}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "Kimi needs to respond with tool call exactly per definition, user German wants 5 restaurants near Manhattan Thai food vegan menu. Should have find_restaurants location Manhattan food_type Thai perhaps \"Thailändisch\", number 5 dietary_requirements [\"vegan\"]. Should consider tool language English German. I should call. Exact as specified no prose? The request says respond with correct function call exactly as specified. So use functions.find_restaurants. Parameters: dietary_requirements [\"vegan\"], food_type \"Thailändisch\", location \"Manhattan\", number 5. Could dietary \"vegane Speisekarte\" or \"vegan\". Usually expected [\"vegan\"]. Should have no additional."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_355274908a804938bb4367e1",
+          "function": {
+            "arguments": "{\"location\": \"Manhattan\", \"food_type\": \"Thailändisch\", \"number\": 5, \"dietary_requirements\": [\"vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to last user feedback that previous response raw JSON not function call. Now actually invoke the tool via recipient functions.find_restaurants. Must no prose. Should adhere. Call with same."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

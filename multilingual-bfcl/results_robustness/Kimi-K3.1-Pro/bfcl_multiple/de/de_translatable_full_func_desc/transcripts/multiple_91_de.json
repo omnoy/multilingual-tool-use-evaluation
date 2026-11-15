@@ -1,0 +1,107 @@
+{
+  "id": "multiple_91_de",
+  "source_id": "multiple_91",
+  "locale": "de",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "de_translatable_full_func_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 410,
+  "total_output_tokens": 281,
+  "total_latency_s": 1.782799482345581,
+  "estimated_cost_usd": 0.00363,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "Apfelkuchen",
+          "Apfel"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          },
+          "id": "call_d3f94ad86d2644df94a522c8"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 410,
+      "output_tokens": 281,
+      "latency_s": 1.782799482345581,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d3f94ad86d2644df94a522c8",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"Apfel\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond German request calling recipe_find mainIngredient likely Apfel, ingredientLimit? User asks \"Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?\" User wants recipe for apple cake less than 5 ingredients. Tool: \"Kochrezepte anhand bestimmter Kriterien wie Hauptzutat und Anzahl der Zutaten finden\" with mainIngredient string and ingredientLimit integer maximum count. Should decide mainIngredient \"Apfel\" or \"Apfelkuchen\"? Usually main ingredient apple. ingredientLimit 5? Less than 5 means maximum 4. Should set 4. User wording \"Kann ich ... finden?\" yes use tool. Respond exactly with the function call, perhaps \"mainIngredient\":\"Apfel\",\"ingredientLimit\":4. Should have no prose after tool. Could mainIngredient \"Apfelkuchen\"? Since tool criteria main ingredient, should \"Apfel\". Set 4, because weniger als 5. Now call."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

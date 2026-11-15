@@ -1,0 +1,173 @@
+{
+  "id": "multiple_61_de",
+  "source_id": "multiple_61",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1161,
+  "total_output_tokens": 433,
+  "total_latency_s": 3.9140207767486572,
+  "estimated_cost_usd": 0.006652,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde einen Landschaftsarchitekten mit 5 Jahren Erfahrung in der Gartengestaltung auf kleinem Raum in Portland."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "landscape_architect.find_specialty": {
+        "location": [
+          "Portland",
+          "Portland, OR"
+        ],
+        "specialization": [
+          "small space garden design"
+        ],
+        "years_experience": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "landscape_architect_find_specialty",
+          "arguments": {
+            "location": "Portland, Oregon",
+            "specialization": "Gartengestaltung auf kleinem Raum",
+            "years_experience": 5
+          },
+          "id": "call_b8c556a321ca40d984af1cf9"
+        }
+      ],
+      "decoded": [
+        {
+          "landscape_architect_find_specialty": {
+            "location": "Portland, Oregon",
+            "specialization": "Gartengestaltung auf kleinem Raum",
+            "years_experience": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'landscape_architect_find_specialty'. Please review the function definition and try again.",
+      "input_tokens": 439,
+      "output_tokens": 218,
+      "latency_s": 1.5934278964996338,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "landscape_architect_find_specialty",
+          "arguments": {
+            "location": "Portland, OR",
+            "specialization": "small-space garden design",
+            "years_experience": 5
+          },
+          "id": "call_43a232d36a2843b4b2fb9583"
+        }
+      ],
+      "decoded": [
+        {
+          "landscape_architect_find_specialty": {
+            "location": "Portland, OR",
+            "specialization": "small-space garden design",
+            "years_experience": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 722,
+      "output_tokens": 215,
+      "latency_s": 2.3205928802490234,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde einen Landschaftsarchitekten mit 5 Jahren Erfahrung in der Gartengestaltung auf kleinem Raum in Portland."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b8c556a321ca40d984af1cf9",
+          "function": {
+            "arguments": "{\"location\": \"Portland, Oregon\", \"specialization\": \"Gartengestaltung auf kleinem Raum\", \"years_experience\": 5}",
+            "name": "landscape_architect_find_specialty"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond German user request translate: Find landscape architect with 5 years experience in garden design in small spaces in Portland. Should call landscape_architect_find_specialty exactly tool. Should have location city and state: Portland ambiguous Oregon likely Portland, Oregon, German user no state but tool requires City and state. Should infer Portland, Oregon. Specialization should be as specified perhaps \"Gartengestaltung auf kleinem Raum\" or English \"small-space garden design\" because tool specialization free string. years_experience 5. Should have exact function call, no need response. I can call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'landscape_architect_find_specialty'. Please review the function definition and try again.",
+      "tool_call_id": "call_b8c556a321ca40d984af1cf9"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_43a232d36a2843b4b2fb9583",
+          "function": {
+            "arguments": "{\"location\": \"Portland, OR\", \"specialization\": \"small-space garden design\", \"years_experience\": 5}",
+            "name": "landscape_architect_find_specialty"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Got 400 invalid params. Should review definition: location string, specialization string, years_experience integer optional. I did valid. Could be specialization accepted common areas residential design etc perhaps needs English or exact? Error generic. Should try specialization \"residential design\" perhaps request small-space garden design but tool only common. Could be years_experience exact 5 accepted. Location perhaps \"Portland, OR\" rather than Oregon? Tool expects city and state. Bad request likely service parameter strict values? Should retry with English strings perhaps location Portland, OR specialization small space garden design. Should have no user clarification yet. Perhaps call again."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

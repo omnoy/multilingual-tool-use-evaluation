@@ -1,0 +1,164 @@
+{
+  "id": "multiple_109_he",
+  "source_id": "multiple_109",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1651,
+  "total_output_tokens": 435,
+  "total_latency_s": 7.325928449630737,
+  "estimated_cost_usd": 0.007651999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהם שמות החלבונים הנמצאים בקרום הפלזמה?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "קרום הפלזמה"
+        ],
+        "include_description": [
+          false,
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          },
+          "id": "call_d5d1c50278ca42e18defd05a"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "input_tokens": 704,
+      "output_tokens": 182,
+      "latency_s": 1.5201995372772217,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "קרום הפלזמה"
+          },
+          "id": "call_483f5ad499244256890c4616"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "קרום הפלזמה"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 947,
+      "output_tokens": 253,
+      "latency_s": 5.805728912353516,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהם שמות החלבונים הנמצאים בקרום הפלזמה?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d5d1c50278ca42e18defd05a",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\", \"include_description\": false}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Hebrew request: \"What are the names of proteins found in plasma membrane?\" I'll call cellbio_get_proteins cell_compartment plasma membrane. I'll respond with the correct function call exactly as tool definitions. I should invoke. Should determine Hebrew or English argument? cell_compartment specific subcellular compartment. Use \"קרום הפלזמה\" or \"plasma membrane\"? Tool English schema likely expects \"plasma membrane\". Prior tasks likely use argument \"plasma membrane\". Should have no descriptions since asks names. include_description false optional. Call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "tool_call_id": "call_d5d1c50278ca42e18defd05a"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_483f5ad499244256890c4616",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"קרום הפלזמה\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool 400 invalid parameters. Should review: cell_compartment string required, include_description boolean default false. Perhaps compartment must Hebrew? Or include_description false invalid? \"include_description\" only set true if descriptions. Could retry without optional and Hebrew string? Should determine expected perhaps \"קרום הפלזמה\". The tool error invalid parameters likely compartment names enumerated hidden? Could be expects \"קרום פלזמה\" or \"Plasma membrane\". I need intelligently retry. Perhaps functions accept values in English? Usually generated tool tasks with tool implementations expecting exact values. I need examine patterns: find_exhibition Hebrew descriptions but args location etc. mutation tool. cellbio likely dataset has compartment names. If user Hebrew, likely function call {\"cell_compartment\":\"plasma membrane\"} accepted? 400 means perhaps include_description false as boolean issue? But schema boolean. Could be tool only accepts exact Hebrew compartment? Now retry with \"קרום הפלזמה\" and no include_description."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

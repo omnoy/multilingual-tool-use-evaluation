@@ -78,6 +78,18 @@ SUPPORTED_LOCALES: dict[str, Locale] = {
         decimal_separator=",",
         thousands_separator=".",
     ),
+    "tr": Locale(
+        code="tr",
+        name="Turkish",
+        date_format="%d.%m.%Y",
+        decimal_separator=",",
+        thousands_separator=".",
+        model_hints=[
+            "Use standard modern Turkish (İstanbul Türkçesi).",
+            "Always use correct Turkish characters (ç, ğ, ı, İ, ö, ş, ü); keep the dotted/dotless i distinction (i/İ vs. ı/I) correct, including in capitalized words.",
+            "Attach case suffixes to proper nouns with an apostrophe (e.g. İstanbul'da, Paris'e), following Turkish orthography.",
+        ],
+    ),
 }
 
 

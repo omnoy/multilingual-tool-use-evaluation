@@ -1,0 +1,112 @@
+{
+  "id": "multiple_24_he",
+  "source_id": "multiple_24",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_translatable_query",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 426,
+  "total_output_tokens": 308,
+  "total_latency_s": 4.179627180099487,
+  "estimated_cost_usd": 0.003932000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו המסלול המהיר ביותר מלונדון לאדינבורו כדי לשחק באליפות שחמט? בנוסף, ספק הערכה של המרחק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "route_planner.calculate_route": {
+        "start": [
+          "London"
+        ],
+        "destination": [
+          "Edinburgh"
+        ],
+        "method": [
+          "fastest",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          },
+          "id": "call_c48cdb0f3fd54b35b134ed66"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 426,
+      "output_tokens": 308,
+      "latency_s": 4.179627180099487,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו המסלול המהיר ביותר מלונדון לאדינבורו כדי לשחק באליפות שחמט? בנוסף, ספק הערכה של המרחק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c48cdb0f3fd54b35b134ed66",
+          "function": {
+            "arguments": "{\"start\": \"London\", \"destination\": \"Edinburgh\", \"method\": \"fastest\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to user in Hebrew request. Should understand: \"מהו המסלול המהיר ביותר מלונדון לאדינבורו כדי לשחק באליפות שחמט? בנוסף, ספק הערכה של המרחק.\" Translation: What is the fastest route from London to Edinburgh to play in a chess championship? Additionally, provide an estimate of the distance.\n\nI have tools route_planner_calculate_route and chess_club_details_find. Should use correct function calls exactly as tool definitions. I need probably route fastest London to Edinburgh, perhaps chess club details? User mentions chess championship but no specific club. Probably needs route planner. \"fastest\" and calculate route gives route/distance. Could call route_planner. Perhaps find chess club in Edinburgh hosting championship? Tool chess_club_details_find name required, city required, event optional. Name mandatory cannot infer. So no. Route start London destination Edinburgh method fastest. I should call the tool. Then likely respond Hebrew with route and distance based on result. I'll call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

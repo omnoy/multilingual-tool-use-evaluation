@@ -1,0 +1,166 @@
+{
+  "id": "multiple_158_de",
+  "source_id": "multiple_158",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1722,
+  "total_output_tokens": 509,
+  "total_latency_s": 3.746492624282837,
+  "estimated_cost_usd": 0.008534,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Rufe die Biografie und die wichtigsten Verdienste von Papst Innozenz III. ab."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religious_history.get_papal_biography": {
+        "papal_name": [
+          "Innocent III",
+          "Pope Innocent III"
+        ],
+        "include_contributions": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religious_history_get_papal_biography",
+          "arguments": {
+            "papal_name": "Innozenz III.",
+            "include_contributions": true
+          },
+          "id": "call_193058d99d4e4195b76a67fa"
+        }
+      ],
+      "decoded": [
+        {
+          "religious_history_get_papal_biography": {
+            "papal_name": "Innozenz III.",
+            "include_contributions": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religious_history_get_papal_biography'. Please review the function definition and try again.",
+      "input_tokens": 663,
+      "output_tokens": 329,
+      "latency_s": 1.9496054649353027,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religious_history_get_papal_biography",
+          "arguments": {
+            "papal_name": "Innocent III",
+            "include_contributions": true
+          },
+          "id": "call_0d359429414945d3a0765424"
+        }
+      ],
+      "decoded": [
+        {
+          "religious_history_get_papal_biography": {
+            "papal_name": "Innocent III",
+            "include_contributions": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1059,
+      "output_tokens": 180,
+      "latency_s": 1.7968871593475342,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Rufe die Biografie und die wichtigsten Verdienste von Papst Innozenz III. ab."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_193058d99d4e4195b76a67fa",
+          "function": {
+            "arguments": "{\"papal_name\": \"Innozenz III.\", \"include_contributions\": true}",
+            "name": "religious_history_get_papal_biography"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to German user request: \"Rufe die Biografie und die wichtigsten Verdienste von Papst Innozenz III. ab.\" Should call correct function exactly as tool definitions. I have tool religious_history_get_papal_biography requiring papal_name string, include_contributions boolean default false. Should use name likely \"Innozenz III.\" or \"Innocent III\"? Must understand. User wants biography and main contributions, so include_contributions true. Papal name probably \"Innozenz III.\" Tool may expect name. Should decide whether output function call only? Instructions say respond with correct function call exactly as specified. So call. No need commentary textual. Should use exact tool. papal_name \"Innozenz III.\" likely accepted? Tool likely database recognizes \"Innocent III\" maybe papal name \"Innozenz III\". Should infer from similar tasks. They often expect straightforward {\"papal_name\":\"Innozenz III.\",\"include_contributions\":true}. Could use \"Innocent III\" canonical English but user German. Tool description English. Usually tool names handle papal names. Should be robust. No need parallel. I'll call German name."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religious_history_get_papal_biography'. Please review the function definition and try again.",
+      "tool_call_id": "call_193058d99d4e4195b76a67fa"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0d359429414945d3a0765424",
+          "function": {
+            "arguments": "{\"papal_name\": \"Innocent III\", \"include_contributions\": true}",
+            "name": "religious_history_get_papal_biography"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400 invalid params. Perhaps retry exact \"Innocent III\". Definition okay types. Error could papal_name naming? Perhaps include contributions false? No. \"invalid parameters\" suggests tool backend expects Pope name \"Innocent III\" perhaps German invalid. I'll retry English. Could be \"Pope Innocent III\". Tool description: based on his papal name, examples unspecified. Common tasks likely expect \"Innocent III\". Since user wants Innocenz III. I'll call with \"Innocent III\"."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

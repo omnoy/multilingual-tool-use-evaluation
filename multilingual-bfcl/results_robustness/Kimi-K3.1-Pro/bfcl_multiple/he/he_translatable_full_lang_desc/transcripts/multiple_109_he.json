@@ -1,0 +1,164 @@
+{
+  "id": "multiple_109_he",
+  "source_id": "multiple_109",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1346,
+  "total_output_tokens": 376,
+  "total_latency_s": 5.775771141052246,
+  "estimated_cost_usd": 0.006451999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהם שמות החלבונים הנמצאים בקרום הפלזמה?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "קרום הפלזמה"
+        ],
+        "include_description": [
+          false,
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          },
+          "id": "call_8ba5579379be4655b023d281"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "input_tokens": 544,
+      "output_tokens": 197,
+      "latency_s": 1.771000862121582,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "קרום הפלזמה"
+          },
+          "id": "call_00712658af6742db9d36a521"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "קרום הפלזמה"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 802,
+      "output_tokens": 179,
+      "latency_s": 4.004770278930664,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהם שמות החלבונים הנמצאים בקרום הפלזמה?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8ba5579379be4655b023d281",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\", \"include_description\": false}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to the Hebrew user asking what are names of proteins found in plasma membrane. Should use cellbio_get_proteins with cell_compartment plasma membrane, include_description default false. Should have exact function call. I should call. Hebrew \"מהם שמות החלבונים הנמצאים בקרום הפלזמה?\" translation What are names of proteins located in plasma membrane? Tool get list proteins in specific cell compartment. Parameters cell_compartment can English Hebrew. Use \"plasma membrane\" or \"קרום הפלזמה\". likely English best. include_description false optional. Should just call the tool."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "tool_call_id": "call_8ba5579379be4655b023d281"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_00712658af6742db9d36a521",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"קרום הפלזמה\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400 invalid parameters. Perhaps Hebrew input? The function valid only exact compartment values unknown. Could be \"קרום הפלזמה\". Or include_description bool accepted? Definition yes. Perhaps function rejects English? Says Languages English Hebrew. Should retry with Hebrew and omit description perhaps. Should review exact. Could be compartment should be \"cell membrane\" rather than plasma membrane? User says plasma membrane. Typical proteins tool test expects cell_compartment \"plasma membrane\". Why 400? Could be include_description false considered issue? It says default false but valid. Try \"קרום הפלזמה\" only."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

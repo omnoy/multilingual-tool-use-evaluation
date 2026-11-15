@@ -1,0 +1,175 @@
+{
+  "id": "multiple_26_he",
+  "source_id": "multiple_26",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1765,
+  "total_output_tokens": 752,
+  "total_latency_s": 6.821920871734619,
+  "estimated_cost_usd": 0.01105,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "גלה את הפרסים על משחק פורטנייט בפלטפורמת פלייסטיישן עם משימות וגביעים שונים"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "game_rewards.get": {
+        "game": [
+          "פורטנייט"
+        ],
+        "platform": [
+          "פלייסטיישן"
+        ],
+        "mission": [
+          ""
+        ],
+        "trophy": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "game_rewards_get",
+          "arguments": {
+            "game": "Fortnite",
+            "platform": "PlayStation"
+          },
+          "id": "call_3c53289cbcad4c5fbd16d38a"
+        }
+      ],
+      "decoded": [
+        {
+          "game_rewards_get": {
+            "game": "Fortnite",
+            "platform": "PlayStation"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'game_rewards_get'. Please review the function definition and try again.",
+      "input_tokens": 722,
+      "output_tokens": 262,
+      "latency_s": 1.9549691677093506,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "game_rewards_get",
+          "arguments": {
+            "game": "פורטנייט",
+            "platform": "פלייסטיישן",
+            "mission": "",
+            "trophy": ""
+          },
+          "id": "call_be96c864c5494d91807ff116"
+        }
+      ],
+      "decoded": [
+        {
+          "game_rewards_get": {
+            "game": "פורטנייט",
+            "platform": "פלייסטיישן",
+            "mission": "",
+            "trophy": ""
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1043,
+      "output_tokens": 490,
+      "latency_s": 4.8669517040252686,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "גלה את הפרסים על משחק פורטנייט בפלטפורמת פלייסטיישן עם משימות וגביעים שונים"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3c53289cbcad4c5fbd16d38a",
+          "function": {
+            "arguments": "{\"game\": \"Fortnite\", \"platform\": \"PlayStation\"}",
+            "name": "game_rewards_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Hebrew with function call exactly as specified. Should parse request: \"Discover the rewards for Fortnite game on PlayStation platform with different missions and trophies\". Should call game_rewards_get. User asks with missions and trophies various, likely no specific mission or trophy, defaults ''. Should game=\"Fortnite\" perhaps Hebrew accepted. platform=\"PlayStation\". I should call function with game=\"Fortnite\", platform=\"PlayStation\" only, mission and trophy omitted/default. Make sure \"עם משימות וגביעים שונים\" could mean retrieve rewards for various missions and trophies. game_rewards_get can optionally mission and trophy. Listing all with defaults likely best. I have no need other tools. Function call exactly. Could use Hebrew names \"פורטנייט\" and \"פלייסטיישן\" since supports both, but likely canonical English works. The instruction user Hebrew understand and respond correct function call exactly as specified. I'll call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'game_rewards_get'. Please review the function definition and try again.",
+      "tool_call_id": "call_3c53289cbcad4c5fbd16d38a"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_be96c864c5494d91807ff116",
+          "function": {
+            "arguments": "{\"game\": \"פורטנייט\", \"platform\": \"פלייסטיישן\", \"mission\": \"\", \"trophy\": \"\"}",
+            "name": "game_rewards_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned bad request. Should retry perhaps parameters require mission trophy? Though defaults optional. Hebrew platform? Should infer API expects exact values perhaps \"פורטנייט\", \"פלייסטיישן\" or \"fortnite\", \"playstation\". I need correct function call exactly. Since 400 invalid parameters perhaps empty omitted weird? Definition says game, platform required; mission default ''. Could be English proper accepted. Perhaps values expect lowercase? I need examine patterns from similar benchmark tasks. These tools often synthetic APIs with strict parameters and known values. Should call with Hebrew? User Hebrew. \"גלה את הפרסים על משחק פורטנייט בפלטפורמת פלייסטיישן עם משימות וגביעים שונים\" likely function intended game_rewards_get(game=\"Fortnite\", platform=\"PlayStation\", mission=\"\", trophy=\"\"). Why 400? Could be platform valid \"playstation\" lowercase or \"PS\". Should try Hebrew as supported. The description languages English Hebrew means input accepted either. Could include mission/trophy empty strings to satisfy? It says defaults ''. 400 might be validator bug when optional omitted? Many tasks require call all parameters perhaps defaults explicit. Should retry with explicit empty strings. Could do game=\"פורטנייט\", platform=\"פלייסטיישן\", mission=\"\", trophy=\"\". Which most likely? I'll think of generated tools. In these tasks, standard function calls often pass game names in English, platform \"PlayStation\". Example tasks in other languages. Error invalid parameters implies values not matching backend. Perhaps game name \"fortnite\" lowercase? The user explicitly asks missions and trophies different, means need multiple calls? Could first list missions then get rewards for various trophies? But generic call should work.\n\nI can retry using Hebrew, since native request and supported. Include optional defaults? Use explicit blank strings perhaps."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

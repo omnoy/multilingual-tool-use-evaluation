@@ -1,0 +1,539 @@
+{
+  "id": "multiple_74_de",
+  "source_id": "multiple_74",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_translatable_query",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 9688,
+  "total_output_tokens": 1224,
+  "total_latency_s": 15.15098762512207,
+  "estimated_cost_usd": 0.02111664,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde den Preis von van Goghs Gemälde „Sternennacht“ auf allen Auktionsplattformen."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "art_auction.fetch_artwork_price": {
+        "artwork_name": [
+          "Starry Night"
+        ],
+        "artist": [
+          "Van Gogh"
+        ],
+        "platform": [
+          "all",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nUm den Preis von van Goghs „Sternennacht“ zu finden, muss ich anmerken, dass „Die Sternennacht“ („The Starry Night“) sich im Museum of Modern Art in New York befindet und normalerweise nicht auf Auktionsplattformen gehandelt wird. Dennoch werde ich die Suche auf den verfügbaren Plattformen durchführen.\n\nAllerdings benötige ich die Namen der Plattformen. Ich werde die Suche mit den gängigen Plattformen starten. Aber ich sehe, dass der Parameter `platform` optional ist – ich kann die Suche also auch ohne spezifische Plattform durchführen. Lassen Sie mich die Abfrage starten:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh"
+          },
+          "id": "call_1767b4c999b54716a0d73a6e"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 537,
+      "output_tokens": 228,
+      "latency_s": 2.109523296356201,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Es scheint, dass der `platform`-Parameter erforderlich ist. Lassen Sie mich die Suche mit den wichtigsten Auktionsplattformen durchführen. Ich werde parallel für mehrere Plattformen suchen:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Sotheby's"
+          },
+          "id": "call_56aea9e5c0a44d23a589bcd1"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Christie's"
+          },
+          "id": "call_ab8e33b0bde54a39ae6a4bc3"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Phillips"
+          },
+          "id": "call_5c40282165da414b9e23d31a"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Sotheby's"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Christie's"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Phillips"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 804,
+      "output_tokens": 300,
+      "latency_s": 2.8236217498779297,
+      "num_calls": 3,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Es tut mir leid, aber die Anfragen schlagen leider fehl. Das könnte daran liegen, dass „Die Sternennacht“ („The Starry Night“) von Vincent van Gogh sich nicht im Auktionshandel befindet. Das Gemälde ist seit 1941 fester Bestandteil der Sammlung des **Museum of Modern Art (MoMA)** in New York und wurde seither nie auf einer Auktion angeboten. \n\nFalls Sie an Preisen anderer van-Gogh-Gemälde interessiert sind, die tatsächlich versteigert wurden (wie z. B. „Irises“ oder „Porträt des Dr. Gachet“), lassen Sie es mich bitte wissen – dann kann ich die Suche gezielt für diese Werke durchführen."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1215,
+      "output_tokens": 177,
+      "latency_s": 1.7891240119934082,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Sie haben Recht – ich muss die Funktion korrekt aufrufen. Lassen Sie mich die Suche mit den korrekten Parametern erneut durchführen:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Sotheby's"
+          },
+          "id": "call_1cf6120410c14c288d1e8f49"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Christie's"
+          },
+          "id": "call_689b93553eeb4ed8a0557241"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Phillips"
+          },
+          "id": "call_0d7ec16201634b95acf9bd50"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Sotheby's"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Christie's"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "Phillips"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 1416,
+      "output_tokens": 288,
+      "latency_s": 2.4843509197235107,
+      "num_calls": 3,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Die Aufrufe liefern weiterhin Fehler. Bitte geben Sie mir Bescheid, welche konkreten Plattform-Namen das System erwartet, damit ich die Anfrage korrekt ausführen kann."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1815,
+      "output_tokens": 46,
+      "latency_s": 3.0732662677764893,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "all"
+          },
+          "id": "call_a8f08f1d1fc242d9a28cd21a"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "all"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 1885,
+      "output_tokens": 92,
+      "latency_s": 1.1518352031707764,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "artnet"
+          },
+          "id": "call_406cc435223d471cbfbe1f36"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Sternennacht",
+            "artist": "Vincent van Gogh",
+            "platform": "artnet"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2016,
+      "output_tokens": 93,
+      "latency_s": 1.7192661762237549,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde den Preis von van Goghs Gemälde „Sternennacht“ auf allen Auktionsplattformen."
+    },
+    {
+      "content": "\n\nUm den Preis von van Goghs „Sternennacht“ zu finden, muss ich anmerken, dass „Die Sternennacht“ („The Starry Night“) sich im Museum of Modern Art in New York befindet und normalerweise nicht auf Auktionsplattformen gehandelt wird. Dennoch werde ich die Suche auf den verfügbaren Plattformen durchführen.\n\nAllerdings benötige ich die Namen der Plattformen. Ich werde die Suche mit den gängigen Plattformen starten. Aber ich sehe, dass der Parameter `platform` optional ist – ich kann die Suche also auch ohne spezifische Plattform durchführen. Lassen Sie mich die Abfrage starten:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1767b4c999b54716a0d73a6e",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_1767b4c999b54716a0d73a6e"
+    },
+    {
+      "content": "Es scheint, dass der `platform`-Parameter erforderlich ist. Lassen Sie mich die Suche mit den wichtigsten Auktionsplattformen durchführen. Ich werde parallel für mehrere Plattformen suchen:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_56aea9e5c0a44d23a589bcd1",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Sotheby's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_ab8e33b0bde54a39ae6a4bc3",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Christie's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 1
+        },
+        {
+          "id": "call_5c40282165da414b9e23d31a",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Phillips\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_56aea9e5c0a44d23a589bcd1"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_ab8e33b0bde54a39ae6a4bc3"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_5c40282165da414b9e23d31a"
+    },
+    {
+      "content": "Es tut mir leid, aber die Anfragen schlagen leider fehl. Das könnte daran liegen, dass „Die Sternennacht“ („The Starry Night“) von Vincent van Gogh sich nicht im Auktionshandel befindet. Das Gemälde ist seit 1941 fester Bestandteil der Sammlung des **Museum of Modern Art (MoMA)** in New York und wurde seither nie auf einer Auktion angeboten. \n\nFalls Sie an Preisen anderer van-Gogh-Gemälde interessiert sind, die tatsächlich versteigert wurden (wie z. B. „Irises“ oder „Porträt des Dr. Gachet“), lassen Sie es mich bitte wissen – dann kann ich die Suche gezielt für diese Werke durchführen.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "Sie haben Recht – ich muss die Funktion korrekt aufrufen. Lassen Sie mich die Suche mit den korrekten Parametern erneut durchführen:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1cf6120410c14c288d1e8f49",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Sotheby's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_689b93553eeb4ed8a0557241",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Christie's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 1
+        },
+        {
+          "id": "call_0d7ec16201634b95acf9bd50",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Phillips\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_1cf6120410c14c288d1e8f49"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_689b93553eeb4ed8a0557241"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_0d7ec16201634b95acf9bd50"
+    },
+    {
+      "content": "Die Aufrufe liefern weiterhin Fehler. Bitte geben Sie mir Bescheid, welche konkreten Plattform-Namen das System erwartet, damit ich die Anfrage korrekt ausführen kann.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a8f08f1d1fc242d9a28cd21a",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\", \"platform\": \"all\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_a8f08f1d1fc242d9a28cd21a"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_406cc435223d471cbfbe1f36",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Sternennacht\", \"artist\": \"Vincent van Gogh\", \"platform\": \"artnet\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -72,6 +72,10 @@ LOCALIZED_HINTS: dict[str, dict[str, Any]] = {
         "label": "Idiomas", "colon": ": ", "sep": ", ", "end": ".",
         "names": {"English": "inglés", "Spanish": "español"},
     },
+    "tr": {
+        "label": "Diller", "colon": ": ", "sep": ", ", "end": ".",
+        "names": {"English": "İngilizce", "Turkish": "Türkçe"},
+    },
 }
 
 

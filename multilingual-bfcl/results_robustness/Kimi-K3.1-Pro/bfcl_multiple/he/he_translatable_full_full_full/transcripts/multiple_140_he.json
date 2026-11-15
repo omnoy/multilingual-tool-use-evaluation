@@ -1,0 +1,176 @@
+{
+  "id": "multiple_140_he",
+  "source_id": "multiple_140",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_translatable_full_full_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1599,
+  "total_output_tokens": 367,
+  "total_latency_s": 3.3131959438323975,
+  "estimated_cost_usd": 0.006867999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את התביעות שהוגשו נגד חברת גוגל בקליפורניה בשנת 2020."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuits_search": {
+        "company_name": [
+          "גוגל"
+        ],
+        "location": [
+          "קליפורניה"
+        ],
+        "year": [
+          2020
+        ],
+        "case_type": [
+          "",
+          "הכול"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuits_search",
+          "arguments": {
+            "company_name": "Google",
+            "location": "California",
+            "year": 2020
+          },
+          "id": "call_20961ea7945146f1933ad11a"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuits_search": {
+            "company_name": "Google",
+            "location": "California",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuits_search'. Please review the function definition and try again.",
+      "input_tokens": 691,
+      "output_tokens": 158,
+      "latency_s": 1.4716463088989258,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuits_search",
+          "arguments": {
+            "company_name": "גוגל",
+            "location": "קליפורניה",
+            "year": 2020
+          },
+          "id": "call_c43b6bacd6154ec3bc24ddf5"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuits_search": {
+            "company_name": "גוגל",
+            "location": "קליפורניה",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 908,
+      "output_tokens": 209,
+      "latency_s": 1.8415496349334717,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את התביעות שהוגשו נגד חברת גוגל בקליפורניה בשנת 2020."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_20961ea7945146f1933ad11a",
+          "function": {
+            "arguments": "{\"company_name\": \"Google\", \"location\": \"California\", \"year\": 2020}",
+            "name": "lawsuits_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond Hebrew request: Find lawsuits filed against Google in California in 2020. Should have tool lawsuits_search company_name Google location California year 2020. No case_type specified so omit. I should call exactly. Should consider language? Parameters English acceptable. Tool desc Hebrew: search legal lawsuits against company time location. company Google, location California, year 2020. I'll do."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuits_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_20961ea7945146f1933ad11a"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c43b6bacd6154ec3bc24ddf5",
+          "function": {
+            "arguments": "{\"company_name\": \"גוגל\", \"location\": \"קליפורניה\", \"year\": 2020}",
+            "name": "lawsuits_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Should handle tool 400. Perhaps inspect param mismatch? Definition says company_name, location, year integer. I used correct. Perhaps language expected Hebrew? Could be need company Hebrew \"גוגל\", location \"קליפורניה\". Why 400? Could be case_type required? No. Perhaps tool only accepts certain case types? Bad request perhaps Google not supported? Should retry likely with Hebrew values. The instructions \"Understand request Hebrew and respond with correct function call exactly as specified in tool definitions.\" I should adapt perhaps expected \"גוגל\" and \"קליפורניה\". Call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

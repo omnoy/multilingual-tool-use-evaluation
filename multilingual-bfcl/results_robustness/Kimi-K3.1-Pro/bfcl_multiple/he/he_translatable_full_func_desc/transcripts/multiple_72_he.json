@@ -1,0 +1,166 @@
+{
+  "id": "multiple_72_he",
+  "source_id": "multiple_72",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_translatable_full_func_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1307,
+  "total_output_tokens": 344,
+  "total_latency_s": 5.4503333568573,
+  "estimated_cost_usd": 0.006054,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה הייתה האוכלוסייה של קליפורניה בשנת 1970?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "us_history.population_by_state_year": {
+        "state": [
+          "קליפורניה",
+          "CA"
+        ],
+        "year": [
+          1970
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "California",
+            "year": 1970
+          },
+          "id": "call_ceae3ffc67cb4303b225b42b"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "California",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "input_tokens": 553,
+      "output_tokens": 136,
+      "latency_s": 1.3052937984466553,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "CA",
+            "year": 1970
+          },
+          "id": "call_905cb81854404aa8a6c446b9"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "CA",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 754,
+      "output_tokens": 208,
+      "latency_s": 4.1450395584106445,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה הייתה האוכלוסייה של קליפורניה בשנת 1970?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ceae3ffc67cb4303b225b42b",
+          "function": {
+            "arguments": "{\"state\": \"California\", \"year\": 1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to user in Hebrew asking population of California in 1970. Should call function us_history_population_by_state_year state California year 1970. Should understand likely tool returns data. I must call exactly. I have tool Hebrew descriptions. Should use state perhaps \"California\". Then inspect result and respond in Hebrew likely. Do call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "tool_call_id": "call_ceae3ffc67cb4303b225b42b"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_905cb81854404aa8a6c446b9",
+          "function": {
+            "arguments": "{\"state\": \"CA\", \"year\": 1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400 invalid parameters. Should think correct expected state perhaps Hebrew \"קליפורניה\"? Tool definition state string, year int. It should be valid. Perhaps dataset function requires state abbreviation? Should try state \"CA\" or Hebrew? Error says invalid parameters maybe actual backend parameter schema. Could be tool demands state as state name perhaps \"california\"? I need retry sensibly. User specifically Hebrew. Tools often state names expected in English full? I did. Could be year outside range? 1970 definitely population. Perhaps naming? I must review exactly: state string, year integer. Correct. 400 could be state invalid e.g. must \"CA\". I'll try \"CA\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

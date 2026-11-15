@@ -1,0 +1,171 @@
+{
+  "id": "multiple_20_he",
+  "source_id": "multiple_20",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_translatable_full_lang_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1131,
+  "total_output_tokens": 312,
+  "total_latency_s": 5.9097678661346436,
+  "estimated_cost_usd": 0.005382,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מה המחיר להזמנת פסל עשוי שיש בגודל של 3 רגל?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture_price.calculate": {
+        "material": [
+          "שיש"
+        ],
+        "size": [
+          3
+        ],
+        "complexity": [
+          "medium",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "marble",
+            "size": 3
+          },
+          "id": "call_1fcc5fe911ed4a5a84e31b72"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "marble",
+            "size": 3
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sculpture_price_calculate'. Please review the function definition and try again.",
+      "input_tokens": 461,
+      "output_tokens": 146,
+      "latency_s": 1.3069202899932861,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "שיש",
+            "size": 3,
+            "complexity": "medium"
+          },
+          "id": "call_5505b9c6e3724f75b94fc34b"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "שיש",
+            "size": 3,
+            "complexity": "medium"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 670,
+      "output_tokens": 166,
+      "latency_s": 4.602847576141357,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מה המחיר להזמנת פסל עשוי שיש בגודל של 3 רגל?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1fcc5fe911ed4a5a84e31b72",
+          "function": {
+            "arguments": "{\"material\": \"marble\", \"size\": 3}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Hebrew user. Should understand: \"מה המחיר להזמנת פסל עשוי שיש בגודל של 3 רגל?\" = What is price to commission a sculpture made of marble size 3 feet? I'll call sculpture_price_calculate material marble size 3 complexity default medium. I'll respond with the correct function call exactly. So call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sculpture_price_calculate'. Please review the function definition and try again.",
+      "tool_call_id": "call_1fcc5fe911ed4a5a84e31b72"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5505b9c6e3724f75b94fc34b",
+          "function": {
+            "arguments": "{\"material\": \"שיש\", \"size\": 3, \"complexity\": \"medium\"}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid parameters. Perhaps material Hebrew? Definition material English Hebrew. \"marble\" should be valid? Perhaps expected שיש? Or complexity default issue? Should retry review. Could be material value needs \"שיש\" because languages? It says material used for sculpture. Languages English Hebrew. Why bad request? Could be size integer correct. complexity omitted default. Perhaps exact \"Marble\"? Try Hebrew \"שיש\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

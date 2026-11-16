@@ -1,0 +1,296 @@
+{
+  "id": "multiple_186_tr",
+  "source_id": "multiple_186",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_translatable_full",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 4,
+  "num_clarifications": 0,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 3004,
+  "total_output_tokens": 650,
+  "total_latency_s": 5.761383533477783,
+  "estimated_cost_usd": 0.007488959999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Bana hazırlama süresi 30 dakikadan az olan vegan bir browni tarifi bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_recipe": {
+        "dietary_restrictions": [
+          "vegan"
+        ],
+        "recipe_type": [
+          "tatlı"
+        ],
+        "time": [
+          30
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_recipe",
+          "arguments": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "browni",
+            "time": 30
+          },
+          "id": "call_d8a508822b6f4f4680949234"
+        }
+      ],
+      "decoded": [
+        {
+          "find_recipe": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "browni",
+            "time": 30
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_recipe'. Please review the function definition and try again.",
+      "input_tokens": 518,
+      "output_tokens": 86,
+      "latency_s": 0.951357364654541,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Sanırım parametrelerde bir hata oluştu. `time` parametresi tam sayı (integer) olmalı, string olarak göndermiş olabilirim. Tekrar deneyelim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "find_recipe",
+          "arguments": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "browni",
+            "time": 30
+          },
+          "id": "call_d57540d3eef946138c5d0c68"
+        }
+      ],
+      "decoded": [
+        {
+          "find_recipe": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "browni",
+            "time": 30
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_recipe'. Please review the function definition and try again.",
+      "input_tokens": 636,
+      "output_tokens": 133,
+      "latency_s": 1.2287559509277344,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Fonksiyon tanımına daha yakından bakayım. `time` parametresi `integer` tipinde ve `required` alanlardan biri. Ayrıca `dietary_restrictions` ve `recipe_type` da string. Doğru formatta gönderdiğimi düşünüyorum ancak hata almaya devam ediyorum. \"browni\" yazımında bir sorun olabilir mi diye kontrol edeyim - belki de İngilizce \"brownie\" olarak denenmeli."
+      ],
+      "tool_calls": [
+        {
+          "name": "find_recipe",
+          "arguments": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "brownie",
+            "time": 29
+          },
+          "id": "call_635a79dfdd6a42e189aa934a"
+        }
+      ],
+      "decoded": [
+        {
+          "find_recipe": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "brownie",
+            "time": 29
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_recipe'. Please review the function definition and try again.",
+      "input_tokens": 801,
+      "output_tokens": 216,
+      "latency_s": 1.7729871273040771,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Hmm, hala hata alıyorum. 30 dakikadan az dediği için 29 denedim ama sorun bu değil gibi. Fonksiyon tanımını tekrar inceleyeyim: `dietary_restrictions`, `recipe_type` (string) ve `time` (integer) — hepsi required. String parametrelerini `string=\"true\"` olarak, integer'ı `string=\"false\"` olarak gönderiyorum. Bu doğru görünüyor. Bir de farklı bir kombinasyon deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "find_recipe",
+          "arguments": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "tatlı",
+            "time": 30
+          },
+          "id": "call_c50fc6d7bba94e2492c288b1"
+        }
+      ],
+      "decoded": [
+        {
+          "find_recipe": {
+            "dietary_restrictions": "vegan",
+            "recipe_type": "tatlı",
+            "time": 30
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1049,
+      "output_tokens": 215,
+      "latency_s": 1.8082830905914307,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Bana hazırlama süresi 30 dakikadan az olan vegan bir browni tarifi bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d8a508822b6f4f4680949234",
+          "function": {
+            "arguments": "{\"dietary_restrictions\": \"vegan\", \"recipe_type\": \"browni\", \"time\": 30}",
+            "name": "find_recipe"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_recipe'. Please review the function definition and try again.",
+      "tool_call_id": "call_d8a508822b6f4f4680949234"
+    },
+    {
+      "content": "Sanırım parametrelerde bir hata oluştu. `time` parametresi tam sayı (integer) olmalı, string olarak göndermiş olabilirim. Tekrar deneyelim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d57540d3eef946138c5d0c68",
+          "function": {
+            "arguments": "{\"dietary_restrictions\": \"vegan\", \"recipe_type\": \"browni\", \"time\": 30}",
+            "name": "find_recipe"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_recipe'. Please review the function definition and try again.",
+      "tool_call_id": "call_d57540d3eef946138c5d0c68"
+    },
+    {
+      "content": "Fonksiyon tanımına daha yakından bakayım. `time` parametresi `integer` tipinde ve `required` alanlardan biri. Ayrıca `dietary_restrictions` ve `recipe_type` da string. Doğru formatta gönderdiğimi düşünüyorum ancak hata almaya devam ediyorum. \"browni\" yazımında bir sorun olabilir mi diye kontrol edeyim - belki de İngilizce \"brownie\" olarak denenmeli.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_635a79dfdd6a42e189aa934a",
+          "function": {
+            "arguments": "{\"dietary_restrictions\": \"vegan\", \"recipe_type\": \"brownie\", \"time\": 29}",
+            "name": "find_recipe"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_recipe'. Please review the function definition and try again.",
+      "tool_call_id": "call_635a79dfdd6a42e189aa934a"
+    },
+    {
+      "content": "Hmm, hala hata alıyorum. 30 dakikadan az dediği için 29 denedim ama sorun bu değil gibi. Fonksiyon tanımını tekrar inceleyeyim: `dietary_restrictions`, `recipe_type` (string) ve `time` (integer) — hepsi required. String parametrelerini `string=\"true\"` olarak, integer'ı `string=\"false\"` olarak gönderiyorum. Bu doğru görünüyor. Bir de farklı bir kombinasyon deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c50fc6d7bba94e2492c288b1",
+          "function": {
+            "arguments": "{\"dietary_restrictions\": \"vegan\", \"recipe_type\": \"tatlı\", \"time\": 30}",
+            "name": "find_recipe"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

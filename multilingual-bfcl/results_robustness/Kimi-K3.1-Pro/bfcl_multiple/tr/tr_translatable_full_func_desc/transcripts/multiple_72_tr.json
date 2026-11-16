@@ -1,0 +1,166 @@
+{
+  "id": "multiple_72_tr",
+  "source_id": "multiple_72",
+  "locale": "tr",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "tr_translatable_full_func_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1144,
+  "total_output_tokens": 412,
+  "total_latency_s": 4.080149173736572,
+  "estimated_cost_usd": 0.007369199999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kaliforniya'nın 1970'teki nüfusu ne kadardı?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "us_history.population_by_state_year": {
+        "state": [
+          "Kaliforniya",
+          "CA"
+        ],
+        "year": [
+          1970
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "California",
+            "year": 1970
+          },
+          "id": "call_83ab02cdce4545fbb4d2a028"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "California",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "input_tokens": 451,
+      "output_tokens": 177,
+      "latency_s": 1.894188404083252,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "Kaliforniya",
+            "year": 1970
+          },
+          "id": "call_3209695ba992457cbbc2f199"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "Kaliforniya",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 693,
+      "output_tokens": 235,
+      "latency_s": 2.1859607696533203,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kaliforniya'nın 1970'teki nüfusu ne kadardı?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_83ab02cdce4545fbb4d2a028",
+          "function": {
+            "arguments": "{\"state\": \"California\", \"year\": 1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kullanıcı Kaliforniya'nın 1970'teki nüfusunu soruyor. Uygun fonksiyon us_history_population_by_state_year, state \"California\" ve year 1970. Araç açıklamaları Türkçe ama state değerini İngilizce resmi eyalet adı olarak vermek mantıklı. Fonksiyon çağrısı yapmalıyım, başka metin gerekmez."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "tool_call_id": "call_83ab02cdce4545fbb4d2a028"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3209695ba992457cbbc2f199",
+          "function": {
+            "arguments": "{\"state\": \"Kaliforniya\", \"year\": 1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Araç bad request invalid parameters. Belki state Türkçe \"Kaliforniya\" bekliyor? Şemaya göre string year integer doğru. Fonksiyonun kendisi parametre eyalet değerini tanımıyor olabilir ama hata invalid parameters. Kullanıcı Türkçe, tool descriptions Turkish. \"state\": \"Kaliforniya\" deneyebilirim. Veya \"CA\"? Should review definition: state: Nüfusu alınacak ABD eyaleti. year: Nüfusu alınacak yıl. integer. My call matches. Could be year coverage? 1970 maybe unsupported? Bad request invalid parameters likely state should Turkish. I'll retry with state \"Kaliforniya\"."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

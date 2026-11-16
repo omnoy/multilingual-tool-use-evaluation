@@ -1,0 +1,152 @@
+{
+  "id": "multiple_136_tr",
+  "source_id": "multiple_136",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_translatable_query",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 996,
+  "total_output_tokens": 264,
+  "total_latency_s": 2.496619939804077,
+  "estimated_cost_usd": 0.0053268,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "2020 yılında San Fransisko'daki şiddet suçlarının resmî oranını bana ver."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_crime_rate": {
+        "city": [
+          "San Francisco",
+          "San Francisco, CA",
+          "SF"
+        ],
+        "state": [
+          "California",
+          "CA"
+        ],
+        "type": [
+          "violent",
+          "Violent"
+        ],
+        "year": [
+          2020
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"get_crime_rate\", \"arguments\": {\"city\": \"San Francisco\", \"state\": \"California\", \"type\": \"violent\", \"year\": 2020}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 411,
+      "output_tokens": 132,
+      "latency_s": 1.1579511165618896,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_crime_rate",
+          "arguments": {
+            "city": "San Francisco",
+            "state": "California",
+            "type": "violent",
+            "year": 2020
+          },
+          "id": "call_4197775945314e5aa9d882d8"
+        }
+      ],
+      "decoded": [
+        {
+          "get_crime_rate": {
+            "city": "San Francisco",
+            "state": "California",
+            "type": "violent",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 585,
+      "output_tokens": 132,
+      "latency_s": 1.3386688232421875,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "2020 yılında San Fransisko'daki şiddet suçlarının resmî oranını bana ver."
+    },
+    {
+      "content": "{\"name\": \"get_crime_rate\", \"arguments\": {\"city\": \"San Francisco\", \"state\": \"California\", \"type\": \"violent\", \"year\": 2020}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond function call exactly as tool definitions. Turkish request: \"Give me official rate of violent crimes in San Francisco in 2020.\" Should have get_crime_rate city San Francisco state California type violent year 2020. Should determine expected spelling perhaps city \"San Francisco\", state \"California\", type \"violent\". Call only. Perhaps Turkish tool args? Tool English. I'll do."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4197775945314e5aa9d882d8",
+          "function": {
+            "arguments": "{\"city\": \"San Francisco\", \"state\": \"California\", \"type\": \"violent\", \"year\": 2020}",
+            "name": "get_crime_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need now tool call properly via tool. Previous apparently output raw JSON in response not tool call, bad request. Should call get_crime_rate with same. Use commentary channel tool."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

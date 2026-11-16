@@ -1,0 +1,183 @@
+{
+  "id": "multiple_185_tr",
+  "source_id": "multiple_185",
+  "locale": "tr",
+  "localization_level": "full_full_full",
+  "benchmark": "tr_translatable_full_full_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1311,
+  "total_output_tokens": 459,
+  "total_latency_s": 3.862700939178467,
+  "estimated_cost_usd": 0.0082938,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Boston'da terası olan en yakın suşi restoranını bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant_search.find_closest": {
+        "location": [
+          "Boston",
+          "Boston, MA"
+        ],
+        "cuisine": [
+          "Suşi"
+        ],
+        "amenities": [
+          [
+            "Patio"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "location": "Boston",
+            "cuisine": "Sushi",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "call_51b93459dd004ab1ae8b8278"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "location": "Boston",
+            "cuisine": "Sushi",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "input_tokens": 523,
+      "output_tokens": 202,
+      "latency_s": 1.6465167999267578,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "location": "Boston",
+            "cuisine": "Suşi",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "call_9778a2fd03634075b0bad419"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "location": "Boston",
+            "cuisine": "Suşi",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 788,
+      "output_tokens": 257,
+      "latency_s": 2.216184139251709,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Boston'da terası olan en yakın suşi restoranını bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_51b93459dd004ab1ae8b8278",
+          "function": {
+            "arguments": "{\"location\": \"Boston\", \"cuisine\": \"Sushi\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kullanıcı Boston'da terası olan en yakın suşi restoranını bulmak istiyor. Restoran arama fonksiyonunu kullanacağım:\n- location: \"Boston\"\n- cuisine: \"Sushi\" (İngilizce veya Türkçe olabilir, \"Suşi\" de olabilir ama \"Sushi\" daha güvenli)\n- amenities: [\"Patio\"] (teras = patio)\n\nTeras için \"Patio\" olanak seçeneği uygun."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "tool_call_id": "call_51b93459dd004ab1ae8b8278"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9778a2fd03634075b0bad419",
+          "function": {
+            "arguments": "{\"location\": \"Boston\", \"cuisine\": \"Suşi\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Fonksiyon 400 hatası verdi. Parametreleri gözden geçireyim. Cuisine \"Sushi\" yerine \"Suşi\" Türkçe denenebilir, ya da location dili? \"Boston\" şehir, diller İngilizce Türkçe. Muhtemelen cuisine \"Sushi\" kabul edilmiyor? Ama açıklamada yemek türü diller İngilizce Türkçe. Hatanın sebebi belirsiz. Tekrar denemem lazım, belki amenities boş değil sıralama? JSON geçerli. \"Patio\" doğru enum. Cuisine Türkçe \"Suşi\" deneyelim."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

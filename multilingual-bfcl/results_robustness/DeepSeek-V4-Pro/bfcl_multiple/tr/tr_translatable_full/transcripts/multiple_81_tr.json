@@ -1,0 +1,370 @@
+{
+  "id": "multiple_81_tr",
+  "source_id": "multiple_81",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_translatable_full",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 5,
+  "num_clarifications": 0,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 4726,
+  "total_output_tokens": 731,
+  "total_latency_s": 8.701143741607666,
+  "estimated_cost_usd": 0.01076712,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "New York şehrinde yakında gerçekleşecek Eminem konseri için bir bilet ayırt; sahne arkasına giriş hakkı olan bir bilet istiyorum."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.book_ticket": {
+        "artist": [
+          "Eminem"
+        ],
+        "location": [
+          "New York Şehri"
+        ],
+        "add_ons": [
+          [
+            "Backstage Pass"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nNew York'ta Eminem konseri için sahne arkası geçişli bir bilet ayarlıyorum."
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_9e178c9020934561bcf5270c"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 618,
+      "output_tokens": 116,
+      "latency_s": 1.1770305633544922,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Fonksiyon parametrelerinde bir sorun oldu. add_ons parametresini string olarak göndermem gerekiyor. Tekrar deneyelim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": "[\"Backstage Pass\"]"
+          },
+          "id": "call_250179f254b54a4f86c3cc10"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": "[\"Backstage Pass\"]"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 767,
+      "output_tokens": 124,
+      "latency_s": 1.4856953620910645,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Bir an düşüneyim; add_ons parametresi bir dizi (array) tipinde ve string olarak işaretlenmemeli. Önceki hatamda JSON formatında ama `string=\"false\"` kullanmam gerekirdi. Tekrar deneyelim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_e1ce18fe9cf6453a9a68b10d"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 924,
+      "output_tokens": 150,
+      "latency_s": 1.4529032707214355,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Biraz daha dikkatli düşüneyim. Parametre tanımına göre `add_ons` bir array ve `string=\"false\"` olmalı. Ancak hata devam ediyor. Acaba `add_ons` parametresi isteğe bağlı (required değil) ve boş bir array varsayılan değer. JSON formatını doğru gönderdiğimden emin olayım:"
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York"
+          },
+          "id": "call_9468328780e24adb80ea0580"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 1107,
+      "output_tokens": 170,
+      "latency_s": 2.5048158168792725,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "İlginç, add_ons olmadan da hata alıyorum. Acaba sorun artist veya location parametrelerinde olabilir mi? \"Eminem\" ve \"New York\" değerleri doğru görünüyor. Bir kez daha, tüm parametreleri tam olarak tanımlandığı gibi göndermeyi deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": []
+          },
+          "id": "call_0bafe7433b9e43ce863f6179"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": []
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1310,
+      "output_tokens": 171,
+      "latency_s": 2.0806987285614014,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "New York şehrinde yakında gerçekleşecek Eminem konseri için bir bilet ayırt; sahne arkasına giriş hakkı olan bir bilet istiyorum."
+    },
+    {
+      "content": "\n\nNew York'ta Eminem konseri için sahne arkası geçişli bir bilet ayarlıyorum.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9e178c9020934561bcf5270c",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "call_9e178c9020934561bcf5270c"
+    },
+    {
+      "content": "Fonksiyon parametrelerinde bir sorun oldu. add_ons parametresini string olarak göndermem gerekiyor. Tekrar deneyelim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_250179f254b54a4f86c3cc10",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\", \"add_ons\": \"[\\\"Backstage Pass\\\"]\"}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "call_250179f254b54a4f86c3cc10"
+    },
+    {
+      "content": "Bir an düşüneyim; add_ons parametresi bir dizi (array) tipinde ve string olarak işaretlenmemeli. Önceki hatamda JSON formatında ama `string=\"false\"` kullanmam gerekirdi. Tekrar deneyelim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e1ce18fe9cf6453a9a68b10d",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "call_e1ce18fe9cf6453a9a68b10d"
+    },
+    {
+      "content": "Biraz daha dikkatli düşüneyim. Parametre tanımına göre `add_ons` bir array ve `string=\"false\"` olmalı. Ancak hata devam ediyor. Acaba `add_ons` parametresi isteğe bağlı (required değil) ve boş bir array varsayılan değer. JSON formatını doğru gönderdiğimden emin olayım:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9468328780e24adb80ea0580",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\"}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "call_9468328780e24adb80ea0580"
+    },
+    {
+      "content": "İlginç, add_ons olmadan da hata alıyorum. Acaba sorun artist veya location parametrelerinde olabilir mi? \"Eminem\" ve \"New York\" değerleri doğru görünüyor. Bir kez daha, tüm parametreleri tam olarak tanımlandığı gibi göndermeyi deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0bafe7433b9e43ce863f6179",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\", \"add_ons\": []}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

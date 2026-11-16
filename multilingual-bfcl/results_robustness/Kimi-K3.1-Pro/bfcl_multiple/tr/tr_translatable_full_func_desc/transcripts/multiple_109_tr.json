@@ -1,0 +1,164 @@
+{
+  "id": "multiple_109_tr",
+  "source_id": "multiple_109",
+  "locale": "tr",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "tr_translatable_full_func_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1486,
+  "total_output_tokens": 349,
+  "total_latency_s": 2.885014533996582,
+  "estimated_cost_usd": 0.0074313,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Plazma zarında bulunan proteinlerin adları nelerdir?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "plazma zarı"
+        ],
+        "include_description": [
+          false,
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          },
+          "id": "call_6750f5866d714f408233e2bc"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "input_tokens": 611,
+      "output_tokens": 203,
+      "latency_s": 1.4883220195770264,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plazma zarı"
+          },
+          "id": "call_477f9fec798b4281867c39f0"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plazma zarı"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 875,
+      "output_tokens": 146,
+      "latency_s": 1.3966925144195557,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Plazma zarında bulunan proteinlerin adları nelerdir?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_6750f5866d714f408233e2bc",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\", \"include_description\": false}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I'll answer with a function call. Should parse Turkish: \"Plazma zarında bulunan proteinlerin adları nelerdir?\" = What are names of proteins found in plasma membrane? Tool cellbio_get_proteins(cell_compartment, include_description default false). I'll call exactly. I should use plasma membrane likely \"plasma membrane\" in English parameter. User just names no descriptions, include_description false or omit default. I can call functions.cellbio_get_proteins with cell_compartment \"plasma membrane\", include_description false. Should have no textual response? The instructions say user writes Turkish understand request and respond correct function call exactly specified. So tool call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "tool_call_id": "call_6750f5866d714f408233e2bc"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_477f9fec798b4281867c39f0",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plazma zarı\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned bad request invalid parameters. Perhaps retry cell compartment Turkish? \"plazma zarı\"? Or include_description must omitted? Schema says required cell_compartment, include default false. 400 invalid parameters could compartment unsupported or boolean? Should review. It is correct per definition. Perhaps backend expects \"plazma zarı\" or \"Plasma membrane\"? Should decide. I should try exact user term \"plazma zarı\" and omit desc."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

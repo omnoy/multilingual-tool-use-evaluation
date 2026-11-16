@@ -1,0 +1,127 @@
+{
+  "id": "multiple_147_tr",
+  "source_id": "multiple_147",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_translatable_query",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 516,
+  "total_output_tokens": 220,
+  "total_latency_s": 1.3818690776824951,
+  "estimated_cost_usd": 0.0037168,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Otoyollardan ve ücretli yollardan kaçınarak Nyu York'tan Los Encılıs'a yol tarifi ver."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "map_service.get_directions": {
+        "start": [
+          "New York",
+          "New York, NY",
+          "NYC"
+        ],
+        "end": [
+          "Los Angeles",
+          "LA"
+        ],
+        "avoid": [
+          [
+            "highways",
+            "tolls"
+          ],
+          [
+            "tolls",
+            "highways"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "call_e239c81bed41442cad5635d6"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 516,
+      "output_tokens": 220,
+      "latency_s": 1.3818690776824951,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Otoyollardan ve ücretli yollardan kaçınarak Nyu York'tan Los Encılıs'a yol tarifi ver."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e239c81bed41442cad5635d6",
+          "function": {
+            "arguments": "{\"start\": \"New York\", \"end\": \"Los Angeles\", \"avoid\": [\"highways\", \"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I'll respond in Turkish? User says \"Otoyollardan ve ücretli yollardan kaçınarak Nyu York'tan Los Encılıs'a yol tarifi ver.\" Garbled \"Nyu York'tan Los Encılıs'a\" = New York to Los Angeles. Should have tool map_service_get_directions start New York end Los Angeles avoid highways tolls. I'll respond with the correct function call exactly as specified. Use avoid [\"highways\",\"tolls\"] perhaps ordering as requested Otoyollardan ve ücretli yollardan: highways,tolls. Start \"New York\" end \"Los Angeles\". I should call only."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

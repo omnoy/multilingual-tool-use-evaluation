@@ -1,0 +1,171 @@
+{
+  "id": "multiple_108_tr",
+  "source_id": "multiple_108",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_translatable_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1102,
+  "total_output_tokens": 359,
+  "total_latency_s": 2.9081244468688965,
+  "estimated_cost_usd": 0.0066631,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Sıcaklığı 298K ve hacmi 10 m^3 olan havanın sabit basınçtaki ısı kapasitesini hesapla."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calc_heat_capacity": {
+        "temp": [
+          298
+        ],
+        "volume": [
+          10
+        ],
+        "gas": [
+          "hava",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          },
+          "id": "call_b445d3d213df410cacd485c6"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "input_tokens": 451,
+      "output_tokens": 141,
+      "latency_s": 1.4197628498077393,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10
+          },
+          "id": "call_43ae61209c974fedb91a5b70"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 651,
+      "output_tokens": 218,
+      "latency_s": 1.4883615970611572,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Sıcaklığı 298K ve hacmi 10 m^3 olan havanın sabit basınçtaki ısı kapasitesini hesapla."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b445d3d213df410cacd485c6",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10, \"gas\": \"air\"}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Turkish request via function exactly. Should use calc_heat_capacity gas air temp 298 volume 10. Should have gas type string Turkish? Tool type gas description Type of gas, user air \"havanın\". Could set gas \"air\" likely. Only correct function call. I'll invoke tool."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "tool_call_id": "call_b445d3d213df410cacd485c6"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_43ae61209c974fedb91a5b70",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error says invalid parameters. Should figure gas perhaps gas omitted? Required temp volume only. Could gas air causing unsupported? Tool def has optional gas. Perhaps expected gas \"air\" but error? Could temp volume integers yes. Perhaps function expected no gas? Should retry? I have ability tool. I should understand common benchmark environment. User asks Turkish \"Sıcaklığı 298K ve hacmi 10 m^3 olan havanın sabit basınçtaki ısı kapasitesini hesapla.\" Calculate heat capacity at constant pressure air using temp volume. Function temp volume gas optional. Could gas need \"air\"? I did. Error perhaps backend requiring gas format \"air\"? Perhaps tool bug? I'll try omitting optional gas."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

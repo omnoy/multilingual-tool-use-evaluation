@@ -1,0 +1,388 @@
+{
+  "id": "multiple_56_tr",
+  "source_id": "multiple_56",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_translatable_query",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 6399,
+  "total_output_tokens": 904,
+  "total_latency_s": 8.955288887023926,
+  "estimated_cost_usd": 0.01428018,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Son 60 günde Epıl hissesinin ortalama kapanış fiyatını bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "avg_closing_price": {
+        "company": [
+          "Apple"
+        ],
+        "days": [
+          60
+        ],
+        "data_source": [
+          "yahoo finance",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "Epıl",
+            "days": 60
+          },
+          "id": "call_1ff86ca54cd54b0fa6421eb9"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "Epıl",
+            "days": 60
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'avg_closing_price'. Please review the function definition and try again.",
+      "input_tokens": 639,
+      "output_tokens": 63,
+      "latency_s": 0.8479692935943604,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Fonksiyon `data_source` parametresini de zorunlu tutuyor. Eksik parametre ile çağrı yapmışım. Düzeltilmiş haliyle tekrar çağırıyorum:"
+      ],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "Epıl",
+            "days": 60,
+            "data_source": "BIST"
+          },
+          "id": "call_87e9e2e233df44fd80bd7334"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "Epıl",
+            "days": 60,
+            "data_source": "BIST"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'avg_closing_price'. Please review the function definition and try again.",
+      "input_tokens": 735,
+      "output_tokens": 134,
+      "latency_s": 1.2768628597259521,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Fonksiyon tanımına göre `data_source` parametresi zorunlu (`required`) listesinde yer almıyor. Ama `company` ve `days` zorunlu. İlk çağrımda `data_source` olmadan denemiştim, o da hata verdi. Şimdi tekrar `data_source` olmadan ama parametreleri doğru formatta deneyeyim.\n\nFonksiyon tanımını tekrar inceliyorum:\n\n- `company` (string, zorunlu)\n- `days` (integer, zorunlu)  \n- `data_source` (string, zorunlu değil)\n\nİlk denememde `data_source` vermemiştim, hata aldım. Ama aslında zorunlu değil. Bir de şöyle deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "Epıl",
+            "days": 60
+          },
+          "id": "call_0f8f33663b1e4af1a4becdb1"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "Epıl",
+            "days": 60
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'avg_closing_price'. Please review the function definition and try again.",
+      "input_tokens": 902,
+      "output_tokens": 259,
+      "latency_s": 2.8039963245391846,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Anlaşılan sistem `data_source` parametresini de zorunlu olarak bekliyor olabilir. Üç parametreyi de eksiksiz göndererek tekrar deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "Epıl",
+            "days": 60,
+            "data_source": "BIST"
+          },
+          "id": "call_a5c9e7957d3b4a61b51acf1b"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "Epıl",
+            "days": 60,
+            "data_source": "BIST"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'avg_closing_price'. Please review the function definition and try again.",
+      "input_tokens": 1194,
+      "output_tokens": 125,
+      "latency_s": 1.198866367340088,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Üzgünüm, şu anda `avg_closing_price` fonksiyonu sürekli olarak \"400 Bad Request: invalid parameters\" hatası dönüyor. Fonksiyon tanımına uygun şekilde `company` (\"Epıl\"), `days` (60) ve `data_source` parametrelerini farklı kombinasyonlarla denedim ancak sistem sürekli olarak geçersiz parametre hatası veriyor.\n\nBu, fonksiyonun arka uçta yaşadığı bir sorundan kaynaklanıyor olabilir. İsterseniz başka bir hisse veya farklı bir parametre seti ile tekrar deneyebilirim. Ayrıca dilerseniz `volume_traded` veya `total_revenue` gibi diğer fonksiyonları da kullanabilirim."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1352,
+      "output_tokens": 201,
+      "latency_s": 1.6440937519073486,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "Anladım, mutlaka bir fonksiyon çağrısı yapmam gerekiyor. `data_source` parametresini de ekleyerek tekrar deniyorum:"
+      ],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "Epıl",
+            "days": 60,
+            "data_source": "BIST"
+          },
+          "id": "call_efe000197e26432db06b78cd"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "Epıl",
+            "days": 60,
+            "data_source": "BIST"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1577,
+      "output_tokens": 122,
+      "latency_s": 1.1835002899169922,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Son 60 günde Epıl hissesinin ortalama kapanış fiyatını bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1ff86ca54cd54b0fa6421eb9",
+          "function": {
+            "arguments": "{\"company\": \"Epıl\", \"days\": 60}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'avg_closing_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_1ff86ca54cd54b0fa6421eb9"
+    },
+    {
+      "content": "Fonksiyon `data_source` parametresini de zorunlu tutuyor. Eksik parametre ile çağrı yapmışım. Düzeltilmiş haliyle tekrar çağırıyorum:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_87e9e2e233df44fd80bd7334",
+          "function": {
+            "arguments": "{\"company\": \"Epıl\", \"days\": 60, \"data_source\": \"BIST\"}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'avg_closing_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_87e9e2e233df44fd80bd7334"
+    },
+    {
+      "content": "Fonksiyon tanımına göre `data_source` parametresi zorunlu (`required`) listesinde yer almıyor. Ama `company` ve `days` zorunlu. İlk çağrımda `data_source` olmadan denemiştim, o da hata verdi. Şimdi tekrar `data_source` olmadan ama parametreleri doğru formatta deneyeyim.\n\nFonksiyon tanımını tekrar inceliyorum:\n\n- `company` (string, zorunlu)\n- `days` (integer, zorunlu)  \n- `data_source` (string, zorunlu değil)\n\nİlk denememde `data_source` vermemiştim, hata aldım. Ama aslında zorunlu değil. Bir de şöyle deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0f8f33663b1e4af1a4becdb1",
+          "function": {
+            "arguments": "{\"company\": \"Epıl\", \"days\": 60}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'avg_closing_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_0f8f33663b1e4af1a4becdb1"
+    },
+    {
+      "content": "Anlaşılan sistem `data_source` parametresini de zorunlu olarak bekliyor olabilir. Üç parametreyi de eksiksiz göndererek tekrar deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a5c9e7957d3b4a61b51acf1b",
+          "function": {
+            "arguments": "{\"company\": \"Epıl\", \"days\": 60, \"data_source\": \"BIST\"}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'avg_closing_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_a5c9e7957d3b4a61b51acf1b"
+    },
+    {
+      "content": "Üzgünüm, şu anda `avg_closing_price` fonksiyonu sürekli olarak \"400 Bad Request: invalid parameters\" hatası dönüyor. Fonksiyon tanımına uygun şekilde `company` (\"Epıl\"), `days` (60) ve `data_source` parametrelerini farklı kombinasyonlarla denedim ancak sistem sürekli olarak geçersiz parametre hatası veriyor.\n\nBu, fonksiyonun arka uçta yaşadığı bir sorundan kaynaklanıyor olabilir. İsterseniz başka bir hisse veya farklı bir parametre seti ile tekrar deneyebilirim. Ayrıca dilerseniz `volume_traded` veya `total_revenue` gibi diğer fonksiyonları da kullanabilirim.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "Anladım, mutlaka bir fonksiyon çağrısı yapmam gerekiyor. `data_source` parametresini de ekleyerek tekrar deniyorum:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_efe000197e26432db06b78cd",
+          "function": {
+            "arguments": "{\"company\": \"Epıl\", \"days\": 60, \"data_source\": \"BIST\"}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

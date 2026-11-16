@@ -1,0 +1,158 @@
+{
+  "id": "multiple_2_tr",
+  "source_id": "multiple_2",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_translatable_full",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 891,
+  "total_output_tokens": 280,
+  "total_latency_s": 4.1293675899505615,
+  "estimated_cost_usd": 0.005269299999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Brezilya'nın başkenti neresidir?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "country_info.capital": {
+        "country": [
+          "Brezilya"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "country_info_capital",
+          "arguments": {
+            "country": "Brazil"
+          },
+          "id": "call_900844fc0b60420bb473cf94"
+        }
+      ],
+      "decoded": [
+        {
+          "country_info_capital": {
+            "country": "Brazil"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'country_info_capital'. Please review the function definition and try again.",
+      "input_tokens": 333,
+      "output_tokens": 166,
+      "latency_s": 2.7725534439086914,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "country_info_capital",
+          "arguments": {
+            "country": "Brezilya"
+          },
+          "id": "call_b8fb5bf0046742d0bdd6d2c7"
+        }
+      ],
+      "decoded": [
+        {
+          "country_info_capital": {
+            "country": "Brezilya"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 558,
+      "output_tokens": 114,
+      "latency_s": 1.3568141460418701,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Brezilya'nın başkenti neresidir?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_900844fc0b60420bb473cf94",
+          "function": {
+            "arguments": "{\"country\": \"Brazil\"}",
+            "name": "country_info_capital"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "KPK Gaming will respond in Turkish. Should understand request: \"Brezilya'nın başkenti neresidir?\" = What is capital of Brazil? Should use correct function call exactly as specified tool definitions. Available country_info_capital. Should call with country \"Brazil\" or \"Brezilya\"? Tool says Name of country. Likely use \"Brazil\". Perhaps function returns capital. Should call the tool. Then respond likely Brasilia. Should consider instruction \"respond with the correct function call exactly as specified in tool definitions.\" So call country_info_capital. I'll do."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'country_info_capital'. Please review the function definition and try again.",
+      "tool_call_id": "call_900844fc0b60420bb473cf94"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b8fb5bf0046742d0bdd6d2c7",
+          "function": {
+            "arguments": "{\"country\": \"Brezilya\"}",
+            "name": "country_info_capital"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid parameters perhaps expects Turkish country name? Kimi should retry. Function schema exact country string. Could be country \"Brezilya\" perhaps backend dataset Turkish? Should inspect no further. Error 400 invalid parameters weird. Perhaps need country name \"Brezilya\" because tools localized? I'll try."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

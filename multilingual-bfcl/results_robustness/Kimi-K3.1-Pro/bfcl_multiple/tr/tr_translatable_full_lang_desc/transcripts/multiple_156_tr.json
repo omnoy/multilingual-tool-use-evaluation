@@ -1,0 +1,264 @@
+{
+  "id": "multiple_156_tr",
+  "source_id": "multiple_156",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_translatable_full_lang_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 4,
+  "num_clarifications": 1,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3826,
+  "total_output_tokens": 855,
+  "total_latency_s": 6.99089789390564,
+  "estimated_cost_usd": 0.018632299999999997,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Albert Aynştayn'ın 17 Mart 1915'te bilime katkısı neydi?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "historical_contrib.get_contrib": {
+        "scientist": [
+          "Albert Aynştayn"
+        ],
+        "date": [
+          "1915-03-17",
+          "03/17/1915",
+          "17 Mart 1915"
+        ],
+        "category": [
+          "",
+          "tümü"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"scientist\":\"Albert Einstein\",\"date\":\"1915-03-17\",\"category\":\"Bilim\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 516,
+      "output_tokens": 312,
+      "latency_s": 1.9003229141235352,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17",
+            "category": "Bilim"
+          },
+          "id": "call_b5ab9e0b1cfa4099a596ae2f"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17",
+            "category": "Bilim"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "input_tokens": 870,
+      "output_tokens": 196,
+      "latency_s": 1.5902931690216064,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17"
+          },
+          "id": "call_434e28480ad946568d362e0f"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "input_tokens": 1131,
+      "output_tokens": 113,
+      "latency_s": 1.6837844848632812,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "Albert Aynştayn",
+            "date": "1915-03-17"
+          },
+          "id": "call_44dcd331f12d44a883b9c7dc"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "Albert Aynştayn",
+            "date": "1915-03-17"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1309,
+      "output_tokens": 234,
+      "latency_s": 1.8164973258972168,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Albert Aynştayn'ın 17 Mart 1915'te bilime katkısı neydi?"
+    },
+    {
+      "content": "{\"scientist\":\"Albert Einstein\",\"date\":\"1915-03-17\",\"category\":\"Bilim\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond in Turkish via tool exactly specified. User asks Albert Aynştayn'ın (Albert Einstein misspelling Turkish Aynştayn) on March 17 1915 contribution to science. Tool historical_contrib_get_contrib category optional, date yyyy-mm-dd, scientist. Should call. Scientist probably Albert Einstein, date 1915-03-17, category science? \"bilim\" could category \"Bilim\" or \"science\". Tool retrieve historical contribution by scientist on date. I should call with scientist \"Albert Einstein\", date \"1915-03-17\", perhaps category \"Bilim\" not necessary? User specifically asks \"bilime katkısı\". Schema says category field of contribution Languages English Turkish. Could set \"Bilim\" but likely intended category from dataset e.g. \"physics\"? Should infer. I need exactly correct function call. Use scientist Albert Einstein and date 1915-03-17, category perhaps \"Bilim\". User says \"Albert Aynştayn'ın 17 Mart 1915'te bilime katkısı neydi?\" Could be straightforward query; tool likely returns a specific known historical event. Should not guess answer. I should use tool. Perhaps use Turkish spelling \"Albert Einstein\" rather than typo transliteration. category \"Bilim\". I'll do."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b5ab9e0b1cfa4099a596ae2f",
+          "function": {
+            "arguments": "{\"scientist\": \"Albert Einstein\", \"date\": \"1915-03-17\", \"category\": \"Bilim\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I made tool raw? Wait previous assistant final JSON not tool call, because perhaps tool unavailable? In current I have tools. Should call actual function. I need use functions.historical_contrib_get_contrib with params. I need figure category perhaps \"science\". The immediate prompt from user is error instructing call. I need actual function call. I should call scientist \"Albert Einstein\", date \"1915-03-17\", category perhaps \"science\". The instructions says user write Turkish respond correct function exactly. I'll call now."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "tool_call_id": "call_b5ab9e0b1cfa4099a596ae2f"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_434e28480ad946568d362e0f",
+          "function": {
+            "arguments": "{\"scientist\": \"Albert Einstein\", \"date\": \"1915-03-17\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I used category Bilim invalid perhaps expects category like \"Physics\"? Or scientist must \"Albert Aynştayn\"? Should inspect definition only. category optional. Simplest remove category. Call scientist and date."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "tool_call_id": "call_434e28480ad946568d362e0f"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_44dcd331f12d44a883b9c7dc",
+          "function": {
+            "arguments": "{\"scientist\": \"Albert Aynştayn\", \"date\": \"1915-03-17\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Now weird. Required scientist date strings. Perhaps category required hidden? Date? Could be scientist Turkish \"Albert Aynştayn\" expected? But invalid params usually unrecognized date? Tool definition scientist contribution searched languages English Turkish. Could need scientist \"Albert Aynştayn\" exactly from user. Date 17 Mart 1915 converted right. Why invalid parameters? Perhaps category enum unknown. Should try with original name and category \"Fizik\"? Or no category. Perhaps \"Albert Aynştayn\" is accepted because Turkish language. Could be actual tool requires scientist e.g. \"Albert Einstein\" but category e.g. \"Physics\" essential? It says category optional. Past date contribution perhaps no record, but would not invalid parameters. I should call original user spelling? Should not stop."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

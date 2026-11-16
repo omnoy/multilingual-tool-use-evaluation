@@ -1,0 +1,168 @@
+{
+  "id": "multiple_83_tr",
+  "source_id": "multiple_83",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_translatable_full_lang_desc",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1263,
+  "total_output_tokens": 627,
+  "total_latency_s": 4.620408058166504,
+  "estimated_cost_usd": 0.0101154,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Liyonel Mesi bugüne kadar Barselona için kaç gol attı?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "player_stats.get_all_time_goals": {
+        "player_name": [
+          "Liyonel Mesi"
+        ],
+        "team_name": [
+          "Barselona"
+        ],
+        "competition": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "player_stats_get_all_time_goals",
+          "arguments": {
+            "player_name": "Lionel Messi",
+            "team_name": "Barcelona"
+          },
+          "id": "call_859675d4471a45bd83e337e5"
+        }
+      ],
+      "decoded": [
+        {
+          "player_stats_get_all_time_goals": {
+            "player_name": "Lionel Messi",
+            "team_name": "Barcelona"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'player_stats_get_all_time_goals'. Please review the function definition and try again.",
+      "input_tokens": 493,
+      "output_tokens": 212,
+      "latency_s": 1.7529900074005127,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "player_stats_get_all_time_goals",
+          "arguments": {
+            "player_name": "Liyonel Mesi",
+            "team_name": "Barselona"
+          },
+          "id": "call_5c5eaaca9e2b48fda4660525"
+        }
+      ],
+      "decoded": [
+        {
+          "player_stats_get_all_time_goals": {
+            "player_name": "Liyonel Mesi",
+            "team_name": "Barselona"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 770,
+      "output_tokens": 415,
+      "latency_s": 2.867418050765991,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Liyonel Mesi bugüne kadar Barselona için kaç gol attı?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_859675d4471a45bd83e337e5",
+          "function": {
+            "arguments": "{\"player_name\": \"Lionel Messi\", \"team_name\": \"Barcelona\"}",
+            "name": "player_stats_get_all_time_goals"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to user Turkish. Should understand request and call the correct function exactly specified. User: \"Liyonel Mesi bugüne kadar Barselona için kaç gol attı?\" Turkish transliteration Lionel Messi Barcelona all time goals. Tool player_stats_get_all_time_goals requires player_name and team_name, optional competition. Should use Turkish or English names. \"Lionel Messi\", \"Barcelona\" likely. I'll call the tool. I must only call the function? Instructions: user Turkish understand respond correct function call exactly as specified tool defs. I should call functions.player_stats_get_all_time_goals. Then perhaps relay result Turkish. Should have tool output."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'player_stats_get_all_time_goals'. Please review the function definition and try again.",
+      "tool_call_id": "call_859675d4471a45bd83e337e5"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5c5eaaca9e2b48fda4660525",
+          "function": {
+            "arguments": "{\"player_name\": \"Liyonel Mesi\", \"team_name\": \"Barselona\"}",
+            "name": "player_stats_get_all_time_goals"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool 400 invalid params weird. I'll retry perhaps Turkish names exactly user \"Liyonel Mesi\", \"Barselona\". Definition languages English Turkish for player and team, competition optional no languages. Tool invalid parameters likely backend expects team \"FC Barcelona\"? Could be issue all_time? Should inspect. I have no other data. Should review function and retry. Since player_name/team_name only required and I supplied. Why invalid? Perhaps expected Turkish spelling? \"Lionel Messi\" and \"Barcelona\" should valid. Could be tool dataset accepts \"Liyonel Mesi\" Turkish? Turkish Lionel Messi often \"Lionel Messi\", Barcelona \"Barcelona\". User spells phonetically. Function likely maps queries sanitization? Should use exact user strings? Team Stats languages English Turkish. Try player_name \"Liyonel Mesi\", team_name \"Barselona\". Optional competition maybe \"La Liga\"? But asks all goals overall, no comp. Could 400 be transient tool input issue? I'll use correct call exactly as specified. Could try with competition \"\"? Default empty but perhaps API wrapper weird. Many of these tasks from benchmark tools synthetic football stats, typical expected use player_stats_get_all_time_goals with arguments based Turkish query. Standard likely translation needed: player_name \"Lionel Messi\", team_name \"Barcelona\". I did. 400 surprising. Perhaps expected team_name \"FC Barcelona\". Should investigate systematic.\n\nThe available tools named functions generic and output call. They can error if entity unrecognized? 400 invalid parameters not no data. Could be all-time goals tool expects player name format in Turkish? Say \"Liyonel Mesi\" exactly. Retry."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,201 @@
+{
+  "id": "multiple_8_tr",
+  "source_id": "multiple_8",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_translatable_query",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1259,
+  "total_output_tokens": 534,
+  "total_latency_s": 6.247686386108398,
+  "estimated_cost_usd": 0.0090367,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "San Diyego'da $300,000 ile $400,000 arasındaki bütçeye uygun, 3 yatak odalı satılık bir villa bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "realestate.find_properties": {
+        "location": [
+          "SD",
+          "San Diego",
+          "San Diego, CA",
+          "CA"
+        ],
+        "propertyType": [
+          "villa"
+        ],
+        "bedrooms": [
+          3
+        ],
+        "budget": [
+          {
+            "min": [
+              300000
+            ],
+            "max": [
+              400000
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call_ef884163e6264403b75b109e"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "input_tokens": 489,
+      "output_tokens": 217,
+      "latency_s": 3.9248363971710205,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, CA",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000.0,
+              "max": 400000.0
+            }
+          },
+          "id": "call_c96bedb9247b4dc8b8a04ac3"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, CA",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000.0,
+              "max": 400000.0
+            }
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 770,
+      "output_tokens": 317,
+      "latency_s": 2.322849988937378,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "San Diyego'da $300,000 ile $400,000 arasındaki bütçeye uygun, 3 yatak odalı satılık bir villa bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ef884163e6264403b75b109e",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": {\"min\": 300000, \"max\": 400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond to the Turkish request with the correct function call exactly tool definition. Should parse San Diyego = San Diego likely California. Find properties location city and state, budget min 300000 max 400000, bedrooms 3, propertyType villa. Should call realestate_find_properties. I should output tool call only likely. Location \"San Diego, CA\" or \"San Diego, California\". User asks find. Use function. No need valuation. Make sure numbers float? can be ints JSON accepted. Call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "tool_call_id": "call_ef884163e6264403b75b109e"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c96bedb9247b4dc8b8a04ac3",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, CA\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": {\"min\": 300000.0, \"max\": 400000.0}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool says invalid parameters. Should inspect the definition; perhaps the budget numeric float issue? I provided correct. Location likely requires \"San Diego, CA\"; perhaps propertyType capitalization? Invalid parameters rather than no results suggests schema formatting? Tool call exactly specified all okay. Could be budget values need be floats 300000.0? JSON number accepted as float type. Could be the tool expects min max float but I gave integer? Usually no. I need try again, possibly location \"San Diego, CA\" and propertyType \"villa\", with budget maybe 300000.0 400000.0. Should reason about why 400 Bad Request occurred. All required fields are present. Could be functions implementations expecting \"villa\" type? Definition says property type string. Perhaps tool backend property types restricted? \"villa\" valid as user. Location \"San Diego, CA\" conventional. Try revised location and max/min decimal? I have enough. Since a tool failure requires retry. Call exactly."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

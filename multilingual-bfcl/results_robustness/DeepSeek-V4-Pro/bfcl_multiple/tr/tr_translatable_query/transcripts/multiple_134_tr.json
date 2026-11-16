@@ -1,0 +1,173 @@
+{
+  "id": "multiple_134_tr",
+  "source_id": "multiple_134",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_translatable_query",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1946,
+  "total_output_tokens": 206,
+  "total_latency_s": 2.4857335090637207,
+  "estimated_cost_usd": 0.0041029199999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "San Diyego ilçesindeki CA123456 numaralı davaya ait ağır suç kaydının ayrıntılarını bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "crime_record.get_record": {
+        "case_number": [
+          "CA123456"
+        ],
+        "county": [
+          "San Diego",
+          "San Diego County"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diyego",
+            "details": true
+          },
+          "id": "call_39da67a427124ea098fec5b0"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diyego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 914,
+      "output_tokens": 85,
+      "latency_s": 1.1986119747161865,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Sanırım \"San Diyego\" ilçe adında bir sorun olabilir. Doğru İngilizce adıyla tekrar deneyeyim."
+      ],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "call_d15e17bf2f524ff7b803bed3"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1032,
+      "output_tokens": 121,
+      "latency_s": 1.2871215343475342,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "San Diyego ilçesindeki CA123456 numaralı davaya ait ağır suç kaydının ayrıntılarını bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_39da67a427124ea098fec5b0",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diyego\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_39da67a427124ea098fec5b0"
+    },
+    {
+      "content": "Sanırım \"San Diyego\" ilçe adında bir sorun olabilir. Doğru İngilizce adıyla tekrar deneyeyim.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d15e17bf2f524ff7b803bed3",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

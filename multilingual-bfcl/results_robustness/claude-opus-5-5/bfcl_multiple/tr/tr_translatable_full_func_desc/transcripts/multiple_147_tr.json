@@ -1,0 +1,596 @@
+{
+  "id": "multiple_147_tr",
+  "source_id": "multiple_147",
+  "locale": "tr",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "tr_translatable_full_func_desc",
+  "model": "claude-opus-5-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 15557,
+  "total_output_tokens": 2301,
+  "total_latency_s": 27.951116800308228,
+  "estimated_cost_usd": 0.10824800000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Otoyolları ve ücretli yolları kullanmadan Nyu York'tan Los Encılıs'a yol tarifi ver."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "map_service.get_directions": {
+        "start": [
+          "Nyu York",
+          "Nyu York, En Vay",
+          "En Vay Si"
+        ],
+        "end": [
+          "Los Encılıs",
+          "El Ey"
+        ],
+        "avoid": [
+          [
+            "highways",
+            "tolls"
+          ],
+          [
+            "tolls",
+            "highways"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "toolu_01WdehRR44UZiXb5Ps8BUMRW"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+      "input_tokens": 1102,
+      "output_tokens": 111,
+      "latency_s": 1.802525281906128,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York, NY, USA",
+            "end": "Los Angeles, CA, USA",
+            "avoid": [
+              "tolls",
+              "highways"
+            ]
+          },
+          "id": "toolu_011ACziEDkvU2frdmCb2iNJy"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York, NY, USA",
+            "end": "Los Angeles, CA, USA",
+            "avoid": [
+              "tolls",
+              "highways"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+      "input_tokens": 1257,
+      "output_tokens": 222,
+      "latency_s": 3.0078353881835938,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "New York'tan Los Angeles'a, otoyolları ve ücretli yolları kullanmayan bir yol tarifini alamadım. Harita servisi iki denemede de \"400 Bad Request: geçersiz parametreler\" hatası verdi.\n\nİlk denemede şehir adlarını \"New York\" ve \"Los Angeles\" olarak yazdım. İkincisinde \"New York, NY, USA\" ve \"Los Angeles, CA, USA\" olarak açık yazdım. İki denemede de otoyol ve ücretli yol kısıtlamasını kullandım. Hatanın kesin sebebini göremiyorum. Bu kısıtlamalar ya da 4.000 km'yi aşan uzun bir rota servisi zorluyor olabilir, ama bunu doğrulayamadım.\n\nSize uygun olursa şunlardan birini deneyebilirim:\n- **Rotayı parçalara bölmek:** Yolu birkaç ara şehirden geçen bölümler halinde istemek. Örneğin önce New York–Chicago, sonra Chicago–Denver, en son Denver–Los Angeles.\n- **Önce yalnızca ücretli yollardan kaçınmak:** Hatanın otoyol kısıtlamasından gelip gelmediğini anlamak için. Bu durumda rotada otoyollar olabilir, bu yüzden bunu ancak siz onaylarsanız yaparım.\n- **Kısıtlamasız rotayı almak:** Servisin genel olarak çalışıp çalışmadığını görmek için. Bu rota da otoyollardan ve ücretli yollardan geçebilir.\n\nHangisini denememi istersiniz?"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1523,
+      "output_tokens": 602,
+      "latency_s": 7.492786645889282,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York, NY",
+            "end": "Chicago, IL",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "toolu_01GTGoR2FntjLS2i3V8mcJBu"
+        },
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "Chicago, IL",
+            "end": "Denver, CO",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "toolu_01WtEy2kR2822UskJbMZFR95"
+        },
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "Denver, CO",
+            "end": "Los Angeles, CA",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "toolu_01BjtnUmDa4v1putg36YFGcx"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York, NY",
+            "end": "Chicago, IL",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        },
+        {
+          "map_service_get_directions": {
+            "start": "Chicago, IL",
+            "end": "Denver, CO",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        },
+        {
+          "map_service_get_directions": {
+            "start": "Denver, CO",
+            "end": "Los Angeles, CA",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+      "input_tokens": 2157,
+      "output_tokens": 441,
+      "latency_s": 4.081188201904297,
+      "num_calls": 3,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York, NY",
+            "end": "Los Angeles, CA"
+          },
+          "id": "toolu_01MzhFtj5b7auuDXiHeFxdS5"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York, NY",
+            "end": "Los Angeles, CA"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+      "input_tokens": 2811,
+      "output_tokens": 184,
+      "latency_s": 2.558237314224243,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "Otoyolları ve ücretli yolları kullanmayan bir New York–Los Angeles rotasını hâlâ çıkaramadım. Harita servisi yaptığım her istekte aynı \"400 Bad Request: geçersiz parametreler\" hatasını verdi.\n\nBu turda rotayı üç parçaya bölüp yine otoyolsuz ve ücretsiz yol kısıtlamasıyla denedim: New York–Chicago, Chicago–Denver ve Denver–Los Angeles. Üçü de başarısız oldu. Sorunun kısıtlamalardan kaynaklanıp kaynaklanmadığını anlamak için New York–Los Angeles'ı bir kez de kısıtlamasız denedim. Bu sonucu size rota olarak sunmayacaktım ama o istek de aynı hatayla geri döndü.\n\nÖnceki iki denemeyle birlikte toplam altı istek başarısız oldu. Kısıtlamasız istek de çalışmadığına göre sorun kısıtlamalarda, şehir adlarında ya da rotanın uzunluğunda görünmüyor. Harita servisi şu an çalışmıyor gibi. Aynı isteği farklı şekillerde tekrar göndermek sonucu değiştirmeyecek gibi görünüyor.\n\nElimdeki diğer iki araç para birimi çevirme ve kaplumbağa popülasyonu verisi. Bunlar yol tarifi vermiyor.\n\nServis düzeldiğinde aynı isteği bu kısıtlamalarla yeniden deneyebilirim. İsterseniz kısa bir süre sonra tekrar sorun."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 3039,
+      "output_tokens": 597,
+      "latency_s": 7.052388429641724,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "toolu_013pHF2vpSfTD4XvSZgToMo5"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 3668,
+      "output_tokens": 144,
+      "latency_s": 1.95615553855896,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Otoyolları ve ücretli yolları kullanmadan Nyu York'tan Los Encılıs'a yol tarifi ver."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01WdehRR44UZiXb5Ps8BUMRW",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "name": "map_service_get_directions",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01WdehRR44UZiXb5Ps8BUMRW"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQS2wYKEAgTGAI4AUIIdGhpbmtpbmcSDJIwYpw9CEPAv/tPXRoMkRpQ0bDqpYNRTmwYIjATo0U0KG2WZfW8HAKPrUmdCCzF014Wa6yjj7ZA0C48bbcnzI3C+XaB0c2Hm2fkWmUq+AW/G6soWJmMs763VU+fSgfKC4X5HBynwF1qsgDUXDd8AmsJb9F1MWMRpKerhjZmRt4GMrLRGUSEDx1ExaqYmFBWN/o7OGAg7LGWpYg6J2+FB7wKhHiaLWIBtJztfyiUlIqmE/RtP4AcQnob9qLbngZin45uJUqFk4wM08tSsZBp2B1GK0ssxG0aBqemGrWcZ51LYFVbhEL8CqUC0y7hXkJr6Z6trmzGlahZKm2MtloR45EwOxBQUb931WsKm15oFZ+bdR8rnQ1tJ1iEG9372bWjS9PuJNWBv3Ty6h1wxDtTdrVw8G8m8WpBFCTfncMDdMCrO01jEgtREhUXqpqi5olNGImSjS2oSXT+rqxE26LkfNOM+mInCNChTA2WjQdn6es1K5gTth5FVAv/T5cyKWpzo99sJEuKQs9FX+F8psHddY5saBgDID8/EZ65U3RQk7ErVPZ/tO8Igiu/9PqPxbTlrvp6MtogxWZWz4/nSKih5A6WBV3igdyf7OdNdnAcBNX0RTYTB9XTa+5V1Q0oZz5M6lqBuQqSwOMaT79Nzoqbnq5I8lj/NkJA6Lxj4eYDTqTUzndsauIY+E8sTox3LhgoQRzpbwzPFwQWQYl7BMerhO8kbv458wmcXIeAUBlXbrPNsgnx/IQjvYbz7is/2DSdCdUebMZPRWSPCGpKVN3qHlDQWMTabB5vaPcJ8Mlh+BAsNtLGXXu92oNSCBZhHKIySNWO2MG5nTZVKHM/3gTFaM5sgCOwIEIcyKH411Q9dqMjClGQICOGYDec1sdUd96wfgcjh/IuoRQnLC6OQsZs/1caAvuJb5IwtA8JUL8IWaENp2Y8VY6bDxSOvOty6qmllfr3Yv70K3r5du9CFauAWelXlgzd53xqMA72eCJb1D7haHHFsa7eSgo7omOVqaWoiLcS5MD2SAt2WVPPFQPgoBbvgOTbOhPYjCy6rQbaH7v9nZjzn73+NBG5qcQG/916cI9IcQvyCqHuNWFiWzwGrgt/y/AYN9AMGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_011ACziEDkvU2frdmCb2iNJy",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "start": "New York, NY, USA",
+            "end": "Los Angeles, CA, USA",
+            "avoid": [
+              "tolls",
+              "highways"
+            ]
+          },
+          "name": "map_service_get_directions",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_011ACziEDkvU2frdmCb2iNJy"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSvQUKEAgTGAI4AUIIdGhpbmtpbmcSDKQhFc8aYPwh8GFY3xoM0/K25lJ5AcOWyYX9IjCvxZUvI5VBnk5u3Cj4G9sFD04DIgS+Ne78/U7MemVOG5G0F/W4FLmyd+Rk87FR+RUq2gRnCJ6TRz5r4J22SPe16upX1R+h+3vAHZM4Nto0LwvejSz7Kffo5DRlZhJZvK9GzepgtbrNyZkuVoZ9ILje0IaSsVx6vpr3o9G+E0YuLEnRGEpKSSYe2u5sCtqECGAhodAjSRgXT/qjlykHECggEReMFWbygbXcK4Ny7/xjZe6xk/JooCxBZhUR25MZuHrk35y1IJqkoUrL5AAOkVOdmTi+tGPdRLsC2ryZp9Vbr1dyTK1x/IFijYSzJ6nFjT6DKbRkldxw+0r3iCMuqmmSmUtEZneJb+XjD+GXq2ZHGu3xHfhVHBQfbnsjBln3+D237BXXx0z2ImKua7NTRirA5r1Fxp5/9RMlipMlkSW4PdFxOZBNV/7ywJDK+ny30izBSOSMGv+haUVbrHsOL5y7thekgJ+gWUEsItWueGwXGstQCLxJURhkvkSa/4u0HeLsffRoWMmIF/BKHePwRraJDHbgRVUBvvSKnizTrtKMGAr9pq5GB7bjrbko47s31R6vs2xhLN845J30jkMtkYkUYmZtD8PMFNkmV6x1Rmc4fURxfe+yLOZp8bw37aSzy/p4lYK+fLCEwv1Zj326F/7SiPNImMpttOcR/cdkoxBdkRkGyczniSxYSEIJPqhk+rB/3OfzeKWxRRME3+EW37ITxlALm80KLLtbtLnX+4pSBwGxSP2mnkqBT86GSRT7uiEQhZfFalTTJfHmNUPjoxgjroJ7sxPQ8utk9oeir7N73/6vwG5/7+bJbF7DVC2MnURPtp18XZbTXidy3D9W5ewvs8SePN1des9y80UK5xgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "New York'tan Los Angeles'a, otoyolları ve ücretli yolları kullanmayan bir yol tarifini alamadım. Harita servisi iki denemede de \"400 Bad Request: geçersiz parametreler\" hatası verdi.\n\nİlk denemede şehir adlarını \"New York\" ve \"Los Angeles\" olarak yazdım. İkincisinde \"New York, NY, USA\" ve \"Los Angeles, CA, USA\" olarak açık yazdım. İki denemede de otoyol ve ücretli yol kısıtlamasını kullandım. Hatanın kesin sebebini göremiyorum. Bu kısıtlamalar ya da 4.000 km'yi aşan uzun bir rota servisi zorluyor olabilir, ama bunu doğrulayamadım.\n\nSize uygun olursa şunlardan birini deneyebilirim:\n- **Rotayı parçalara bölmek:** Yolu birkaç ara şehirden geçen bölümler halinde istemek. Örneğin önce New York–Chicago, sonra Chicago–Denver, en son Denver–Los Angeles.\n- **Önce yalnızca ücretli yollardan kaçınmak:** Hatanın otoyol kısıtlamasından gelip gelmediğini anlamak için. Bu durumda rotada otoyollar olabilir, bu yüzden bunu ancak siz onaylarsanız yaparım.\n- **Kısıtlamasız rotayı almak:** Servisin genel olarak çalışıp çalışmadığını görmek için. Bu rota da otoyollardan ve ücretli yollardan geçebilir.\n\nHangisini denememi istersiniz?",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSvAcKEAgTGAI4AUIIdGhpbmtpbmcSDFyZLUZcKvTpV6ZJmBoMfInV3mdpLIcaToXkIjDMIrggbIgA0LkvTdp3OBJDnf59DlGwTJyzlzwIHZIv90tr5qLTe9CDLsf4YUeHm18q2QbFwzUXyrLEs2IHqn/+7NVfGLYwy21OAnNPnO4/x3LzLEaOX88yDYz8LRVYFpIYbI4mHInl8pVNNPjHdTERnTbsNjI0BS85tAZZvRiJ+UF7/6arO0M8Sy8B0zihrjxshQGgLJOvdosTqBqXS3zVf/GRQTwENj/ALhHHp4hfsrcrOxBsDZ58NvMH/qRo+1vHrTzogYCN7dhmcEOHcp4CvbBwPj6KbxKVgrFOoqb3GaImuOw8S47VXhCwEhwHTOhftIZSMZU/9NrYSeAF+osvDGvuWUjXG8xK8TQtuv84my4lxUdWqhYoTmSjRajrjq7TyK6TpLKPAmtQNe+AF3z84hnko2EBNOe0uP0YYMbhxyIjDL0/K8LqUfP/7IDMc+5pcTSOqUI27EwvPfi4wPXEGwPakpUDluMEG2nZi3ZV6GlwFr2MoCDWkk6ErmXpS5E2IclfWZKw/f/fQwZIyjDnHHTfwvIEAqfnAueduBPPeHgOnq+U68L9EgAyhu3qm+3jNTsHJRxWZFWMYSI1aGX/+UrqZNFLfIuI7RPgIVuKPYE76/xrGZ7IZzibtUtOv2dH/fJJuOPzi1Nc7ilKTFtEdFfuR/WgYo/pnsUPRGdIPra2JbLj6MWADXk1hxtZ+Lju6hu3fM4B/AyRxlNTPnyisizxGyIbG9FwUVM5iKMycPxqrCunX61CUhYNUJ4jNUF0gM508CSAtiLLeNqCtKJbJrCRKVgdMPOxJz7yfbdvBitX2GmXN1WmZvNi5vbP3x16ZTFiA/FQYckcX1rLvl/58Gtqt+LQUZFbP1ygqVXZI2jkFxi25TmlHbA4P2Zry3/VR7SsZ+yJpGMMQN3KYgoim89yZtK2juLArvy8OcaqnpFwQPyWmzFYeEvZFJ4gK1TBNZGZXjZkMbuXvA1Go8Mt0HVmvM61YJMvdlhlYxVGJG4psg0zmlQqs9QLxa3IQ2nWCGOjOMXG/lgnNCkvgwcHaC+vgdlVG9yFDQA+pHEU3H9HQ+N26AIt4CDABIjMPCGNXIAmfAdwXTrkuDVhek8Vee0WI95QWYDjM68HK9GKUQFa3srsrzNMS351vrVodKzm8VTCFd6FU4/2aLwxPXO3YtC1AMuoQyP354xA8mtGcYnSEfgOeKdK+MCpkxgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01GTGoR2FntjLS2i3V8mcJBu",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "start": "New York, NY",
+            "end": "Chicago, IL",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "name": "map_service_get_directions",
+          "type": "tool_use"
+        },
+        {
+          "id": "toolu_01WtEy2kR2822UskJbMZFR95",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "start": "Chicago, IL",
+            "end": "Denver, CO",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "name": "map_service_get_directions",
+          "type": "tool_use"
+        },
+        {
+          "id": "toolu_01BjtnUmDa4v1putg36YFGcx",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "start": "Denver, CO",
+            "end": "Los Angeles, CA",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "name": "map_service_get_directions",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01GTGoR2FntjLS2i3V8mcJBu"
+        },
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01WtEy2kR2822UskJbMZFR95"
+        },
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01BjtnUmDa4v1putg36YFGcx"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSowcKEAgTGAI4AUIIdGhpbmtpbmcSDAHfdWcnV5F+8+doNRoMC+MblA/5qP6JHEUoIjCgxljGnUn1gnqzelIGsTa11lBbHpGFWU6eqAT/TJEDMeYtdYACH+74bBMDn8VA+78qwAZoP42i57CMuSXUnjXFM2kdkjk9MsKJFZNrocOgNL2iBdz2w3+lwc2XE/4aRF9uW+Kq8UFr59J2Yp/tgFmFL2NTZ8II52yH2gLwI4s/U35ttyIf4OMxunm6KHphIIOxqAKzj1wb/gCV7+okuCYpdKM0gNx+VebHczQx4Z7edc68uVehLfsQWmqWkZUloWv9PvcbSAAj8UigZ2YztXPeAWvjy6IQX3ojbUG2LjTXy6iTf9DWEp9eQswclGaEuHp4QwJuBMofn8JZfsUyS+TQhUsGd9KBjs/Obd1S+SOjLiyhk6CSMO29E7UqXnjpQg0lXkw+k/Hw41OSDv7fZNewgF9+DIGHwxSUZ0Lfgip5dtoXMCWtdNsKZe+bCQsxlsuQqY5P6AqTXCBtWMBUmsQsm0Lyynk+74lHToqpn98rRWqgD38mRigN4Uz0oEXwX8y7+21SlngCwIRGWi2Ai7cssuhURbB2IH+/OGObNxk3OK8jTSxf8pSpt8aNfoR0JryF3hlTKpYCpY/21h+tzry8AnSTrlJSBba8qie8+Dk3qjV0x0/3HvnawFnRdaZR0S5FU/f1Wr1+MXNSpAIOCc4VFNEi5E0iPxcRl7JdkDYnv8sy/wXqE+8htHs7BKmvYd2A0pOJa5g+BTaiE1d4pfFwOU62sEpxLrTIzAnQyqar+zl3bxKwOyY6XknrCub6Ba3oO4ml959zEYzLZ2yyUUAxFlASWjKBS3T1iGD/XBc0B5lPIdTj7Zp+7QwxEdaIcHDcw5cXLCFwmeyA3RgW+IRBDgrI8O0nsrDFZ8s4QB+0tqpIcZKuJlwL0lCKZcBNos2RARSdFPnRybyl9CmIT58dUjD4sj5DhY+0jt6gxCtxc8pKv/csbY2bNklHa/1p2tkr+Lor29IekUsxFFjLWiwFAXuNOP/bAWrZblHA48H1REFmwGXby5kpCJoBbjUtkP3t439/t9eQ8qvc5ZKtkS5V4OHjf9176ap/a+Z/Xwh8gzigCJC21cAIk0jgWp1Q3kE0xpq7Ei3pBlqO3WTnLYnQMIF83Y37kK7D/SDgd9MfMj0k3kWqauJ7biNMsiicveR2R6rGjmwhx5ZfjGMt3lEPj0ZeGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01MzhFtj5b7auuDXiHeFxdS5",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "start": "New York, NY",
+            "end": "Los Angeles, CA"
+          },
+          "name": "map_service_get_directions",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01MzhFtj5b7auuDXiHeFxdS5"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQS3wUKEAgTGAI4AUIIdGhpbmtpbmcSDNCU4hYe+GZ132IY0hoMelJtJzvlTTqElFsFIjCuJN68pVxHSZUrDI9tv6O7At6htwntZrCLRBuXBr06xaC/0QDiC19d7wW+Hxh8yukq/ATyXYPJdWn6ZTaETVfIIvsXfXTqhIoBOw7eZcCd3CGMxpMlgpwamojAynIU5oGwziHNw+S0oedGnv9G7SQd1GtSAyTNXUJkGSOlkL2PO91x396ee2ALQsholLa+RW0/IG6fpJkN4y7tS3w9XBe07IxQz2aSQ5eN6dyWGXF1ESc97q+syYCLxuum33jrVrTgRgtcrQtV3eap/j7vxtHaJpIBvLoJ1BAr3CRhcjLPsm15QIkm9+sfuqzc60CsOyZlkDBD4X2JU+KbkzZUuGhu/54YbK8Pl2DbUqqWZ3hcwGlcF0zX/FOKcDEUgJPOipfqgVgZlwcTWqUsI5D84iHuWo6HYwkmGXPWTXIG7c1P7/EmSa2G8kJssjTozO5qEF/wCtlUYRKTaCyLAsOlL725idZU8ihUtvRQx73M1GKmIoyjCzwQ+0KDgB0rsgfazHS8C8zvMGF3WcCU/pzwImcc3w4RTOafh1cdsrDVRg1xWoO4evRUjAHOv2ZK4cXGIbDjLS4uMpgnBHT4+b2jvNxLx7/bnAgfGK8OrG8CPE048ocEIEaZdfbKttxz/RIvzZRmvyBcRIe1EmI2qJHAI5gc9Pj2saGW2tL64gvS4x7W59Nk57q8GbFZxliN/v+tAkQBVxrv3IYwkM4uefgXt7stkfZqEo3h3VBh+zJlPuBZn1UTuSLr3P+cQZ4RUM04Kk2Gl087xqkjBbBvzClVOqu+6D3UmST4Sp/gPHRk6BYdEZ6IpbMLq5U1FO9vOK4Bir35nGWGb9GSK/N+6d423yY2kWY0ZYQ7rBrFQmc5Oqk89eu1hqp2Wog+mXPJRPrdTJhsWhlZVQYWoDmRxN0kfS0YAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Otoyolları ve ücretli yolları kullanmayan bir New York–Los Angeles rotasını hâlâ çıkaramadım. Harita servisi yaptığım her istekte aynı \"400 Bad Request: geçersiz parametreler\" hatasını verdi.\n\nBu turda rotayı üç parçaya bölüp yine otoyolsuz ve ücretsiz yol kısıtlamasıyla denedim: New York–Chicago, Chicago–Denver ve Denver–Los Angeles. Üçü de başarısız oldu. Sorunun kısıtlamalardan kaynaklanıp kaynaklanmadığını anlamak için New York–Los Angeles'ı bir kez de kısıtlamasız denedim. Bu sonucu size rota olarak sunmayacaktım ama o istek de aynı hatayla geri döndü.\n\nÖnceki iki denemeyle birlikte toplam altı istek başarısız oldu. Kısıtlamasız istek de çalışmadığına göre sorun kısıtlamalarda, şehir adlarında ya da rotanın uzunluğunda görünmüyor. Harita servisi şu an çalışmıyor gibi. Aynı isteği farklı şekillerde tekrar göndermek sonucu değiştirmeyecek gibi görünüyor.\n\nElimdeki diğer iki araç para birimi çevirme ve kaplumbağa popülasyonu verisi. Bunlar yol tarifi vermiyor.\n\nServis düzeldiğinde aynı isteği bu kısıtlamalarla yeniden deneyebilirim. İsterseniz kısa bir süre sonra tekrar sorun.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSqgYKEAgTGAI4AUIIdGhpbmtpbmcSDCh2BEfhRrqgd2DSvBoMDbLYIfweYjcsWbL2IjDOdDwwGBBUgDk+JmPZ4umptShisTsQxVkd0LdN6gvimQlSAjATJpbHZOIbE/6ySEYqxwVr5cd+yQeJSXQAGOH9FFJ8WSC7IHhlsVkFEiVwXHsTo2/tGhDoiBLMwapA9mNZ/ZwIhU7yBm7e5WvKP0Ussnuu+zAtBaafbTTMUc6C2rCe8cZI2+T3q/Wfdjlva50Rv0aL4w7WsDZNBZW94ygBf1T926MXPZ8eAL0fJqJgE9BkogLD/ptw1u7hHOUVqjji5ZDlh650UUbxUI6wLnQPHqtN8qcQRVzsyuoJJHuIHub/KpFoxPeH7TnMX4BwgiA9lv8pWoSJMpY3j4iSru0FRf2x3YpKtVwxX9cjSM8gQRK/NI2UKS8czRu/Zh7zox7byh0L2PHctlLyg7eszZV1Uu55TydBjgBhaC0TyOL0RCZwHKpLO3HMBW+zi1q1WYvsV4HzhPKFEC3zJIOL8JeNtN/PjS1fq+J8NFUrnZEcaQMa5/uHe8qy8bsnZeNYIriMx9VL4/AZzgIzgRcCyJ6Rgm2t9/3rGonPOFTvrVjRxxU7SzxfecYTTn7n2tSgSxiHoMrOEnYsMU+BrQUIKW/QD7IlZ09cLs72Rc7FL8QtK9ShuPNY9tka490fLb8G2BGXhRmXmbtKshEzdfZXC7jt16uFKWQh9dpG+z7K9sSS4rS1Zx4I6q4jyOOlP/30sk4QZN6eUAQ5hl3LKqHVqOTdqhG+HMWU1fcKAuQbtRUMbogEUPSdCgKYrsupvAyEXpk9KkHazgdjGDi0DTYW1zsxBKb3ZjycSjcFd0DxYNH7GCKvpeQLg6fzYbm7aLKJbNaCvxhCdxHYB+xT5cb7bt659Pdk461jZmu+UgGEATmqoTi2mGT74G2PG05tHPUyR1Fq3BQvy/Lw1qcDGUbUeTZ5dQ7z5Wdc53EiWet9kvHNPH6PkCVT7cXbnsoA+Zkp0PIIGxt7VL7AiAwmo7p0DuiPgeGqP1OoCR78L0zYkAHM2N+Rnh/Pe0ztQM4YAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_013pHF2vpSfTD4XvSZgToMo5",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "name": "map_service_get_directions",
+          "type": "tool_use"
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

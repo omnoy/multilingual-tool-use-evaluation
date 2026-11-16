@@ -1,0 +1,136 @@
+{
+  "id": "multiple_24_tr",
+  "source_id": "multiple_24",
+  "locale": "tr",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "tr_translatable_full_func_desc",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": true,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 646,
+  "total_output_tokens": 244,
+  "total_latency_s": 2.011082410812378,
+  "estimated_cost_usd": 0.00197316,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Bir satranç şampiyonasında oynamak için Londra'dan Edinburg'a en hızlı rota hangisidir? Ayrıca tahmini mesafeyi de belirt."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "route_planner.calculate_route": {
+        "start": [
+          "Londra"
+        ],
+        "destination": [
+          "Edinburg"
+        ],
+        "method": [
+          "fastest",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nİki ayrı sorgu yapmam gerekiyor: biri rota için, diğeri satranç kulübü/turnuvası için. Önce rota planlayıcıdan Londra-Edinburg arası en hızlı rotayı alayım. Ayrıca satranç şampiyonasıyla ilgili olarak Edinburgh'daki bir satranç kulübünü de sorgulayayım."
+      ],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "Londra",
+            "destination": "Edinburg",
+            "method": "fastest"
+          },
+          "id": "call_10a246eabc324b44bba83c04"
+        },
+        {
+          "name": "chess_club_details_find",
+          "arguments": {
+            "name": "Edinburgh Chess Club",
+            "city": "Edinburg"
+          },
+          "id": "call_279ae1d83bf64ce2ba145d9e"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "Londra",
+            "destination": "Edinburg",
+            "method": "fastest"
+          }
+        },
+        {
+          "chess_club_details_find": {
+            "name": "Edinburgh Chess Club",
+            "city": "Edinburg"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 646,
+      "output_tokens": 244,
+      "latency_s": 2.011082410812378,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": true
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Bir satranç şampiyonasında oynamak için Londra'dan Edinburg'a en hızlı rota hangisidir? Ayrıca tahmini mesafeyi de belirt."
+    },
+    {
+      "content": "\n\nİki ayrı sorgu yapmam gerekiyor: biri rota için, diğeri satranç kulübü/turnuvası için. Önce rota planlayıcıdan Londra-Edinburg arası en hızlı rotayı alayım. Ayrıca satranç şampiyonasıyla ilgili olarak Edinburgh'daki bir satranç kulübünü de sorgulayayım.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_10a246eabc324b44bba83c04",
+          "function": {
+            "arguments": "{\"start\": \"Londra\", \"destination\": \"Edinburg\", \"method\": \"fastest\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_279ae1d83bf64ce2ba145d9e",
+          "function": {
+            "arguments": "{\"name\": \"Edinburgh Chess Club\", \"city\": \"Edinburg\"}",
+            "name": "chess_club_details_find"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

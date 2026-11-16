@@ -1,0 +1,356 @@
+{
+  "id": "multiple_27_tr",
+  "source_id": "multiple_27",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_translatable_query",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 5,
+  "num_clarifications": 0,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 4191,
+  "total_output_tokens": 759,
+  "total_latency_s": 9.117547273635864,
+  "estimated_cost_usd": 0.00993366,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Toplu taşıma kullanarak Fransa'nın Paris şehrinden İtalya'nın Roma şehrine gitmek için en kısa yol hangisidir?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.shortest_path": {
+        "start_location": [
+          "Paris, France",
+          "Paris"
+        ],
+        "end_location": [
+          "Rome, Italy",
+          "Rome"
+        ],
+        "mode": [
+          "transit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, Fransa",
+            "end_location": "Roma, İtalya",
+            "mode": "toplu taşıma"
+          },
+          "id": "call_c7e57adb17c44a2ba13d6cd5"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, Fransa",
+            "end_location": "Roma, İtalya",
+            "mode": "toplu taşıma"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "input_tokens": 519,
+      "output_tokens": 93,
+      "latency_s": 1.3651657104492188,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Görünüşe göre bir hata oluştu. \"mode\" parametresini İngilizce olarak göndermeyi deneyelim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, Fransa",
+            "end_location": "Roma, İtalya",
+            "mode": "transit"
+          },
+          "id": "call_fde3bed845054e2199054855"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, Fransa",
+            "end_location": "Roma, İtalya",
+            "mode": "transit"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "input_tokens": 646,
+      "output_tokens": 127,
+      "latency_s": 1.24226713180542,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Fonksiyon tanımını tekrar incelediğimde, `maps_shortest_path` fonksiyonunun parametrelerinin `start_location`, `end_location` ve `mode` olduğunu görüyorum. Ancak `mode` parametresi zorunlu değil (required dizisinde sadece `start_location` ve `end_location` var). Bu sefer `mode` olmadan deneyelim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, Fransa",
+            "end_location": "Roma, İtalya"
+          },
+          "id": "call_4b278330326e43d78340ee75"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, Fransa",
+            "end_location": "Roma, İtalya"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "input_tokens": 807,
+      "output_tokens": 173,
+      "latency_s": 1.579796314239502,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Fonksiyon tanımını daha dikkatli incelediğimde, `mode` parametresinin `required` listesinde yer almadığını ancak hata vermeye devam ettiğini görüyorum. Acaba lokasyon formatıyla ilgili bir sorun olabilir mi? Koordinat veya farklı bir format deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy"
+          },
+          "id": "call_2de8cfb88b4843bfb4a2031c"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "input_tokens": 1014,
+      "output_tokens": 157,
+      "latency_s": 2.2982490062713623,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Üzgünüm, `maps_shortest_path` fonksiyonuna yaptığım çağrılar sürekli olarak \"400 Bad Request: invalid parameters\" hatası döndürüyor. Bu, fonksiyonun arka uç sisteminde bir sorun olabileceğini veya parametre formatının beklendiği gibi çalışmadığını gösteriyor.\n\nAlternatif olarak, rota süresini tahmin eden `maps_route_times` fonksiyonunu deneyebilirim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "maps_route_times",
+          "arguments": {
+            "route": "Paris, Fransa'dan Roma, İtalya'ya toplu taşıma",
+            "mode": "transit"
+          },
+          "id": "call_c79cc846375b47a4ba2cc699"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_route_times": {
+            "route": "Paris, Fransa'dan Roma, İtalya'ya toplu taşıma",
+            "mode": "transit"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1205,
+      "output_tokens": 209,
+      "latency_s": 2.6320691108703613,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Toplu taşıma kullanarak Fransa'nın Paris şehrinden İtalya'nın Roma şehrine gitmek için en kısa yol hangisidir?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c7e57adb17c44a2ba13d6cd5",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, Fransa\", \"end_location\": \"Roma, İtalya\", \"mode\": \"toplu taşıma\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "tool_call_id": "call_c7e57adb17c44a2ba13d6cd5"
+    },
+    {
+      "content": "Görünüşe göre bir hata oluştu. \"mode\" parametresini İngilizce olarak göndermeyi deneyelim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fde3bed845054e2199054855",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, Fransa\", \"end_location\": \"Roma, İtalya\", \"mode\": \"transit\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "tool_call_id": "call_fde3bed845054e2199054855"
+    },
+    {
+      "content": "Fonksiyon tanımını tekrar incelediğimde, `maps_shortest_path` fonksiyonunun parametrelerinin `start_location`, `end_location` ve `mode` olduğunu görüyorum. Ancak `mode` parametresi zorunlu değil (required dizisinde sadece `start_location` ve `end_location` var). Bu sefer `mode` olmadan deneyelim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4b278330326e43d78340ee75",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, Fransa\", \"end_location\": \"Roma, İtalya\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "tool_call_id": "call_4b278330326e43d78340ee75"
+    },
+    {
+      "content": "Fonksiyon tanımını daha dikkatli incelediğimde, `mode` parametresinin `required` listesinde yer almadığını ancak hata vermeye devam ettiğini görüyorum. Acaba lokasyon formatıyla ilgili bir sorun olabilir mi? Koordinat veya farklı bir format deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2de8cfb88b4843bfb4a2031c",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, France\", \"end_location\": \"Rome, Italy\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "tool_call_id": "call_2de8cfb88b4843bfb4a2031c"
+    },
+    {
+      "content": "Üzgünüm, `maps_shortest_path` fonksiyonuna yaptığım çağrılar sürekli olarak \"400 Bad Request: invalid parameters\" hatası döndürüyor. Bu, fonksiyonun arka uç sisteminde bir sorun olabileceğini veya parametre formatının beklendiği gibi çalışmadığını gösteriyor.\n\nAlternatif olarak, rota süresini tahmin eden `maps_route_times` fonksiyonunu deneyebilirim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c79cc846375b47a4ba2cc699",
+          "function": {
+            "arguments": "{\"route\": \"Paris, Fransa'dan Roma, İtalya'ya toplu taşıma\", \"mode\": \"transit\"}",
+            "name": "maps_route_times"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

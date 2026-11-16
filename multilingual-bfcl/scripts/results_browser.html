@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Results Browser</title>
+<!--
+  Read-only browser for results_robustness/ transcripts.
+  Open in desktop Chrome/Edge, click "Open results folder" and pick results_robustness/
+  (any folder containing <model>/<category>/<lang>/<benchmark>/transcripts/*.json works).
+  Nothing is ever written — this page is for analysis only.
+-->
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --border: #d9dde3; --text: #1d2330; --muted: #6b7380;
+  --accent: #2f6fed; --accent-weak: #e7eefd; --add: #1f8a4c; --add-bg: #e6f5ec; --del: #c23b3b; --del-bg: #fbeaea;
+  --warn: #a96500; --warn-bg: #fff4e0; --chip: #eef0f4; --b: #8a4fd6; --b-weak: #f1e9fc;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#14171c; --panel:#1d2128; --border:#343a45; --text:#e3e6ec; --muted:#98a0ad; --accent:#6c9cff; --accent-weak:#24304a;
+    --add:#5fd08f; --add-bg:#173326; --del:#ff8080; --del-bg:#3a1d1f; --warn:#f0b35a; --warn-bg:#3a2d15; --chip:#2a2f38; --b:#b88cff; --b-weak:#2f2540; }
+}
+* { box-sizing: border-box; }
+html, body { height:100%; }
+body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; display:flex; flex-direction:column; }
+button, select, input { font:inherit; color:inherit; }
+button { background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:5px 11px; cursor:pointer; }
+button:hover { border-color:var(--accent); }
+button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+button.on { background:var(--accent-weak); border-color:var(--accent); color:var(--accent); }
+select, input[type=text] { background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:5px 8px; }
+.mono { font-family: ui-monospace, Consolas, monospace; }
+.muted { color:var(--muted); }
+
+header { background:var(--panel); border-bottom:1px solid var(--border); padding:8px 16px; display:flex; flex-direction:column; gap:7px; }
+header .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+header .row[hidden] { display:none; }
+header .title { font-weight:600; margin-right:6px; }
+header label { font-size:12px; color:var(--muted); display:flex; gap:5px; align-items:center; }
+header label select { font-size:14px; color:var(--text); }
+header .lbl { font-size:12px; font-weight:600; padding:2px 7px; border-radius:5px; background:var(--chip); color:var(--muted); min-width:24px; text-align:center; }
+.lblA { background:var(--accent-weak) !important; color:var(--accent) !important; }
+.lblB { background:var(--b-weak) !important; color:var(--b) !important; }
+.picker select[data-f="lang"] { min-width:220px; }
+#entrySel { min-width:300px; font-family: ui-monospace, Consolas, monospace; }
+#search { width:220px; }
+.count { font-size:12px; color:var(--muted); }
+#status { font-size:12px; color:var(--muted); margin-left:auto; }
+#status.err { color:var(--del); }
+
+.layout { flex:1; min-height:0; display:flex; }
+main { overflow:auto; padding:16px; min-height:0; flex:1; }
+.empty { max-width:640px; margin:60px auto; text-align:center; color:var(--muted); }
+.cols { display:grid; gap:16px; grid-template-columns: minmax(0,1fr); }
+.cols.two { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+@media (max-width: 1000px) { .cols.two { grid-template-columns: 1fr; } }
+.card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:14px; }
+.card.A { border-top:3px solid var(--accent); }
+.card.B { border-top:3px solid var(--b); }
+.card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:0 0 10px; font-weight:600; }
+.head { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px; }
+.head .id { font-weight:600; font-size:15px; font-family: ui-monospace, Consolas, monospace; margin-right:4px; }
+.tag { font-size:12px; padding:2px 8px; border-radius:10px; background:var(--chip); color:var(--muted); white-space:nowrap; }
+.tag.ok { background:var(--add-bg); color:var(--add); }
+.tag.fail { background:var(--del-bg); color:var(--del); }
+.tag.warn { background:var(--warn-bg); color:var(--warn); }
+.runpath { font-size:12px; color:var(--muted); font-family: ui-monospace, Consolas, monospace; margin-bottom:10px; word-break:break-all; }
+.q { white-space:pre-wrap; background:var(--chip); border-radius:8px; padding:8px 10px; margin-bottom:8px; font-size:15px; }
+.q .role, .sys .role { display:block; font-size:11px; color:var(--muted); }
+details.sys { margin-bottom:8px; font-size:12px; }
+details.sys summary { cursor:pointer; color:var(--muted); }
+details.sys div { white-space:pre-wrap; padding:6px 10px; background:var(--chip); border-radius:6px; margin-top:4px; }
+table.kv { border-collapse:collapse; width:100%; font-size:13px; }
+table.kv td { border-top:1px solid var(--border); padding:5px 6px; vertical-align:top; }
+table.kv td:first-child { font-family: ui-monospace, Consolas, monospace; white-space:nowrap; color:var(--muted); width:1%; }
+.chipv { display:inline-block; background:var(--chip); border-radius:5px; padding:1px 6px; margin:1px 4px 1px 0; font-family: ui-monospace, Consolas, monospace; white-space:pre-wrap; word-break:break-word; }
+.fn-name { font-family: ui-monospace, Consolas, monospace; font-weight:600; margin:8px 0 4px; }
+.fn-name:first-child { margin-top:0; }
+
+.attempt { border:1px solid var(--border); border-radius:8px; margin-bottom:10px; overflow:hidden; }
+.attempt.valid { border-color:var(--add); }
+.attempt .ahead { display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:6px 10px; background:var(--chip); font-size:12px; }
+.attempt .ahead b { font-size:13px; }
+.attempt .ahead .sp { flex:1; }
+.attempt .abody { padding:8px 10px; }
+.say { white-space:pre-wrap; border-left:3px solid var(--border); padding:2px 0 2px 10px; margin-bottom:8px; }
+.call { margin-bottom:8px; }
+.call .cname { font-family: ui-monospace, Consolas, monospace; font-weight:600; }
+.call .cname.bad { color:var(--del); }
+.call table.kv td.v { font-family: ui-monospace, Consolas, monospace; white-space:pre-wrap; word-break:break-word; }
+tr.m-ok td.v { color:var(--add); }
+tr.m-bad td.v { color:var(--del); }
+tr.m-missing td { color:var(--warn); font-style:italic; }
+tr.m-diff td:first-child { box-shadow: inset 3px 0 0 var(--warn); }
+.fb { font-size:12px; color:var(--muted); margin-top:4px; white-space:pre-wrap; }
+.fb .k { font-weight:600; }
+details.raw summary { cursor:pointer; font-size:12px; color:var(--muted); }
+pre { margin:6px 0 0; font-size:12px; white-space:pre-wrap; word-break:break-word; background:var(--chip); padding:8px; border-radius:6px; max-height:500px; overflow:auto; }
+.legend { font-size:12px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+.legend span::before { content:"■ "; }
+.legend .l-ok::before { color:var(--add); } .legend .l-bad::before { color:var(--del); } .legend .l-miss::before { color:var(--warn); }
+.kbd { font-size:11px; border:1px solid var(--border); border-radius:4px; padding:0 4px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="row">
+    <span class="title">Results Browser</span>
+    <button id="openBtn" class="primary">Open results folder</button>
+    <button id="reopenBtn" hidden>Reopen</button>
+    <input id="fallbackInput" type="file" webkitdirectory multiple hidden>
+    <button id="cmpBtn" disabled title="Compare against a second run (entries matched by source_id)">Compare</button>
+    <span id="status">Pick the results_robustness folder.</span>
+  </div>
+  <div class="row picker" id="pickA">
+    <span class="lbl lblA">A</span>
+    <label>Benchmark <select data-f="bench" disabled></select></label>
+    <label>Model <select data-f="model" disabled></select></label>
+    <label>Language <select data-f="lang" disabled></select></label>
+  </div>
+  <div class="row picker" id="pickB" hidden>
+    <span class="lbl lblB">B</span>
+    <label>Benchmark <select data-f="bench"></select></label>
+    <label>Model <select data-f="model"></select></label>
+    <label>Language <select data-f="lang"></select></label>
+    <button id="swapBtn" title="Swap A and B">⇄ Swap</button>
+  </div>
+  <div class="row">
+    <span class="lbl">Entry</span>
+    <button id="prevBtn" title="Previous entry (↑ / k)" disabled>◀</button>
+    <select id="entrySel" disabled></select>
+    <button id="nextBtn" title="Next entry (↓ / j)" disabled>▶</button>
+    <select id="filter">
+        <option value="all">All entries</option>
+        <option value="failA">A failed</option>
+        <option value="okA">A succeeded</option>
+        <option value="lateA">A succeeded after retry</option>
+        <option value="firstA">A first-attempt success</option>
+        <option value="disagree" data-cmp>A ≠ B (outcome differs)</option>
+        <option value="aOnly" data-cmp>A ok, B failed</option>
+        <option value="bOnly" data-cmp>B ok, A failed</option>
+        <option value="bothFail" data-cmp>Both failed</option>
+      </select>
+    <input id="search" type="text" placeholder="Search id or query text">
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<div class="layout">
+  <main id="main"><div class="empty">Open the <span class="mono">results_robustness</span> folder to start browsing.<br><br>Read-only: this page never writes any files.</div></main>
+</div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids.flat(Infinity)) if (k != null && k !== false) e.append(k instanceof Node ? k : String(k));
+  return e;
+}
+function setStatus(msg, err = false) { const s = $("status"); s.textContent = msg; s.classList.toggle("err", err); }
+const showVal = v => typeof v === "string" ? JSON.stringify(v) : JSON.stringify(v);
+const fmtNum = (x, d = 2) => (x == null || isNaN(x)) ? "–" : (+x).toFixed(d);
+
+// ---------- storage of last folder handle (IndexedDB; handle only) ----------
+function idb() { return new Promise((res, rej) => { const r = indexedDB.open("results-browser", 1); r.onupgradeneeded = () => r.result.createObjectStore("kv"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+async function idbGet(k) { try { const db = await idb(); return await new Promise(res => { const r = db.transaction("kv").objectStore("kv").get(k); r.onsuccess = () => res(r.result); r.onerror = () => res(null); }); } catch { return null; } }
+async function idbSet(k, v) { try { const db = await idb(); db.transaction("kv", "readwrite").objectStore("kv").put(v, k); } catch {} }
+
+// ---------- run discovery ----------
+// run = { key: "model/cat/lang/bench", files: Map(name -> () => Promise<File>) | null, loadFiles, entries: null|[...] , summary }
+let runs = [];            // sorted list
+const runByKey = new Map();
+const LS = { get(k) { try { return localStorage.getItem("rb:" + k); } catch { return null; } }, set(k, v) { try { localStorage.setItem("rb:" + k, v); } catch {} } };
+
+async function scanHandle(root) {
+  runs = []; runByKey.clear();
+  setStatus("Scanning folder…");
+  async function walk(dir, parts) {
+    let transcripts = null, summary = null;
+    const subdirs = [];
+    for await (const [name, h] of dir.entries()) {
+      if (h.kind === "directory") { if (name === "transcripts") transcripts = h; else subdirs.push([name, h]); }
+      else if (name === "summary.json") summary = h;
+    }
+    if (transcripts) {
+      const key = parts.join("/");
+      const run = { key, parts, summaryHandle: summary, entries: null,
+        async listFiles() { const m = new Map(); for await (const [n, h] of transcripts.entries()) if (h.kind === "file" && n.endsWith(".json")) m.set(n, () => h.getFile()); return m; } };
+      addRun(run);
+    }
+    for (const [n, h] of subdirs) await walk(h, [...parts, n]);
+  }
+  await walk(root, []);
+  await finishScan(root.name);
+}
+
+function scanFileList(fileList) {
+  runs = []; runByKey.clear();
+  const byRun = new Map();
+  let rootName = "";
+  for (const f of fileList) {
+    const p = f.webkitRelativePath.split("/");
+    rootName = p[0];
+    const ti = p.lastIndexOf("transcripts");
+    const rel = p.slice(1);
+    if (ti > 0 && ti === p.length - 2 && f.name.endsWith(".json")) {
+      const key = p.slice(1, ti).join("/");
+      if (!byRun.has(key)) byRun.set(key, { files: new Map(), summary: null, parts: p.slice(1, ti) });
+      byRun.get(key).files.set(f.name, () => Promise.resolve(f));
+    } else if (f.name === "summary.json") {
+      const key = rel.slice(0, -1).join("/");
+      if (!byRun.has(key)) byRun.set(key, { files: new Map(), summary: null, parts: rel.slice(0, -1) });
+      byRun.get(key).summary = f;
+    }
+  }
+  for (const [key, r] of byRun) if (r.files.size)
+    addRun({ key, parts: r.parts, summaryHandle: r.summary ? { getFile: () => Promise.resolve(r.summary) } : null, entries: null, listFiles: async () => r.files });
+  return finishScan(rootName);
+}
+
+function addRun(run) {
+  const p = run.parts;
+  run.bench = p.length >= 3 ? p[p.length - 3] : "(root)";
+  run.lang = p.length >= 2 ? p[p.length - 2] : "?";
+  run.variant = (p[p.length - 1] || "").replace(new RegExp("^" + run.lang + "_"), "") || p[p.length - 1];
+  run.model = p.length >= 4 ? p.slice(0, -3).join("/") : "(unknown)";
+  runs.push(run); runByKey.set(run.key, run);
+}
+
+async function finishScan(rootName) {
+  runs.sort((a, b) => a.key.localeCompare(b.key, undefined, { numeric: true }));
+  await Promise.all(runs.map(async r => { if (r.summaryHandle) try { r.summary = JSON.parse(await (await r.summaryHandle.getFile()).text()); } catch {} }));
+  if (!runs.length) { setStatus(`No runs found under "${rootName}" (looking for */transcripts/*.json).`, true); return; }
+  for (const s of document.querySelectorAll(".picker select")) s.disabled = false;
+  $("cmpBtn").disabled = false;
+  setStatus(`${runs.length} runs in "${rootName}".`);
+  setSide("A", runByKey.has(LS.get("runA")) ? LS.get("runA") : runs[0].key);
+  if (runByKey.has(LS.get("runB"))) setSide("B", LS.get("runB"));
+  if (LS.get("cmp") === "1") setCompare(true, false);
+  await refresh(LS.get("sel"));
+}
+
+// ---------- cascading pickers: benchmark → model → language ----------
+const pf = (side, f) => $("pick" + side).querySelector(`select[data-f="${f}"]`);
+const uniq = xs => [...new Set(xs)];
+const byName = (a, b) => (a.startsWith("old/") - b.startsWith("old/")) || a.localeCompare(b, undefined, { numeric: true });
+const pct = r => r.summary && r.summary.success_rate != null ? ` (${(r.summary.success_rate * 100).toFixed(1)}%)` : "";
+const langSig = r => r ? r.lang + "|" + r.variant : null;
+
+function setOpts(sel, values, want) {
+  sel.innerHTML = "";
+  for (const v of values) sel.append(el("option", { value: v }, v));
+  sel.value = values.includes(want) ? want : values[0];
+  return sel.value;
+}
+// Rebuild the three selects of a side, keeping as much of `want` as still exists.
+function cascade(side, want) {
+  const bench = setOpts(pf(side, "bench"), uniq(runs.map(r => r.bench)).sort(byName), want.bench);
+  const inBench = runs.filter(r => r.bench === bench);
+  const model = setOpts(pf(side, "model"), uniq(inBench.map(r => r.model)).sort(byName), want.model);
+  const cands = inBench.filter(r => r.model === model)
+    .sort((a, b) => a.lang.localeCompare(b.lang) || a.variant.localeCompare(b.variant, undefined, { numeric: true }));
+  const sel = pf(side, "lang"); sel.innerHTML = "";
+  const groups = new Map();
+  for (const r of cands) {
+    if (!groups.has(r.lang)) groups.set(r.lang, el("optgroup", { label: r.lang }));
+    groups.get(r.lang).append(el("option", { value: r.key }, `${r.lang} · ${r.variant}${pct(r)}`));
+  }
+  for (const g of groups.values()) sel.append(g);
+  const hit = cands.find(r => r.key === want.key) || cands.find(r => langSig(r) === want.sig)
+    || cands.find(r => r.lang === (want.sig || "").split("|")[0]) || cands[0];
+  sel.value = hit.key;
+  return hit.key;
+}
+function setSide(side, key) { const r = runByKey.get(key); return cascade(side, { bench: r.bench, model: r.model, key, sig: langSig(r) }); }
+function sideKey(side) { return pf(side, "lang").value; }
+function onPickerChange(side, field) {
+  const prev = side === "A" ? A : (B || runByKey.get(LS.get("runB")));
+  cascade(side, { bench: pf(side, "bench").value, model: pf(side, "model").value,
+    key: field === "lang" ? sideKey(side) : null, sig: langSig(prev) });
+  refresh(selSid);
+}
+
+async function loadRun(run) {
+  if (run.entries) return run.entries;
+  setStatus(`Loading ${run.key}…`);
+  const files = await run.listFiles();
+  const out = [];
+  await Promise.all([...files].map(async ([name, get]) => {
+    try { const d = JSON.parse(await (await get()).text()); d.__file = name; out.push(d); }
+    catch (e) { out.push({ id: name.replace(/\.json$/, ""), __file: name, __parseError: String(e) }); }
+  }));
+  out.sort((a, b) => sidOf(a).localeCompare(sidOf(b), undefined, { numeric: true }));
+  run.entries = out;
+  run.bySid = new Map(out.map(e => [sidOf(e), e]));
+  setStatus(`${run.key}: ${out.length} entries.`);
+  return out;
+}
+const sidOf = e => e.source_id || String(e.id || "").replace(/_[a-z]{2}$/, "");
+
+// ---------- state ----------
+let compare = false, A = null, B = null, view = [], selSid = null;
+
+function setCompare(on, doRefresh = true) {
+  compare = on;
+  $("cmpBtn").classList.toggle("on", on);
+  $("cmpBtn").textContent = on ? "Comparing (click to stop)" : "Compare";
+  $("pickB").hidden = !on;
+  if (on && (!runByKey.has(LS.get("runB")) || !sideKey("B") || sideKey("B") === sideKey("A"))) setSide("B", pickDefaultB());
+  for (const o of $("filter").options) if (o.hasAttribute("data-cmp")) o.hidden = !on;
+  if (!on && $("filter").selectedOptions[0].hasAttribute("data-cmp")) $("filter").value = "all";
+  LS.set("cmp", on ? "1" : "0");
+  if (doRefresh) refresh(selSid);
+}
+function pickDefaultB() {
+  // Same benchmark/language/variant, different model if possible.
+  const a = runByKey.get(sideKey("A"));
+  const same = runs.find(r => r !== a && !r.model.startsWith("old/") && r.bench === a.bench && langSig(r) === langSig(a));
+  return (same || runs.find(r => r !== a) || a).key;
+}
+
+async function refresh(keepSid) {
+  A = runByKey.get(sideKey("A"));
+  B = compare ? runByKey.get(sideKey("B")) : null;
+  LS.set("runA", A.key); if (B) LS.set("runB", B.key);
+  await loadRun(A); if (B) await loadRun(B);
+  buildList(keepSid);
+}
+
+function outcome(e) {
+  if (!e) return "none";
+  if (e.__parseError || e.error) return "err";
+  if (!e.success) return "fail";
+  return e.first_attempt_success ? "ok" : "late";
+}
+const OUT_TEXT = { ok: "solved 1st try", late: "solved after retry", fail: "failed", err: "error", none: "missing" };
+const OUT_SYM = { ok: "✓", late: "↻", fail: "✗", err: "!", none: "–" };
+
+function sidList() {
+  const s = new Set(A.entries.map(sidOf));
+  if (B) for (const e of B.entries) s.add(sidOf(e));
+  return [...s].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+}
+function entryText(e) {
+  if (!e) return "";
+  const q = (e.query || []).flat().map(m => m && m.content || "").join(" ");
+  return (sidOf(e) + " " + (e.id || "") + " " + q).toLowerCase();
+}
+
+function buildList(keepSid) {
+  const f = $("filter").value, q = $("search").value.trim().toLowerCase();
+  view = sidList().filter(sid => {
+    const a = A.bySid.get(sid), b = B && B.bySid.get(sid);
+    const oa = outcome(a), ob = outcome(b), sa = oa === "ok" || oa === "late", sb = ob === "ok" || ob === "late";
+    if (q && !entryText(a).includes(q) && !entryText(b).includes(q)) return false;
+    switch (f) {
+      case "failA": return a && !sa;
+      case "okA": return sa;
+      case "lateA": return oa === "late";
+      case "firstA": return oa === "ok";
+      case "disagree": return !!B && a && b && sa !== sb;
+      case "aOnly": return !!B && sa && b && !sb;
+      case "bOnly": return !!B && sb && a && !sa;
+      case "bothFail": return !!B && a && b && !sa && !sb;
+      default: return true;
+    }
+  });
+  const sel = $("entrySel"); sel.innerHTML = "";
+  for (const sid of view) {
+    const a = A.bySid.get(sid), b = B && B.bySid.get(sid);
+    const sym = OUT_SYM[outcome(a)] + (B ? " " + OUT_SYM[outcome(b)] : "");
+    const att = (a ? a.num_attempts ?? "?" : "–") + (B ? "/" + (b ? b.num_attempts ?? "?" : "–") : "");
+    sel.append(el("option", { value: sid }, `${sym}  ${sid}  · ${att} att`));
+  }
+  sel.disabled = !view.length;
+  const nA = A.entries.length, okA = A.entries.filter(e => e.success).length;
+  let c = `${view.length} shown · A ${okA}/${nA} solved`;
+  if (B) c += ` · B ${B.entries.filter(e => e.success).length}/${B.entries.length}`;
+  c += "  ·  ✓ 1st try  ↻ after retry  ✗ failed";
+  $("count").textContent = c;
+  const target = view.includes(keepSid) ? keepSid : view[0];
+  if (target) select(target);
+  else { selSid = null; updateNav(); $("main").innerHTML = ""; $("main").append(el("div", { class: "empty" }, "No entries match.")); }
+}
+
+function updateNav() {
+  const i = view.indexOf(selSid);
+  $("prevBtn").disabled = i <= 0;
+  $("nextBtn").disabled = i < 0 || i >= view.length - 1;
+}
+function select(sid) {
+  selSid = sid; LS.set("sel", sid);
+  $("entrySel").value = sid;
+  updateNav();
+  render();
+}
+function move(d) {
+  if (!view.length) return;
+  const i = Math.max(0, Math.min(view.length - 1, view.indexOf(selSid) + d));
+  if (view[i] !== selSid) select(view[i]);
+}
+
+// ---------- GT matching (heuristic, display only) ----------
+const normFn = n => String(n).replace(/\./g, "_");
+function normScalar(v) {
+  if (typeof v === "string") return v.trim().toLowerCase();
+  if (typeof v === "number") return v;
+  return JSON.stringify(v);
+}
+function valueMatches(v, accepted) {
+  // accepted: list of acceptable values (GT format). Dicts in GT have lists per key.
+  for (const g of accepted) {
+    if (g && typeof g === "object" && !Array.isArray(g) && v && typeof v === "object" && !Array.isArray(v)) {
+      if (Object.entries(g).every(([k, gv]) => k in v ? valueMatches(v[k], Array.isArray(gv) ? gv : [gv]) : (Array.isArray(gv) && gv.includes("")))
+          && Object.keys(v).every(k => k in g)) return true;
+    } else if (Array.isArray(g) && Array.isArray(v)) {
+      if (g.length === v.length && g.every((x, i) => valueMatches(v[i], [x]))) return true;
+    } else if (normScalar(g) === normScalar(v)) return true;
+    else if (typeof g === "number" && typeof v === "string" && +v === g) return true;
+  }
+  return false;
+}
+function gtFor(e, fname) {
+  for (const call of e.ground_truth || []) for (const [fn, params] of Object.entries(call)) if (normFn(fn) === normFn(fname)) return params;
+  return null;
+}
+
+// ---------- rendering ----------
+function render() {
+  const main = $("main"); main.innerHTML = "";
+  const a = A.bySid.get(selSid), b = B ? B.bySid.get(selSid) : null;
+  const base = a || b;
+  // shared: query + GT, shown once when both sides share the same query text.
+  const qa = JSON.stringify(a && a.query), qb = JSON.stringify(b && b.query);
+  const sameQuery = !B || !a || !b || qa === qb;
+  const sameGT = !B || !a || !b || JSON.stringify(a.ground_truth) === JSON.stringify(b.ground_truth);
+  const wrap = el("div", {});
+  if (sameQuery || sameGT) {
+    const shared = el("div", { class: "card" }, el("h2", {}, `Entry ${selSid}` + (B ? (sameQuery ? " · same query in A and B" : "") : "")));
+    if (sameQuery) shared.append(renderQuery(base));
+    if (sameGT) shared.append(el("h2", { style: "margin-top:12px" }, "Ground truth"), renderGT(base));
+    wrap.append(shared);
+  }
+  const cols = el("div", { class: "cols" + (B ? " two" : "") });
+  cols.append(renderSide(a, A, "A", !sameQuery, !sameGT));
+  if (B) cols.append(renderSide(b, B, "B", !sameQuery, !sameGT));
+  wrap.append(cols);
+  if (B && a && b) markDiffs(cols);
+  main.append(wrap);
+  main.scrollTop = 0;
+}
+
+function renderQuery(e) {
+  const box = el("div", {});
+  if (e.system_prompt) box.append(el("details", { class: "sys" }, el("summary", {}, "System prompt"), el("div", { dir: "auto" }, e.system_prompt)));
+  for (const turn of e.query || []) for (const m of [].concat(turn))
+    box.append(el("div", { class: "q", dir: "auto" }, el("span", { class: "role" }, m.role), m.content));
+  return box;
+}
+function renderGT(e) {
+  const box = el("div", {});
+  const gt = e.ground_truth || [];
+  if (!gt.length) box.append(el("div", { class: "muted" }, "(no ground truth)"));
+  for (const call of gt) for (const [fn, params] of Object.entries(call)) {
+    box.append(el("div", { class: "fn-name" }, fn));
+    const t = el("table", { class: "kv" });
+    for (const [p, vs] of Object.entries(params))
+      t.append(el("tr", {}, el("td", {}, p), el("td", {}, (Array.isArray(vs) ? vs : [vs]).map(v => el("span", { class: "chipv", dir: "auto" }, v === "" ? '"" (optional)' : showVal(v))))));
+    box.append(t);
+  }
+  return box;
+}
+
+function renderSide(e, run, label, showQuery, showGT) {
+  const card = el("div", { class: "card " + label });
+  if (!e) { card.append(el("div", { class: "head" }, el("span", { class: "lbl lbl" + label }, label)), el("div", { class: "runpath" }, run.key), el("div", { class: "muted" }, "Entry not present in this run.")); return card; }
+  const o = outcome(e);
+  card.append(el("div", { class: "head" },
+    el("span", { class: "lbl lbl" + label }, label),
+    el("span", { class: "id" }, e.id || sidOf(e)),
+    el("span", { class: "tag " + (o === "ok" ? "ok" : o === "late" ? "warn" : "fail") }, OUT_TEXT[o]),
+    e.final_error_type ? el("span", { class: "tag fail" }, e.final_error_type) : null,
+    e.success_with_extra_calls ? el("span", { class: "tag warn", title: "Succeeded but emitted extra calls" }, "extra calls") : null,
+    el("span", { class: "tag" }, `${e.num_attempts ?? "?"} attempt${e.num_attempts === 1 ? "" : "s"}`),
+    e.num_clarifications ? el("span", { class: "tag" }, `${e.num_clarifications} clarification${e.num_clarifications === 1 ? "" : "s"}`) : null,
+    el("span", { class: "tag", title: "input / output tokens" }, `${e.total_input_tokens ?? "?"} / ${e.total_output_tokens ?? "?"} tok`),
+    e.estimated_cost_usd != null ? el("span", { class: "tag" }, "$" + fmtNum(e.estimated_cost_usd, 4)) : null,
+    e.total_latency_s != null ? el("span", { class: "tag" }, fmtNum(e.total_latency_s, 1) + "s") : null));
+  card.append(el("div", { class: "runpath" }, run.key + "  ·  " + e.__file));
+  if (e.__parseError) { card.append(el("div", { class: "tag fail" }, "Could not parse transcript: " + e.__parseError)); return card; }
+  if (e.error) card.append(el("pre", {}, "Run error: " + (typeof e.error === "string" ? e.error : JSON.stringify(e.error, null, 2))));
+  if (showQuery) card.append(el("h2", {}, "Query"), renderQuery(e));
+  if (showGT) card.append(el("h2", { style: "margin-top:12px" }, "Ground truth"), renderGT(e));
+
+  card.append(el("h2", { style: "margin-top:12px" }, "Attempts"),
+    el("div", { class: "legend" }, el("span", { class: "l-ok" }, "value in GT"), el("span", { class: "l-bad" }, "value not in GT"), el("span", { class: "l-miss" }, "GT param missing"),
+      el("span", { title: "Loose comparison (case-insensitive strings, numeric equality). The real checker may differ." }, "(heuristic ⓘ)")));
+  for (const at of e.attempts || []) card.append(renderAttempt(at, e));
+  if (!(e.attempts || []).length) card.append(el("div", { class: "muted" }, "(no attempts recorded)"));
+  card.append(el("details", { class: "raw" }, el("summary", {}, "Raw final_messages"), el("pre", { dir: "auto" }, JSON.stringify(e.final_messages, null, 2))));
+  card.append(el("details", { class: "raw" }, el("summary", {}, "Raw transcript JSON"), el("pre", { dir: "auto" }, JSON.stringify(Object.fromEntries(Object.entries(e).filter(([k]) => !k.startsWith("__"))), null, 2))));
+  return card;
+}
+
+function renderAttempt(at, e) {
+  const box = el("div", { class: "attempt" + (at.valid ? " valid" : ""), "data-n": at.attempt });
+  box.append(el("div", { class: "ahead" },
+    el("b", {}, `Attempt ${at.attempt}`),
+    el("span", { class: "tag " + (at.valid ? "ok" : "fail") }, at.valid ? "valid" : (at.error_type || "invalid")),
+    at.relaxed ? el("span", { class: "tag warn" }, "relaxed") : null,
+    !at.is_tool_call ? el("span", { class: "tag warn" }, "text only") : null,
+    el("span", { class: "sp" }),
+    el("span", { class: "muted" }, `${at.input_tokens ?? "?"}→${at.output_tokens ?? "?"} tok · ${fmtNum(at.latency_s, 1)}s`)));
+  const body = el("div", { class: "abody" });
+  for (const t of [].concat(at.text || [])) if (t && String(t).trim()) body.append(el("div", { class: "say", dir: "auto" }, t));
+  const calls = at.tool_calls && at.tool_calls.length ? at.tool_calls.map(c => [c.name, c.arguments])
+    : (at.decoded || []).flatMap(d => Object.entries(d));
+  for (const [name, args] of calls) body.append(renderCall(name, args, e));
+  if (!calls.length && !(at.text || []).some(t => t && String(t).trim())) body.append(el("div", { class: "muted" }, "(empty response)"));
+  const errs = [].concat(at.checker_error || []).filter(Boolean);
+  if (errs.length) body.append(el("div", { class: "fb" }, el("span", { class: "k" }, "Checker: "), errs.map(x => typeof x === "string" ? x : JSON.stringify(x)).join(" · ")));
+  if (at.feedback_sent) body.append(el("div", { class: "fb", dir: "auto" }, el("span", { class: "k" }, "Feedback sent: "), at.feedback_sent));
+  box.append(body);
+  return box;
+}
+
+function renderCall(name, args, e) {
+  let parsed = args;
+  if (typeof args === "string") { try { parsed = JSON.parse(args); } catch { parsed = null; } }
+  const gt = gtFor(e, name);
+  const box = el("div", { class: "call" }, el("div", { class: "cname" + (gt ? "" : " bad"), title: gt ? "" : "Function not in ground truth" }, name));
+  if (parsed == null || typeof parsed !== "object") { box.append(el("pre", {}, String(args))); return box; }
+  const t = el("table", { class: "kv" });
+  for (const [k, v] of Object.entries(parsed)) {
+    const acc = gt && gt[k];
+    const cls = !gt ? "" : acc ? (valueMatches(v, Array.isArray(acc) ? acc : [acc]) ? "m-ok" : "m-bad") : "m-bad";
+    t.append(el("tr", { class: cls, "data-k": name + "." + k, "data-v": JSON.stringify(v) }, el("td", {}, k), el("td", { class: "v", dir: "auto", title: acc ? "GT: " + acc.map(showVal).join(" | ") : (gt ? "Not a GT parameter" : "") }, showVal(v))));
+  }
+  if (gt) for (const [k, acc] of Object.entries(gt)) if (!(k in parsed) && !(Array.isArray(acc) && acc.includes("")))
+    t.append(el("tr", { class: "m-missing" }, el("td", {}, k), el("td", {}, "missing — GT: " + acc.map(showVal).join(" | "))));
+  box.append(t);
+  return box;
+}
+
+// Mark args whose value differs between A and B in the corresponding (same-numbered) attempt.
+function markDiffs(cols) {
+  const [ca, cb] = cols.children;
+  for (const atA of ca.querySelectorAll(".attempt")) {
+    const atB = cb.querySelector(`.attempt[data-n="${atA.dataset.n}"]`);
+    if (!atB) continue;
+    const vals = side => { const m = new Map(); for (const r of side.querySelectorAll("tr[data-k]")) m.set(r.dataset.k, r.dataset.v); return m; };
+    const va = vals(atA), vb = vals(atB);
+    for (const [side, mine, other] of [[atA, va, vb], [atB, vb, va]])
+      for (const r of side.querySelectorAll("tr[data-k]")) if (other.get(r.dataset.k) !== mine.get(r.dataset.k)) { r.classList.add("m-diff"); r.firstChild.title = "Differs from the other run's same attempt"; }
+  }
+}
+
+// ---------- events ----------
+$("openBtn").addEventListener("click", async () => {
+  if (!window.showDirectoryPicker) { $("fallbackInput").click(); return; }
+  try {
+    const h = await window.showDirectoryPicker({ id: "results-browser", mode: "read" });
+    await idbSet("root", h);
+    await scanHandle(h);
+  } catch (err) { if (err.name !== "AbortError") setStatus("Could not open folder: " + err.message, true); }
+});
+$("fallbackInput").addEventListener("change", ev => { if (ev.target.files.length) scanFileList(ev.target.files); });
+$("reopenBtn").addEventListener("click", async () => {
+  const h = await idbGet("root");
+  if (h && (await h.requestPermission({ mode: "read" })) === "granted") await scanHandle(h);
+});
+for (const side of ["A", "B"]) for (const f of ["bench", "model", "lang"])
+  pf(side, f).addEventListener("change", () => onPickerChange(side, f));
+$("cmpBtn").addEventListener("click", () => setCompare(!compare));
+$("swapBtn").addEventListener("click", () => { const a = sideKey("A"), b = sideKey("B"); setSide("A", b); setSide("B", a); refresh(selSid); });
+$("entrySel").addEventListener("change", ev => select(ev.target.value));
+$("prevBtn").addEventListener("click", () => move(-1));
+$("nextBtn").addEventListener("click", () => move(1));
+$("filter").addEventListener("change", () => buildList(selSid));
+$("search").addEventListener("input", () => buildList(selSid));
+document.addEventListener("keydown", ev => {
+  if (!A || ev.target.matches("input, select, textarea")) return;
+  if (ev.key === "ArrowDown" || ev.key === "j") { ev.preventDefault(); move(1); }
+  else if (ev.key === "ArrowUp" || ev.key === "k") { ev.preventDefault(); move(-1); }
+});
+for (const o of $("filter").options) if (o.hasAttribute("data-cmp")) o.hidden = true;
+
+(async () => {
+  if (!window.showDirectoryPicker) return;
+  const h = await idbGet("root");
+  if (h && h.name) { const b = $("reopenBtn"); b.textContent = `Reopen “${h.name}”`; b.hidden = false; }
+})();
+window.__resultsBrowser = { scanHandle, scanFileList };
+</script>
+</body>
+</html>

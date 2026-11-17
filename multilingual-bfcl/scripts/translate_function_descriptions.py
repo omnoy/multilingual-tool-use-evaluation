@@ -22,9 +22,9 @@ Like translate_benchmark.py, requests go through the Azure OpenAI Batch API by d
 (one batch item per (distinct function, locale)); --no-batch sends them as plain
 concurrent requests instead, for deployments without a Global/Data Zone Batch SKU.
 
-Input  (under data/benchmarks/<category>/):  --source, default en/en_translatable.jsonl
+Input  (under data/benchmarks/<category>/):  --source, default en/en_baseline.jsonl
 Output (under data/benchmarks/<category>/):
-  <locale>/<locale>_translatable_func_desc.jsonl     e.g. he/he_translatable_func_desc.jsonl
+  <locale>/<locale>_native_query_func_descs.jsonl     e.g. he/he_native_query_func_descs.jsonl
   <locale>/.<locale>_fn_desc_cache.json              translation cache
   translate_func_desc_manifest.json                  batch manifest (for --retrieve)
 
@@ -34,17 +34,17 @@ ground_truth. The query is byte-for-byte the base English query.
 
 Usage:
     # Submit and wait for results:
-    python scripts/translate_function_descriptions.py --category bfcl_multiple --locales he --model gpt-5.6-terra
+    python scripts/translate_function_descriptions.py --category bfcl_multiple_translatable --locales he --model gpt-5.6-terra
 
     # Submit only, then retrieve later:
-    python scripts/translate_function_descriptions.py --category bfcl_multiple --locales he --model gpt-5.6-terra --submit-only
-    python scripts/translate_function_descriptions.py --category bfcl_multiple --retrieve batch_01AbCd...
+    python scripts/translate_function_descriptions.py --category bfcl_multiple_translatable --locales he --model gpt-5.6-terra --submit-only
+    python scripts/translate_function_descriptions.py --category bfcl_multiple_translatable --retrieve batch_01AbCd...
 
     # No Batch-SKU deployment available? Send plain concurrent requests (full price):
-    python scripts/translate_function_descriptions.py --category bfcl_multiple --locales he --model gpt-5.6-terra --no-batch
+    python scripts/translate_function_descriptions.py --category bfcl_multiple_translatable --locales he --model gpt-5.6-terra --no-batch
 
     # Preview the first prompt and the cost estimate without calling the API:
-    python scripts/translate_function_descriptions.py --category bfcl_multiple --locales he --model gpt-5.6-terra --dry-run
+    python scripts/translate_function_descriptions.py --category bfcl_multiple_translatable --locales he --model gpt-5.6-terra --dry-run
 
 --model is required unless --retrieve; there is no default, to prevent accidental runs.
 

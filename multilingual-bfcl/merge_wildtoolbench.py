@@ -1,11 +1,11 @@
-"""Merge WildToolBench benchmark + answer files into a single bfcl_multiple-shaped jsonl.
+"""Merge WildToolBench benchmark + answer files into a single bfcl_multiple_translatable-shaped jsonl.
 
 WildToolBench stores each locale as two files in the same folder:
     <dir>/WildToolBench_<lang>.bfcl.translatable.jsonl         (id, question, function, translatable_values)
     <dir>/WildToolBench_<lang>.bfcl_answer.translatable.jsonl  (id, ground_truth)
 
 This merges the ``ground_truth`` onto each benchmark record (keyed by id) and
-writes ``<dir>/<lang>_translatable.jsonl`` normalized to the exact bfcl_multiple
+writes ``<dir>/<lang>_translatable.jsonl`` normalized to the exact bfcl_multiple_translatable
 schema:
     top-level:  id, question, function, ground_truth   (translatable_values dropped)
     function:   name, description, parameters
@@ -38,7 +38,7 @@ def load_jsonl(path: Path) -> list[dict]:
 
 
 def normalize_parameters(params: dict) -> dict:
-    """Reorder to bfcl_multiple's type/properties/required, defaulting required to []."""
+    """Reorder to bfcl_multiple_translatable's type/properties/required, defaulting required to []."""
     return {
         "type": params.get("type", "dict"),
         "properties": params.get("properties", {}),
@@ -55,7 +55,7 @@ def normalize_function(func: dict) -> dict:
 
 
 def to_bfcl_multiple(record: dict, ground_truth: object) -> dict:
-    """Shape a WildToolBench record into the bfcl_multiple schema (drops extra fields)."""
+    """Shape a WildToolBench record into the bfcl_multiple_translatable schema (drops extra fields)."""
     return {
         "id": record["id"],
         "question": record["question"],

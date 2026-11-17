@@ -1,4 +1,4 @@
-"""Find entries that are identical between zh_translatable_full and zh_translatable_query.
+"""Find entries that are identical between zh_native_query_native_target and zh_native_query_eng_target.
 
 A full-localization record (Chinese params) and its query-localization counterpart
 (English params) should differ in ground_truth and/or message text. Any source_id
@@ -42,8 +42,8 @@ def main() -> int:
     default_dir = (Path(__file__).resolve().parent / "data" / "benchmarks"
                    / "wildtoolbench" / "zh")
     parser.add_argument("--dir", type=Path, default=default_dir)
-    parser.add_argument("--full", default="zh_translatable_full.jsonl")
-    parser.add_argument("--query", default="zh_translatable_query.jsonl")
+    parser.add_argument("--full", default="zh_native_query_native_target.jsonl")
+    parser.add_argument("--query", default="zh_native_query_eng_target.jsonl")
     args = parser.parse_args()
 
     full_path = args.dir / args.full

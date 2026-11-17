@@ -8,17 +8,18 @@ Input
   data/benchmarks/<benchmark>/<lang>/*.jsonl
 
 Which files a review CSV is applied to
-  <stem>.review.csv always applies to <lang>/<stem>.jsonl. When <stem> ends in "_full"
-  (e.g. he_translatable_full) it is also applied to the variants built from it:
+  <stem>.review.csv always applies to <lang>/<stem>.jsonl. When <stem> is the
+  native_query_native_target experiment (level "full", e.g. he_native_query_native_target)
+  it is also applied to the variants built from it:
 
-    <stem>_lang_desc   everything; edited descriptions keep the appended
+    <lang>_native_qt_lang_hints   everything; edited descriptions keep the appended
                        " Languages: English, Hebrew." descriptor
-    <stem>_func_desc   everything EXCEPT function/parameter description text (those
+    <lang>_native_qt_func_descs   everything EXCEPT function/parameter description text (those
                        are translated there); defaults and enums ARE changed, because
-                       build_full_full_full.py requires func_desc and lang_desc to have
+                       build_native_max_context.py requires func_desc and lang_desc to have
                        identical function structure
-    <stem>_full_full   (= *_full_full_full) is NOT written: rebuild it afterwards with
-                       build_full_full_full.py --benchmark <output-benchmark>
+    <lang>_native_qt_max_context  is NOT written: rebuild it afterwards with
+                       build_native_max_context.py --benchmark <output-benchmark>
 
   Every other file (other locales, en/, _query, manifests) is copied unchanged.
 
@@ -41,7 +42,7 @@ Output
 
 Usage
   python scripts/apply_gt_reviews.py --dry-run                        # report only
-  python scripts/apply_gt_reviews.py                                  # bfcl_multiple_fixed_desc -> bfcl_multiple_fixed_desc_gt
+  python scripts/apply_gt_reviews.py                                  # bfcl_multiple_translatable_fixed_desc -> bfcl_multiple_translatable_fixed_desc_gt
   python scripts/apply_gt_reviews.py --benchmark X --output-benchmark Y --force
 """
 
@@ -58,6 +59,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PACKAGE_ROOT / "src"))
+from multilingual_bfcl.experiment_names import derived_stem, level_of_stem  # noqa: E402
 DATA_ROOT = PACKAGE_ROOT / "data"
 BENCHMARKS_ROOT = DATA_ROOT / "benchmarks"
 REVIEWS_ROOT = DATA_ROOT / "gt_reviews"
@@ -65,9 +68,10 @@ REVIEWS_ROOT = DATA_ROOT / "gt_reviews"
 # Appended by add_language_descriptors.py, e.g. " Languages: English, Hebrew."
 LANG_SUFFIX_RE = re.compile(r"( Languages?: [^.]*\.)$")
 
-# variant suffix (appended to a *_full stem) -> mode
-DERIVED = {"_lang_desc": "lang_desc", "_func_desc": "func_desc"}
-REBUILD_SUFFIX = "_full_full"  # <stem>_full_full == *_full_full_full
+# variant built on a level-"full" file (e.g. he_native_query_native_target) -> mode.
+# derived_stem() maps (stem, "lang_desc") -> <lang>_native_qt_lang_hints, etc.
+DERIVED = {"lang_desc": "lang_desc", "func_desc": "func_desc"}
+REBUILD_VARIANT = "full_full"  # full + full_full == full_full_full (<lang>_native_qt_max_context)
 
 
 def jkey(v) -> str:
@@ -284,7 +288,7 @@ def process_file(src: Path, dst: Path, review: dict, mode: str, check_final: boo
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0], formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--benchmark", default="bfcl_multiple_fixed_desc", help="Source folder under data/benchmarks/ (default: %(default)s).")
+    ap.add_argument("--benchmark", default="bfcl_multiple_translatable_fixed_desc", help="Source folder under data/benchmarks/ (default: %(default)s).")
     ap.add_argument("--reviews-dir", type=Path, help="Folder with *.review.csv (default: data/gt_reviews/<benchmark>).")
     ap.add_argument("--output-benchmark", help="Output folder under data/benchmarks/ (default: <benchmark>_gt).")
     ap.add_argument("--dry-run", action="store_true", help="Report what would change without writing anything.")
@@ -318,12 +322,12 @@ def main() -> None:
         n_rm = sum(c["removed"] for c in review.values())
         print(f"{csv_path.relative_to(PACKAGE_ROOT).as_posix()}: {len(review)} entries with changes ({n_rm} removed)")
         plan[base] = (review, "base", True, csv_path)
-        if stem.endswith("_full"):
-            for suffix, mode in DERIVED.items():
-                p = src_root / lang / f"{stem}{suffix}.jsonl"
+        if level_of_stem(stem, lang) == "full":
+            for variant, mode in DERIVED.items():
+                p = src_root / lang / f"{derived_stem(stem, lang, variant)}.jsonl"
                 if p.is_file():
                     plan[p] = (review, mode, False, csv_path)
-            fff = src_root / lang / f"{stem}{REBUILD_SUFFIX}.jsonl"
+            fff = src_root / lang / f"{derived_stem(stem, lang, REBUILD_VARIANT)}.jsonl"
             if fff.is_file() and review:
                 no_rebuild.append(fff)
     print()
@@ -335,7 +339,7 @@ def main() -> None:
         rel = src.relative_to(src_root)
         dst = out_root / rel
         if src in no_rebuild:
-            print(f"{rel.as_posix():45s} NOT written: rebuild with build_full_full_full.py")
+            print(f"{rel.as_posix():45s} NOT written: rebuild with build_native_max_context.py")
             continue
         if src not in plan:
             if src.name in ("gt_fix_manifest.json",):
@@ -376,7 +380,7 @@ def main() -> None:
         print("\nDry run: nothing written.")
     for p in no_rebuild:
         lang = p.parent.name
-        print(f"Next: python scripts/build_full_full_full.py --benchmark {out_name} --locale {lang}")
+        print(f"Next: python scripts/build_native_max_context.py --benchmark {out_name} --locale {lang}")
     if problems:
         print("WARNING: some changes could not be applied cleanly (see '!' lines above).")
 

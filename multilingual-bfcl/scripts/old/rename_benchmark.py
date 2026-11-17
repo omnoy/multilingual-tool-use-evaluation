@@ -20,8 +20,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-DEFAULT_OLD = "bfcl_multiple_fixed_desc_gt"
-DEFAULT_NEW = "bfcl_multiple"
+DEFAULT_OLD = "bfcl_multiple_translatable_fixed_desc_gt"
+DEFAULT_NEW = "bfcl_multiple_translatable"
 TEXT_SUFFIXES = {".json", ".jsonl", ".csv", ".tsv", ".txt", ".md", ".yaml", ".yml"}
 
 

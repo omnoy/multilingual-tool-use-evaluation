@@ -41,7 +41,7 @@ defs and ground-truth structure); only the localized text should differ. ids are
 matched after stripping a trailing "_<locale>" suffix, so the two sources may use
 either the bare ("multiple_2") or suffixed ("multiple_2_he") id convention.
 
-Usage (defaults: he_translatable_query/full -> he_translatable_{full,query}_shuffled):
+Usage (defaults: he_native_query_eng_target/full -> he_translatable_{full,query}_shuffled):
     python scripts/shuffle_benchmark.py
     python scripts/shuffle_benchmark.py --locale ar --seed 7
 """
@@ -195,7 +195,7 @@ def main() -> None:
                     "ground-truth parameters between two localization levels.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--category", default="bfcl_multiple",
+    parser.add_argument("--category", default="bfcl_multiple_translatable",
                         help="Benchmark category folder under data/benchmarks/.")
     parser.add_argument("--locale", default="he",
                         help="Locale code used in filenames and id suffixes.")

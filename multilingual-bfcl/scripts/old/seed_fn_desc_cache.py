@@ -1,6 +1,6 @@
 """
 seed_fn_desc_cache.py — pre-fill translate_function_descriptions.py's translation cache
-for a derived benchmark (e.g. bfcl_multiple_fixed_desc) from translations that already
+for a derived benchmark (e.g. bfcl_multiple_translatable_fixed_desc) from translations that already
 exist for its source benchmark, so a re-run only translates functions whose English
 descriptions changed.
 
@@ -14,18 +14,18 @@ Sources for the seed, per locale (later sources never overwrite earlier ones):
   2. the source's existing cache   data/benchmarks/<source>/<lc>/.<lc>_fn_desc_cache.json
   3. translations reconstructed from an already-translated variant of the source,
      default <lc>_translatable_full_func_desc.jsonl: each English function in
-     <source>/en/en_translatable.jsonl is paired with the same-position function of the
+     <source>/en/en_baseline.jsonl is paired with the same-position function of the
      same entry, and their description lists are paired in DFS order.
 
 Output: data/benchmarks/<target>/<lc>/.<lc>_fn_desc_cache.json, plus a report of how many
-distinct functions in <target>/en/en_translatable.jsonl still need translating.
+distinct functions in <target>/en/en_baseline.jsonl still need translating.
 
 Usage:
     .venv/Scripts/python scripts/seed_fn_desc_cache.py --locales de he
     .venv/Scripts/python scripts/seed_fn_desc_cache.py --locales de he --dry-run
 
 Then translate only what is missing:
-    python scripts/translate_function_descriptions.py --category bfcl_multiple_fixed_desc --locales de he --model <model>
+    python scripts/translate_function_descriptions.py --category bfcl_multiple_translatable_fixed_desc --locales de he --model <model>
 """
 
 from __future__ import annotations
@@ -85,10 +85,10 @@ def reconstruct(en_entries: list[dict], translated_entries: list[dict], language
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--source-benchmark", default="bfcl_multiple")
-    ap.add_argument("--target-benchmark", default="bfcl_multiple_fixed_desc")
+    ap.add_argument("--source-benchmark", default="bfcl_multiple_translatable")
+    ap.add_argument("--target-benchmark", default="bfcl_multiple_translatable_fixed_desc")
     ap.add_argument("--locales", nargs="+", required=True, help="Locale codes, e.g. de he.")
-    ap.add_argument("--en-source", default="en/en_translatable.jsonl",
+    ap.add_argument("--en-source", default="en/en_baseline.jsonl",
                     help="English file, relative to each benchmark folder (default: %(default)s).")
     ap.add_argument("--translated-variant", default="full_func_desc",
                     help="Variant whose descriptions are translated: <lc>_translatable_<variant>.jsonl (default: %(default)s).")

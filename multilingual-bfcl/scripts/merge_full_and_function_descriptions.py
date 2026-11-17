@@ -4,8 +4,8 @@ merge_full_and_function_descriptions.py — build the fully-translated benchmark
 Combines two existing Hebrew benchmarks into a single "everything translated"
 condition (no API calls — pure deterministic merge):
 
-  - function/parameter DESCRIPTIONS  <- --desc-source  (e.g. he_translatable_func_desc)
-  - user QUERY (messages)            <- --query-source (e.g. he_translatable_full)
+  - function/parameter DESCRIPTIONS  <- --desc-source  (e.g. he_native_query_func_descs)
+  - user QUERY (messages)            <- --query-source (e.g. he_native_query_native_target)
   - ground-truth parameter VALUES    <- --query-source's inline "ground_truth" field
 
 Function names, parameter names, and types stay English (they are identical across
@@ -17,11 +17,11 @@ the merge is a straight per-id combine. Ground truth is stored inline on each en
 (there is no separate possible_answer/ file). The script verifies that the two sources'
 function definitions are structurally identical (ignoring descriptions) before merging.
 
-Output (under data/benchmarks/<--benchmark>/, default bfcl_multiple):
+Output (under data/benchmarks/<--benchmark>/, default bfcl_multiple_translatable):
   <locale>/<output>.jsonl
 
 Usage:
-    python scripts/merge_full_and_function_descriptions.py --locale he         --desc-source he_translatable_func_desc --query-source he_translatable_full         --output he_translatable_full_func_desc
+    python scripts/merge_full_and_function_descriptions.py --locale he         --desc-source he_native_query_func_descs --query-source he_native_query_native_target         --output he_native_qt_func_descs
 """
 
 from __future__ import annotations
@@ -69,7 +69,7 @@ def main() -> None:
         description="Merge translated function descriptions with a translated query/GT benchmark.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--benchmark", default="bfcl_multiple",
+    parser.add_argument("--benchmark", default="bfcl_multiple_translatable",
                         help="Benchmark folder under data/benchmarks/.")
     parser.add_argument("--locale", required=True,
                         help="Language for translated function definitions.")

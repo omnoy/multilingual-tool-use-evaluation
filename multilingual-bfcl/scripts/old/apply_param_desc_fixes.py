@@ -4,7 +4,7 @@ scripts/param_desc_review.html) to every variant of a benchmark that still carri
 the English parameter descriptions, writing the result to a separate benchmark folder.
 
 Input
-  data/param_desc_reviews/<benchmark>/en_translatable.param_desc.csv
+  data/param_desc_reviews/<benchmark>/en_baseline.param_desc.csv
     One row per (function, param, original_description). Rows with
     description_changed=true replace the description; rows with remove_default=true
     delete the parameter's "default" key.
@@ -26,10 +26,10 @@ Output
   data/benchmarks/<benchmark>_fixed_desc/fix_manifest.json  (sources, CSV, per-file counts)
   Only lines that changed are re-serialized; all other lines are copied byte-for-byte.
   The output category name still contains "multiple", so run_robustness_eval.py scores
-  it exactly like the original:  --category bfcl_multiple_fixed_desc
+  it exactly like the original:  --category bfcl_multiple_translatable_fixed_desc
 
 Usage
-  python scripts/apply_param_desc_fixes.py                      # bfcl_multiple
+  python scripts/apply_param_desc_fixes.py                      # bfcl_multiple_translatable
   python scripts/apply_param_desc_fixes.py --dry-run            # report only
   python scripts/apply_param_desc_fixes.py --force              # overwrite an existing output folder
 """
@@ -136,8 +136,8 @@ def process_file(src: Path, dst: Path, fixes: dict, dry_run: bool) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0], formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--benchmark", default="bfcl_multiple", help="Benchmark folder under data/benchmarks/ (default: bfcl_multiple).")
-    ap.add_argument("--reviews", type=Path, help="Review CSV (default: data/param_desc_reviews/<benchmark>/en_translatable.param_desc.csv).")
+    ap.add_argument("--benchmark", default="bfcl_multiple_translatable", help="Benchmark folder under data/benchmarks/ (default: bfcl_multiple_translatable).")
+    ap.add_argument("--reviews", type=Path, help="Review CSV (default: data/param_desc_reviews/<benchmark>/en_baseline.param_desc.csv).")
     ap.add_argument("--output-benchmark", help="Output folder name under data/benchmarks/ (default: <benchmark>_fixed_desc).")
     ap.add_argument("--exclude", nargs="*", default=list(DEFAULT_EXCLUDE),
                     help="File-stem suffixes to skip (default: %(default)s).")
@@ -146,7 +146,7 @@ def main() -> None:
     args = ap.parse_args()
 
     src_root = BENCHMARKS_ROOT / args.benchmark
-    csv_path = args.reviews or DATA_ROOT / "param_desc_reviews" / args.benchmark / "en_translatable.param_desc.csv"
+    csv_path = args.reviews or DATA_ROOT / "param_desc_reviews" / args.benchmark / "en_baseline.param_desc.csv"
     out_name = args.output_benchmark or f"{args.benchmark}_fixed_desc"
     out_root = BENCHMARKS_ROOT / out_name
     if not src_root.is_dir():

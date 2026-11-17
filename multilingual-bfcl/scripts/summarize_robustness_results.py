@@ -8,9 +8,10 @@ the "old" directory) and writes one row per summary:
     max_retries_acc, first_attempt_acc, average_attempts, cost
 
 Rows are ordered model_family -> model_name -> benchmark (the category folder, e.g.
-bfcl_multiple; alphabetical) -> language (English first, then
-alphabetical) -> experiment (en_translatable, query, full, full_func_desc,
-full_lang_desc, full_full_full; unknown variations go last, alphabetically).
+bfcl_multiple_translatable; alphabetical) -> language (English first, then
+alphabetical) -> experiment (en_baseline, native_query_eng_target,
+native_query_native_target, native_qt_func_descs, native_qt_lang_hints,
+native_qt_max_context; unknown variations go last, alphabetically).
 
 Usage:
     python scripts/summarize_robustness_results.py
@@ -22,18 +23,12 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-
-EXPERIMENT_ORDER = [
-    "en_translatable",
-    "query",
-    "full",
-    "full_func_desc",
-    "full_lang_desc",
-    "full_full_full",
-]
+sys.path.insert(0, str(ROOT / "src"))
+from multilingual_bfcl.experiment_names import EXPERIMENT_ORDER, split_stem  # noqa: E402
 
 FAMILY_PREFIXES = {
     "claude": "Claude",
@@ -64,11 +59,8 @@ def model_family(model: str) -> str:
 
 
 def experiment_name(benchmark: str, lang: str) -> str:
-    """'he_translatable_full_func_desc' -> 'full_func_desc'; English keeps 'en_translatable'."""
-    prefix = f"{lang}_translatable_"
-    if benchmark.startswith(prefix):
-        return benchmark[len(prefix):]
-    return benchmark
+    """'he_native_qt_func_descs' -> 'native_qt_func_descs'; English keeps 'en_baseline'."""
+    return split_stem(benchmark, lang)
 
 
 def sort_key(row: dict) -> tuple:

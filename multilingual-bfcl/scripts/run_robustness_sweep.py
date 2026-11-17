@@ -16,7 +16,7 @@ Usage:
 
     # A subset of models and variants (variant = file stem minus the "<lang>_" prefix):
     python scripts/run_robustness_sweep.py --lang-dir de \
-        --models gpt-6-astra Kimi-K2.6 --variants translatable_query translatable_full
+        --models gpt-6-astra Kimi-K2.6 --variants native_query_eng_target native_query_native_target
 
     # Finish runs that stopped early (forwarded to the harness):
     python scripts/run_robustness_sweep.py --lang-dir de --resume
@@ -65,7 +65,7 @@ def discover_benchmarks(category: str, lang_dir: str, variants: list[str] | None
         sys.exit(f"No benchmark files found in {data_dir}")
     if variants is None:
         return stems
-    prefix = f"{lang_dir}_translatable_"
+    prefix = f"{lang_dir}_"
     selected = [s for s in stems if s.removeprefix(prefix) in variants or s in variants]
     missing = set(variants) - {s.removeprefix(prefix) for s in selected} - set(selected)
     if missing:

@@ -8,9 +8,9 @@ instead, for deployments without a Global/Data Zone Batch SKU (full price, no ma
 
 Input/output live under data/benchmarks/<category>/, one folder per locale.
 Each JSONL entry carries its own `ground_truth` (no separate possible_answer/):
-  - source file : <source>, relative to the category (default en/en_translatable.jsonl)
+  - source file : <source>, relative to the category (default en/en_baseline.jsonl)
   - output file : <locale>/<locale><rest>_<level>.jsonl
-                  (e.g. en/en_translatable.jsonl -> he/he_translatable_full.jsonl)
+                  (e.g. en/en_baseline.jsonl -> he/he_native_query_native_target.jsonl)
 
 Levels (see translator.LocalizationLevel):
   - query : translate only the user query; ground truth left unchanged.
@@ -45,6 +45,7 @@ from multilingual_bfcl.azure_client import (
     build_chat_params,
     make_sync_client,
 )
+from multilingual_bfcl.experiment_names import BASELINE, experiment_stem
 from multilingual_bfcl.localization.locale_config import get_locale
 from multilingual_bfcl.pricing import count_tokens, format_cost
 from multilingual_bfcl.localization.translator import (
@@ -73,7 +74,7 @@ DEFAULT_MAX_RETRIES = 6
 _PACKAGE_ROOT = Path(__file__).parent.parent.parent
 _BENCHMARK_DIR = _PACKAGE_ROOT / "data" / "benchmarks"
 # Default source file, relative to data/benchmarks/<category>/.
-DEFAULT_SOURCE = "en/en_translatable.jsonl"
+DEFAULT_SOURCE = "en/en_baseline.jsonl"
 
 
 # ---------------------------------------------------------------------------
@@ -101,13 +102,17 @@ def write_jsonl(records: list[dict[str, Any]], path: Path) -> None:
 def output_path(category: str, source: str, locale_code: str, suffix: str) -> Path:
     """Map a source file to its translated counterpart under <category>/<locale>/.
 
-    en/en_translatable.jsonl -> <locale>/<locale>_translatable_<suffix>.jsonl
-    anything else            -> <locale>/<stem>_<locale>_<suffix>.jsonl
+    en/en_baseline.jsonl -> <locale>/<locale>_<experiment>.jsonl   (see experiment_names;
+                            e.g. suffix "full" -> he_native_query_native_target.jsonl)
+    en/en_<other>.jsonl  -> <locale>/<locale>_<other>_<suffix>.jsonl
+    anything else        -> <locale>/<stem>_<locale>_<suffix>.jsonl
 
     `suffix` names the condition, e.g. a LocalizationLevel value ("full") or "func_desc".
     """
     stem = Path(source).stem
-    if stem == "en" or stem.startswith("en_"):
+    if stem in ("en", BASELINE):
+        name = f"{experiment_stem(locale_code, suffix)}.jsonl"
+    elif stem.startswith("en_"):
         name = f"{locale_code}{stem[len('en'):]}_{suffix}.jsonl"
     else:
         name = f"{stem}_{locale_code}_{suffix}.jsonl"
@@ -419,7 +424,7 @@ def add_language_descriptors_file(source: Path, suffix: str = "langdesc") -> Pat
     """Read a built benchmark .jsonl, append language descriptors, write a new file.
 
     The output is written next to the source as `<stem>_<suffix><ext>` (e.g.
-    he_translatable_full.jsonl -> he_translatable_full_lang_desc.jsonl), preserving
+    he_native_query_native_target.jsonl -> he_native_qt_lang_hints.jsonl), preserving
     input order. Returns the output path.
     """
     if not source.exists():

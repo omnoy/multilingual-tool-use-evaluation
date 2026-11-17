@@ -7,9 +7,9 @@ Commands:
   mbfcl status  -- show which benchmarks have been built
 
 Usage examples:
-  mbfcl build bfcl_multiple --locales he zh-CN --level query --model gpt-5.6-terra
-  mbfcl build bfcl_multiple --locales he --level full --model gpt-5.6-terra --source en/en_translatable.jsonl
-  mbfcl build bfcl_multiple --retrieve batch_01AbCd...
+  mbfcl build bfcl_multiple_translatable --locales he zh-CN --level query --model gpt-5.6-terra
+  mbfcl build bfcl_multiple_translatable --locales he --level full --model gpt-5.6-terra --source en/en_baseline.jsonl
+  mbfcl build bfcl_multiple_translatable --retrieve batch_01AbCd...
   mbfcl locales
   mbfcl status
 """
@@ -38,7 +38,7 @@ def build(
     category: str = typer.Argument(..., help="Benchmark category folder under data/benchmarks/"),
     locales: list[str] = typer.Option(None, "--locales", "-l", help="Space-separated locale codes, e.g. he zh-CN"),
     level: Level = typer.Option(Level.query, "--level", help="Translation scope: query or full"),
-    source: str = typer.Option("en/en_translatable.jsonl", "--source", help="Input .jsonl path relative to data/benchmarks/<category>/"),
+    source: str = typer.Option("en/en_baseline.jsonl", "--source", help="Input .jsonl path relative to data/benchmarks/<category>/"),
     model: Optional[str] = typer.Option(None, "--model", help="Azure deployment name (required unless --retrieve; no default)"),
     model_type: str = typer.Option("standard", "--model-type", help="Deployment kind: 'standard' or 'reasoning'"),
     limit: Optional[int] = typer.Option(None, "--limit", help="Translate only the first N source entries"),
@@ -84,7 +84,7 @@ def build(
 
 @app.command()
 def descriptors(
-    source: str = typer.Argument(..., help="Path to a built benchmark .jsonl (e.g. data/benchmarks/bfcl_multiple/he/he_translatable_full.jsonl)"),
+    source: str = typer.Argument(..., help="Path to a built benchmark .jsonl (e.g. data/benchmarks/bfcl_multiple_translatable/he/he_native_query_native_target.jsonl)"),
     suffix: str = typer.Option("langdesc", "--suffix", help="Suffix for the output filename (<stem>_<suffix>.jsonl)"),
 ) -> None:
     """Append a 'Language: <langs>.' descriptor to natural-language parameters.

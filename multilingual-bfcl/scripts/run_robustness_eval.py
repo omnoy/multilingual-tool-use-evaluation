@@ -39,7 +39,7 @@ Data layout (under data/benchmarks/<category>/<lang-dir>/):
                       Keys: id, messages (the BFCL "question" turns), function (the
                       English tool defs), ground_truth (the expected calls), and — for
                       localized files — source_id, locale, localization_level.
-  Categories seen in this project: bfcl_multiple, wildtoolbench.
+  Categories seen in this project: bfcl_multiple_translatable, wildtoolbench.
   Lang dirs: en (source, no locale), he, zh, ...
 
 Outputs (under <output-dir>/<model>/<category>/<lang-dir>/<benchmark>/):
@@ -62,32 +62,32 @@ parameters are shaped: 'standard'/'reasoning' use the OpenAI-compatible v1 route
 
 Usage:
     # Small sample (default 10 entries) against an Azure deployment:
-    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
-        --category bfcl_multiple --lang-dir he --model gpt-4o
+    python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target \
+        --category bfcl_multiple_translatable --lang-dir he --model gpt-4o
 
     # Full file, more retries, higher concurrency:
-    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
+    python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target \
         --model gpt-4o --limit 0 --max-attempts 8 --concurrency 8
 
     # A reasoning deployment (no temperature; uses max_completion_tokens):
-    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
+    python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target \
         --model o3 --model-type reasoning
 
     # A reasoning deployment that needs the /responses route for tools + reasoning:
-    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
-        --category bfcl_multiple --lang-dir he --model gpt-6-astra --model-type responses
+    python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target \
+        --category bfcl_multiple_translatable --lang-dir he --model gpt-6-astra --model-type responses
 
     # A Claude deployment via the Foundry /anthropic route:
-    python scripts/run_robustness_eval.py --benchmark he_translatable_query \
-        --category bfcl_multiple --lang-dir he --model claude-opus-5 --model-type claude
+    python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target \
+        --category bfcl_multiple_translatable --lang-dir he --model claude-opus-5 --model-type claude
 
     # Finish a run that stopped early (only runs entries missing a transcript), then
     # rebuild stats over the whole benchmark:
-    python scripts/run_robustness_eval.py --benchmark he_translatable_full \
-        --category bfcl_multiple --lang-dir he --model gpt-4o --limit 0 --resume
+    python scripts/run_robustness_eval.py --benchmark he_native_query_native_target \
+        --category bfcl_multiple_translatable --lang-dir he --model gpt-4o --limit 0 --resume
 
     # Rebuild stats + cost from existing transcripts, no API calls:
-    python scripts/run_robustness_eval.py --benchmark he_translatable_query --recompute-stats
+    python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target --recompute-stats
 
 Environment (multilingual-bfcl/.env):
     AZURE_OPENAI_ENDPOINT=...      # …/openai/v1 (or the resource root)
@@ -901,12 +901,12 @@ def main() -> None:
     )
     parser.add_argument("--category", required=True,
                         help="Benchmark category folder under data/benchmarks/ "
-                             "(e.g. bfcl_multiple, wildtoolbench).")
+                             "(e.g. bfcl_multiple_translatable, wildtoolbench).")
     parser.add_argument("--lang-dir", required=True,
                         help="Language subfolder under the category (directory name, e.g. en, he, zh).")
     parser.add_argument("--benchmark", nargs="+", required=True,
                         help="Benchmark file stem(s) (without the .jsonl extension) under "
-                             "data/benchmarks/<category>/<lang-dir>/, e.g. he_translatable_query.")
+                             "data/benchmarks/<category>/<lang-dir>/, e.g. he_native_query_eng_target.")
     parser.add_argument("--model", required=True,
                         help="Azure deployment name (the harness appends the -FC registry suffix).")
     parser.add_argument("--model-type", choices=[mt.value for mt in ModelType],

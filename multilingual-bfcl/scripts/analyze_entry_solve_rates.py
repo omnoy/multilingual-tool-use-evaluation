@@ -15,7 +15,11 @@ import argparse
 import csv
 import json
 from collections import Counter, defaultdict
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+from multilingual_bfcl.experiment_names import level_of_stem  # noqa: E402
 
 DEFAULT_RESULTS_DIR = Path(__file__).resolve().parent.parent / "results_robustness"
 DEFAULT_OUT = Path(__file__).resolve().parent.parent / "results_robustness" / "entry_solve_rates.tsv"
@@ -23,11 +27,11 @@ DEFAULT_OUT = Path(__file__).resolve().parent.parent / "results_robustness" / "e
 # Priority order (lower = preferred) for picking which transcript to pull the
 # representative query / ground_truth from for a given entry.
 BENCHMARK_PRIORITY = {
-    "en_translatable": 0,
-    "he_translatable_full": 1,
-    "he_translatable_query": 2,
-    "he_translatable_full_func_desc": 3,
-    "he_translatable_full_lang_desc": 4,
+    "en_baseline": 0,
+    "he_native_query_native_target": 1,
+    "he_native_query_eng_target": 2,
+    "he_native_qt_func_descs": 3,
+    "he_native_qt_lang_hints": 4,
 }
 
 
@@ -101,15 +105,16 @@ def main():
 
                 all_results[canonical_id].append(success)
 
-                if benchmark == "en_translatable":
+                if benchmark == "en_baseline":
                     en_results[canonical_id].append(success)
-                if benchmark.endswith("query"):
+                level = level_of_stem(benchmark, benchmark.split("_")[0]) or ""
+                if level == "query":
                     query_results[canonical_id].append(success)
-                if "full" in benchmark:
+                if level.startswith("full"):
                     full_results[canonical_id].append(success)
-                if benchmark == "he_translatable_full_lang_desc":
+                if benchmark == "he_native_qt_lang_hints":
                     full_lang_desc_results[canonical_id].append(success)
-                if benchmark == "he_translatable_full_func_desc":
+                if benchmark == "he_native_qt_func_descs":
                     full_func_desc_results[canonical_id].append(success)
 
                 if not success:

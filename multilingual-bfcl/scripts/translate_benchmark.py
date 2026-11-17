@@ -2,7 +2,7 @@
 translate_benchmark.py — Batch translator for multilingual-bfcl benchmarks.
 
 Translates a local benchmark (data/benchmarks/<category>/<source>, default
-en/en_translatable.jsonl) into one or more locales using the Azure OpenAI Batch API,
+en/en_baseline.jsonl) into one or more locales using the Azure OpenAI Batch API,
 one batch item per (test case, locale). Each entry carries its own `ground_truth`,
 which is written (translated or not, per level) into the output entry.
 
@@ -13,25 +13,25 @@ Levels:
                   (function names, descriptions, enums, numbers stay in English).
 
 Outputs (under data/benchmarks/<category>/):
-  <locale>/<locale>_translatable_<level>.jsonl   e.g. he/he_translatable_full.jsonl
+  <locale>/<locale>_<experiment>.jsonl   e.g. he/he_native_query_native_target.jsonl
 
 Usage:
     # Submit and wait for results:
-    python scripts/translate_benchmark.py --category bfcl_multiple --locales he zh-CN --level full --model gpt-5.6-terra
+    python scripts/translate_benchmark.py --category bfcl_multiple_translatable --locales he zh-CN --level full --model gpt-5.6-terra
 
     # Translate the translatable-only subset, query level:
-    python scripts/translate_benchmark.py --category bfcl_multiple --locales he \
-        --source en/en_translatable.jsonl --level query --model gpt-5.6-terra
+    python scripts/translate_benchmark.py --category bfcl_multiple_translatable --locales he \
+        --source en/en_baseline.jsonl --level query --model gpt-5.6-terra
 
     # Submit only, then retrieve later:
-    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --model gpt-5.6-terra --submit-only
-    python scripts/translate_benchmark.py --category bfcl_multiple --retrieve batch_01AbCd...
+    python scripts/translate_benchmark.py --category bfcl_multiple_translatable --locales he --level full --model gpt-5.6-terra --submit-only
+    python scripts/translate_benchmark.py --category bfcl_multiple_translatable --retrieve batch_01AbCd...
 
     # No Batch-SKU deployment available? Send plain concurrent requests (full price):
-    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --model gpt-5.6-terra --no-batch
+    python scripts/translate_benchmark.py --category bfcl_multiple_translatable --locales he --level full --model gpt-5.6-terra --no-batch
 
     # Preview the first prompt and the cost estimate without calling the API:
-    python scripts/translate_benchmark.py --category bfcl_multiple --locales he --level full --model gpt-5.6-terra --dry-run
+    python scripts/translate_benchmark.py --category bfcl_multiple_translatable --locales he --level full --model gpt-5.6-terra --dry-run
 
 Cost: an estimate (tiktoken-based) is printed before submitting, and the actual cost
 (from the API's reported token usage) after retrieval. Both use model_data.csv list

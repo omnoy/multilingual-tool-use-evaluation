@@ -2,9 +2,9 @@
 compare_ground_truths.py — Measure how much a locale's translated ground truth
 still overlaps with the original (English) ground truth.
 
-For each entry, the ground truth of the ``<locale>_translatable_query.jsonl``
+For each entry, the ground truth of the ``<locale>_native_query_eng_target.jsonl``
 file (original-language values) is compared parameter-by-parameter with the
-ground truth of ``<locale>_translatable_full.jsonl`` (translated values).
+ground truth of ``<locale>_native_query_native_target.jsonl`` (translated values).
 Entries are matched by ``source_id``.
 
 Each ground-truth parameter holds a list of acceptable values. A parameter is:
@@ -17,8 +17,8 @@ translated, so they are reported separately and excluded from the headline
 counts.
 
 Usage:
-    python scripts/compare_ground_truths.py --category bfcl_multiple --locale de
-    python scripts/compare_ground_truths.py --category bfcl_multiple --locale de \
+    python scripts/compare_ground_truths.py --category bfcl_multiple_translatable --locale de
+    python scripts/compare_ground_truths.py --category bfcl_multiple_translatable --locale de \
         --output results/de_gt_overlap.json
 """
 
@@ -34,6 +34,8 @@ from typing import Any
 SCRIPT_DIR = Path(__file__).resolve().parent
 PACKAGE_ROOT = SCRIPT_DIR.parent           # multilingual-bfcl/
 DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks"
+sys.path.insert(0, str(PACKAGE_ROOT / "src"))
+from multilingual_bfcl.experiment_names import experiment_stem  # noqa: E402
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -121,7 +123,7 @@ def fmt(values: list[Any]) -> str:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--category", default="bfcl_multiple")
+    ap.add_argument("--category", default="bfcl_multiple_translatable")
     ap.add_argument("--locale", required=True, help="Target locale, e.g. 'de'")
     ap.add_argument("--source-level", default="query",
                     help="Localization level holding original GT (default: query)")
@@ -135,8 +137,8 @@ def main() -> None:
         sys.stdout.reconfigure(encoding="utf-8")
 
     loc_dir = DATA_ROOT / args.category / args.locale
-    src_path = loc_dir / f"{args.locale}_translatable_{args.source_level}.jsonl"
-    tgt_path = loc_dir / f"{args.locale}_translatable_{args.target_level}.jsonl"
+    src_path = loc_dir / f"{experiment_stem(args.locale, args.source_level)}.jsonl"
+    tgt_path = loc_dir / f"{experiment_stem(args.locale, args.target_level)}.jsonl"
     rows, counts, non_string = compare(load_jsonl(src_path), load_jsonl(tgt_path))
 
     total = sum(counts.values())

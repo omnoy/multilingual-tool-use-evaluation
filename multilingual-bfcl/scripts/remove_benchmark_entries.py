@@ -17,10 +17,10 @@ like multiple_2_de removes it only from the German files.
 
 Usage:
     # Preview what would be removed and from where:
-    python scripts/remove_benchmark_entries.py data/benchmarks/bfcl_multiple multiple_2 multiple_7 --dry-run
+    python scripts/remove_benchmark_entries.py data/benchmarks/bfcl_multiple_translatable multiple_2 multiple_7 --dry-run
 
     # Read ids from a file (one per line, '#' comments allowed) and remove them:
-    python scripts/remove_benchmark_entries.py data/benchmarks/bfcl_multiple --ids-file to_remove.txt
+    python scripts/remove_benchmark_entries.py data/benchmarks/bfcl_multiple_translatable --ids-file to_remove.txt
 """
 
 from __future__ import annotations
@@ -113,7 +113,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Remove entries (by id) from every benchmark file in a folder.",
     )
-    parser.add_argument("folder", help="Benchmark folder, e.g. data/benchmarks/bfcl_multiple.")
+    parser.add_argument("folder", help="Benchmark folder, e.g. data/benchmarks/bfcl_multiple_translatable.")
     parser.add_argument("ids", nargs="*", help="Entry ids to remove, e.g. multiple_2 multiple_7.")
     parser.add_argument("--ids-file", help="File with ids to remove (one per line or comma/space separated).")
     parser.add_argument("--dry-run", action="store_true",

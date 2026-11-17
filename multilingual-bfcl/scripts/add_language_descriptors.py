@@ -1,6 +1,6 @@
 """
 add_language_descriptors.py — annotate a benchmark's natural-language parameters
-with an explicit "Language: <langs>." descriptor.
+with an explicit "Languages: <lang>." descriptor naming the native language.
 
 Unlike `mbfcl descriptors` (which derives the language list per entry from each
 entry's own `locale` field), this standalone script takes the languages
@@ -16,17 +16,18 @@ translator.add_language_descriptors_to_entry):
   - the descriptor is propagated to structurally-identical params in sibling
     (distractor) functions so it never reveals which function is the answer.
 
-The descriptor languages are the NAMES of `--locale` followed by `--locales`,
-order-preserving and de-duplicated. For example:
+The descriptor lists only the NAME of the target (`--dest_locale`) language, e.g.
 
-  --locale en --locales he        ->  "Language: English, Hebrew."
-  --locale en --locales he ar      ->  "Language: English, Hebrew, Arabic."
-  --locale he --locales en         ->  "Language: Hebrew, English."
+  --dest_locale he                     ->  "Languages: Hebrew."
+
+Pass `--source_locale` to additionally list a source language first (the old
+behaviour, which mentioned English alongside the native language):
+
+  --source_locale en --dest_locale he  ->  "Languages: English, Hebrew."
 
 Usage:
-  python scripts/add_language_descriptors.py INPUT.jsonl --locales he
-  python scripts/add_language_descriptors.py INPUT.jsonl --locale en --locales he ar
-  python scripts/add_language_descriptors.py INPUT.jsonl --locales he --output OUT.jsonl
+  python scripts/add_language_descriptors.py --input_file he_native_query_native_target \
+      --category bfcl_multiple_translatable --dest_locale he
 """
 
 from __future__ import annotations
@@ -40,20 +41,22 @@ PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 
+from multilingual_bfcl.experiment_names import derived_stem  # noqa: E402
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
 from multilingual_bfcl.localization.translator import (  # noqa: E402
     add_language_descriptors_to_entry,
 )
 
 
-def build_language_string(source_locale: str, dest_locale: str) -> str:
-    """Resolve [locale, *locales] to locale NAMES, order-preserving and de-duplicated.
+def build_language_string(dest_locale: str, source_locale: str | None = None) -> str:
+    """Resolve the locale codes to locale NAMES, order-preserving and de-duplicated.
 
-    e.g. ("en", ["he", "ar"]) -> "English, Hebrew, Arabic"
+    e.g. ("he",) -> "Hebrew";  ("he", "en") -> "English, Hebrew"
     """
     names: list[str] = []
     seen: set[str] = set()
-    for code in [source_locale, dest_locale]:
+    codes = [source_locale, dest_locale] if source_locale else [dest_locale]
+    for code in codes:
         name = get_locale(code).name  # raises ValueError on an unknown code
         if name not in seen:
             seen.add(name)
@@ -63,7 +66,7 @@ def build_language_string(source_locale: str, dest_locale: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Append an explicit 'Language: <langs>.' descriptor to the "
+        description="Append an explicit 'Languages: <lang>.' descriptor to the "
         "natural-language parameters of a built benchmark .jsonl.",
     )
 
@@ -79,18 +82,21 @@ def main() -> None:
     )
     parser.add_argument(
         "--source_locale", "-L",
-        default="en",
-        help="Base locale whose name leads the descriptor (default: en).",
+        default=None,
+        help="Optional extra locale listed before the target language. By default the "
+        "descriptor names only the target (native) language.",
     )
     parser.add_argument(
         "--dest_locale", "-l",
         required=True,
-        help="Target locale code(s) to list after the base, e.g. he ar zh-CN.",
+        help="Target (native) locale code whose name the descriptor lists, e.g. he.",
     )
     parser.add_argument(
         "--suffix",
         default="lang_desc",
-        help="Suffix for the output filename (<stem>_<suffix><ext>). "
+        help="Suffix for the output filename (<stem>_<suffix><ext>); for a known experiment "
+        "it maps to the experiment name, e.g. he_native_query_native_target + lang_desc "
+        "-> he_native_qt_lang_hints. "
         "Ignored when --output is given. Default: lang_desc.",
     )
     parser.add_argument(
@@ -102,13 +108,13 @@ def main() -> None:
     args = parser.parse_args()
 
     try:
-        languages = build_language_string(args.source_locale, args.dest_locale)
+        languages = build_language_string(args.dest_locale, args.source_locale)
     except ValueError as exc:
         sys.exit(f"ERROR: {exc}")
 
     data_root = PACKAGE_ROOT / "data" / "benchmarks" / args.category / args.dest_locale
 
-    out = data_root / f"{args.input_file}_{args.suffix}.jsonl"
+    out = data_root / f"{derived_stem(args.input_file, args.dest_locale, args.suffix)}.jsonl"
 
     entries = []
 
@@ -131,7 +137,7 @@ def main() -> None:
         for entry in entries:
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
-    print(f"Descriptor : Language: {languages}.")
+    print(f"Descriptor : Languages: {languages}.")
     print(f"[done] {len(entries)} entries -> {out}")
     print(f"       {total_modified} parameter description(s) tagged "
           f"across {tagged_entries} entrie(s).")

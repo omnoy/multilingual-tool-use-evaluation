@@ -278,7 +278,7 @@ def load_english(src: Path, categories: list[str] | None = None) -> dict[str, di
     """{category: {id: English source entry}} for every category with an en file."""
     out: dict[str, dict[str, dict]] = {}
     for cat_dir in category_dirs(src, categories):
-        en_path = cat_dir / "en" / "en_translatable.jsonl"
+        en_path = cat_dir / "en" / "en_baseline.jsonl"
         if en_path.exists():
             out[cat_dir.name] = {e["id"]: e for _, e in iter_jsonl(en_path) if e and "id" in e}
     return out
@@ -315,7 +315,7 @@ def discover(src: Path, categories: list[str] | None = None,
     for cat_dir in category_dirs(src, categories):
         english = english_by_cat.get(cat_dir.name)
         if english is None:
-            warnings.append(f"{cat_dir.name}: no en/en_translatable.jsonl, category skipped")
+            warnings.append(f"{cat_dir.name}: no en/en_baseline.jsonl, category skipped")
             continue
         for path in sorted(cat_dir.glob("*/*.jsonl")):
             if path.parent.name == "en":
@@ -481,7 +481,7 @@ def main() -> None:
                         help="Source benchmark folder (relative to the package root).")
     parser.add_argument("--dst", default="data/benchmarks",
                         help="Destination folder (relative to the package root).")
-    parser.add_argument("--categories", nargs="+", default=["bfcl_multiple"],
+    parser.add_argument("--categories", nargs="+", default=["bfcl_multiple_translatable"],
                         help="Benchmark subfolders to process; all other folders are "
                              "copied unchanged. Pass 'all' for every subfolder except backups/.")
     parser.add_argument("--model", help="Azure deployment name. Required unless --translations.")

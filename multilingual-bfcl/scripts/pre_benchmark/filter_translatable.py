@@ -16,7 +16,7 @@ Both source files are newline-delimited JSON (one object per line); the outputs
 preserve that format and the original ordering.
 
 Usage:
-    python scripts/filter_translatable.py --category bfcl_multiple
+    python scripts/filter_translatable.py --category bfcl_multiple_translatable
 """
 
 from __future__ import annotations
@@ -113,7 +113,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--category",
-        default="bfcl_multiple",
+        default="bfcl_multiple_translatable",
         help="Benchmark category folder under data/benchmarks/.",
     )
     args = parser.parse_args()

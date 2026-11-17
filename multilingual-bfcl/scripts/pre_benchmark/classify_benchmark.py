@@ -27,22 +27,22 @@ Output file depends on the selection:
 
 Usage:
     # Submit and wait for results — all classifications (default):
-    python scripts/classify_benchmark.py --category bfcl_multiple --model gpt-5.6-terra
+    python scripts/classify_benchmark.py --category bfcl_multiple_translatable --model gpt-5.6-terra
 
     # Only classify translatable_params:
-    python scripts/classify_benchmark.py --category bfcl_multiple --translatable_params --model gpt-5.6-terra
+    python scripts/classify_benchmark.py --category bfcl_multiple_translatable --translatable_params --model gpt-5.6-terra
 
     # Only classify localizability (translatable_params is auto-included):
-    python scripts/classify_benchmark.py --category bfcl_multiple --localizable --model gpt-5.6-terra
+    python scripts/classify_benchmark.py --category bfcl_multiple_translatable --localizable --model gpt-5.6-terra
 
     # Submit only — print the batch ID and exit immediately:
-    python scripts/classify_benchmark.py --category bfcl_multiple --submit-only --model gpt-5.6-terra
+    python scripts/classify_benchmark.py --category bfcl_multiple_translatable --submit-only --model gpt-5.6-terra
 
     # Retrieve results for a previously submitted batch:
-    python scripts/classify_benchmark.py --category bfcl_multiple --retrieve batch_01AbCdEf...
+    python scripts/classify_benchmark.py --category bfcl_multiple_translatable --retrieve batch_01AbCdEf...
 
     # Preview without calling the API:
-    python scripts/classify_benchmark.py --category bfcl_multiple --dry-run --model gpt-5.6-terra
+    python scripts/classify_benchmark.py --category bfcl_multiple_translatable --dry-run --model gpt-5.6-terra
 
 --model is required (except with --retrieve); there is no default, to prevent
 accidental runs.
@@ -682,7 +682,7 @@ def main() -> None:
     parser.add_argument(
         "--category",
         required=True,
-        help="Benchmark category name, e.g. 'bfcl_multiple'. "
+        help="Benchmark category name, e.g. 'bfcl_multiple_translatable'. "
              "Must have eng_base.json and possible_answer/eng_base.json under data/benchmarks/<category>/.",
     )
     parser.add_argument(

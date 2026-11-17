@@ -1,0 +1,494 @@
+{
+  "id": "multiple_66_he",
+  "source_id": "multiple_66",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 7141,
+  "total_output_tokens": 1164,
+  "total_latency_s": 18.68144464492798,
+  "estimated_cost_usd": 0.01647606,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה עומס תנועה כדאי שאצפה ממנו בנסיעה מלאס וגאס ללוס אנג'לס בסוף השבוע הזה?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "traffic_estimate": {
+        "start_location": [
+          "Las Vegas"
+        ],
+        "end_location": [
+          "Los Angeles"
+        ],
+        "time_period": [
+          "weekend"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nכדי לתת לך הערכת עומס תנועה, אשתמש בפונקציה המתאימה. עם זאת, אני צריך לציין שהפונקציה לא מקבלת תאריך ספציפי אלא \"time period\" כללי. אבצע את הקריאה עם \"סוף השבוע\" כתיאור הזמן."
+      ],
+      "tool_calls": [
+        {
+          "name": "traffic_estimate",
+          "arguments": {
+            "start_location": "Las Vegas",
+            "end_location": "Los Angeles",
+            "time_period": "this weekend"
+          },
+          "id": "call_a0d723bfd6ac4f6182cca79f"
+        }
+      ],
+      "decoded": [
+        {
+          "traffic_estimate": {
+            "start_location": "Las Vegas",
+            "end_location": "Los Angeles",
+            "time_period": "this weekend"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'traffic_estimate'. Please review the function definition and try again.",
+      "input_tokens": 610,
+      "output_tokens": 164,
+      "latency_s": 8.369506597518921,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "נראה שהייתה בעיה עם הפרמטרים. אנסה שוב עם הפרמטרים הנכונים:"
+      ],
+      "tool_calls": [
+        {
+          "name": "traffic_estimate",
+          "arguments": {
+            "start_location": "Las Vegas",
+            "end_location": "Los Angeles"
+          },
+          "id": "call_5c9c077a4b434939b25676ff"
+        }
+      ],
+      "decoded": [
+        {
+          "traffic_estimate": {
+            "start_location": "Las Vegas",
+            "end_location": "Los Angeles"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'traffic_estimate'. Please review the function definition and try again.",
+      "input_tokens": 807,
+      "output_tokens": 92,
+      "latency_s": 1.1012485027313232,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "אנסה גישה אחרת — קודם אחשב את המרחק, ובמקביל אבדוק את תחזית מזג האוויר לשני היעדים, כי מזג אוויר יכול להשפיע על עומסי תנועה:"
+      ],
+      "tool_calls": [
+        {
+          "name": "calculate_distance",
+          "arguments": {
+            "start_point": "Las Vegas",
+            "end_point": "Los Angeles"
+          },
+          "id": "call_f357bbc7995042df85919608"
+        },
+        {
+          "name": "weather_forecast",
+          "arguments": {
+            "location": "Las Vegas",
+            "days": 3
+          },
+          "id": "call_7e4fc50d2256444fb3046e23"
+        },
+        {
+          "name": "weather_forecast",
+          "arguments": {
+            "location": "Los Angeles",
+            "days": 3
+          },
+          "id": "call_0fb6c6ac093443ccba7f399b"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_distance": {
+            "start_point": "Las Vegas",
+            "end_point": "Los Angeles"
+          }
+        },
+        {
+          "weather_forecast": {
+            "location": "Las Vegas",
+            "days": 3
+          }
+        },
+        {
+          "weather_forecast": {
+            "location": "Los Angeles",
+            "days": 3
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calculate_distance'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'weather_forecast'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'weather_forecast'. Please review the function definition and try again.",
+      "input_tokens": 932,
+      "output_tokens": 220,
+      "latency_s": 2.9626364707946777,
+      "num_calls": 3,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "אני מתנצל, אבל נראה שקיימת בעיה טכנית עם קריאות הפונקציות כרגע — כולן מחזירות שגיאת \"פרמטרים לא תקינים\" למרות שאני משתמש בפרמטרים המוגדרים.\n\nלמרות זאת, הנה מה שאני יכול לשתף איתך על בסיס ידע כללי לגבי הנסיעה מלאס וגאס ללוס אנג'לס בסוף שבוע:\n\n**מרחק:** כ-430 ק\"מ (270 מייל) — נסיעה של כ-4 שעות ללא פקקים.\n\n**למה לצפות בסוף השבוע:**\n\n- **ימי שישי אחר הצהריים** — עומס כבד ביציאה מלאס וגאס, במיוחד בכביש I-15 דרומה. רבים נוסעים ללוס אנג'לס לסוף השבוע.\n- **יום ראשון בערב** — עומס כבד בחזרה, כשכולם חוזרים מלוס אנג'לס ללאס וגאס.\n- **עומס אופייני:** הנסיעה יכולה להתארך בקלות ל-5 עד 7 שעות ואף יותר בזמני שיא, במיוחד באזור המעבר ההררי ליד בייקר ובכניסה לאזור המטרופולין של לוס אנג'לס.\n\n**טיפ:** מומלץ לצאת מוקדם בבוקר (לפני 8:00) או מאוחר בערב כדי להימנע מהפקקים הכבדים. כדאי גם לבדוק אם יש אירועים גדולים בלאס וגאס או בלוס אנג'לס שיגבירו את העומס."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1243,
+      "output_tokens": 402,
+      "latency_s": 3.5663442611694336,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "אנסה שוב לבצע את הקריאות לפונקציות:"
+      ],
+      "tool_calls": [
+        {
+          "name": "calculate_distance",
+          "arguments": {
+            "start_point": "Las Vegas",
+            "end_point": "Los Angeles"
+          },
+          "id": "call_908c6c72b907491e99bfcb07"
+        },
+        {
+          "name": "traffic_estimate",
+          "arguments": {
+            "start_location": "Las Vegas",
+            "end_location": "Los Angeles",
+            "time_period": "this weekend"
+          },
+          "id": "call_f0fc2c7a2ba849eab4b0de4b"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_distance": {
+            "start_point": "Las Vegas",
+            "end_point": "Los Angeles"
+          }
+        },
+        {
+          "traffic_estimate": {
+            "start_location": "Las Vegas",
+            "end_location": "Los Angeles",
+            "time_period": "this weekend"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calculate_distance'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'traffic_estimate'. Please review the function definition and try again.",
+      "input_tokens": 1669,
+      "output_tokens": 150,
+      "latency_s": 1.4601073265075684,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "אנסה עם traffic_estimate בלבד וללא time_period, ועם weather_forecast:"
+      ],
+      "tool_calls": [
+        {
+          "name": "traffic_estimate",
+          "arguments": {
+            "start_location": "Las Vegas",
+            "end_location": "Los Angeles"
+          },
+          "id": "call_9ee0a11ac05740ed84d2b05c"
+        },
+        {
+          "name": "weather_forecast",
+          "arguments": {
+            "location": "Los Angeles",
+            "days": 3
+          },
+          "id": "call_d37c1915be164861ac431e4f"
+        }
+      ],
+      "decoded": [
+        {
+          "traffic_estimate": {
+            "start_location": "Las Vegas",
+            "end_location": "Los Angeles"
+          }
+        },
+        {
+          "weather_forecast": {
+            "location": "Los Angeles",
+            "days": 3
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1880,
+      "output_tokens": 136,
+      "latency_s": 1.2216014862060547,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה עומס תנועה כדאי שאצפה ממנו בנסיעה מלאס וגאס ללוס אנג'לס בסוף השבוע הזה?"
+    },
+    {
+      "content": "\n\nכדי לתת לך הערכת עומס תנועה, אשתמש בפונקציה המתאימה. עם זאת, אני צריך לציין שהפונקציה לא מקבלת תאריך ספציפי אלא \"time period\" כללי. אבצע את הקריאה עם \"סוף השבוע\" כתיאור הזמן.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a0d723bfd6ac4f6182cca79f",
+          "function": {
+            "arguments": "{\"start_location\": \"Las Vegas\", \"end_location\": \"Los Angeles\", \"time_period\": \"this weekend\"}",
+            "name": "traffic_estimate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'traffic_estimate'. Please review the function definition and try again.",
+      "tool_call_id": "call_a0d723bfd6ac4f6182cca79f"
+    },
+    {
+      "content": "נראה שהייתה בעיה עם הפרמטרים. אנסה שוב עם הפרמטרים הנכונים:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5c9c077a4b434939b25676ff",
+          "function": {
+            "arguments": "{\"start_location\": \"Las Vegas\", \"end_location\": \"Los Angeles\"}",
+            "name": "traffic_estimate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'traffic_estimate'. Please review the function definition and try again.",
+      "tool_call_id": "call_5c9c077a4b434939b25676ff"
+    },
+    {
+      "content": "אנסה גישה אחרת — קודם אחשב את המרחק, ובמקביל אבדוק את תחזית מזג האוויר לשני היעדים, כי מזג אוויר יכול להשפיע על עומסי תנועה:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f357bbc7995042df85919608",
+          "function": {
+            "arguments": "{\"start_point\": \"Las Vegas\", \"end_point\": \"Los Angeles\"}",
+            "name": "calculate_distance"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_7e4fc50d2256444fb3046e23",
+          "function": {
+            "arguments": "{\"location\": \"Las Vegas\", \"days\": 3}",
+            "name": "weather_forecast"
+          },
+          "type": "function",
+          "index": 1
+        },
+        {
+          "id": "call_0fb6c6ac093443ccba7f399b",
+          "function": {
+            "arguments": "{\"location\": \"Los Angeles\", \"days\": 3}",
+            "name": "weather_forecast"
+          },
+          "type": "function",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calculate_distance'. Please review the function definition and try again.",
+      "tool_call_id": "call_f357bbc7995042df85919608"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'weather_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_7e4fc50d2256444fb3046e23"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'weather_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_0fb6c6ac093443ccba7f399b"
+    },
+    {
+      "content": "אני מתנצל, אבל נראה שקיימת בעיה טכנית עם קריאות הפונקציות כרגע — כולן מחזירות שגיאת \"פרמטרים לא תקינים\" למרות שאני משתמש בפרמטרים המוגדרים.\n\nלמרות זאת, הנה מה שאני יכול לשתף איתך על בסיס ידע כללי לגבי הנסיעה מלאס וגאס ללוס אנג'לס בסוף שבוע:\n\n**מרחק:** כ-430 ק\"מ (270 מייל) — נסיעה של כ-4 שעות ללא פקקים.\n\n**למה לצפות בסוף השבוע:**\n\n- **ימי שישי אחר הצהריים** — עומס כבד ביציאה מלאס וגאס, במיוחד בכביש I-15 דרומה. רבים נוסעים ללוס אנג'לס לסוף השבוע.\n- **יום ראשון בערב** — עומס כבד בחזרה, כשכולם חוזרים מלוס אנג'לס ללאס וגאס.\n- **עומס אופייני:** הנסיעה יכולה להתארך בקלות ל-5 עד 7 שעות ואף יותר בזמני שיא, במיוחד באזור המעבר ההררי ליד בייקר ובכניסה לאזור המטרופולין של לוס אנג'לס.\n\n**טיפ:** מומלץ לצאת מוקדם בבוקר (לפני 8:00) או מאוחר בערב כדי להימנע מהפקקים הכבדים. כדאי גם לבדוק אם יש אירועים גדולים בלאס וגאס או בלוס אנג'לס שיגבירו את העומס.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "אנסה שוב לבצע את הקריאות לפונקציות:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_908c6c72b907491e99bfcb07",
+          "function": {
+            "arguments": "{\"start_point\": \"Las Vegas\", \"end_point\": \"Los Angeles\"}",
+            "name": "calculate_distance"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_f0fc2c7a2ba849eab4b0de4b",
+          "function": {
+            "arguments": "{\"start_location\": \"Las Vegas\", \"end_location\": \"Los Angeles\", \"time_period\": \"this weekend\"}",
+            "name": "traffic_estimate"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calculate_distance'. Please review the function definition and try again.",
+      "tool_call_id": "call_908c6c72b907491e99bfcb07"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'traffic_estimate'. Please review the function definition and try again.",
+      "tool_call_id": "call_f0fc2c7a2ba849eab4b0de4b"
+    },
+    {
+      "content": "אנסה עם traffic_estimate בלבד וללא time_period, ועם weather_forecast:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9ee0a11ac05740ed84d2b05c",
+          "function": {
+            "arguments": "{\"start_location\": \"Las Vegas\", \"end_location\": \"Los Angeles\"}",
+            "name": "traffic_estimate"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_d37c1915be164861ac431e4f",
+          "function": {
+            "arguments": "{\"location\": \"Los Angeles\", \"days\": 3}",
+            "name": "weather_forecast"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

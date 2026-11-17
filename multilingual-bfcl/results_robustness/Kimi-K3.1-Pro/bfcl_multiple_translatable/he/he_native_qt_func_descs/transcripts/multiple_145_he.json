@@ -1,0 +1,178 @@
+{
+  "id": "multiple_145_he",
+  "source_id": "multiple_145",
+  "locale": "he",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "he_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1768,
+  "total_output_tokens": 486,
+  "total_latency_s": 3.3353657722473145,
+  "estimated_cost_usd": 0.008396,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה CO2 מיוצר מדי שנה על ידי מכונית המונעת בבנזין שנוסעת 12,000 מייל בשנה עם יעילות דלק של 20 מייל לגלון?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calculate_emissions": {
+        "distance": [
+          12000
+        ],
+        "fuel_type": [
+          "בנזין"
+        ],
+        "fuel_efficiency": [
+          20
+        ],
+        "efficiency_reduction": [
+          "",
+          0.0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_type": "gasoline",
+            "fuel_efficiency": 20
+          },
+          "id": "call_cfd1d04250a74e41b9aceb00"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_type": "gasoline",
+            "fuel_efficiency": 20
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calculate_emissions'. Please review the function definition and try again.",
+      "input_tokens": 758,
+      "output_tokens": 195,
+      "latency_s": 1.370060682296753,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calculate_emissions",
+          "arguments": {
+            "distance": 12000,
+            "fuel_type": "בנזין",
+            "fuel_efficiency": 20,
+            "efficiency_reduction": 0
+          },
+          "id": "call_08fae14988e64416b8cba132"
+        }
+      ],
+      "decoded": [
+        {
+          "calculate_emissions": {
+            "distance": 12000,
+            "fuel_type": "בנזין",
+            "fuel_efficiency": 20,
+            "efficiency_reduction": 0
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1010,
+      "output_tokens": 291,
+      "latency_s": 1.9653050899505615,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה CO2 מיוצר מדי שנה על ידי מכונית המונעת בבנזין שנוסעת 12,000 מייל בשנה עם יעילות דלק של 20 מייל לגלון?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cfd1d04250a74e41b9aceb00",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_type\": \"gasoline\", \"fuel_efficiency\": 20}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Hebrew via tool calculate_emissions. I must call exactly per tool definition. User asks: how much CO2 produced annually by gasoline-powered car travels 12,000 miles/year fuel efficiency 20 mpg. Params distance 12000, fuel_type gasoline? Tool description Hebrew but input string no enum. likely \"gasoline\" or \"בנזין\". Should infer. efficiency_reduction optional not needed. Call function. Then likely provide result Hebrew? Instruction says \"respond with correct function call exactly as specified\". I need call functions calculate_emissions."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calculate_emissions'. Please review the function definition and try again.",
+      "tool_call_id": "call_cfd1d04250a74e41b9aceb00"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_08fae14988e64416b8cba132",
+          "function": {
+            "arguments": "{\"distance\": 12000, \"fuel_type\": \"בנזין\", \"fuel_efficiency\": 20, \"efficiency_reduction\": 0}",
+            "name": "calculate_emissions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool invalid parameters perhaps Hebrew fuel type? Or integer? Inputs valid. Could be expects \"petrol\" perhaps? Should inspect no schema other than. Error generic. Should retry perhaps Hebrew types? This environment often tools weird maybe expects distance string? No. Should infer reason. calculate_emissions has distance integer, efficiency_reduction optional float, fuel_efficiency integer, fuel_type string. I gave. Why 400? Could be fuel_type must be \"בנזין\" as Hebrew? Should try. Could require efficiency_reduction despite optional? Add 0 likely. Perhaps system validation expects petrol? Common emission formula uses \"gasoline\" supported. Why invalid parameters? Could require distance 12000 without comma (I did). All. Tool definitions in Hebrew yet normal requests. Perhaps 400 from bad integer? fuel_efficiency 20 valid. Could be `fuel_type` \"בנזין\". I'll call with Hebrew and efficiency_reduction 0."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

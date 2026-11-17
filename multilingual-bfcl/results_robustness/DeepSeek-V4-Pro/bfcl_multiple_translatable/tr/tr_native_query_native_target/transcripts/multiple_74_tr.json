@@ -1,0 +1,448 @@
+{
+  "id": "multiple_74_tr",
+  "source_id": "multiple_74",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_query_native_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 7409,
+  "total_output_tokens": 1245,
+  "total_latency_s": 42.6772837638855,
+  "estimated_cost_usd": 0.017224259999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Van Gog'un 'Yıldızlı Gece' tablosunun tüm müzayede platformlarındaki fiyatını bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "art_auction.fetch_artwork_price": {
+        "artwork_name": [
+          "Yıldızlı Gece"
+        ],
+        "artist": [
+          "Van Gog"
+        ],
+        "platform": [
+          "tümü",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh"
+          },
+          "id": "call_8ecc0d63383e457c87d33fc2"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 544,
+      "output_tokens": 78,
+      "latency_s": 0.9861974716186523,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Fonksiyonun parametrelerini kontrol ediyorum. `platform` parametresi de zorunluymuş. Ancak siz \"tüm müzayede platformlarındaki\" fiyatını istemişsiniz. Her platform için ayrı ayrı sorgulama yapmam gerekiyor. Önce platformu belirtmeden denedim ama hata aldım. Şimdi platform parametresini ekleyerek tekrar deneyelim. Fakat hangi platformların mevcut olduğunu bilmiyorum. Yaygın müzayede platformlarıyla deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "Sotheby's"
+          },
+          "id": "call_d584391846b44bf793078276"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "Christie's"
+          },
+          "id": "call_aebd9faeb44841f6994dd3ae"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "Phillips"
+          },
+          "id": "call_3b90f99a3f3a440c94fb1d56"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "Sotheby's"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "Christie's"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "Phillips"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 661,
+      "output_tokens": 402,
+      "latency_s": 7.427055597305298,
+      "num_calls": 3,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Üzgünüm, ancak Van Gogh'un \"Yıldızlı Gece\" (Starry Night) tablosunun müzayede platformlarındaki fiyatını sorgulamaya çalıştığımda işlev sürekli hata döndürüyor. Bunun birkaç olası nedeni olabilir:\n\n1. **\"Yıldızlı Gece\" tablosu şu anda müzayedede değil** — Bu eser, 1941'den beri New York'taki Museum of Modern Art (MoMA) koleksiyonunda yer almaktadır ve satılık değildir. Dolayısıyla herhangi bir müzayede platformunda aktif bir fiyat kaydı bulunmuyor olabilir.\n\n2. **Platform isimleri farklı olabilir** — Sistemin kabul ettiği platform adlarını tam olarak bilemediğim için doğru formatta gönderememiş olabilirim.\n\nEğer farklı bir Van Gogh eseri veya başka bir sanat eseri hakkında bilgi almak isterseniz, lütfen belirtin, yardımcı olmaktan memnuniyet duyarım."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1174,
+      "output_tokens": 290,
+      "latency_s": 11.587015390396118,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Anladım, mutlaka bir fonksiyon çağrısı yapmam gerekiyor. \"Tüm platformlar\" yerine, platform parametresini boş veya genel bir ifadeyle deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "all"
+          },
+          "id": "call_700feb16cbef4e798ab2fb80"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "all"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 1488,
+      "output_tokens": 146,
+      "latency_s": 13.25578498840332,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Hâlâ hata alıyorum. Fonksiyon tanımını tekrar incelediğimde, `platform` parametresi zorunlu (`required`) alanlarda listelenmemiş, sadece `artwork_name` ve `artist` zorunlu. O halde platform olmadan tekrar deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh"
+          },
+          "id": "call_7a806e53d94d496e9dfc29d1"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 1673,
+      "output_tokens": 157,
+      "latency_s": 2.7899599075317383,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "Fonksiyon tanımına göre üç parametre de (`artwork_name`, `artist`, `platform`) `required` listesinde olmasa da schema içinde yer alıyor. Tam olarak tanıma uygun şekilde, `platform` dahil tüm alanları tekrar göndereyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "müzayede"
+          },
+          "id": "call_83cf82e3ae2f489bbe29de3f"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "müzayede"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1869,
+      "output_tokens": 172,
+      "latency_s": 6.631270408630371,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Van Gog'un 'Yıldızlı Gece' tablosunun tüm müzayede platformlarındaki fiyatını bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8ecc0d63383e457c87d33fc2",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Van Gogh\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_8ecc0d63383e457c87d33fc2"
+    },
+    {
+      "content": "Fonksiyonun parametrelerini kontrol ediyorum. `platform` parametresi de zorunluymuş. Ancak siz \"tüm müzayede platformlarındaki\" fiyatını istemişsiniz. Her platform için ayrı ayrı sorgulama yapmam gerekiyor. Önce platformu belirtmeden denedim ama hata aldım. Şimdi platform parametresini ekleyerek tekrar deneyelim. Fakat hangi platformların mevcut olduğunu bilmiyorum. Yaygın müzayede platformlarıyla deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d584391846b44bf793078276",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Van Gogh\", \"platform\": \"Sotheby's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_aebd9faeb44841f6994dd3ae",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Van Gogh\", \"platform\": \"Christie's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 1
+        },
+        {
+          "id": "call_3b90f99a3f3a440c94fb1d56",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Van Gogh\", \"platform\": \"Phillips\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_d584391846b44bf793078276"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_aebd9faeb44841f6994dd3ae"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_3b90f99a3f3a440c94fb1d56"
+    },
+    {
+      "content": "Üzgünüm, ancak Van Gogh'un \"Yıldızlı Gece\" (Starry Night) tablosunun müzayede platformlarındaki fiyatını sorgulamaya çalıştığımda işlev sürekli hata döndürüyor. Bunun birkaç olası nedeni olabilir:\n\n1. **\"Yıldızlı Gece\" tablosu şu anda müzayedede değil** — Bu eser, 1941'den beri New York'taki Museum of Modern Art (MoMA) koleksiyonunda yer almaktadır ve satılık değildir. Dolayısıyla herhangi bir müzayede platformunda aktif bir fiyat kaydı bulunmuyor olabilir.\n\n2. **Platform isimleri farklı olabilir** — Sistemin kabul ettiği platform adlarını tam olarak bilemediğim için doğru formatta gönderememiş olabilirim.\n\nEğer farklı bir Van Gogh eseri veya başka bir sanat eseri hakkında bilgi almak isterseniz, lütfen belirtin, yardımcı olmaktan memnuniyet duyarım.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "Anladım, mutlaka bir fonksiyon çağrısı yapmam gerekiyor. \"Tüm platformlar\" yerine, platform parametresini boş veya genel bir ifadeyle deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_700feb16cbef4e798ab2fb80",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Van Gogh\", \"platform\": \"all\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_700feb16cbef4e798ab2fb80"
+    },
+    {
+      "content": "Hâlâ hata alıyorum. Fonksiyon tanımını tekrar incelediğimde, `platform` parametresi zorunlu (`required`) alanlarda listelenmemiş, sadece `artwork_name` ve `artist` zorunlu. O halde platform olmadan tekrar deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_7a806e53d94d496e9dfc29d1",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Van Gogh\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_7a806e53d94d496e9dfc29d1"
+    },
+    {
+      "content": "Fonksiyon tanımına göre üç parametre de (`artwork_name`, `artist`, `platform`) `required` listesinde olmasa da schema içinde yer alıyor. Tam olarak tanıma uygun şekilde, `platform` dahil tüm alanları tekrar göndereyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_83cf82e3ae2f489bbe29de3f",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Van Gogh\", \"platform\": \"müzayede\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

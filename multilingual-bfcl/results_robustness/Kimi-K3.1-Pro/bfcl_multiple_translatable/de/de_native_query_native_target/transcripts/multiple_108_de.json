@@ -1,0 +1,171 @@
+{
+  "id": "multiple_108_de",
+  "source_id": "multiple_108",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1160,
+  "total_output_tokens": 494,
+  "total_latency_s": 4.109056711196899,
+  "estimated_cost_usd": 0.00726,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Berechne die Wärmekapazität bei konstantem Druck für Luft bei einer Temperatur von 298K und einem Volumen von 10 m^3."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calc_heat_capacity": {
+        "temp": [
+          298
+        ],
+        "volume": [
+          10
+        ],
+        "gas": [
+          "Luft",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          },
+          "id": "call_2c8f3fe1dd3c4ae691666de2"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "input_tokens": 452,
+      "output_tokens": 197,
+      "latency_s": 1.6125237941741943,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10
+          },
+          "id": "call_15b28fcac1b64f9dbfd2338f"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 708,
+      "output_tokens": 297,
+      "latency_s": 2.496532917022705,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Berechne die Wärmekapazität bei konstantem Druck für Luft bei einer Temperatur von 298K und einem Volumen von 10 m^3."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2c8f3fe1dd3c4ae691666de2",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10, \"gas\": \"air\"}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in German likely tool call calc_heat_capacity with gas Luft/air temp 298 volume 10. I'll respond with the exact function call as specified. Should consider instructions tool schema gas optional string, temp integer, volume integer. User says calculate heat capacity at constant pressure for air at 298K and 10 m^3. Call function calc_heat_capacity. No need text likely tool. Should parse \"Luft\" gas perhaps \"air\". Function gas optional type string. I should supply gas:\"air\", temp 298 volume 10. Tool available. I can call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "tool_call_id": "call_2c8f3fe1dd3c4ae691666de2"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_15b28fcac1b64f9dbfd2338f",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid params. Perhaps gas must be \"Luft\" or gas required? Tool accepts temp integer volume integer gas optional. I provided valid. Could be tool weird expecting \"air\" not? Perhaps 400 due schema? Could retry only required temp volume, perhaps gas default? Should understand likely benchmarks. Tools synthetic often calc_heat_capacity expects gas? Spec temp integer, volume integer gas string optional. 400 invalid parameters may be implementation requires all? I did. Could be integer restrictions? JSON numbers 298 and10 okay. Could be gas must be \"Luft\"? Error parameters rather than invalid gas? I'll retry gas \"Luft\". Should not ask user. Could perhaps target uses \"Air\" capitalized? Usually calc function perhaps expects gas type string and temp and volume. Why error? Could be extra gas invalid? optional says gas optional but perhaps tool validates no gas? I'll inspect. Since function described \"Calculate heat capacity ... air using its temperature and volume.\" Gas optional. Perhaps required underlying only temp and volume? User requested Luft, unnecessary. 400 may mean argument \"gas\" value not acceptable enum? No enum. Could retry without gas."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

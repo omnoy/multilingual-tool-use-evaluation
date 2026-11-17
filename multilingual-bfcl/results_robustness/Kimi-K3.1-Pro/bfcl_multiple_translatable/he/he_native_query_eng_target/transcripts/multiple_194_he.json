@@ -1,0 +1,167 @@
+{
+  "id": "multiple_194_he",
+  "source_id": "multiple_194",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1420,
+  "total_output_tokens": 241,
+  "total_latency_s": 2.360593795776367,
+  "estimated_cost_usd": 0.0052499999999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהן שעות הפתיחה של מוזיאון המטרופוליטן לאמנות בשבת?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_museum_hours": {
+        "museum_name": [
+          "Metropolitan Museum of Art",
+          "The Met",
+          "Met Museum"
+        ],
+        "day": [
+          "Saturday"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_museum_hours",
+          "arguments": {
+            "museum_name": "The Metropolitan Museum of Art",
+            "day": "Saturday"
+          },
+          "id": "call_a9980fde75f745f4a1838463"
+        }
+      ],
+      "decoded": [
+        {
+          "get_museum_hours": {
+            "museum_name": "The Metropolitan Museum of Art",
+            "day": "Saturday"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_museum_hours'. Please review the function definition and try again.",
+      "input_tokens": 620,
+      "output_tokens": 121,
+      "latency_s": 1.2494285106658936,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_museum_hours",
+          "arguments": {
+            "museum_name": "Metropolitan Museum of Art",
+            "day": "Saturday"
+          },
+          "id": "call_88bed93df60146f780dbdc8d"
+        }
+      ],
+      "decoded": [
+        {
+          "get_museum_hours": {
+            "museum_name": "Metropolitan Museum of Art",
+            "day": "Saturday"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 800,
+      "output_tokens": 120,
+      "latency_s": 1.1111652851104736,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהן שעות הפתיחה של מוזיאון המטרופוליטן לאמנות בשבת?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a9980fde75f745f4a1838463",
+          "function": {
+            "arguments": "{\"museum_name\": \"The Metropolitan Museum of Art\", \"day\": \"Saturday\"}",
+            "name": "get_museum_hours"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need understand Hebrew: \"What are the opening hours of the Metropolitan Museum of Art on Saturday?\" I'll call get_museum_hours with museum_name likely \"The Metropolitan Museum of Art\", day \"Saturday\". Respond correct function call exactly. Kimi should call the tool."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_museum_hours'. Please review the function definition and try again.",
+      "tool_call_id": "call_a9980fde75f745f4a1838463"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_88bed93df60146f780dbdc8d",
+          "function": {
+            "arguments": "{\"museum_name\": \"Metropolitan Museum of Art\", \"day\": \"Saturday\"}",
+            "name": "get_museum_hours"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Error. Should retry? Why invalid params? Perhaps museum_name expected exact? Schema fine. Could name \"Metropolitan Museum of Art\" no The? I need use tool correctly. Error 400 could wrapper weird. Try museum_name \"Metropolitan Museum of Art\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,172 @@
+{
+  "id": "multiple_85_he",
+  "source_id": "multiple_85",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1155,
+  "total_output_tokens": 448,
+  "total_latency_s": 6.8191869258880615,
+  "estimated_cost_usd": 0.006789999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "קבל את תוצאות הכדורגל של משחקי ריאל מדריד בלה ליגה ב-5 המחזורים האחרונים."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_scores.get_scores": {
+        "team": [
+          "ריאל מדריד"
+        ],
+        "league": [
+          "לה ליגה"
+        ],
+        "rounds": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          },
+          "id": "call_cf97de416bc042bf9b6b2df4"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'soccer_scores_get_scores'. Please review the function definition and try again.",
+      "input_tokens": 448,
+      "output_tokens": 198,
+      "latency_s": 1.6802630424499512,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "ריאל מדריד",
+            "league": "לה ליגה",
+            "rounds": 5
+          },
+          "id": "call_d4b4469a69de4e57844017b9"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "ריאל מדריד",
+            "league": "לה ליגה",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 707,
+      "output_tokens": 250,
+      "latency_s": 5.13892388343811,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "קבל את תוצאות הכדורגל של משחקי ריאל מדריד בלה ליגה ב-5 המחזורים האחרונים."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cf97de416bc042bf9b6b2df4",
+          "function": {
+            "arguments": "{\"team\": \"Real Madrid\", \"league\": \"La Liga\", \"rounds\": 5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Hebrew request: \"Get football/soccer results of Real Madrid games in La Liga in last 5 rounds.\" Should use soccer_scores_get_scores with league La Liga team Real Madrid rounds 5. Tool languages English Hebrew. I'll call only. Should parse לֵה ליגה likely La Liga. Function accepts league string. Kimi should call team \"Real Madrid\", league \"La Liga\", rounds 5. Could choose Hebrew equivalents? Use English likely fine. Should have exact function call. No need response text perhaps tool call enough. I'll do."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'soccer_scores_get_scores'. Please review the function definition and try again.",
+      "tool_call_id": "call_cf97de416bc042bf9b6b2df4"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d4b4469a69de4e57844017b9",
+          "function": {
+            "arguments": "{\"team\": \"ריאל מדריד\", \"league\": \"לה ליגה\", \"rounds\": 5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400 invalid params. Should inspect why? Tool requires strings league team rounds int. I complied. Perhaps expected Hebrew league \"לה ליגה\" and team \"ריאל מדריד\"? Description languages English, Hebrew. Could be league should \"LaLiga\" or \"la liga\"? Kimi should retry. User asks correct function. Could be scorer expects \"LaLiga\" or \"西甲\"? Should examine. It's likely synthetic tool requiring specific accepted values. 400 perhaps mock error due to accents? Should try Hebrew names exactly from request: team \"ריאל מדריד\", league \"לה ליגה\", rounds 5. Could use English \"Real Madrid CF\" and \"La Liga\". Make sure response correct. I should retry with Hebrew since request uses."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

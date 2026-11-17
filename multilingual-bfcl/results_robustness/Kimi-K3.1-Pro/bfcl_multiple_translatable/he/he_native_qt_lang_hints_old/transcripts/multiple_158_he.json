@@ -1,0 +1,166 @@
+{
+  "id": "multiple_158_he",
+  "source_id": "multiple_158",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1703,
+  "total_output_tokens": 384,
+  "total_latency_s": 3.401421546936035,
+  "estimated_cost_usd": 0.007246000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "קבל את הביוגרפיה והתרומות המרכזיות של האפיפיור אינוקנטיוס השלישי."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religious_history.get_papal_biography": {
+        "papal_name": [
+          "אינוקנטיוס השלישי",
+          "האפיפיור אינוקנטיוס השלישי"
+        ],
+        "include_contributions": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religious_history_get_papal_biography",
+          "arguments": {
+            "papal_name": "Innocent III",
+            "include_contributions": true
+          },
+          "id": "call_9f809110274a4448bec15396"
+        }
+      ],
+      "decoded": [
+        {
+          "religious_history_get_papal_biography": {
+            "papal_name": "Innocent III",
+            "include_contributions": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religious_history_get_papal_biography'. Please review the function definition and try again.",
+      "input_tokens": 709,
+      "output_tokens": 218,
+      "latency_s": 1.907029390335083,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religious_history_get_papal_biography",
+          "arguments": {
+            "papal_name": "אינוקנטיוס השלישי",
+            "include_contributions": true
+          },
+          "id": "call_1092364d995f434caa4d7921"
+        }
+      ],
+      "decoded": [
+        {
+          "religious_history_get_papal_biography": {
+            "papal_name": "אינוקנטיוס השלישי",
+            "include_contributions": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 994,
+      "output_tokens": 166,
+      "latency_s": 1.4943921566009521,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "קבל את הביוגרפיה והתרומות המרכזיות של האפיפיור אינוקנטיוס השלישי."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9f809110274a4448bec15396",
+          "function": {
+            "arguments": "{\"papal_name\": \"Innocent III\", \"include_contributions\": true}",
+            "name": "religious_history_get_papal_biography"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I'll respond in Hebrew? User asks: \"קבל את הביוגרפיה והתרומות המרכזיות של האפיפיור אינוקנטיוס השלישי.\" I'll get biography and main contributions of Pope Innocent III. Should call religious_history_get_papal_biography with papal_name likely \"Innocent III\" (English or Hebrew accepted). include_contributions true. Should have exact function call, likely only tool call no extra. Kimi should use the tool. Make sure name \"Innocent III\" or \"אינוקנטיוס השלישי\". Tool supports English Hebrew. Could use English standard. I'll invoke."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religious_history_get_papal_biography'. Please review the function definition and try again.",
+      "tool_call_id": "call_9f809110274a4448bec15396"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1092364d995f434caa4d7921",
+          "function": {
+            "arguments": "{\"papal_name\": \"אינוקנטיוס השלישי\", \"include_contributions\": true}",
+            "name": "religious_history_get_papal_biography"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned bad request perhaps requires Hebrew name? Schema seems correct. Perhaps it expects exact name \"Pope Innocent III\"? Should inspect? Function definition papal_name string. Why invalid? Perhaps parameter order irrelevant. Could be include_contributions default false but required? Provided true. Perhaps backend expects Hebrew? Kimi should retry with Hebrew as user language. Could use \"אינוקנטיוס השלישי\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

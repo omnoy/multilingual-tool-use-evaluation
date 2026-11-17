@@ -1,0 +1,171 @@
+{
+  "id": "multiple_108_tr",
+  "source_id": "multiple_108",
+  "locale": "tr",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "tr_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1396,
+  "total_output_tokens": 491,
+  "total_latency_s": 3.62856388092041,
+  "estimated_cost_usd": 0.0088573,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Sıcaklığı 298K ve hacmi 10 m^3 olan havanın sabit basınçtaki ısı kapasitesini hesapla."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "calc_heat_capacity": {
+        "temp": [
+          298
+        ],
+        "volume": [
+          10
+        ],
+        "gas": [
+          "hava",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          },
+          "id": "call_5a5ccd3f33bf4782a3ba767f"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10,
+            "gas": "air"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "input_tokens": 525,
+      "output_tokens": 287,
+      "latency_s": 1.8561277389526367,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "calc_heat_capacity",
+          "arguments": {
+            "temp": 298,
+            "volume": 10
+          },
+          "id": "call_3cdf048186e241cdbf920ba3"
+        }
+      ],
+      "decoded": [
+        {
+          "calc_heat_capacity": {
+            "temp": 298,
+            "volume": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 871,
+      "output_tokens": 204,
+      "latency_s": 1.7724361419677734,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Sıcaklığı 298K ve hacmi 10 m^3 olan havanın sabit basınçtaki ısı kapasitesini hesapla."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5a5ccd3f33bf4782a3ba767f",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10, \"gas\": \"air\"}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond with the correct tool call, exactly as specified. User Turkish: Calculate constant pressure heat capacity of air temperature 298 K volume 10 m3. Tool calc_heat_capacity params gas optional temp integer volume integer. Should gas \"hava\" likely air? Should call with gas perhaps \"air\" or \"hava\"? Should infer tool description Turkish; user wants function. I need call calc_heat_capacity {\"gas\":\"hava\",\"temp\":298,\"volume\":10}. Usually benchmark expects gas air? I'll analyze. Tool: \"Havanın sıcaklığını ve hacmini kullanarak sabit basınçtaki ısı kapasitesini hesaplayın.\" Means calculate heat capacity at constant pressure using temperature and volume of air. Gas type gas optional. Perhaps gas \"air\". User asks havanın. Could omit gas? Default unknown. Correct function call likely gas \"air\", temp 298, volume 10. Perhaps respond with just the tool call. Use function."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'calc_heat_capacity'. Please review the function definition and try again.",
+      "tool_call_id": "call_5a5ccd3f33bf4782a3ba767f"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3cdf048186e241cdbf920ba3",
+          "function": {
+            "arguments": "{\"temp\": 298, \"volume\": 10}",
+            "name": "calc_heat_capacity"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid params. Perhaps gas expects \"hava\"? Or function broken? Should retry. Definition integer values supplied yes. gas optional string. Why invalid? Perhaps gas expects \"air\"? I used air. Could be gas not allowed? It is allowed. Could try omit gas. User says call correct exactly. Should retry {\"gas\":\"hava\"...}? I need decide. Since error says invalid parameters perhaps gas supported specific? \"air\" likely correct though. Could be volume integer? 10 integer. Temp integer. Weird. Perhaps tool backend expects gas \"Air\"? Could omit optional gas since not needed? Description says havanın, likely gas default air. Try only required temp volume."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

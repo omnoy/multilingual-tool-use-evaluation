@@ -1,0 +1,159 @@
+{
+  "id": "multiple_18_de",
+  "source_id": "multiple_18",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 926,
+  "total_output_tokens": 261,
+  "total_latency_s": 3.3598692417144775,
+  "estimated_cost_usd": 0.004462,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wer waren die Hauptbeteiligten und wo fand die Schlacht von Stalingrad statt?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "european_history.battle_details": {
+        "battle": [
+          "Battle of Stalingrad",
+          "Stalingrad"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "european_history_battle_details",
+          "arguments": {
+            "battle": "Schlacht von Stalingrad"
+          },
+          "id": "call_90561a6470454220b3fa0069"
+        }
+      ],
+      "decoded": [
+        {
+          "european_history_battle_details": {
+            "battle": "Schlacht von Stalingrad"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'european_history_battle_details'. Please review the function definition and try again.",
+      "input_tokens": 346,
+      "output_tokens": 171,
+      "latency_s": 1.564546823501587,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "european_history_battle_details",
+          "arguments": {
+            "battle": "Battle of Stalingrad"
+          },
+          "id": "call_d0a4dcf377f9436b9ca32b09"
+        }
+      ],
+      "decoded": [
+        {
+          "european_history_battle_details": {
+            "battle": "Battle of Stalingrad"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 580,
+      "output_tokens": 90,
+      "latency_s": 1.7953224182128906,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wer waren die Hauptbeteiligten und wo fand die Schlacht von Stalingrad statt?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_90561a6470454220b3fa0069",
+          "function": {
+            "arguments": "{\"battle\": \"Schlacht von Stalingrad\"}",
+            "name": "european_history_battle_details"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to German user: \"Wer waren die Hauptbeteiligten und wo fand die Schlacht von Stalingrad statt?\" Means who were main participants and where did Battle of Stalingrad take place? I have tools for European history battle details. I'll use correct function call exactly per tool definitions. I should call european_history_battle_details with battle \"Battle of Stalingrad\" or \"Stalingrad\". Should likely respond after tool output in German. Should understand request, call correct function. Only tool available for details. I'll invoke."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'european_history_battle_details'. Please review the function definition and try again.",
+      "tool_call_id": "call_90561a6470454220b3fa0069"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d0a4dcf377f9436b9ca32b09",
+          "function": {
+            "arguments": "{\"battle\": \"Battle of Stalingrad\"}",
+            "name": "european_history_battle_details"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returns invalid parameters perhaps expects English name? Schema only battle string. Could be tool dataset specific battle names. I'll retry \"Battle of Stalingrad\". I should call exactly specified."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

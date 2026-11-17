@@ -1,0 +1,118 @@
+{
+  "id": "multiple_166_tr",
+  "source_id": "multiple_166",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 532,
+  "total_output_tokens": 289,
+  "total_latency_s": 2.156125068664551,
+  "estimated_cost_usd": 0.0045471,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Bu hafta sonu Los Encılıs'ta biletleri ucuz olan bir klasik müzik konseri bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.search": {
+        "genre": [
+          "classical"
+        ],
+        "location": [
+          "Los Angeles",
+          "LA"
+        ],
+        "date": [
+          "this weekend",
+          "weekend"
+        ],
+        "price_range": [
+          "cheap"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_search",
+          "arguments": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "this weekend",
+            "price_range": "cheap"
+          },
+          "id": "call_800ad05f09994435b503dbbf"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_search": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "this weekend",
+            "price_range": "cheap"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 532,
+      "output_tokens": 289,
+      "latency_s": 2.156125068664551,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Bu hafta sonu Los Encılıs'ta biletleri ucuz olan bir klasik müzik konseri bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_800ad05f09994435b503dbbf",
+          "function": {
+            "arguments": "{\"genre\": \"classical\", \"location\": \"Los Angeles\", \"date\": \"this weekend\", \"price_range\": \"cheap\"}",
+            "name": "concert_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond with the function call exactly. User Turkish: \"Bu hafta sonu Los Encılıs'ta biletleri ucuz olan bir klasik müzik konseri bul.\" Typo \"Los Encılıs\" likely Los Angeles? Should parse. Wants this weekend in Los Encılıs cheap classical music concert. Should call concert_search genre classical location Los Encılıs? They likely intentionally city typo? Should determine expected exact arguments. Must call tool. I should use location as user states maybe \"Los Angeles\" because intended? Turkish sentence \"Los Encılıs' ta\" odd. Could be \"Los Angeles\" scrambled? \"Los Encılıs\" likely Los Angeles misspelling, intended. I need infer. The tool expects city. Date \"this weekend\", genre \"classical\", price_range \"cheap\". location \"Los Angeles\". Call. No text? Instructions respond with correct function call exactly. Do tool call."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

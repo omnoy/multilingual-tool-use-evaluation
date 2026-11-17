@@ -1,0 +1,352 @@
+{
+  "id": "multiple_182_tr",
+  "source_id": "multiple_182",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_query_native_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 5,
+  "num_clarifications": 0,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 5895,
+  "total_output_tokens": 655,
+  "total_latency_s": 7.2986180782318115,
+  "estimated_cost_usd": 0.012536700000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Bana puanı 4.5'in üzerinde olan ve Vindouz 10 ile uyumlu çok oyunculu bir oyun bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "multiplayer_game_finder": {
+        "platform": [
+          "Vindouz 10"
+        ],
+        "rating": [
+          4.5
+        ],
+        "genre": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "multiplayer_game_finder",
+          "arguments": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          },
+          "id": "call_cfbee7217b4b498d98bb0b36"
+        }
+      ],
+      "decoded": [
+        {
+          "multiplayer_game_finder": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "input_tokens": 886,
+      "output_tokens": 67,
+      "latency_s": 1.3648803234100342,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Görünüşe göre rating parametresinde bir sorun var. Rating için tamsayı değil, ondalıklı (float) bir değer göndermem gerekiyor. Tekrar deneyelim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "multiplayer_game_finder",
+          "arguments": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          },
+          "id": "call_3e86c1892166469ebcf6f1ba"
+        }
+      ],
+      "decoded": [
+        {
+          "multiplayer_game_finder": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "input_tokens": 987,
+      "output_tokens": 119,
+      "latency_s": 1.3599739074707031,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Fonksiyon tanımına bakıyorum. `rating` parametresi `float` tipinde ve `platform` ile `rating` zorunlu. Acaba \"Windows 10\" platform olarak geçerli değil mi? Platform için doğrudan \"Windows\" veya \"PC\" denemeyi düşünebilirim ama siz \"Vindouz 10\" demişsiniz, yani Windows 10. Tekrar deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "multiplayer_game_finder",
+          "arguments": {
+            "platform": "Windows",
+            "rating": 4.5
+          },
+          "id": "call_5e51fdf0edeb4a518b13a998"
+        }
+      ],
+      "decoded": [
+        {
+          "multiplayer_game_finder": {
+            "platform": "Windows",
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "input_tokens": 1140,
+      "output_tokens": 173,
+      "latency_s": 1.669140338897705,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Fonksiyon tanımını tekrar inceliyorum. `rating` parametresi `number` tipinde ve `format: float`. `platform` ise `string`. İkisi de zorunlu. Bir de genre belirterek deneyeyim, belki sorun farklı bir yerdedir:"
+      ],
+      "tool_calls": [
+        {
+          "name": "multiplayer_game_finder",
+          "arguments": {
+            "platform": "Windows 10",
+            "rating": 4.6,
+            "genre": "Action"
+          },
+          "id": "call_ebd2556df1e64beb9545cbd3"
+        }
+      ],
+      "decoded": [
+        {
+          "multiplayer_game_finder": {
+            "platform": "Windows 10",
+            "rating": 4.6,
+            "genre": "Action"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "input_tokens": 1347,
+      "output_tokens": 154,
+      "latency_s": 1.4688143730163574,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Sürekli 400 hatası alıyorum. Fonksiyon tanımına göre parametreler `platform`, `rating` ve isteğe bağlı `genre`. Hepsi doğru görünüyor. Son bir deneme olarak rating'i tam sayı formatında göndermeyi deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "multiplayer_game_finder",
+          "arguments": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          },
+          "id": "call_d2d1adcd4a4d4b29b4de3f5f"
+        }
+      ],
+      "decoded": [
+        {
+          "multiplayer_game_finder": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1535,
+      "output_tokens": 142,
+      "latency_s": 1.4358091354370117,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Bana puanı 4.5'in üzerinde olan ve Vindouz 10 ile uyumlu çok oyunculu bir oyun bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cfbee7217b4b498d98bb0b36",
+          "function": {
+            "arguments": "{\"platform\": \"Windows 10\", \"rating\": 4.5}",
+            "name": "multiplayer_game_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "tool_call_id": "call_cfbee7217b4b498d98bb0b36"
+    },
+    {
+      "content": "Görünüşe göre rating parametresinde bir sorun var. Rating için tamsayı değil, ondalıklı (float) bir değer göndermem gerekiyor. Tekrar deneyelim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3e86c1892166469ebcf6f1ba",
+          "function": {
+            "arguments": "{\"platform\": \"Windows 10\", \"rating\": 4.5}",
+            "name": "multiplayer_game_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "tool_call_id": "call_3e86c1892166469ebcf6f1ba"
+    },
+    {
+      "content": "Fonksiyon tanımına bakıyorum. `rating` parametresi `float` tipinde ve `platform` ile `rating` zorunlu. Acaba \"Windows 10\" platform olarak geçerli değil mi? Platform için doğrudan \"Windows\" veya \"PC\" denemeyi düşünebilirim ama siz \"Vindouz 10\" demişsiniz, yani Windows 10. Tekrar deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5e51fdf0edeb4a518b13a998",
+          "function": {
+            "arguments": "{\"platform\": \"Windows\", \"rating\": 4.5}",
+            "name": "multiplayer_game_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "tool_call_id": "call_5e51fdf0edeb4a518b13a998"
+    },
+    {
+      "content": "Fonksiyon tanımını tekrar inceliyorum. `rating` parametresi `number` tipinde ve `format: float`. `platform` ise `string`. İkisi de zorunlu. Bir de genre belirterek deneyeyim, belki sorun farklı bir yerdedir:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ebd2556df1e64beb9545cbd3",
+          "function": {
+            "arguments": "{\"platform\": \"Windows 10\", \"rating\": 4.6, \"genre\": \"Action\"}",
+            "name": "multiplayer_game_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "tool_call_id": "call_ebd2556df1e64beb9545cbd3"
+    },
+    {
+      "content": "Sürekli 400 hatası alıyorum. Fonksiyon tanımına göre parametreler `platform`, `rating` ve isteğe bağlı `genre`. Hepsi doğru görünüyor. Son bir deneme olarak rating'i tam sayı formatında göndermeyi deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d2d1adcd4a4d4b29b4de3f5f",
+          "function": {
+            "arguments": "{\"platform\": \"Windows 10\", \"rating\": 4.5}",
+            "name": "multiplayer_game_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

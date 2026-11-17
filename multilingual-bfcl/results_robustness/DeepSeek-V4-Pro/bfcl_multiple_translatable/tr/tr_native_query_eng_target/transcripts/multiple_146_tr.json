@@ -1,0 +1,297 @@
+{
+  "id": "multiple_146_tr",
+  "source_id": "multiple_146",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 4,
+  "num_clarifications": 0,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 3043,
+  "total_output_tokens": 498,
+  "total_latency_s": 5.061285972595215,
+  "estimated_cost_usd": 0.00702786,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Siatıl'da bulunduğum yere en fazla 10 mil uzaklıkta olan ve Çin mutfağı sunan restoranları bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          "Chinese"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Siatıl",
+            "cuisine": "Çin",
+            "max_distance": 10
+          },
+          "id": "call_c38e043acc764b728173a69b"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Siatıl",
+            "cuisine": "Çin",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 534,
+      "output_tokens": 86,
+      "latency_s": 1.1204004287719727,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Sanırım \"Siatıl\" yazımında bir hata oldu. Büyük ihtimalle **Seattle**'ı kastediyorsunuz. Seattle için tekrar sorgulayayım:"
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Çin",
+            "max_distance": 10
+          },
+          "id": "call_93b57e7d54bb404fa3b5144d"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Çin",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 656,
+      "output_tokens": 134,
+      "latency_s": 1.2657482624053955,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Fonksiyon tanımını tekrar kontrol ettiğimde, `location` parametresinin \"city and state\" (şehir ve eyalet) formatında olması gerektiğini görüyorum. Ayrıca `cuisine` parametresi de İngilizce olarak belirtilmeli. Tekrar deneyelim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, Washington",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call_cb0d807d09cd473898056efb"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, Washington",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 826,
+      "output_tokens": 165,
+      "latency_s": 1.4329893589019775,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Parametreleri tam olarak fonksiyon tanımına uygun şekilde tekrar deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call_59a9e6de8d474254a02810ee"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1027,
+      "output_tokens": 113,
+      "latency_s": 1.2421479225158691,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Siatıl'da bulunduğum yere en fazla 10 mil uzaklıkta olan ve Çin mutfağı sunan restoranları bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c38e043acc764b728173a69b",
+          "function": {
+            "arguments": "{\"location\": \"Siatıl\", \"cuisine\": \"Çin\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_c38e043acc764b728173a69b"
+    },
+    {
+      "content": "Sanırım \"Siatıl\" yazımında bir hata oldu. Büyük ihtimalle **Seattle**'ı kastediyorsunuz. Seattle için tekrar sorgulayayım:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_93b57e7d54bb404fa3b5144d",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, WA\", \"cuisine\": \"Çin\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_93b57e7d54bb404fa3b5144d"
+    },
+    {
+      "content": "Fonksiyon tanımını tekrar kontrol ettiğimde, `location` parametresinin \"city and state\" (şehir ve eyalet) formatında olması gerektiğini görüyorum. Ayrıca `cuisine` parametresi de İngilizce olarak belirtilmeli. Tekrar deneyelim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cb0d807d09cd473898056efb",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, Washington\", \"cuisine\": \"Chinese\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_cb0d807d09cd473898056efb"
+    },
+    {
+      "content": "Parametreleri tam olarak fonksiyon tanımına uygun şekilde tekrar deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_59a9e6de8d474254a02810ee",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, WA\", \"cuisine\": \"Chinese\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

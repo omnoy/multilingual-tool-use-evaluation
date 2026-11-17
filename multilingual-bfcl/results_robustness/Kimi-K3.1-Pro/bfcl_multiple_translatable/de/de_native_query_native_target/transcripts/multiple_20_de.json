@@ -1,0 +1,171 @@
+{
+  "id": "multiple_20_de",
+  "source_id": "multiple_20",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1176,
+  "total_output_tokens": 429,
+  "total_latency_s": 3.553203582763672,
+  "estimated_cost_usd": 0.006642,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie viel kostet es, eine Skulptur aus Marmor mit einer Größe von 3 Fuß in Auftrag zu geben?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture_price.calculate": {
+        "material": [
+          "Marmor"
+        ],
+        "size": [
+          3
+        ],
+        "complexity": [
+          "medium",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "marble",
+            "size": 3,
+            "complexity": "medium"
+          },
+          "id": "call_0183fd547ca84e9da9010b52"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "marble",
+            "size": 3,
+            "complexity": "medium"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sculpture_price_calculate'. Please review the function definition and try again.",
+      "input_tokens": 443,
+      "output_tokens": 227,
+      "latency_s": 1.7429049015045166,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "Marmor",
+            "size": 3
+          },
+          "id": "call_2ad20b150ce34353a83d2ca7"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "Marmor",
+            "size": 3
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 733,
+      "output_tokens": 202,
+      "latency_s": 1.8102986812591553,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie viel kostet es, eine Skulptur aus Marmor mit einer Größe von 3 Fuß in Auftrag zu geben?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0183fd547ca84e9da9010b52",
+          "function": {
+            "arguments": "{\"material\": \"marble\", \"size\": 3, \"complexity\": \"medium\"}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to German user asking price commission marble sculpture size 3 ft. Should call sculpture_price_calculate with material Marmor? Tool material string. Should determine complexity default medium, size 3. User asks exactly. I should call tool. Should consider German \"Marmor\" material likely \"marble\" or \"Marmor\"? Function definitions material string. Usually use \"marble\" perhaps tools expect English. I'll respond with the correct function call exactly specified. Kimi should call sculpture_price_calculate {\"material\":\"marble\",\"size\":3,\"complexity\":\"medium\"} perhaps omit complexity default. Should decide. User didn't specify complexity, default medium. Can pass just material and size. Tool calculation. I'll do."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sculpture_price_calculate'. Please review the function definition and try again.",
+      "tool_call_id": "call_0183fd547ca84e9da9010b52"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2ad20b150ce34353a83d2ca7",
+          "function": {
+            "arguments": "{\"material\": \"Marmor\", \"size\": 3}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool bad request. Perhaps material in German? Or complexity not accepted? Definition says string material, size int, complexity enum. Why bad? Perhaps expects \"Marmor\" exactly. I need retry. Could omit complexity and material \"marble\". But bad request might be unknown material \"marble\" requiring \"Marmor\". I'll inspect usual tasks. They often have tools simulated with accepted material values e.g. \"marble\", \"bronze\", \"wood\". Yet bad request invalid parameters likely complexity default? Hmm. Should infer. User German, respond function exactly. Could call with {\"material\":\"Marmor\",\"size\":3}. Since German likely matching backend. I'll do."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

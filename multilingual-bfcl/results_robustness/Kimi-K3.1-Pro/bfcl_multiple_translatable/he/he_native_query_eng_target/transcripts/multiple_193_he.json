@@ -1,0 +1,230 @@
+{
+  "id": "multiple_193_he",
+  "source_id": "multiple_193",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2678,
+  "total_output_tokens": 666,
+  "total_latency_s": 8.205986976623535,
+  "estimated_cost_usd": 0.012015999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תביא לי את מרחק הנסיעה ואת משך הזמן ממגדל אייפל למוזיאון הלובר"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.get_distance_duration": {
+        "start_location": [
+          "Eiffel Tower"
+        ],
+        "end_location": [
+          "Louvre Museum"
+        ],
+        "traffic": [
+          "",
+          false
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_get_distance_duration",
+          "arguments": {
+            "start_location": "מגדל אייפל, פריז",
+            "end_location": "מוזיאון הלובר, פריז"
+          },
+          "id": "call_1d509213836c4182aeb218b9"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_get_distance_duration": {
+            "start_location": "מגדל אייפל, פריז",
+            "end_location": "מוזיאון הלובר, פריז"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_get_distance_duration'. Please review the function definition and try again.",
+      "input_tokens": 598,
+      "output_tokens": 269,
+      "latency_s": 1.638521671295166,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_get_distance_duration",
+          "arguments": {
+            "start_location": "Eiffel Tower, Paris, France",
+            "end_location": "Louvre Museum, Paris, France",
+            "traffic": false
+          },
+          "id": "call_265821c0211546819f17b704"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_get_distance_duration": {
+            "start_location": "Eiffel Tower, Paris, France",
+            "end_location": "Louvre Museum, Paris, France",
+            "traffic": false
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_get_distance_duration'. Please review the function definition and try again.",
+      "input_tokens": 926,
+      "output_tokens": 169,
+      "latency_s": 1.514526128768921,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_get_distance_duration",
+          "arguments": {
+            "start_location": "Eiffel Tower",
+            "end_location": "Louvre Museum"
+          },
+          "id": "call_42cc96ea3f634d67b90b82c5"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_get_distance_duration": {
+            "start_location": "Eiffel Tower",
+            "end_location": "Louvre Museum"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1154,
+      "output_tokens": 228,
+      "latency_s": 5.052939176559448,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תביא לי את מרחק הנסיעה ואת משך הזמן ממגדל אייפל למוזיאון הלובר"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1d509213836c4182aeb218b9",
+          "function": {
+            "arguments": "{\"start_location\": \"מגדל אייפל, פריז\", \"end_location\": \"מוזיאון הלובר, פריז\"}",
+            "name": "maps_get_distance_duration"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Hebrew user requesting driving distance and time from Eiffel Tower to Louvre Museum. Should have tool maps_get_distance_duration start end. Should probably specify \"מגדל אייפל\" and \"מוזיאון הלובר\" or English names locations, traffic? User didn't specify traffic. Default false. Call exactly tool. I'll call the tool. Could provide no extra text perhaps call. Ensure Hebrew request understood. Use start_location \"מגדל אייפל, פריז\" end_location \"מוזיאון הלובר, פריז\". Tool params. Should I set traffic true? User asks travel distance and estimated time via car, default false not needed. Use names perhaps English for better geocoding: \"Eiffel Tower, Paris\" and \"Louvre Museum, Paris\". That's fine. I'll respond after result likely in Hebrew. I'll call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_get_distance_duration'. Please review the function definition and try again.",
+      "tool_call_id": "call_1d509213836c4182aeb218b9"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_265821c0211546819f17b704",
+          "function": {
+            "arguments": "{\"start_location\": \"Eiffel Tower, Paris, France\", \"end_location\": \"Louvre Museum, Paris, France\", \"traffic\": false}",
+            "name": "maps_get_distance_duration"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool 400 invalid parameters. Perhaps should use English location or traffic explicit? Schema only start/end traffic optional. It says invalid parameters, perhaps Hebrew strings invalid? Try English with traffic false. Should examine possibility function call format valid yes. Could be locations require city state? No. Use \"Eiffel Tower, Paris, France\", \"Louvre Museum, Paris, France\", traffic false."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_get_distance_duration'. Please review the function definition and try again.",
+      "tool_call_id": "call_265821c0211546819f17b704"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_42cc96ea3f634d67b90b82c5",
+          "function": {
+            "arguments": "{\"start_location\": \"Eiffel Tower\", \"end_location\": \"Louvre Museum\"}",
+            "name": "maps_get_distance_duration"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need figure why invalid parameters. Perhaps tool requires start/end as exact expected names? Yet schema straightforward. Could be issue calls not accepted? Should retry perhaps start_location \"Eiffel Tower\" end \"Louvre Museum\". Might be only ASCII accepted. I did ASCII. Could be traffic property shouldn't be there? Already first no traffic. Perhaps backend requires locations as \"Paris\" etc? Could be tool unavailable. I should attempt once more with known expected possibly \"Eiffel Tower\" and \"Louvre Museum\". No need overdo? I need user request fulfilled. Could be names in Hebrew unsupported? English same error. 400 invalid parameters rather than execution. Perhaps tool definition has bug? I should perhaps use exactly no punctuation: start_location \"Eiffel Tower\" end_location \"Louvre Museum\"."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

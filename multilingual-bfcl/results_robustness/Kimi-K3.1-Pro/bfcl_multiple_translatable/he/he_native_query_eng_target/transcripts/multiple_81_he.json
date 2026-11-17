@@ -1,0 +1,183 @@
+{
+  "id": "multiple_81_he",
+  "source_id": "multiple_81",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1095,
+  "total_output_tokens": 395,
+  "total_latency_s": 5.714630365371704,
+  "estimated_cost_usd": 0.0061400000000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "הזמן כרטיס להופעה הקרובה של Eminem בניו יורק, אני רוצה את זה עם גישה לקלעים."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.book_ticket": {
+        "artist": [
+          "Eminem"
+        ],
+        "location": [
+          "New York City",
+          "NYC"
+        ],
+        "add_ons": [
+          [
+            "Backstage Pass"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_2d69eaf48cd24879b9da4e79"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 449,
+      "output_tokens": 138,
+      "latency_s": 1.2397241592407227,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York City",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_bddf6d2b2ca14b22bf928bf9"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York City",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 646,
+      "output_tokens": 257,
+      "latency_s": 4.4749062061309814,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "הזמן כרטיס להופעה הקרובה של Eminem בניו יורק, אני רוצה את זה עם גישה לקלעים."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2d69eaf48cd24879b9da4e79",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond exactly the tool call. Hebrew: Book a ticket for upcoming Eminem concert in New York, wants backstage access. concert_book_ticket add_ons [\"Backstage Pass\"]. Should location \"New York\". Artist Eminem. Tool call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "call_2d69eaf48cd24879b9da4e79"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_bddf6d2b2ca14b22bf928bf9",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York City\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi got 400 invalid parameters, but the schema seems exact. Should understand perhaps add_ons backstage? It is correct. Perhaps location needs Hebrew? No. Retry? Could be tool mock weird validation? Should review function: artist string location string add_ons array enum. I did. Perhaps location \"New York City\". 400 likely not semantic location. Could omit add_ons? But user wants. Retry same perhaps with NYC? Usually tasks tools return success. Could be known challenge where parameters order doesn't matter. The call JSON valid. Perhaps addon string must be exactly Backstage Pass yes. Could tool only accepts add_ons as array? yes. I could try artist eminem lowercase? Doesn't affect validation. Perhaps tool returned invalid parameters because the venue expects \"New York City, NY\"? But schema generic. I should retry clean."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

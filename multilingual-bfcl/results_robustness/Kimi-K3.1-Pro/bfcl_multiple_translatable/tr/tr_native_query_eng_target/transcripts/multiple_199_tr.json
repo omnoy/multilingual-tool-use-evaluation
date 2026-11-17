@@ -1,0 +1,173 @@
+{
+  "id": "multiple_199_tr",
+  "source_id": "multiple_199",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1270,
+  "total_output_tokens": 366,
+  "total_latency_s": 2.8571135997772217,
+  "estimated_cost_usd": 0.00713,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Yelouston'daki ormanların önümüzdeki 5 yıl içindeki büyümesini insan etkisini de hesaba katarak tahmin et."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "forest_growth_forecast": {
+        "location": [
+          "Yellowstone",
+          "yellowstone"
+        ],
+        "years": [
+          5
+        ],
+        "include_human_impact": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "Yelouston",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "call_2fd83458894a41338cb932ae"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "Yelouston",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "input_tokens": 503,
+      "output_tokens": 203,
+      "latency_s": 1.3471074104309082,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "Yellowstone",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "call_1942e6a81c55427299f49cb1"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "Yellowstone",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 767,
+      "output_tokens": 163,
+      "latency_s": 1.5100061893463135,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Yelouston'daki ormanların önümüzdeki 5 yıl içindeki büyümesini insan etkisini de hesaba katarak tahmin et."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2fd83458894a41338cb932ae",
+          "function": {
+            "arguments": "{\"location\": \"Yelouston\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Turkish user. I'll call forest_growth_forecast location Yelouston likely misspelling Yellowstone? User says \"Yelouston'daki ormanların önümüzdeki 5 yıl içindeki büyümesini insan etkisini de hesaba katarak tahmin et.\" I'll call exactly tool definitions. location string \"Yelouston\", years 5, include_human_impact true. Should I normalize location? Usually use user provided location. I'll respond with correct function call exactly as specified. I'll call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_2fd83458894a41338cb932ae"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1942e6a81c55427299f49cb1",
+          "function": {
+            "arguments": "{\"location\": \"Yellowstone\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid parameters. Perhaps identify typo? Tool schema demands location years; include boolean. I used correct. Perhaps location should be \"Yellowstone\". User typo Yelouston. Invalid params might because unknown location? Should retry with normalized Yellowstone. Could perhaps order irrelevant. Make sure location likely expected \"Yellowstone\". User said respond correct function call exactly. Try location \"Yellowstone\" and include."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

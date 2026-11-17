@@ -1,0 +1,257 @@
+{
+  "id": "multiple_89_de",
+  "source_id": "multiple_89",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2444,
+  "total_output_tokens": 651,
+  "total_latency_s": 5.682169675827026,
+  "estimated_cost_usd": 0.011398,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde ein gesundes Rezept für ein Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "lunch",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500,
+            "meal": "Mittagessen"
+          },
+          "id": "call_784b6ec12ef0453bbaa0a4ad"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500,
+            "meal": "Mittagessen"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 551,
+      "output_tokens": 229,
+      "latency_s": 1.5772149562835693,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 499,
+            "meal": "lunch"
+          },
+          "id": "call_650cff28e9694e9f9251a1d0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 499,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 835,
+      "output_tokens": 168,
+      "latency_s": 1.3189587593078613,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          },
+          "id": "call_19877de314e04d05b5b272d1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1058,
+      "output_tokens": 254,
+      "latency_s": 2.7859959602355957,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde ein gesundes Rezept für ein Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_784b6ec12ef0453bbaa0a4ad",
+          "function": {
+            "arguments": "{\"ingredients\": [\"Hähnchen\", \"Pilze\"], \"calories\": 500, \"meal\": \"Mittagessen\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond with a function call to recipe_search, based on user German. Should understand: find healthy recipe for lunch less than 500 calories contains chicken and mushrooms. Tool recipe_search ingredients list, calories max integer, meal optional. I'll call exactly. Likely {\"ingredients\":[\"Hähnchen\",\"Pilze\"],\"calories\":500,\"meal\":\"Mittagessen\"} or calories 499? User says less than 500, maximum caloric value. Typically use 500. Could ingredients German or English? Tools probably recipe_search with ingredient names. Should output call only, no other. I should consider \"correct function call exactly as specified\" use tool. Do that."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_784b6ec12ef0453bbaa0a4ad"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_650cff28e9694e9f9251a1d0",
+          "function": {
+            "arguments": "{\"ingredients\": [\"chicken\", \"mushrooms\"], \"calories\": 499, \"meal\": \"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400. Should retry. Likely ingredients expected English and meal \"lunch\". Should infer tool backend. Use [\"chicken\",\"mushrooms\"], calories 500, meal \"lunch\". Tool failure due parameter values? Schema valid though. Perhaps meal enum? No schema enum. Could be calories less than 500 -> 499? Bad request perhaps non-English? I'll try english."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_650cff28e9694e9f9251a1d0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_19877de314e04d05b5b272d1",
+          "function": {
+            "arguments": "{\"ingredients\": [\"chicken\", \"mushrooms\"], \"calories\": 500}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Should diagnose. Tool expects perhaps only ingredients calories, meal omitted? Bad Request could ingredients? Tool simulation expects specific terms? I need call exact. Common benchmark tasks (tool use restaurant, ingredient_replace, recipe_search) likely generated functions with actual endpoint. Could be function parameter calories maximum accepted perhaps calories: 500, ingredients list [\"chicken\", \"mushrooms\"], meal optional \"lunch\". Why 400? Perhaps output I need respond? Could be not allowed multi? No.\n\nPotential parameter names right. German ingredients could be \"Hähnchen\" and \"Pilze\". English also. 400 invalid params means perhaps `calories` needs strictly less max? Integer yes. 499 valid. Perhaps meal type allowed \"Mittagessen\"? Already. Could be ingredient string expected singular \"mushroom\". Perhaps \"chicken\" and \"mushroom\". Try no meal to reduce invalid."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

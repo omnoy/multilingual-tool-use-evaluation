@@ -1,0 +1,142 @@
+{
+  "id": "multiple_144_de",
+  "source_id": "multiple_144",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 859,
+  "total_output_tokens": 166,
+  "total_latency_s": 2.4234752655029297,
+  "estimated_cost_usd": 0.003378,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie hoch ist der Luftqualitätsindex in London am 2022/08/16?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "air_quality": {
+        "location": [
+          "London"
+        ],
+        "date": [
+          "2022-08-16",
+          "16/08/2022",
+          "Aug.16,2022",
+          "2022/08/16",
+          "16\\08\\2022"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"location\":\"London\",\"date\":\"2022/08/16\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 367,
+      "output_tokens": 83,
+      "latency_s": 1.2676725387573242,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "air_quality",
+          "arguments": {
+            "location": "London",
+            "date": "2022/08/16"
+          },
+          "id": "call_e30e0c4c7b804d3881a9b7c3"
+        }
+      ],
+      "decoded": [
+        {
+          "air_quality": {
+            "location": "London",
+            "date": "2022/08/16"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 492,
+      "output_tokens": 83,
+      "latency_s": 1.1558027267456055,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie hoch ist der Luftqualitätsindex in London am 2022/08/16?"
+    },
+    {
+      "content": "{\"location\":\"London\",\"date\":\"2022/08/16\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "Kimi needs to respond with the correct function call exactly per tool. User German asks AQI London 2022/08/16. I'll call air_quality with location London date 2022/08/16. Then likely provide result in German after tool. Do it."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e30e0c4c7b804d3881a9b7c3",
+          "function": {
+            "arguments": "{\"location\": \"London\", \"date\": \"2022/08/16\"}",
+            "name": "air_quality"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need actually call the tool, not output JSON text. Now call functions.air_quality."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

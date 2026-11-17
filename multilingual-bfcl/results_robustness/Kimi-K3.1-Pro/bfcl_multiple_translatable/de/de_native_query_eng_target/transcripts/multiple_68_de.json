@@ -1,0 +1,115 @@
+{
+  "id": "multiple_68_de",
+  "source_id": "multiple_68",
+  "locale": "de",
+  "localization_level": "query",
+  "benchmark": "de_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 409,
+  "total_output_tokens": 234,
+  "total_latency_s": 1.7435641288757324,
+  "estimated_cost_usd": 0.003158,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kann ich in der öffentlichen Bibliothek von New York einen historischen Roman finden?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "library.search_books": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "New York City, NY",
+          "NYC",
+          "New York public library"
+        ],
+        "genre": [
+          "Historical Fiction",
+          "historical fiction"
+        ],
+        "title": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_books",
+          "arguments": {
+            "location": "New York Public Library",
+            "genre": "Historical Fiction"
+          },
+          "id": "call_edc713d4df55403f947ce961"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_books": {
+            "location": "New York Public Library",
+            "genre": "Historical Fiction"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 409,
+      "output_tokens": 234,
+      "latency_s": 1.7435641288757324,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kann ich in der öffentlichen Bibliothek von New York einen historischen Roman finden?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_edc713d4df55403f947ce961",
+          "function": {
+            "arguments": "{\"location\": \"New York Public Library\", \"genre\": \"Historical Fiction\"}",
+            "name": "library_search_books"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in German? Should have function call exactly. User asks: \"Kann ich in der öffentlichen Bibliothek von New York einen historischen Roman finden?\" Should use library_search_books location New York genre historical fiction perhaps \"historical fiction\" or German \"historischer Roman\"? Tool accepts genre string. I should choose location \"New York\", genre \"Historical Fiction\" perhaps. Should call. User wants find historical novel at public library New York. No title. I should call library_search_books. Could genre be \"Historical Fiction\" and location \"New York Public Library\" or \"New York\"? Description name or city of library, user specifies public library of New York. location \"New York Public Library\". Genre \"Historical Fiction\". No need other searches. Then after tool result respond. I'll do."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

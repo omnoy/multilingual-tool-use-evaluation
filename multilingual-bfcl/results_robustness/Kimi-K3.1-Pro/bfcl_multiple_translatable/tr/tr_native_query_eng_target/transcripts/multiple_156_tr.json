@@ -1,0 +1,173 @@
+{
+  "id": "multiple_156_tr",
+  "source_id": "multiple_156",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1312,
+  "total_output_tokens": 510,
+  "total_latency_s": 4.303354740142822,
+  "estimated_cost_usd": 0.008882600000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Albert Aynştayn'ın 17 Mart 1915'te bilime katkısı neydi?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "historical_contrib.get_contrib": {
+        "scientist": [
+          "Albert Einstein"
+        ],
+        "date": [
+          "1915-03-17",
+          "03/17/1915",
+          "Mar.17,1915"
+        ],
+        "category": [
+          "",
+          "all"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17",
+            "category": "science"
+          },
+          "id": "call_fbb94295da884997b92342f7"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17",
+            "category": "science"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "input_tokens": 498,
+      "output_tokens": 251,
+      "latency_s": 2.3093793392181396,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "historical_contrib_get_contrib",
+          "arguments": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17"
+          },
+          "id": "call_401623e68ff54662b117661c"
+        }
+      ],
+      "decoded": [
+        {
+          "historical_contrib_get_contrib": {
+            "scientist": "Albert Einstein",
+            "date": "1915-03-17"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 814,
+      "output_tokens": 259,
+      "latency_s": 1.9939754009246826,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Albert Aynştayn'ın 17 Mart 1915'te bilime katkısı neydi?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fbb94295da884997b92342f7",
+          "function": {
+            "arguments": "{\"scientist\": \"Albert Einstein\", \"date\": \"1915-03-17\", \"category\": \"science\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Turkish user asking \"Albert Aynştayn'ın 17 Mart 1915'te bilime katkısı neydi?\" Should use historical_contrib_get_contrib exactly. Should understand: Albert Einstein misspelled Turkish Aynştayn, date 17 March 1915 = 1915-03-17, scientist likely \"Albert Einstein\", category perhaps \"science\" optional. Should call. I should consider tool historical contrib requires scientist,date category optional. User asks contribution to science on date. I should call with scientist \"Albert Einstein\", date \"1915-03-17\", category perhaps \"science\" or \"Bilim\"? Tool descriptions English. Likely use category \"science\". Kimi must call exactly. Then respond after result. I'll do."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'historical_contrib_get_contrib'. Please review the function definition and try again.",
+      "tool_call_id": "call_fbb94295da884997b92342f7"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_401623e68ff54662b117661c",
+          "function": {
+            "arguments": "{\"scientist\": \"Albert Einstein\", \"date\": \"1915-03-17\"}",
+            "name": "historical_contrib_get_contrib"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got invalid parameters. Should review function def: category optional string date scientist. All provided correct types. Perhaps scientist must exact \"Albert Aynştayn\"? Or category invalid? Should retry perhaps omit category. User asks in Turkish, perhaps scientist expected Turkish name? Usually benchmark tool问她. Should figure. 400 Bad Request invalid parameters generic. Could be category \"science\" unacceptable? No enum given. Could be date format correct. Scientist perhaps \"Albert Aynştayn\" accepted? Should retrieve. I'll think of task patterns. Tools often synthesized functions with specific backend expected values. historical_contrib_get_contrib(category?,date,scientist). User question likely generated based on tool data, entity name could be \"Albert Einstein\" or \"Albert Aynştayn\". Turkish spelling \"Aynştayn\" is Einstein. The system says respond correct function call exactly. I called but failed. Should retry omitting category perhaps."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,142 @@
+{
+  "id": "multiple_20_tr",
+  "source_id": "multiple_20",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1074,
+  "total_output_tokens": 216,
+  "total_latency_s": 2.5581681728363037,
+  "estimated_cost_usd": 0.004954200000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "3 fit boyutunda mermer bir heykel yaptırmanın fiyatı nedir?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture_price.calculate": {
+        "material": [
+          "mermer"
+        ],
+        "size": [
+          3
+        ],
+        "complexity": [
+          "medium",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"sculpture_price_calculate\", \"arguments\": {\"material\": \"mermer\", \"size\": 3}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 456,
+      "output_tokens": 120,
+      "latency_s": 1.333838939666748,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "mermer",
+            "size": 3
+          },
+          "id": "call_39156987b61b433db652d7b8"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "mermer",
+            "size": 3
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 618,
+      "output_tokens": 96,
+      "latency_s": 1.2243292331695557,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "3 fit boyutunda mermer bir heykel yaptırmanın fiyatı nedir?"
+    },
+    {
+      "content": "{\"name\": \"sculpture_price_calculate\", \"arguments\": {\"material\": \"mermer\", \"size\": 3}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond with function call exactly. User Turkish: \"What is price to commission a marble sculpture 3 feet in size?\" I'll calculate material mermer size 3. complexity unspecified default medium. Function sculpture_price_calculate material \"mermer\" or \"marble\"; Languages English Turkish. size integer 3. Could include complexity? default medium so omit likely. Should call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_39156987b61b433db652d7b8",
+          "function": {
+            "arguments": "{\"material\": \"mermer\", \"size\": 3}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need use actual tool call not JSON plain. Previous assistant gave invalid now user says error. Kimi will call the tool sculpture_price_calculate."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

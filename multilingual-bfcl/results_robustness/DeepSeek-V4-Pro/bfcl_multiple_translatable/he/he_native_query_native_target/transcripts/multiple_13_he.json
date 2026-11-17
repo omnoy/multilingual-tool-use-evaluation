@@ -1,0 +1,262 @@
+{
+  "id": "multiple_13_he",
+  "source_id": "multiple_13",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_query_native_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 4,
+  "num_clarifications": 1,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3101,
+  "total_output_tokens": 455,
+  "total_latency_s": 8.090908765792847,
+  "estimated_cost_usd": 0.00697914,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.revenue_forecast": {
+        "company": [
+          "XYZ"
+        ],
+        "product": [
+          "A",
+          "מוצר A"
+        ],
+        "sales_units_increase_percentage": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nאני צריך קודם לקבל את מחיר המכירה הנוכחי של מוצר A בחברת XYZ, ולאחר מכן לחשב את תחזית ההכנסות עם גידול של 10% ביחידות המכירה.\n\nבוא נתחיל בלשלוף את המחיר:"
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A"
+          },
+          "id": "call_9df15968eb1849fcb5a17d22"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "A"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "input_tokens": 541,
+      "output_tokens": 136,
+      "latency_s": 2.723423719406128,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "הבקשה נכשלה כנראה עקב בעיית פרמטרים. בוא ננסה שוב עם אותם ערכים:"
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A"
+          },
+          "id": "call_3320ae5221994e73aaa257ab"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "A"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "input_tokens": 713,
+      "output_tokens": 96,
+      "latency_s": 1.590036153793335,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "מתנצל, אבל נראה שקיימת בעיה טכנית בגישה לנתוני המחיר של מוצר A בחברת XYZ – המערכת מחזירה שגיאת \"400 Bad Request\" למרות שהפרמטרים נראים תקינים.\n\nאם תוכל לספק לי את מחיר המכירה הנוכחי של מוצר A, אוכל להשלים את החישוב באמצעות הפונקציה `corporate_finance_revenue_forecast` עם פרמטר של `sales_units_increase_percentage` בשיעור 10%."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 845,
+      "output_tokens": 133,
+      "latency_s": 1.8808825016021729,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "call_1e66772065ad43f2bda0d5ee"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ",
+            "product": "A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1002,
+      "output_tokens": 90,
+      "latency_s": 1.896566390991211,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+    },
+    {
+      "content": "\n\nאני צריך קודם לקבל את מחיר המכירה הנוכחי של מוצר A בחברת XYZ, ולאחר מכן לחשב את תחזית ההכנסות עם גידול של 10% ביחידות המכירה.\n\nבוא נתחיל בלשלוף את המחיר:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9df15968eb1849fcb5a17d22",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_9df15968eb1849fcb5a17d22"
+    },
+    {
+      "content": "הבקשה נכשלה כנראה עקב בעיית פרמטרים. בוא ננסה שוב עם אותם ערכים:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3320ae5221994e73aaa257ab",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_3320ae5221994e73aaa257ab"
+    },
+    {
+      "content": "מתנצל, אבל נראה שקיימת בעיה טכנית בגישה לנתוני המחיר של מוצר A בחברת XYZ – המערכת מחזירה שגיאת \"400 Bad Request\" למרות שהפרמטרים נראים תקינים.\n\nאם תוכל לספק לי את מחיר המכירה הנוכחי של מוצר A, אוכל להשלים את החישוב באמצעות הפונקציה `corporate_finance_revenue_forecast` עם פרמטר של `sales_units_increase_percentage` בשיעור 10%.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1e66772065ad43f2bda0d5ee",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"A\", \"sales_units_increase_percentage\": 10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

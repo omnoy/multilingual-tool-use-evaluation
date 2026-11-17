@@ -1,0 +1,138 @@
+{
+  "id": "multiple_60_de",
+  "source_id": "multiple_60",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1085,
+  "total_output_tokens": 196,
+  "total_latency_s": 2.7146666049957275,
+  "estimated_cost_usd": 0.00413,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie hoch werden die Luftfeuchtigkeit und die Temperatur in New York in 7 Tagen sein?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "humidity_temperature_forecast": {
+        "location": [
+          "New York"
+        ],
+        "days": [
+          7
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"location\": \"New York\", \"days\": 7}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 468,
+      "output_tokens": 107,
+      "latency_s": 1.6104979515075684,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "New York",
+            "days": 7
+          },
+          "id": "call_8a91077b6b4441f7afb66959"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "New York",
+            "days": 7
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 617,
+      "output_tokens": 89,
+      "latency_s": 1.1041686534881592,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie hoch werden die Luftfeuchtigkeit und die Temperatur in New York in 7 Tagen sein?"
+    },
+    {
+      "content": "{\"location\": \"New York\", \"days\": 7}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond to user's German query exact function call. I'll call humidity_temperature_forecast location New York days 7. Should think about semantics days: \"in 7 Tagen\" future date 7 days. Tool expects number future days. Should call. No need prose? Instructions say understand request German and respond with correct function call exactly as specified. So use functions.humidity_temperature_forecast."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8a91077b6b4441f7afb66959",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"days\": 7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I'll actually tool call via assistant to functions.humidity_temperature_forecast commentary JSON. Previous erroneous raw text. Now obey."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

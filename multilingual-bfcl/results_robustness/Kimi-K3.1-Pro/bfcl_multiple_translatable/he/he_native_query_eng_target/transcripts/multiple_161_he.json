@@ -1,0 +1,126 @@
+{
+  "id": "multiple_161_he",
+  "source_id": "multiple_161",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 570,
+  "total_output_tokens": 441,
+  "total_latency_s": 2.630427122116089,
+  "estimated_cost_usd": 0.005549999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את תערוכת הפיסול המודרני המדורגת הכי גבוה שמתקיימת בניו יורק בחודש הקרוב."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_exhibition": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "NYC",
+          "NY"
+        ],
+        "art_form": [
+          "sculpture",
+          "modern sculpture"
+        ],
+        "month": [
+          "upcoming",
+          "next month",
+          "upcoming month",
+          "next",
+          ""
+        ],
+        "user_ratings": [
+          "high",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "location": "New York",
+            "art_form": "modern sculpture",
+            "month": "next month",
+            "user_ratings": "high"
+          },
+          "id": "call_0db0962494f14e86941acde2"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "location": "New York",
+            "art_form": "modern sculpture",
+            "month": "next month",
+            "user_ratings": "high"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 570,
+      "output_tokens": 441,
+      "latency_s": 2.630427122116089,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את תערוכת הפיסול המודרני המדורגת הכי גבוה שמתקיימת בניו יורק בחודש הקרוב."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0db0962494f14e86941acde2",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"art_form\": \"modern sculpture\", \"month\": \"next month\", \"user_ratings\": \"high\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Hebrew user. Should understand: \"Find the highest rated modern sculpture exhibition taking place in New York next month.\" Tool find_exhibition params art_form, location, month optional default upcoming, user_ratings optional high. Should call exact. Should determine month? Current date 202? System no explicit current date in prompt? I know current actual 2025? My environment maybe 2025? Should infer. User says \"בחודש הקרוב\" next month. Should supply month? Tool month default upcoming events, but request next month specifically. I may use month string perhaps \"next month\" or actual month. Should know current date? System says nothing current date, my metadata current 2025-? Possibly not given. I should choose \"next month\" likely tool designed expects month free string. Should respond correct function call exactly specified. Art form \"modern sculpture\" perhaps \"פיסול מודרני\" or English \"modern sculpture\". Location \"New York\". Month \"next month\". user_ratings \"high\". Could set location \"New York\", art_form \"modern sculpture\", month \"next month\", user_ratings \"high\". Should think whether tool retrieval likely intended call in English. User explicitly Hebrew, tools English. Should translate. Should I set month \"upcoming\"? Default upcoming vs next month. User says highest-rated modern sculpture exhibition in New York next month. find_exhibition loc city, art form, month default upcoming, ratings high. \"המדורגת הכי גבוה\" high. I should call with high. \"חודש הקרוב\" can be \"next month\". Use find_exhibition."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

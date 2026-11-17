@@ -1,0 +1,112 @@
+{
+  "id": "multiple_76_tr",
+  "source_id": "multiple_76",
+  "locale": "tr",
+  "localization_level": "full_full_full",
+  "benchmark": "tr_native_qt_max_context",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 517,
+  "total_output_tokens": 380,
+  "total_latency_s": 2.5265536308288574,
+  "estimated_cost_usd": 0.005559100000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Özel yapım bir bronz at heykeli sipariş etmek istiyorum. Hangi malzeme seçenekleri mevcut?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture.create_custom": {
+        "item": [
+          "at",
+          "At"
+        ],
+        "material": [
+          "Bronze",
+          "bronze"
+        ],
+        "size": [
+          "",
+          12
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_create_custom",
+          "arguments": {
+            "item": "at",
+            "material": "Bronze"
+          },
+          "id": "call_3b928a9f687f449cb6a9d4f4"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_create_custom": {
+            "item": "at",
+            "material": "Bronze"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 517,
+      "output_tokens": 380,
+      "latency_s": 2.5265536308288574,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Özel yapım bir bronz at heykeli sipariş etmek istiyorum. Hangi malzeme seçenekleri mevcut?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3b928a9f687f449cb6a9d4f4",
+          "function": {
+            "arguments": "{\"item\": \"at\", \"material\": \"Bronze\"}",
+            "name": "sculpture_create_custom"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kullanıcı Türkçe yazıyor. \"Özel yapım bir bronz at heykeli sipariş etmek istiyorum. Hangi malzeme seçenekleri mevcut?\" Yani custom bronze horse sculpture order wants, asks which material options available. Should understand and respond correct function call exactly as specified. I have sculpture_create_custom tool item subject, material enum Bronze Marble Terracotta Wood Stone, size optional default 12. User explicitly wants bronze at heykeli, order intent, asks material options. Likely call sculpture_create_custom with item \"at\" or \"horse\", material \"Bronze\". Should consider whether just respond material options or invoke order? Instructions say respond with correct function call exactly as specified. User says wants to order custom bronze horse sculpture. Which materials available? I can call function to order bronze horse; perhaps also in response? Should examine these tasks pattern. User often expects function call based on request, even if question. Should use tool. Material is specified Bronze, item \"at\" or \"horse\" supported English/Turkish. Size not given default 12 omit. Call sculpture_create_custom {\"item\":\"at\",\"material\":\"Bronze\"}. After tool result perhaps mention options. Perhaps not call because user is asking material options, not directly confirming order? But initial sentence explicit order desire. Correct function call likely. I should invoke. Then response could say available materials Bronze, Marble, Terracotta, Wood, Stone and order result. Should see tool output. I'll call."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

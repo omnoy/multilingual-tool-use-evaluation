@@ -1,0 +1,169 @@
+{
+  "id": "multiple_153_tr",
+  "source_id": "multiple_153",
+  "locale": "tr",
+  "localization_level": "query",
+  "benchmark": "tr_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1286,
+  "total_output_tokens": 312,
+  "total_latency_s": 3.0677952766418457,
+  "estimated_cost_usd": 0.0065458,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Lizbon Antlaşması ne zaman imzalandı?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_event_date": {
+        "event": [
+          "Treaty of Lisbon",
+          "Signing of the Treaty of Lisbon"
+        ],
+        "location": [
+          "",
+          "global",
+          "Lisbon",
+          "Lisbon, Portugal"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_event_date",
+          "arguments": {
+            "event": "Lizbon Antlaşması'nın imzalanması",
+            "location": "Lizbon, Portekiz"
+          },
+          "id": "call_98778b03839547ec9b6bd7ec"
+        }
+      ],
+      "decoded": [
+        {
+          "get_event_date": {
+            "event": "Lizbon Antlaşması'nın imzalanması",
+            "location": "Lizbon, Portekiz"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_event_date'. Please review the function definition and try again.",
+      "input_tokens": 515,
+      "output_tokens": 199,
+      "latency_s": 1.7445650100708008,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_event_date",
+          "arguments": {
+            "event": "Treaty of Lisbon",
+            "location": "Lisbon"
+          },
+          "id": "call_e0fc53a37b99400fb76f5ac2"
+        }
+      ],
+      "decoded": [
+        {
+          "get_event_date": {
+            "event": "Treaty of Lisbon",
+            "location": "Lisbon"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 771,
+      "output_tokens": 113,
+      "latency_s": 1.323230266571045,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Lizbon Antlaşması ne zaman imzalandı?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_98778b03839547ec9b6bd7ec",
+          "function": {
+            "arguments": "{\"event\": \"Lizbon Antlaşması'nın imzalanması\", \"location\": \"Lizbon, Portekiz\"}",
+            "name": "get_event_date"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need answer Turkish User asks \"Lizbon Antlaşması ne zaman imzalandı?\" Should understand, use correct function call exactly as specified. Available get_event_date retrieves date of historical event with event name and optional location. Should call {\"event\":\"Lizbon Antlaşması\",\"location\":\"Lizbon\"} likely. Should determine response after tool. The tool returns date likely 13 Aralık 2007. I must call. Should be careful event could \"Treaty of Lisbon\" and location Lisbon. User Turkish. I can call with Turkish. I'll do."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_event_date'. Please review the function definition and try again.",
+      "tool_call_id": "call_98778b03839547ec9b6bd7ec"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e0fc53a37b99400fb76f5ac2",
+          "function": {
+            "arguments": "{\"event\": \"Treaty of Lisbon\", \"location\": \"Lisbon\"}",
+            "name": "get_event_date"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool 400 invalid parameters? Schema matches. Perhaps apostrophe? location? It says review definition try again. Should retry simpler \"Treaty of Lisbon\" location \"Lisbon\". Could be tool expects event known? I'll do."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

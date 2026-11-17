@@ -1,0 +1,136 @@
+{
+  "id": "multiple_13_he",
+  "source_id": "multiple_13",
+  "locale": "he",
+  "localization_level": "query",
+  "benchmark": "he_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": true,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 541,
+  "total_output_tokens": 209,
+  "total_latency_s": 2.0987138748168945,
+  "estimated_cost_usd": 0.0016686600000000002,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.revenue_forecast": {
+        "company": [
+          "XYZ"
+        ],
+        "product": [
+          "A",
+          "Product A"
+        ],
+        "sales_units_increase_percentage": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nאני אצטרך קודם כל לקבל את המחיר הנוכחי של המוצר, ולאחר מכן לחשב את תחזית ההכנסות עם העלייה של 10% ביחידות המכירה. אבצע את שתי הקריאות במקביל."
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A"
+          },
+          "id": "call_47ec1cf55eff4a6f8cf2863f"
+        },
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "call_e0cc6c8a96d44b75931460a0"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "A"
+          }
+        },
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ",
+            "product": "A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 541,
+      "output_tokens": 209,
+      "latency_s": 2.0987138748168945,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": true
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+    },
+    {
+      "content": "\n\nאני אצטרך קודם כל לקבל את המחיר הנוכחי של המוצר, ולאחר מכן לחשב את תחזית ההכנסות עם העלייה של 10% ביחידות המכירה. אבצע את שתי הקריאות במקביל.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_47ec1cf55eff4a6f8cf2863f",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_e0cc6c8a96d44b75931460a0",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"A\", \"sales_units_increase_percentage\": 10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

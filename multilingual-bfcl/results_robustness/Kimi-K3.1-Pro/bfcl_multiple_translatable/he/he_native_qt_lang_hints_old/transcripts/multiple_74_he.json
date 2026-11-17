@@ -1,0 +1,169 @@
+{
+  "id": "multiple_74_he",
+  "source_id": "multiple_74",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1180,
+  "total_output_tokens": 423,
+  "total_latency_s": 3.461560010910034,
+  "estimated_cost_usd": 0.0065899999999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מחיר הציור של ואן גוך 'ליל כוכבים' בכל פלטפורמות המכירות הפומביות."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "art_auction.fetch_artwork_price": {
+        "artwork_name": [
+          "ליל כוכבים"
+        ],
+        "artist": [
+          "ואן גוך"
+        ],
+        "platform": [
+          "הכול",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Starry Night",
+            "artist": "Vincent van Gogh"
+          },
+          "id": "call_38f19a7b284546879e057489"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Starry Night",
+            "artist": "Vincent van Gogh"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 449,
+      "output_tokens": 217,
+      "latency_s": 1.5680615901947021,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "ליל כוכבים",
+            "artist": "ואן גוך"
+          },
+          "id": "call_d01e2ad1ae224db3ab6ca390"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "ליל כוכבים",
+            "artist": "ואן גוך"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 731,
+      "output_tokens": 206,
+      "latency_s": 1.893498420715332,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מחיר הציור של ואן גוך 'ליל כוכבים' בכל פלטפורמות המכירות הפומביות."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_38f19a7b284546879e057489",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Starry Night\", \"artist\": \"Vincent van Gogh\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need interpret Hebrew: \"Find price of Van Gogh painting 'Starry Night' on all auction platforms.\" Should have tool function art_auction_fetch_artwork_price, platform optional. User asks all auction platforms, omit platform likely function across all? Should call with artist Vincent van Gogh, artwork name Starry Night. User explicitly Hebrew and tools support English Hebrew. Perhaps call one time no platform. Should have exact function call. I can use Hebrew or English names. Best artist \"Vincent van Gogh\", artwork_name \"Starry Night\". The user says כל פלטפורמות המכירות הפומביות, tool platform optional, do not supply value. Call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_38f19a7b284546879e057489"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d01e2ad1ae224db3ab6ca390",
+          "function": {
+            "arguments": "{\"artwork_name\": \"ליל כוכבים\", \"artist\": \"ואן גוך\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Bad request likely require platform perhaps tool implementation expects recognized names? Perhaps use Hebrew names? Should review definition: platform optional, parameters required artist/artwork name, optional platform. It returned 400 invalid params; perhaps platform required in runtime? Could be artist value language? Van Gogh perhaps \"ואן גוך\" exact? The user specified all platforms, need tool platform perhaps missing resulted bad request? Should retry with Hebrew artist/title and platform perhaps? Tools language English Hebrew. Could be artwork name expected \"ליל כוכבים\" and artist \"ואן גוך\". I should retry using Hebrew. Still optional platform."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

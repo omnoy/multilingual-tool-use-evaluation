@@ -1,0 +1,482 @@
+{
+  "id": "multiple_74_tr",
+  "source_id": "multiple_74",
+  "locale": "tr",
+  "localization_level": "full_and_function_descriptions",
+  "benchmark": "tr_native_qt_func_descs",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 8557,
+  "total_output_tokens": 1390,
+  "total_latency_s": 14.900036573410034,
+  "estimated_cost_usd": 0.01972638,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Van Gog'un 'Yıldızlı Gece' tablosunun tüm müzayede platformlarındaki fiyatını bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "art_auction.fetch_artwork_price": {
+        "artwork_name": [
+          "Yıldızlı Gece"
+        ],
+        "artist": [
+          "Van Gog"
+        ],
+        "platform": [
+          "tümü",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nVan Gogh'un \"Yıldızlı Gece\" (Starry Night) tablosunun fiyatını getireyim. Ancak platform belirtilmemiş, bu yüzden parametreyi boş bırakarak genel bir sorgu yapacağım."
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Vincent van Gogh",
+            "platform": ""
+          },
+          "id": "call_c8af8b927c9941fa9acb1068"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Vincent van Gogh",
+            "platform": ""
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 607,
+      "output_tokens": 158,
+      "latency_s": 1.628626823425293,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Platform parametresi zorunlu olmasa da boş göndermek sorun oluşturdu. Farklı platformları ayrı ayrı sorgulayayım. Açık artırma platformları olarak en yaygın olanları deneyeceğim: Sotheby's, Christie's ve Phillips."
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Vincent van Gogh",
+            "platform": "Sotheby's"
+          },
+          "id": "call_a785edad83084306bd0734e3"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Vincent van Gogh",
+            "platform": "Christie's"
+          },
+          "id": "call_bfca1dbeda5b412396a62927"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Vincent van Gogh",
+            "platform": "Phillips"
+          },
+          "id": "call_485bc308cc08464ca46f8ac4"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Vincent van Gogh",
+            "platform": "Sotheby's"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Vincent van Gogh",
+            "platform": "Christie's"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Vincent van Gogh",
+            "platform": "Phillips"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 804,
+      "output_tokens": 341,
+      "latency_s": 5.185021162033081,
+      "num_calls": 3,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Üç platform için de hata aldım. Bu arada şunu da belirtmekte fayda var: **Van Gogh'un \"Yıldızlı Gece\" (Starry Night) tablosu** aslında şu anda New York'taki **MoMA (Modern Sanat Müzesi)**'nde sergilenmektedir ve satılık değildir. Bu eser, 1941 yılından beri MoMA koleksiyonunda yer almaktadır ve herhangi bir müzayede platformunda fiyatı bulunmamaktadır.\n\nAncak yine de sistemin düzgün çalışması için farklı platform isimleriyle tekrar deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artist": "Vincent van Gogh",
+            "artwork_name": "Yıldızlı Gece",
+            "platform": "Sothebys"
+          },
+          "id": "call_b263fbed923a4b0d97ca1f3e"
+        },
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artist": "Vincent van Gogh",
+            "artwork_name": "Yıldızlı Gece",
+            "platform": "Christies"
+          },
+          "id": "call_8e53ba71758b454e8ea980ff"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artist": "Vincent van Gogh",
+            "artwork_name": "Yıldızlı Gece",
+            "platform": "Sothebys"
+          }
+        },
+        {
+          "art_auction_fetch_artwork_price": {
+            "artist": "Vincent van Gogh",
+            "artwork_name": "Yıldızlı Gece",
+            "platform": "Christies"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 1256,
+      "output_tokens": 351,
+      "latency_s": 2.577827215194702,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Maalesef tüm sorgularda hata alıyorum. Bununla birlikte önemli bir bilgiyi paylaşmak isterim:\n\n---\n\n**Van Gogh - Yıldızlı Gece (Starry Night) Hakkında:**\n\n- **Yapım Yılı:** 1889\n- **Bulunduğu Yer:** MoMA (Museum of Modern Art), New York\n- **Durum:** Bu eser **satılık değildir** ve müzayede platformlarında yer almamaktadır. MoMA'nın kalıcı koleksiyonunun bir parçasıdır.\n\nEğer referans olması açısından Van Gogh'un müzayedede satılmış diğer eserlerinin fiyatlarını merak ediyorsanız, örneğin **\"Dr. Gachet'nin Portresi\"** 1990'da 82,5 milyon dolara, **\"Süsenler\" (Irises)** 1987'de 53,9 milyon dolara satılmıştı. \"Yıldızlı Gece\" satılsaydı, tahmini değeri milyarlarca doları bulabilirdi.\n\nBaşka bir sanat eseri için sorgulama yapmamı ister misiniz?"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1682,
+      "output_tokens": 314,
+      "latency_s": 2.682802200317383,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Özür dilerim, hemen bir fonksiyon çağrısı yapayım. Farklı platform isimleriyle deneyelim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Starry Night",
+            "artist": "Vincent van Gogh",
+            "platform": "Sotheby's"
+          },
+          "id": "call_e97ca3eea2df4a39a4e9b6e6"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Starry Night",
+            "artist": "Vincent van Gogh",
+            "platform": "Sotheby's"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "input_tokens": 2020,
+      "output_tokens": 129,
+      "latency_s": 1.7109036445617676,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "art_auction_fetch_artwork_price",
+          "arguments": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "Sotheby's"
+          },
+          "id": "call_fa5a8dd75712437fb4cb98dd"
+        }
+      ],
+      "decoded": [
+        {
+          "art_auction_fetch_artwork_price": {
+            "artwork_name": "Yıldızlı Gece",
+            "artist": "Van Gogh",
+            "platform": "Sotheby's"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2188,
+      "output_tokens": 97,
+      "latency_s": 1.1148555278778076,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Van Gog'un 'Yıldızlı Gece' tablosunun tüm müzayede platformlarındaki fiyatını bul."
+    },
+    {
+      "content": "\n\nVan Gogh'un \"Yıldızlı Gece\" (Starry Night) tablosunun fiyatını getireyim. Ancak platform belirtilmemiş, bu yüzden parametreyi boş bırakarak genel bir sorgu yapacağım.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c8af8b927c9941fa9acb1068",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Vincent van Gogh\", \"platform\": \"\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_c8af8b927c9941fa9acb1068"
+    },
+    {
+      "content": "Platform parametresi zorunlu olmasa da boş göndermek sorun oluşturdu. Farklı platformları ayrı ayrı sorgulayayım. Açık artırma platformları olarak en yaygın olanları deneyeceğim: Sotheby's, Christie's ve Phillips.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a785edad83084306bd0734e3",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Sotheby's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_bfca1dbeda5b412396a62927",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Christie's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 1
+        },
+        {
+          "id": "call_485bc308cc08464ca46f8ac4",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Phillips\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_a785edad83084306bd0734e3"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_bfca1dbeda5b412396a62927"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_485bc308cc08464ca46f8ac4"
+    },
+    {
+      "content": "Üç platform için de hata aldım. Bu arada şunu da belirtmekte fayda var: **Van Gogh'un \"Yıldızlı Gece\" (Starry Night) tablosu** aslında şu anda New York'taki **MoMA (Modern Sanat Müzesi)**'nde sergilenmektedir ve satılık değildir. Bu eser, 1941 yılından beri MoMA koleksiyonunda yer almaktadır ve herhangi bir müzayede platformunda fiyatı bulunmamaktadır.\n\nAncak yine de sistemin düzgün çalışması için farklı platform isimleriyle tekrar deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b263fbed923a4b0d97ca1f3e",
+          "function": {
+            "arguments": "{\"artist\": \"Vincent van Gogh\", \"artwork_name\": \"Yıldızlı Gece\", \"platform\": \"Sothebys\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_8e53ba71758b454e8ea980ff",
+          "function": {
+            "arguments": "{\"artist\": \"Vincent van Gogh\", \"artwork_name\": \"Yıldızlı Gece\", \"platform\": \"Christies\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_b263fbed923a4b0d97ca1f3e"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_8e53ba71758b454e8ea980ff"
+    },
+    {
+      "content": "Maalesef tüm sorgularda hata alıyorum. Bununla birlikte önemli bir bilgiyi paylaşmak isterim:\n\n---\n\n**Van Gogh - Yıldızlı Gece (Starry Night) Hakkında:**\n\n- **Yapım Yılı:** 1889\n- **Bulunduğu Yer:** MoMA (Museum of Modern Art), New York\n- **Durum:** Bu eser **satılık değildir** ve müzayede platformlarında yer almamaktadır. MoMA'nın kalıcı koleksiyonunun bir parçasıdır.\n\nEğer referans olması açısından Van Gogh'un müzayedede satılmış diğer eserlerinin fiyatlarını merak ediyorsanız, örneğin **\"Dr. Gachet'nin Portresi\"** 1990'da 82,5 milyon dolara, **\"Süsenler\" (Irises)** 1987'de 53,9 milyon dolara satılmıştı. \"Yıldızlı Gece\" satılsaydı, tahmini değeri milyarlarca doları bulabilirdi.\n\nBaşka bir sanat eseri için sorgulama yapmamı ister misiniz?",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "Özür dilerim, hemen bir fonksiyon çağrısı yapayım. Farklı platform isimleriyle deneyelim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e97ca3eea2df4a39a4e9b6e6",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Starry Night\", \"artist\": \"Vincent van Gogh\", \"platform\": \"Sotheby's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'art_auction_fetch_artwork_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_e97ca3eea2df4a39a4e9b6e6"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fa5a8dd75712437fb4cb98dd",
+          "function": {
+            "arguments": "{\"artwork_name\": \"Yıldızlı Gece\", \"artist\": \"Van Gogh\", \"platform\": \"Sotheby's\"}",
+            "name": "art_auction_fetch_artwork_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,167 @@
+{
+  "id": "multiple_194_de",
+  "source_id": "multiple_194",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_native_qt_max_context",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1774,
+  "total_output_tokens": 350,
+  "total_latency_s": 3.6352617740631104,
+  "estimated_cost_usd": 0.0070480000000000004,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie sind die Öffnungszeiten des Metropolitan-Kunstmuseums am Samstag?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_museum_hours": {
+        "museum_name": [
+          "Metropolitan-Kunstmuseum",
+          "Das Met",
+          "Met-Museum"
+        ],
+        "day": [
+          "Saturday"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_museum_hours",
+          "arguments": {
+            "museum_name": "Metropolitan Museum of Art",
+            "day": "Saturday"
+          },
+          "id": "call_4f8bf185e16f41da9fc7c61c"
+        }
+      ],
+      "decoded": [
+        {
+          "get_museum_hours": {
+            "museum_name": "Metropolitan Museum of Art",
+            "day": "Saturday"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_museum_hours'. Please review the function definition and try again.",
+      "input_tokens": 760,
+      "output_tokens": 195,
+      "latency_s": 1.6833579540252686,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_museum_hours",
+          "arguments": {
+            "museum_name": "Metropolitan-Kunstmuseum",
+            "day": "Saturday"
+          },
+          "id": "call_3bd4eafe9ae44d62b8287b6b"
+        }
+      ],
+      "decoded": [
+        {
+          "get_museum_hours": {
+            "museum_name": "Metropolitan-Kunstmuseum",
+            "day": "Saturday"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1014,
+      "output_tokens": 155,
+      "latency_s": 1.9519038200378418,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie sind die Öffnungszeiten des Metropolitan-Kunstmuseums am Samstag?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4f8bf185e16f41da9fc7c61c",
+          "function": {
+            "arguments": "{\"museum_name\": \"Metropolitan Museum of Art\", \"day\": \"Saturday\"}",
+            "name": "get_museum_hours"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to German request via tool. Should understand: asks opening hours Metropolitan Museum of Art on Saturday. Should call get_museum_hours museum_name \"Metropolitan-Kunstmuseums\" perhaps name of museum in English or German, day Saturday. Should have exactly function call as specified. Use tool. Likely museum name \"Metropolitan Museum of Art\" or \"Metropolitan-Kunstmuseum\". Request says Metropolitan-Kunstmuseums, known \"Metropolitan Museum of Art\". Tool supports German English, so pass \"Metropolitan-Kunstmuseum\" perhaps. Should call and then final respond with hours based response. I'll do."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_museum_hours'. Please review the function definition and try again.",
+      "tool_call_id": "call_4f8bf185e16f41da9fc7c61c"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3bd4eafe9ae44d62b8287b6b",
+          "function": {
+            "arguments": "{\"museum_name\": \"Metropolitan-Kunstmuseum\", \"day\": \"Saturday\"}",
+            "name": "get_museum_hours"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool 400 invalid parameters despite valid schema? Perhaps museum_name exact expected German? Should retry with \"Metropolitan-Kunstmuseum\" and Saturday. Could be tool bug? Should inspect. Tool says museum name languages English German, day enum. Both okay. Perhaps supports \"The Metropolitan Museum of Art\". User asks \"Metropolitan-Kunstmuseums\" genitive; base \"Metropolitan-Kunstmuseum\". Try exact German."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

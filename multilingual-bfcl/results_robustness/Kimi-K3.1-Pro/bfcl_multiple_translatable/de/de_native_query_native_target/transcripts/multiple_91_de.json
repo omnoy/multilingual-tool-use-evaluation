@@ -1,0 +1,139 @@
+{
+  "id": "multiple_91_de",
+  "source_id": "multiple_91",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 968,
+  "total_output_tokens": 273,
+  "total_latency_s": 3.0058987140655518,
+  "estimated_cost_usd": 0.004666,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "Apfelkuchen",
+          "Apfel"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"mainIngredient\":\"Apfel\",\"ingredientLimit\":4}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 369,
+      "output_tokens": 188,
+      "latency_s": 1.753922700881958,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          },
+          "id": "call_b88e59fa58bc4b4dbdb6ea47"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 599,
+      "output_tokens": 85,
+      "latency_s": 1.2519760131835938,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+    },
+    {
+      "content": "{\"mainIngredient\":\"Apfel\",\"ingredientLimit\":4}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I'll respond in German? User asks: \"Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?\" Should correct function call exactly. Tool recipe_find mainIngredient, ingredientLimit integer. Should decide mainIngredient \"Apfel\" perhaps \"Äpfel\" and ingredientLimit less than 5 means max 4. I'll call the tool. I'll output exactly the function call. Should use mainIngredient likely \"Apfel\" or \"Apfelkuchen\"? Tool finds cooking recipes based on main ingredient and number of ingredients. Main ingredient = Apfel, ingredientLimit = 4. Use German ingredient? Schema string no restrictions. Call {\"mainIngredient\":\"Apfel\",\"ingredientLimit\":4}. I should only call, no text."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b88e59fa58bc4b4dbdb6ea47",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"Apfel\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need must actually invoke tool via recipient functions.recipe_find, not JSON text. I'll do it."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

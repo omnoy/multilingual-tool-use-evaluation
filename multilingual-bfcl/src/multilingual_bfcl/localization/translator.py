@@ -32,6 +32,7 @@ import sys
 from enum import Enum
 from typing import Any, Callable
 
+from multilingual_bfcl.experiment_names import experiment_of_level
 from multilingual_bfcl.localization.locale_config import Locale
 
 
@@ -582,6 +583,6 @@ def apply_translation(
     entry["id"] = new_id
     entry["source_id"] = test_case["id"]
     entry["locale"] = locale.code
-    entry["localization_level"] = level.value
+    entry["localization_level"] = experiment_of_level(level.value)
     entry["ground_truth"] = ground_truth
     return entry

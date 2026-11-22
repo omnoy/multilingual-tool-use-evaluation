@@ -27,6 +27,10 @@ Usage:
 
     # Just print the commands:
     python scripts/run_robustness_sweep.py --lang-dir de --dry-run
+
+    # Several languages and categories at once (missing combinations are skipped):
+    python scripts/run_robustness_sweep.py --lang-dir en he de tr \
+        --category bfcl_multiple_translatable wildtoolbench
 """
 
 from __future__ import annotations
@@ -58,19 +62,18 @@ def load_model_types(path: Path = MODEL_DATA_CSV) -> dict[str, str]:
 MODELS: dict[str, str] = load_model_types()
 
 
-def discover_benchmarks(category: str, lang_dir: str, variants: list[str] | None) -> list[str]:
+def discover_benchmarks(category: str, lang_dir: str, variants: list[str] | None) -> tuple[list[str], set[str]]:
+    """Return (selected benchmark stems, the requested variants they matched). An empty or
+    missing folder yields ([], set()) — with several categories/languages not every
+    combination exists (e.g. en only has en_baseline)."""
     data_dir = PACKAGE_ROOT / "data" / "benchmarks" / category / lang_dir
     stems = sorted(p.stem for p in data_dir.glob("*.jsonl"))
-    if not stems:
-        sys.exit(f"No benchmark files found in {data_dir}")
     if variants is None:
-        return stems
+        return stems, set()
     prefix = f"{lang_dir}_"
     selected = [s for s in stems if s.removeprefix(prefix) in variants or s in variants]
-    missing = set(variants) - {s.removeprefix(prefix) for s in selected} - set(selected)
-    if missing:
-        sys.exit(f"Unknown variant(s) {sorted(missing)}; available: {stems}")
-    return selected
+    matched = {v for v in variants for s in selected if v in (s, s.removeprefix(prefix))}
+    return selected, matched
 
 
 def has_transcripts(output_dir: str, model: str, category: str, lang_dir: str, benchmark: str) -> bool:
@@ -83,11 +86,15 @@ def main() -> None:
         description="Run run_robustness_eval.py over many models x benchmark variants. "
                     "Unrecognised args are forwarded to run_robustness_eval.py.",
     )
-    parser.add_argument("--lang-dir", required=True, help="Language subfolder, e.g. de, he.")
-    parser.add_argument("--category", required=True)
-    parser.add_argument("--models", nargs="+", default=list(MODELS),
+    parser.add_argument("--lang-dir", nargs="+", required=True,
+                        help="Language subfolder(s), e.g. --lang-dir en he de tr. Missing "
+                             "category/lang combinations are skipped.")
+    parser.add_argument("--category", nargs="+", required=True,
+                        help="Benchmark category folder(s) under data/benchmarks, e.g. "
+                             "--category bfcl_multiple_translatable wildtoolbench.")
+    parser.add_argument("--models", nargs="+", required=True,
                         help=f"Subset of MODELS to run (default: all). Known: {list(MODELS)}")
-    parser.add_argument("--variants", nargs="+", default=None,
+    parser.add_argument("--variants", nargs="+", required=True,
                         help="Benchmark variants (file stem with or without the '<lang>_' "
                              "prefix). Default: every .jsonl in the language folder.")
     parser.add_argument("--limit", default="0",
@@ -104,37 +111,52 @@ def main() -> None:
     if unknown:
         parser.error(f"Unknown model(s) {unknown}; set their model_type in model_data.csv. Known: {list(MODELS)}")
 
-    benchmarks = discover_benchmarks(args.category, args.lang_dir, args.variants)
-    print(f"Benchmarks ({len(benchmarks)}): {benchmarks}")
+    # (category, lang_dir) -> benchmark stems, over every requested combination.
+    combo_benchmarks: dict[tuple[str, str], list[str]] = {}
+    matched_variants: set[str] = set()
+    for category in args.category:
+        for lang_dir in args.lang_dir:
+            benchmarks, matched = discover_benchmarks(category, lang_dir, args.variants)
+            matched_variants |= matched
+            if not benchmarks:
+                print(f"Skipping {category}/{lang_dir}: no matching benchmark files.")
+                continue
+            combo_benchmarks[(category, lang_dir)] = benchmarks
+            print(f"{category}/{lang_dir} ({len(benchmarks)}): {benchmarks}")
+    if args.variants is not None:
+        unmatched = sorted(set(args.variants) - matched_variants)
+        if unmatched:
+            parser.error(f"Variant(s) {unmatched} not found in any of "
+                         f"categories {args.category} x lang dirs {args.lang_dir}")
+    if not combo_benchmarks:
+        sys.exit("No benchmark files found for any category/lang-dir combination.")
 
-    model_benchmarks = {m: benchmarks for m in args.models}
+    # (model, category, lang_dir, benchmark), one process each.
+    jobs = [(m, c, l, b)
+            for m in args.models
+            for (c, l), bms in combo_benchmarks.items()
+            for b in bms]
     if args.recompute_stats:
-        # The harness raises on a benchmark with no transcripts, which would also abort
-        # the benchmarks queued after it in that process, so filter those out up front.
-        for model in args.models:
-            present = [b for b in benchmarks
-                       if has_transcripts(args.output_dir, model, args.category, args.lang_dir, b)]
-            skipped = [b for b in benchmarks if b not in present]
-            if skipped:
-                print(f"Skipping {model} (no transcripts): {skipped}")
-            model_benchmarks[model] = present
+        # The harness raises on a benchmark with no transcripts, so skip those up front.
+        skipped = [j for j in jobs if not has_transcripts(args.output_dir, *j)]
+        for m, c, l, b in skipped:
+            print(f"Skipping {m} / {c}/{l}/{b} (no transcripts)")
+        jobs = [j for j in jobs if j not in skipped]
         passthrough.append("--recompute-stats")
 
-    jobs = [(m, [b]) for m, bms in model_benchmarks.items() for b in bms]
-
     commands = {
-        f"{model} / {' '.join(bms)}": [
+        f"{model} / {category}/{lang_dir}/{benchmark}": [
             sys.executable, str(EVAL_SCRIPT),
-            "--category", args.category,
-            "--lang-dir", args.lang_dir,
-            "--benchmark", *bms,
+            "--category", category,
+            "--lang-dir", lang_dir,
+            "--benchmark", benchmark,
             "--model", model,
             "--model-type", MODELS[model],
             "--limit", args.limit,
             "--output-dir", args.output_dir,
             *passthrough,
         ]
-        for model, bms in jobs
+        for model, category, lang_dir, benchmark in jobs
     }
 
     if args.dry_run:

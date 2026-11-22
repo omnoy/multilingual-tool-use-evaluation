@@ -655,6 +655,9 @@ def _write_summary(out_dir: Path, results: list[EntryResult], meta: dict) -> dic
         "avg_attempts": (
             sum(r.num_attempts for r in scored) / len(scored) if scored else None
         ),
+        "avg_attempts_per_success": (
+            sum(r.num_attempts for r in succeeded) / len(succeeded) if succeeded else None
+        ),
         "avg_api_calls": (
             sum(r.num_api_calls for r in scored) / len(scored) if scored else None
         ),

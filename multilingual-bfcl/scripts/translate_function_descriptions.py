@@ -29,7 +29,7 @@ Output (under data/benchmarks/<category>/):
   translate_func_desc_manifest.json                  batch manifest (for --retrieve)
 
 Entries follow the translate_benchmark convention: id "<source id>_<locale>", plus
-source_id, locale, localization_level="function_descriptions", and the (unchanged)
+source_id, locale, localization_level="native_query_func_descs", and the (unchanged)
 ground_truth. The query is byte-for-byte the base English query.
 
 Usage:
@@ -105,7 +105,7 @@ from multilingual_bfcl.pricing import count_tokens, format_cost  # noqa: E402
 BENCHMARK_DIR = PACKAGE_ROOT / "data" / "benchmarks"
 
 OUTPUT_SUFFIX = "func_desc"
-LOCALIZATION_LEVEL = "function_descriptions"
+LOCALIZATION_LEVEL = "native_query_func_descs"
 MANIFEST_NAME = "translate_func_desc_manifest.json"
 
 # Cap on translation output tokens per request.

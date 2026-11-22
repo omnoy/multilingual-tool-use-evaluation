@@ -12,8 +12,8 @@ in English, e.g.
     "elements": [["Sam", "Alice", "Jack"]]
     "items":    [["tomatoes", "lettuce"], ["lettuce", "tomatoes"]]
 
-This script finds those strings in every full-level file (localization_level
-"full", "full_full_full", "full_and_function_descriptions", ...), translates them
+This script finds those strings in every native-target file (localization_level
+"native_query_native_target", "native_qt_*", or the legacy "full*"), translates them
 with the same Azure deployment setup as translate_benchmark.py, and writes an exact
 copy of the benchmark folder with the translations filled in. The source folder is
 never modified.
@@ -78,6 +78,7 @@ sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 load_dotenv(PACKAGE_ROOT / ".env")
 
 from multilingual_bfcl.azure_client import OPENAI_MODEL_TYPES, ModelType  # noqa: E402
+from multilingual_bfcl.experiment_names import has_translated_target  # noqa: E402
 from multilingual_bfcl.localization.locale_config import Locale, get_locale  # noqa: E402
 from multilingual_bfcl.localization.translator import (  # noqa: E402
     SYSTEM_PROMPT,
@@ -299,7 +300,8 @@ def iter_jsonl(path: Path):
 
 
 def is_full_level(entry: dict[str, Any]) -> bool:
-    return str(entry.get("localization_level", "")).startswith("full")
+    """Entry has translated ground truth (native target); accepts new and legacy level values."""
+    return has_translated_target(str(entry.get("localization_level", "")))
 
 
 def discover(src: Path, categories: list[str] | None = None,

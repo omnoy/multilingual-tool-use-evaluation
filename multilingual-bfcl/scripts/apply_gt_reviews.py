@@ -18,7 +18,7 @@ Which files a review CSV is applied to
                        are translated there); defaults and enums ARE changed, because
                        build_native_max_context.py requires func_desc and lang_desc to have
                        identical function structure
-    <lang>_native_qt_max_context  is NOT written: rebuild it afterwards with
+    <lang>_native_qt_all_cues  is NOT written: rebuild it afterwards with
                        build_native_max_context.py --benchmark <output-benchmark>
 
   Every other file (other locales, en/, _query, manifests) is copied unchanged.
@@ -71,7 +71,7 @@ LANG_SUFFIX_RE = re.compile(r"( Languages?: [^.]*\.)$")
 # variant built on a level-"full" file (e.g. he_native_query_native_target) -> mode.
 # derived_stem() maps (stem, "lang_desc") -> <lang>_native_qt_lang_hints, etc.
 DERIVED = {"lang_desc": "lang_desc", "func_desc": "func_desc"}
-REBUILD_VARIANT = "full_full"  # full + full_full == full_full_full (<lang>_native_qt_max_context)
+REBUILD_VARIANT = "full_full"  # full + full_full == full_full_full (<lang>_native_qt_all_cues)
 
 
 def jkey(v) -> str:

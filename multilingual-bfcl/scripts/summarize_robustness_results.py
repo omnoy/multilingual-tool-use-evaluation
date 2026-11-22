@@ -11,7 +11,7 @@ Rows are ordered model_family -> model_name -> benchmark (the category folder, e
 bfcl_multiple_translatable; alphabetical) -> language (English first, then
 alphabetical) -> experiment (en_baseline, native_query_eng_target,
 native_query_native_target, native_qt_func_descs, native_qt_lang_hints,
-native_qt_max_context; unknown variations go last, alphabetically).
+native_qt_all_cues; unknown variations go last, alphabetically).
 
 Usage:
     python scripts/summarize_robustness_results.py
@@ -37,6 +37,13 @@ FAMILY_PREFIXES = {
     "kimi": "Kimi",
 }
 
+LANGAUGE_ORDER: list[str] = [
+    "en",
+    "de",
+    "tr",
+    "he"
+]
+
 COLUMNS = [
     "model_family",
     "model_name",
@@ -45,7 +52,7 @@ COLUMNS = [
     "experiment",
     "max_retries_acc",
     "first_attempt_acc",
-    "average_attempts",
+    "avg_attempts_per_success",
     "cost",
 ]
 
@@ -67,11 +74,12 @@ def sort_key(row: dict) -> tuple:
     lang = row["language"]
     exp = row["experiment"]
     exp_rank = EXPERIMENT_ORDER.index(exp) if exp in EXPERIMENT_ORDER else len(EXPERIMENT_ORDER)
+    lang_rank = LANGAUGE_ORDER.index(lang) if lang in LANGAUGE_ORDER else len(LANGAUGE_ORDER)
     return (
         row["model_family"].lower(),
         row["model_name"].lower(),
         row["benchmark"],
-        (lang != "en", lang),
+        (lang_rank, lang),
         (exp_rank, exp),
     )
 
@@ -95,7 +103,7 @@ def collect_rows(results_dir: Path) -> list[dict]:
             "experiment": experiment_name(benchmark, lang),
             "max_retries_acc": f'{summary.get("success_rate"):.4f}',
             "first_attempt_acc": f'{summary.get("first_attempt_success_rate"):.4f}',
-            "average_attempts": f'{summary.get("avg_attempts"):.2f}',
+            "avg_attempts_per_success": f'{summary.get("avg_attempts_per_success"):.2f}',
             "cost": f'{summary.get("total_estimated_cost_usd"):.3f}',
         })
     rows.sort(key=sort_key)

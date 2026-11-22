@@ -5,7 +5,7 @@ only the native (target) language instead of English + the native language.
 Affects the two experiment levels that carry a language descriptor:
 
   <locale>_native_qt_lang_hints.jsonl    "Languages: English, Hebrew."  -> "Languages: Hebrew."
-  <locale>_native_qt_max_context.jsonl   "שפות: אנגלית, עברית."         -> "שפות: עברית."
+  <locale>_native_qt_all_cues.jsonl   "שפות: אנגלית, עברית."         -> "שפות: עברית."
 
 Only the trailing descriptor of a parameter description is touched; the rest of the
 entry is left byte-for-byte as it was (same key order, same JSON formatting). Each

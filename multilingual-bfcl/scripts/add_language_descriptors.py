@@ -41,7 +41,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 
-from multilingual_bfcl.experiment_names import derived_stem  # noqa: E402
+from multilingual_bfcl.experiment_names import EXPERIMENT_TO_LEVEL, derived_stem, split_stem  # noqa: E402
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
 from multilingual_bfcl.localization.translator import (  # noqa: E402
     add_language_descriptors_to_entry,
@@ -126,7 +126,11 @@ def main() -> None:
 
     total_modified = 0
     tagged_entries = 0
+    # Relabel entries with the output's experiment (e.g. native_qt_lang_hints) when it is a known one.
+    out_experiment = split_stem(out.stem, args.dest_locale)
     for entry in entries:
+        if out_experiment in EXPERIMENT_TO_LEVEL and "localization_level" in entry:
+            entry["localization_level"] = out_experiment
         n = add_language_descriptors_to_entry(entry, languages)
         total_modified += n
         if n:

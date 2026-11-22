@@ -1,0 +1,144 @@
+{
+  "id": "multiple_165_tr",
+  "source_id": "multiple_165",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1254,
+  "total_output_tokens": 349,
+  "total_latency_s": 3.9054183959960938,
+  "estimated_cost_usd": 0.0068977,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Şikago bölgesinde mükemmel durumdaki ikinci el bir Gibsın Les Pol gitarın fiyatını bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "guitar_price.find": {
+        "model": [
+          "Gibsın Les Pol"
+        ],
+        "condition": [
+          "Excellent"
+        ],
+        "location": [
+          "Şikago",
+          "Şikago bölgesi"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"guitar_price_find\", \"arguments\": {\"condition\": \"Excellent\", \"location\": \"Şikago\", \"model\": \"Gibsın Les Pol\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 501,
+      "output_tokens": 210,
+      "latency_s": 2.131434679031372,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "guitar_price_find",
+          "arguments": {
+            "model": "Gibsın Les Pol",
+            "condition": "Excellent",
+            "location": "Şikago"
+          },
+          "id": "call_f2023b4559394bff8223de15"
+        }
+      ],
+      "decoded": [
+        {
+          "guitar_price_find": {
+            "model": "Gibsın Les Pol",
+            "condition": "Excellent",
+            "location": "Şikago"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 753,
+      "output_tokens": 139,
+      "latency_s": 1.7739837169647217,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Şikago bölgesinde mükemmel durumdaki ikinci el bir Gibsın Les Pol gitarın fiyatını bul."
+    },
+    {
+      "content": "{\"name\": \"guitar_price_find\", \"arguments\": {\"condition\": \"Excellent\", \"location\": \"Şikago\", \"model\": \"Gibsın Les Pol\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond to Turkish request with exact function call. Should understand: \"Şikago bölgesinde mükemmel durumdaki ikinci el bir Gibsın Les Pol gitarın fiyatını bul.\" Find price of second-hand Gibsın Les Pol guitar in excellent condition in Chicago area. Tool guitar_price_find condition enum Poor Good Excellent, location Languages Turkish, model Languages Turkish. Should call model \"Gibsın Les Pol\" likely Turkish transliteration deliberately? Condition \"Excellent\"; location \"Şikago\". I'll output function call only. Should think if normalize model? User says Gibsın Les Pol (odd spelling perhaps Gibson Les Paul obfuscated Turkish). Must use given strings likely tool expects \"Gibsın Les Pol\", location \"Şikago\". Call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f2023b4559394bff8223de15",
+          "function": {
+            "arguments": "{\"model\": \"Gibsın Les Pol\", \"condition\": \"Excellent\", \"location\": \"Şikago\"}",
+            "name": "guitar_price_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need handle system? User now says 400 Bad Request no function call was made. Must answer by calling one available functions. Should use tool invocation properly via assistant to functions.guitar_price_find, not raw JSON response. Do that. Perhaps location/model Turkish exactly. Call."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,156 @@
+{
+  "id": "multiple_184_de",
+  "source_id": "multiple_184",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_native_qt_max_context",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1424,
+  "total_output_tokens": 283,
+  "total_latency_s": 2.989743947982788,
+  "estimated_cost_usd": 0.006529699999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Gib mir ein Rezept für vegetarische Pasta mit Käse für 2 Portionen."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "dietary_restriction": [
+          "Vegetarisch"
+        ],
+        "ingredients": [
+          [
+            "Pasta",
+            "Käse"
+          ],
+          [
+            "Käse",
+            "Pasta"
+          ]
+        ],
+        "servings": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\":\"recipe_search\",\"arguments\":{\"dietary_restriction\":\"vegetarisch\",\"ingredients\":[\"Pasta\",\"Käse\"],\"servings\":2}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 610,
+      "output_tokens": 162,
+      "latency_s": 1.478233814239502,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "dietary_restriction": "vegetarisch",
+            "ingredients": [
+              "Pasta",
+              "Käse"
+            ],
+            "servings": 2
+          },
+          "id": "call_e1e275592fc64853a6f2708a"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "dietary_restriction": "vegetarisch",
+            "ingredients": [
+              "Pasta",
+              "Käse"
+            ],
+            "servings": 2
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 814,
+      "output_tokens": 121,
+      "latency_s": 1.5115101337432861,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Gib mir ein Rezept für vegetarische Pasta mit Käse für 2 Portionen."
+    },
+    {
+      "content": "{\"name\":\"recipe_search\",\"arguments\":{\"dietary_restriction\":\"vegetarisch\",\"ingredients\":[\"Pasta\",\"Käse\"],\"servings\":2}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond with the correct function call exactly as tool definitions. User German: \"Gib mir ein Rezept für vegetarische Pasta mit Käse für 2 Portionen.\" Should call recipe_search with dietary_restriction vegetarian in German \"vegetarisch\"; ingredients list Pasta, Käse perhaps \"Nudeln\" and \"Käse\" or \"Pasta\", \"Käse\". servings 2. Should just have tool call. Should decide ingredients likely [\"Pasta\",\"Käse\"]. Tool languages German dietary restriction German. Use JSON."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e1e275592fc64853a6f2708a",
+          "function": {
+            "arguments": "{\"dietary_restriction\": \"vegetarisch\", \"ingredients\": [\"Pasta\", \"Käse\"], \"servings\": 2}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need interpret: My previous response apparently raw JSON not tool invocation? Should actually call functions.recipe_search via tool. I have available. I'll call."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

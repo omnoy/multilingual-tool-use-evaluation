@@ -1,0 +1,144 @@
+{
+  "id": "multiple_56_he",
+  "source_id": "multiple_56",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_native_qt_max_context",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1634,
+  "total_output_tokens": 166,
+  "total_latency_s": 5.288710832595825,
+  "estimated_cost_usd": 0.004928,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מחיר הסגירה הממוצע של מניית אפל ב-60 הימים האחרונים"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "avg_closing_price": {
+        "company": [
+          "אפל",
+          "אפל אינק",
+          "אפל אינק."
+        ],
+        "days": [
+          60
+        ],
+        "data_source": [
+          "יאהו פייננס",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"company\":\"אפל\",\"days\":60}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 759,
+      "output_tokens": 74,
+      "latency_s": 1.1237754821777344,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "אפל",
+            "days": 60
+          },
+          "id": "call_8afb2b0fee5849f199f0c553"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "אפל",
+            "days": 60
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 875,
+      "output_tokens": 92,
+      "latency_s": 4.164935350418091,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מחיר הסגירה הממוצע של מניית אפל ב-60 הימים האחרונים"
+    },
+    {
+      "content": "{\"company\":\"אפל\",\"days\":60}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond tool call exact specified. Should have Hebrew request average closing price Apple stock last 60 days. Use avg_closing_price company \"אפל\" days 60. data_source optional. Should have no source given omit. Call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8afb2b0fee5849f199f0c553",
+          "function": {
+            "arguments": "{\"company\": \"אפל\", \"days\": 60}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need call actual tool. Should avg_closing_price company Apple/אפל days 60. No data source. Do it."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

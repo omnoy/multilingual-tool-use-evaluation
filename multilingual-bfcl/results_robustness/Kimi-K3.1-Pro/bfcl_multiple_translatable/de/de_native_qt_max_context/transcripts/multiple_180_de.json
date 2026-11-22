@@ -1,0 +1,144 @@
+{
+  "id": "multiple_180_de",
+  "source_id": "multiple_180",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_native_qt_max_context",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1675,
+  "total_output_tokens": 170,
+  "total_latency_s": 5.065773248672485,
+  "estimated_cost_usd": 0.0058075,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Rufe die Spielerstatistiken für „Zelda“ auf der Switch für den Benutzer „Säm“ ab."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "game_stats.fetch_player_statistics": {
+        "game": [
+          "Zelda"
+        ],
+        "username": [
+          "Säm"
+        ],
+        "platform": [
+          "Switch",
+          "Nintendo Switch"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"game\":\"Zelda\",\"platform\":\"Switch\",\"username\":\"Säm\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 782,
+      "output_tokens": 69,
+      "latency_s": 3.725548505783081,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "game_stats_fetch_player_statistics",
+          "arguments": {
+            "game": "Zelda",
+            "username": "Säm",
+            "platform": "Switch"
+          },
+          "id": "call_521180cf31324aa1811b52e5"
+        }
+      ],
+      "decoded": [
+        {
+          "game_stats_fetch_player_statistics": {
+            "game": "Zelda",
+            "username": "Säm",
+            "platform": "Switch"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 893,
+      "output_tokens": 101,
+      "latency_s": 1.3402247428894043,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Rufe die Spielerstatistiken für „Zelda“ auf der Switch für den Benutzer „Säm“ ab."
+    },
+    {
+      "content": "{\"game\":\"Zelda\",\"platform\":\"Switch\",\"username\":\"Säm\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond function call exactly. User German: retrieve player stats Zelda Switch user Säm. Tool game_stats_fetch_player_statistics params game username required platform optional but given. Should call. Ensure strings."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_521180cf31324aa1811b52e5",
+          "function": {
+            "arguments": "{\"game\": \"Zelda\", \"username\": \"Säm\", \"platform\": \"Switch\"}",
+            "name": "game_stats_fetch_player_statistics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need now actual tool call, previous apparently raw? Should use functions.game_stats_fetch... Exact."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

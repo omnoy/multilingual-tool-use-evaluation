@@ -1,0 +1,155 @@
+{
+  "id": "multiple_151_de",
+  "source_id": "multiple_151",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1232,
+  "total_output_tokens": 214,
+  "total_latency_s": 2.741652011871338,
+  "estimated_cost_usd": 0.0052946,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde die Person mit den meisten Followern auf Twitter, die über Psychologie im Zusammenhang mit Verhalten und Gruppendynamik twittert."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "social_media_analytics.most_followed": {
+        "topic": [
+          "Psychologie"
+        ],
+        "sub_topics": [
+          [
+            "Verhalten",
+            "Gruppendynamik"
+          ],
+          [
+            "Gruppendynamik",
+            "Verhalten"
+          ]
+        ],
+        "region": [
+          "",
+          "weltweit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"topic\": \"Psychologie\", \"sub_topics\": [\"Verhalten\", \"Gruppendynamik\"]}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 536,
+      "output_tokens": 118,
+      "latency_s": 1.4686675071716309,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "social_media_analytics_most_followed",
+          "arguments": {
+            "topic": "Psychologie",
+            "sub_topics": [
+              "Verhalten",
+              "Gruppendynamik"
+            ]
+          },
+          "id": "call_780d18c7f1384190a042a2ab"
+        }
+      ],
+      "decoded": [
+        {
+          "social_media_analytics_most_followed": {
+            "topic": "Psychologie",
+            "sub_topics": [
+              "Verhalten",
+              "Gruppendynamik"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 696,
+      "output_tokens": 96,
+      "latency_s": 1.272984504699707,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde die Person mit den meisten Followern auf Twitter, die über Psychologie im Zusammenhang mit Verhalten und Gruppendynamik twittert."
+    },
+    {
+      "content": "{\"topic\": \"Psychologie\", \"sub_topics\": [\"Verhalten\", \"Gruppendynamik\"]}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "Kimi should respond in German, function exactly. Should interpret request find most followed Twitter user related to psychology subtopics behavior group dynamics. Tool social_media_analytics_most_followed topic main, subtopics optional region optional. I'll call the tool with topic \"Psychologie\", sub_topics [\"Verhalten\", \"Gruppendynamik\"]. User German. Should have exact function call only probably. I can call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_780d18c7f1384190a042a2ab",
+          "function": {
+            "arguments": "{\"topic\": \"Psychologie\", \"sub_topics\": [\"Verhalten\", \"Gruppendynamik\"]}",
+            "name": "social_media_analytics_most_followed"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need actually invoke tool in commentary. Previous assistant gave raw JSON not call. Should correct call."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

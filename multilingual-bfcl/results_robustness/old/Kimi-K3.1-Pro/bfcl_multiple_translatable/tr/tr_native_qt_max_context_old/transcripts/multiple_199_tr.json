@@ -1,0 +1,144 @@
+{
+  "id": "multiple_199_tr",
+  "source_id": "multiple_199",
+  "locale": "tr",
+  "localization_level": "full_full_full",
+  "benchmark": "tr_native_qt_max_context",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1514,
+  "total_output_tokens": 253,
+  "total_latency_s": 2.498335361480713,
+  "estimated_cost_usd": 0.0063917,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "İnsan etkisini de dikkate alarak Yeloustoun'daki ormanın önümüzdeki 5 yıl içindeki büyümesini tahmin et."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "forest_growth_forecast": {
+        "location": [
+          "Yeloustoun",
+          "yeloustoun"
+        ],
+        "years": [
+          5
+        ],
+        "include_human_impact": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\":\"forest_growth_forecast\",\"arguments\":{\"include_human_impact\":true,\"location\":\"Yeloustoun\",\"years\":5}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 674,
+      "output_tokens": 124,
+      "latency_s": 1.209104299545288,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "Yeloustoun",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "call_380ff25c5a5f4668b031f251"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "Yeloustoun",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 840,
+      "output_tokens": 129,
+      "latency_s": 1.2892310619354248,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "İnsan etkisini de dikkate alarak Yeloustoun'daki ormanın önümüzdeki 5 yıl içindeki büyümesini tahmin et."
+    },
+    {
+      "content": "{\"name\":\"forest_growth_forecast\",\"arguments\":{\"include_human_impact\":true,\"location\":\"Yeloustoun\",\"years\":5}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond to Turkish request with exact function call. Should parse: \"Considering human impact too, forecast growth of forest in Yeloustoun over next 5 years.\" Tool forest_growth_forecast args include_human_impact boolean true, location Yeloustoun, years 5. I'll call. No need text. Location unusual Yeloustoun preserve exactly. I'll output function call via tool."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_380ff25c5a5f4668b031f251",
+          "function": {
+            "arguments": "{\"location\": \"Yeloustoun\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond by actual tool call, not JSON output apparently. I have tool functions.forest_growth_forecast. I'll call exactly. User says no function call made. So invoke. Perhaps commentary channel. Do it."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

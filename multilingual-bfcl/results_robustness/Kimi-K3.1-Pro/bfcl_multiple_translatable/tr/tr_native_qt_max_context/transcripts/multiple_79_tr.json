@@ -1,0 +1,168 @@
+{
+  "id": "multiple_79_tr",
+  "source_id": "multiple_79",
+  "locale": "tr",
+  "localization_level": "full_full_full",
+  "benchmark": "tr_native_qt_max_context",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1102,
+  "total_output_tokens": 318,
+  "total_latency_s": 3.8007688522338867,
+  "estimated_cost_usd": 0.006191599999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Önümüzdeki ay New York'taki Modern Sanat Müzesi'nde düzenlenecek sanat sergilerini bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "exhibition_info": {
+        "museum_name": [
+          "Modern Sanat Müzesi",
+          "Moma",
+          "Modern Sanat Müzesi, New York"
+        ],
+        "month": [
+          "",
+          1
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "exhibition_info",
+          "arguments": {
+            "museum_name": "New York Modern Sanat Müzesi",
+            "month": 1
+          },
+          "id": "call_af51380a642b4bae811d3c40"
+        }
+      ],
+      "decoded": [
+        {
+          "exhibition_info": {
+            "museum_name": "New York Modern Sanat Müzesi",
+            "month": 1
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'exhibition_info'. Please review the function definition and try again.",
+      "input_tokens": 427,
+      "output_tokens": 191,
+      "latency_s": 1.542691946029663,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "exhibition_info",
+          "arguments": {
+            "museum_name": "Modern Sanat Müzesi",
+            "month": 1
+          },
+          "id": "call_c98877df30c54495a974434f"
+        }
+      ],
+      "decoded": [
+        {
+          "exhibition_info": {
+            "museum_name": "Modern Sanat Müzesi",
+            "month": 1
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 675,
+      "output_tokens": 127,
+      "latency_s": 2.2580769062042236,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Önümüzdeki ay New York'taki Modern Sanat Müzesi'nde düzenlenecek sanat sergilerini bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_af51380a642b4bae811d3c40",
+          "function": {
+            "arguments": "{\"museum_name\": \"New York Modern Sanat Müzesi\", \"month\": 1}",
+            "name": "exhibition_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Turkish understanding request: \"Find art exhibitions to be held next month at the Museum of Modern Art in New York.\" Tool exhibition_info with museum_name in Turkish, month future number default 1. Kimi will call exactly. Museum_name perhaps \"New York Modern Sanat Müzesi\" or \"Modern Sanat Müzesi\" (MoMA). Tool wants name Turkish. User says New York'taki Modern Sanat Müzesi. Use museum_name \"New York Modern Sanat Müzesi\" and month 1. Should have no final necessarily after tool? I'll call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'exhibition_info'. Please review the function definition and try again.",
+      "tool_call_id": "call_af51380a642b4bae811d3c40"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c98877df30c54495a974434f",
+          "function": {
+            "arguments": "{\"museum_name\": \"Modern Sanat Müzesi\", \"month\": 1}",
+            "name": "exhibition_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Perhaps retry invalid because museum_name expects exact supported Turkish \"Modern Sanat Müzesi\" rather than New York. Could be month description weird \"gelecek ay sayısı\" number months ahead. 1 valid. Museum name use \"Modern Sanat Müzesi\". I'll call again."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

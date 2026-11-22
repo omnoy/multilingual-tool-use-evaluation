@@ -1,0 +1,152 @@
+{
+  "id": "multiple_137_tr",
+  "source_id": "multiple_137",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1471,
+  "total_output_tokens": 476,
+  "total_latency_s": 4.299501657485962,
+  "estimated_cost_usd": 0.0088573,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kaliforniya'da 1 Ocak 2021'den sonra açılan, 'Gugıl' şirketiyle ilgili devam eden davaları ara."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuit_search": {
+        "company": [
+          "Gugıl"
+        ],
+        "start_date": [
+          "2021-01-01",
+          "01/01/2021",
+          "1 Oca. 2021",
+          "1 Ocak 2021"
+        ],
+        "location": [
+          "Kaliforniya"
+        ],
+        "status": [
+          "ongoing",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"company\": \"Gugıl\", \"location\": \"Kaliforniya\", \"start_date\": \"1 Ocak 2021\", \"status\": \"ongoing\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 584,
+      "output_tokens": 261,
+      "latency_s": 1.756556749343872,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugıl",
+            "start_date": "1 Ocak 2021",
+            "location": "Kaliforniya",
+            "status": "ongoing"
+          },
+          "id": "call_a18b472de96d4a3597d05806"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugıl",
+            "start_date": "1 Ocak 2021",
+            "location": "Kaliforniya",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 887,
+      "output_tokens": 215,
+      "latency_s": 2.54294490814209,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kaliforniya'da 1 Ocak 2021'den sonra açılan, 'Gugıl' şirketiyle ilgili devam eden davaları ara."
+    },
+    {
+      "content": "{\"company\": \"Gugıl\", \"location\": \"Kaliforniya\", \"start_date\": \"1 Ocak 2021\", \"status\": \"ongoing\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond to Turkish user request with correct function call exactly as tool definitions. Should parse: \"Kaliforniya'da 1 Ocak 2021'den sonra açılan, 'Gugıl' şirketiyle ilgili devam eden davaları ara.\" Means Search ongoing lawsuits related to company 'Gugıl' filed in California after Jan 1 2021. Tool lawsuit_search requires company, location, start_date, optional status default ongoing. Turkish languages for params. Should choose exact values likely company \"Gugıl\", location \"Kaliforniya\", start_date \"1 Ocak 2021\", status \"ongoing\". Should consider \"after Jan 1\" perhaps start date \"1 Ocak 2021\" appropriate. I should call the tool. No need other tools. Ensure JSON valid. Could set start_date \"2021-01-01\" or Turkish. Tool says Languages: Turkish for fields, likely use \"1 Ocak 2021\". I need exactly specified. I'll call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a18b472de96d4a3597d05806",
+          "function": {
+            "arguments": "{\"company\": \"Gugıl\", \"start_date\": \"1 Ocak 2021\", \"location\": \"Kaliforniya\", \"status\": \"ongoing\"}",
+            "name": "lawsuit_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need understand prior assistant response raw JSON not function call. Now user says error must answer calling available functions. I'll call the tool properly functions.lawsuit_search. I have tool definitions. Make sure parameters Turkish. Use company Gugıl, location Kaliforniya, start_date perhaps 2021-01-01, status ongoing. The user's original says after Jan 1 2021. Search start date likely ISO expected? Definition says Start of date range when lawsuit filed Languages Turkish. Could provide \"1 Ocak 2021\". Should call."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

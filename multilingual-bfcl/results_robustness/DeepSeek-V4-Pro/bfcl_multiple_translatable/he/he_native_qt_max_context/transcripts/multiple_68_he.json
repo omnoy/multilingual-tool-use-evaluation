@@ -1,0 +1,407 @@
+{
+  "id": "multiple_68_he",
+  "source_id": "multiple_68",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_native_qt_max_context",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 6160,
+  "total_output_tokens": 648,
+  "total_latency_s": 9.820610523223877,
+  "estimated_cost_usd": 0.01297344,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "האם אני יכול למצוא ספר בדיוני היסטורי בספרייה הציבורית של ניו יורק?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "library.search_books": {
+        "location": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "העיר ניו יורק",
+          "העיר ניו יורק, ניו יורק",
+          "הספרייה הציבורית של ניו יורק"
+        ],
+        "genre": [
+          "בדיון היסטורי"
+        ],
+        "title": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_books",
+          "arguments": {
+            "location": "הספרייה הציבורית של ניו יורק",
+            "genre": "בדיוני היסטורי"
+          },
+          "id": "call_90d0fc1d741c4e73974fa69c"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_books": {
+            "location": "הספרייה הציבורית של ניו יורק",
+            "genre": "בדיוני היסטורי"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'library_search_books'. Please review the function definition and try again.",
+      "input_tokens": 664,
+      "output_tokens": 79,
+      "latency_s": 1.7137248516082764,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "בואי ננסה שוב עם מיקום שונה:"
+      ],
+      "tool_calls": [
+        {
+          "name": "library_search_books",
+          "arguments": {
+            "location": "ניו יורק",
+            "genre": "בדיוני היסטורי"
+          },
+          "id": "call_2ef07f1e8b3d45539cef60ee"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_books": {
+            "location": "ניו יורק",
+            "genre": "בדיוני היסטורי"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'library_search_books'. Please review the function definition and try again.",
+      "input_tokens": 776,
+      "output_tokens": 86,
+      "latency_s": 1.074833631515503,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "מצטער על התקלה. בוא ננסה לחפש את הספר גם ב-Google Books וגם ב-Open Library במקביל:"
+      ],
+      "tool_calls": [
+        {
+          "name": "google_books_search",
+          "arguments": {
+            "genre": "בדיוני היסטורי"
+          },
+          "id": "call_53ac4b562ceb4aa6af6e6a3b"
+        },
+        {
+          "name": "openlibrary_books_search",
+          "arguments": {
+            "genre": "בדיוני היסטורי"
+          },
+          "id": "call_11f34e07b2af4dd29d122523"
+        }
+      ],
+      "decoded": [
+        {
+          "google_books_search": {
+            "genre": "בדיוני היסטורי"
+          }
+        },
+        {
+          "openlibrary_books_search": {
+            "genre": "בדיוני היסטורי"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'google_books_search'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'openlibrary_books_search'. Please review the function definition and try again.",
+      "input_tokens": 895,
+      "output_tokens": 122,
+      "latency_s": 2.4047515392303467,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "אני מתנצל, אך לצערי הפונקציות הזמינות מחזירות שגיאות בעת הניסיון לחפש. ייתכן שהשירותים הללו אינם תומכים כרגע בחיפוש עם הפרמטרים שסופקו, או שיש מגבלה טכנית כלשהי.\n\nעם זאת, כדי לענות על שאלתך — **כן**, הספרייה הציבורית של ניו יורק (NYPL) היא אחת הספריות הגדולות בעולם ויש לה אוסף עצום של ספרי **בדיוני היסטורי**. תוכל לחפש בקטלוג המקוון שלהם באתר הרשמי (nypl.org) לפי הז'אנר \"Historical Fiction\" ולמצוא מגוון רחב של ספרים.\n\nהאם יש ספר ספציפי שאתה מחפש? אולי אוכל לעזור בדרך אחרת."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1081,
+      "output_tokens": 204,
+      "latency_s": 2.079482316970825,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_books",
+          "arguments": {
+            "location": "הספרייה הציבורית של ניו יורק",
+            "genre": "בדיוני היסטורי",
+            "title": ""
+          },
+          "id": "call_fa9d92635a2f429bbfafda91"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_books": {
+            "location": "הספרייה הציבורית של ניו יורק",
+            "genre": "בדיוני היסטורי",
+            "title": ""
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'library_search_books'. Please review the function definition and try again.",
+      "input_tokens": 1309,
+      "output_tokens": 93,
+      "latency_s": 1.342557668685913,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_books",
+          "arguments": {
+            "location": "New York",
+            "genre": "historical fiction"
+          },
+          "id": "call_ec9c835cc6b1407e8670914c"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_books": {
+            "location": "New York",
+            "genre": "historical fiction"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1435,
+      "output_tokens": 64,
+      "latency_s": 1.2052605152130127,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "האם אני יכול למצוא ספר בדיוני היסטורי בספרייה הציבורית של ניו יורק?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_90d0fc1d741c4e73974fa69c",
+          "function": {
+            "arguments": "{\"location\": \"הספרייה הציבורית של ניו יורק\", \"genre\": \"בדיוני היסטורי\"}",
+            "name": "library_search_books"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'library_search_books'. Please review the function definition and try again.",
+      "tool_call_id": "call_90d0fc1d741c4e73974fa69c"
+    },
+    {
+      "content": "בואי ננסה שוב עם מיקום שונה:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2ef07f1e8b3d45539cef60ee",
+          "function": {
+            "arguments": "{\"location\": \"ניו יורק\", \"genre\": \"בדיוני היסטורי\"}",
+            "name": "library_search_books"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'library_search_books'. Please review the function definition and try again.",
+      "tool_call_id": "call_2ef07f1e8b3d45539cef60ee"
+    },
+    {
+      "content": "מצטער על התקלה. בוא ננסה לחפש את הספר גם ב-Google Books וגם ב-Open Library במקביל:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_53ac4b562ceb4aa6af6e6a3b",
+          "function": {
+            "arguments": "{\"genre\": \"בדיוני היסטורי\"}",
+            "name": "google_books_search"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_11f34e07b2af4dd29d122523",
+          "function": {
+            "arguments": "{\"genre\": \"בדיוני היסטורי\"}",
+            "name": "openlibrary_books_search"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'google_books_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_53ac4b562ceb4aa6af6e6a3b"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'openlibrary_books_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_11f34e07b2af4dd29d122523"
+    },
+    {
+      "content": "אני מתנצל, אך לצערי הפונקציות הזמינות מחזירות שגיאות בעת הניסיון לחפש. ייתכן שהשירותים הללו אינם תומכים כרגע בחיפוש עם הפרמטרים שסופקו, או שיש מגבלה טכנית כלשהי.\n\nעם זאת, כדי לענות על שאלתך — **כן**, הספרייה הציבורית של ניו יורק (NYPL) היא אחת הספריות הגדולות בעולם ויש לה אוסף עצום של ספרי **בדיוני היסטורי**. תוכל לחפש בקטלוג המקוון שלהם באתר הרשמי (nypl.org) לפי הז'אנר \"Historical Fiction\" ולמצוא מגוון רחב של ספרים.\n\nהאם יש ספר ספציפי שאתה מחפש? אולי אוכל לעזור בדרך אחרת.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fa9d92635a2f429bbfafda91",
+          "function": {
+            "arguments": "{\"location\": \"הספרייה הציבורית של ניו יורק\", \"genre\": \"בדיוני היסטורי\", \"title\": \"\"}",
+            "name": "library_search_books"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'library_search_books'. Please review the function definition and try again.",
+      "tool_call_id": "call_fa9d92635a2f429bbfafda91"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ec9c835cc6b1407e8670914c",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"genre\": \"historical fiction\"}",
+            "name": "library_search_books"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

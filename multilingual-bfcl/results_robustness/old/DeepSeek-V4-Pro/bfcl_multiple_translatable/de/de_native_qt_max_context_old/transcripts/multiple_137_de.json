@@ -1,0 +1,184 @@
+{
+  "id": "multiple_137_de",
+  "source_id": "multiple_137",
+  "locale": "de",
+  "localization_level": "full_full_full",
+  "benchmark": "de_native_qt_max_context",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1892,
+  "total_output_tokens": 241,
+  "total_latency_s": 2.3318347930908203,
+  "estimated_cost_usd": 0.00413076,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Suche nach laufenden Gerichtsverfahren im Zusammenhang mit dem Unternehmen 'Gugel', bei denen die Klage nach dem 1. Januar 2021 in Kalifornien eingereicht wurde."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuit_search": {
+        "company": [
+          "Gugel"
+        ],
+        "start_date": [
+          "2021-01-01",
+          "01/01/2021",
+          "Jan.1,2021",
+          "Januar 1, 2021"
+        ],
+        "location": [
+          "Kalifornien",
+          "CA"
+        ],
+        "status": [
+          "ongoing",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugel",
+            "start_date": "1. Januar 2021",
+            "location": "Kalifornien",
+            "status": "ongoing"
+          },
+          "id": "call_fdb501a0df8d435a9e553ce3"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugel",
+            "start_date": "1. Januar 2021",
+            "location": "Kalifornien",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 878,
+      "output_tokens": 104,
+      "latency_s": 1.0298309326171875,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Es scheint ein Problem mit den Parametern gegeben zu haben. Lassen Sie mich den Aufruf mit dem korrekten Datumsformat wiederholen."
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Gugel",
+            "start_date": "2021-01-01",
+            "location": "Kalifornien",
+            "status": "ongoing"
+          },
+          "id": "call_13e2e05e39fa4088a258ae7b"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Gugel",
+            "start_date": "2021-01-01",
+            "location": "Kalifornien",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1014,
+      "output_tokens": 137,
+      "latency_s": 1.3020038604736328,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Suche nach laufenden Gerichtsverfahren im Zusammenhang mit dem Unternehmen 'Gugel', bei denen die Klage nach dem 1. Januar 2021 in Kalifornien eingereicht wurde."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fdb501a0df8d435a9e553ce3",
+          "function": {
+            "arguments": "{\"company\": \"Gugel\", \"start_date\": \"1. Januar 2021\", \"location\": \"Kalifornien\", \"status\": \"ongoing\"}",
+            "name": "lawsuit_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_fdb501a0df8d435a9e553ce3"
+    },
+    {
+      "content": "Es scheint ein Problem mit den Parametern gegeben zu haben. Lassen Sie mich den Aufruf mit dem korrekten Datumsformat wiederholen.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_13e2e05e39fa4088a258ae7b",
+          "function": {
+            "arguments": "{\"company\": \"Gugel\", \"start_date\": \"2021-01-01\", \"location\": \"Kalifornien\", \"status\": \"ongoing\"}",
+            "name": "lawsuit_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

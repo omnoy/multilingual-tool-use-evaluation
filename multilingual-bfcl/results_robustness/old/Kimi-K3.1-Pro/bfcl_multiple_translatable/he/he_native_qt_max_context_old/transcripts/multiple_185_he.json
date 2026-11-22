@@ -1,0 +1,183 @@
+{
+  "id": "multiple_185_he",
+  "source_id": "multiple_185",
+  "locale": "he",
+  "localization_level": "full_full_full",
+  "benchmark": "he_native_qt_max_context",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1381,
+  "total_output_tokens": 353,
+  "total_latency_s": 2.7939834594726562,
+  "estimated_cost_usd": 0.006292000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את מסעדת הסושי הקרובה ביותר עם מרפסת בבוסטון."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant_search.find_closest": {
+        "location": [
+          "בוסטון",
+          "בוסטון, מסצ'וסטס"
+        ],
+        "cuisine": [
+          "סושי"
+        ],
+        "amenities": [
+          [
+            "Patio"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "location": "Boston",
+            "cuisine": "Sushi",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "call_4c84a6c3f1d14aa18cc9333b"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "location": "Boston",
+            "cuisine": "Sushi",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "input_tokens": 581,
+      "output_tokens": 156,
+      "latency_s": 1.1887829303741455,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_search_find_closest",
+          "arguments": {
+            "location": "בוסטון",
+            "cuisine": "סושי",
+            "amenities": [
+              "Patio"
+            ]
+          },
+          "id": "call_3d5ad324bfa34d2eb22c1808"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_search_find_closest": {
+            "location": "בוסטון",
+            "cuisine": "סושי",
+            "amenities": [
+              "Patio"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 800,
+      "output_tokens": 197,
+      "latency_s": 1.6052005290985107,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את מסעדת הסושי הקרובה ביותר עם מרפסת בבוסטון."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4c84a6c3f1d14aa18cc9333b",
+          "function": {
+            "arguments": "{\"location\": \"Boston\", \"cuisine\": \"Sushi\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Hebrew? User asks: \"Find the closest sushi restaurant with a patio in Boston.\" I'll call restaurant_search_find_closest with location Boston cuisine Sushi amenities [\"Patio\"]. Should have exact function. I should call the tool. Ensure supported languages English Hebrew. Use \"Boston\", \"Sushi\". amenities Patio. No need extra."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_search_find_closest'. Please review the function definition and try again.",
+      "tool_call_id": "call_4c84a6c3f1d14aa18cc9333b"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3d5ad324bfa34d2eb22c1808",
+          "function": {
+            "arguments": "{\"location\": \"בוסטון\", \"cuisine\": \"סושי\", \"amenities\": [\"Patio\"]}",
+            "name": "restaurant_search_find_closest"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned invalid parameters weird. Should review definition: amenities optional array enum Patio etc, cuisine string, location string. My call matches. Perhaps requires Hebrew? Could be cuisine \"sushi\" lowercase? location \"בוסטון\"? Error invalid parameters perhaps cuisine should Hebrew? Should try again. Perhaps exact API expects cuisine \"Sushi\" location \"Boston\" amenities? I did. Could be issue call parameter order? Not likely. Perhaps use Hebrew \"סושי\", \"בוסטון\", amenities [\"Patio\"]. Try."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

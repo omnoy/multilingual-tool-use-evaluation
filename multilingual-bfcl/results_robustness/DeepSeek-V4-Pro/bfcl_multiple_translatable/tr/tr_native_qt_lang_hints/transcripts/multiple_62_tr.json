@@ -1,0 +1,383 @@
+{
+  "id": "multiple_62_tr",
+  "source_id": "multiple_62",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 5,
+  "num_clarifications": 0,
+  "num_failed_calls": 4,
+  "final_error_type": null,
+  "total_input_tokens": 4324,
+  "total_output_tokens": 818,
+  "total_latency_s": 9.470943689346313,
+  "estimated_cost_usd": 0.010370399999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Bana Boston, Masaçusets'te kamp yapmaya izin verilen ve güzel manzaralara sahip en yakın doğa parkını bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "nature_park.find_nearby": {
+        "location": [
+          "Boston, Masaçusets",
+          "Boston"
+        ],
+        "features": [
+          [
+            "Camping",
+            "Scenic View"
+          ],
+          [
+            "Scenic View",
+            "Camping"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "Boston, Massachusetts",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_bd9046fd00094d5497c0cad5"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "Boston, Massachusetts",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 550,
+      "output_tokens": 76,
+      "latency_s": 1.061640977859497,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Bir hata oluştu. \"Massachusetts\" yerine kısaltılmış haliyle deneyeyim."
+      ],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "Boston, MA",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_9bbfda9cecaf4876b4b0eee4"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "Boston, MA",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 663,
+      "output_tokens": 103,
+      "latency_s": 1.2186133861541748,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Fonksiyon tanımına göre `location` parametresi \"şehir ve eyalet\" formatında ve Türkçe olmalı. \"Boston, Massachusetts\" Türkçe formatına uygun görünüyor. Ancak hata devam ediyor. Eyalet adını Türkçe yazımıyla deneyeyim."
+      ],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "Boston, Massaçusets",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_50879a7bbb6b4c2f9845026d"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "Boston, Massaçusets",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 803,
+      "output_tokens": 163,
+      "latency_s": 1.4702811241149902,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Fonksiyon tanımını tekrar incelediğimde, `location` parametresinin açıklaması \"The city and state. Languages: Turkish.\" şeklinde. Bu, lokasyonun Türkçe olarak yazılması gerektiğini belirtiyor. \"Boston, Massachusetts\" doğru bir kullanım gibi görünüyor. Ancak kamp ve manzara özelliklerini bir kez daha kontrol edeyim. Belki de \"Camping\" yerine tam olarak eşleşen enum değerini kullanmadım. Enum değerlerini kontrol edeyim: \"Camping\", \"Scenic View\", \"Trails\", \"Picnic Areas\". Hepsi doğru. Şimdi tekrar orijinal denemeyi yapayım:"
+      ],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "Boston, Massachusetts",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_ee53c80d7f7c4c8b93add20d"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "Boston, Massachusetts",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 1003,
+      "output_tokens": 265,
+      "latency_s": 2.104393482208252,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "Sürekli aynı hatayı alıyorum. Acaba parametre isimlerinde bir sorun olabilir mi diye kontrol edeyim. Fonksiyon tanımına göre `location` ve `features` parametreleri mevcut, her ikisi de doğru görünüyor. Belki de `features` array olarak değil de farklı bir formatta iletilmesi gerekiyor. Ancak tanımda `array` olarak belirtilmiş. Sorun lokasyon formatında olabilir. Sadece \"Boston\" olarak deneyeyim:"
+      ],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "Boston",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_617f6f642d5446ddb93ade92"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "Boston",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1305,
+      "output_tokens": 211,
+      "latency_s": 3.6160147190093994,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Bana Boston, Masaçusets'te kamp yapmaya izin verilen ve güzel manzaralara sahip en yakın doğa parkını bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_bd9046fd00094d5497c0cad5",
+          "function": {
+            "arguments": "{\"location\": \"Boston, Massachusetts\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_bd9046fd00094d5497c0cad5"
+    },
+    {
+      "content": "Bir hata oluştu. \"Massachusetts\" yerine kısaltılmış haliyle deneyeyim.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9bbfda9cecaf4876b4b0eee4",
+          "function": {
+            "arguments": "{\"location\": \"Boston, MA\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_9bbfda9cecaf4876b4b0eee4"
+    },
+    {
+      "content": "Fonksiyon tanımına göre `location` parametresi \"şehir ve eyalet\" formatında ve Türkçe olmalı. \"Boston, Massachusetts\" Türkçe formatına uygun görünüyor. Ancak hata devam ediyor. Eyalet adını Türkçe yazımıyla deneyeyim.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_50879a7bbb6b4c2f9845026d",
+          "function": {
+            "arguments": "{\"location\": \"Boston, Massaçusets\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_50879a7bbb6b4c2f9845026d"
+    },
+    {
+      "content": "Fonksiyon tanımını tekrar incelediğimde, `location` parametresinin açıklaması \"The city and state. Languages: Turkish.\" şeklinde. Bu, lokasyonun Türkçe olarak yazılması gerektiğini belirtiyor. \"Boston, Massachusetts\" doğru bir kullanım gibi görünüyor. Ancak kamp ve manzara özelliklerini bir kez daha kontrol edeyim. Belki de \"Camping\" yerine tam olarak eşleşen enum değerini kullanmadım. Enum değerlerini kontrol edeyim: \"Camping\", \"Scenic View\", \"Trails\", \"Picnic Areas\". Hepsi doğru. Şimdi tekrar orijinal denemeyi yapayım:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ee53c80d7f7c4c8b93add20d",
+          "function": {
+            "arguments": "{\"location\": \"Boston, Massachusetts\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_ee53c80d7f7c4c8b93add20d"
+    },
+    {
+      "content": "Sürekli aynı hatayı alıyorum. Acaba parametre isimlerinde bir sorun olabilir mi diye kontrol edeyim. Fonksiyon tanımına göre `location` ve `features` parametreleri mevcut, her ikisi de doğru görünüyor. Belki de `features` array olarak değil de farklı bir formatta iletilmesi gerekiyor. Ancak tanımda `array` olarak belirtilmiş. Sorun lokasyon formatında olabilir. Sadece \"Boston\" olarak deneyeyim:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_617f6f642d5446ddb93ade92",
+          "function": {
+            "arguments": "{\"location\": \"Boston\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

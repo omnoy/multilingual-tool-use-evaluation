@@ -1,0 +1,198 @@
+{
+  "id": "multiple_91_he",
+  "source_id": "multiple_91",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1762,
+  "total_output_tokens": 438,
+  "total_latency_s": 5.516010284423828,
+  "estimated_cost_usd": 0.0090896,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "האם אוכל למצוא מתכון בישול טוב לפאי תפוחים עם פחות מ-5 מצרכים?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "פאי תפוחים",
+          "תפוח"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"mainIngredient\":\"תפוחים\",\"ingredientLimit\":4}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 393,
+      "output_tokens": 165,
+      "latency_s": 2.4714791774749756,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "תפוחים",
+            "ingredientLimit": 4
+          },
+          "id": "call_2c660d22e680456ea3dac31c"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "תפוחים",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_find'. Please review the function definition and try again.",
+      "input_tokens": 600,
+      "output_tokens": 114,
+      "latency_s": 1.5954253673553467,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "תפוח",
+            "ingredientLimit": 4
+          },
+          "id": "call_f8dfd0fb71d742f3ae91944d"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "תפוח",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 769,
+      "output_tokens": 159,
+      "latency_s": 1.4491057395935059,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "האם אוכל למצוא מתכון בישול טוב לפאי תפוחים עם פחות מ-5 מצרכים?"
+    },
+    {
+      "content": "{\"mainIngredient\":\"תפוחים\",\"ingredientLimit\":4}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need interpret Hebrew. User: \"האם אוכל למצוא מתכון בישול טוב לפאי תפוחים עם פחות מ-5 מצרכים?\" Can I find a good cooking recipe for apple pie with less than 5 ingredients? Should function recipe_find mainIngredient Hebrew, ingredientLimit max number. Less than 5 => max 4. Main ingredient apples? Hebrew תפוחים perhaps \"תפוחים\" or \"תפוח\". Tool language Hebrew. Call exactly specified. I'll respond correct function call, no extra. Main ingredient \"תפוחים\", ingredientLimit 4."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2c660d22e680456ea3dac31c",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"תפוחים\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need address previous error: user says must respond by calling available functions. Should have actual tool call functions.recipe_find with mainIngredient Hebrew \"תפוחים\", ingredientLimit 4 (fewer than 5). Do that."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_2c660d22e680456ea3dac31c"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f8dfd0fb71d742f3ae91944d",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"תפוח\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid params. Should investigate schema says mainIngredient string Hebrew, ingredientLimit integer. I gave valid. Perhaps expected mainIngredient \"תפוח\" singular? Could be strict values? Now retry. Could be less than 5 should ingredientLimit 5? But error invalid parameters perhaps \"תפוחים\" not accepted? The requested apple pie main ingredient \"תפוח\" likely. Should call with \"תפוח\" and 4."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

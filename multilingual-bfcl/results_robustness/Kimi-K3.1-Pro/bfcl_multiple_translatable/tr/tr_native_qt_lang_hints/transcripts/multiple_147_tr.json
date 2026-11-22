@@ -1,0 +1,194 @@
+{
+  "id": "multiple_147_tr",
+  "source_id": "multiple_147",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1350,
+  "total_output_tokens": 501,
+  "total_latency_s": 5.284144401550293,
+  "estimated_cost_usd": 0.0088665,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Otoyolları ve ücretli yolları kullanmadan Nyu York'tan Los Encılıs'a yol tarifi ver."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "map_service.get_directions": {
+        "start": [
+          "Nyu York",
+          "Nyu York, En Vay",
+          "En Vay Si"
+        ],
+        "end": [
+          "Los Encılıs",
+          "El Ey"
+        ],
+        "avoid": [
+          [
+            "highways",
+            "tolls"
+          ],
+          [
+            "tolls",
+            "highways"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "call_930c9c8f52a245a58d18b857"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+      "input_tokens": 536,
+      "output_tokens": 216,
+      "latency_s": 2.406497001647949,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "Nyu York",
+            "end": "Los Encılıs",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "call_8a8b08c9d1f04851ae432d81"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "Nyu York",
+            "end": "Los Encılıs",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 814,
+      "output_tokens": 285,
+      "latency_s": 2.8776473999023438,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Otoyolları ve ücretli yolları kullanmadan Nyu York'tan Los Encılıs'a yol tarifi ver."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_930c9c8f52a245a58d18b857",
+          "function": {
+            "arguments": "{\"start\": \"New York\", \"end\": \"Los Angeles\", \"avoid\": [\"highways\", \"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need parse Turkish: \"Otoyolları ve ücretli yolları kullanmadan Nyu York'tan Los Encılıs'a yol tarifi ver.\" Directions from New York to Los Angeles (misspelled phonetically) without highways and toll roads. I'll call map_service_get_directions start end, avoid [\"highways\",\"tolls\"] likely exact. Turkish location names supported. Nyu York -> New York? Los Encılıs -> Los Angeles. Could use \"New York\" start \"Los Angeles\" end; tool languages Turkish. No need extra. Must call function. I should output tool call exactly."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'map_service_get_directions'. Please review the function definition and try again.",
+      "tool_call_id": "call_930c9c8f52a245a58d18b857"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8a8b08c9d1f04851ae432d81",
+          "function": {
+            "arguments": "{\"start\": \"Nyu York\", \"end\": \"Los Encılıs\", \"avoid\": [\"highways\", \"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got invalid params. Should inspect? Schema seems fine. Could be order? avoid order irrelevant. Perhaps expected locations in Turkish exactly? Or avoid order? Try exact Turkish text: \"Nyu York\" \"Los Encılıs\" and avoid [\"highways\",\"tolls\"]? It complained invalid parameters, perhaps order avoid tolls highways? No likely tool requires avoid list order? Tool API sometimes schemas enums etc. Perhaps use avoid [\"tolls\",\"highways\"] as common? I'll call again. Try start \"Nyu York\" end \"Los Encılıs\" perhaps engine expects exactly? Tool description Languages Turkish weird. Map function likely expects Turkish names? New York Turkish \"Nyu York\"; Los Angeles user \"Los Encılıs\" perhaps intentionally. Directions should work with real names. Invalid parameters can be perhaps avoid only tolls and highways accepted. I have right. Could there be array ordering? Usually JSON arbitrary. I'll retry with user strings and avoid."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

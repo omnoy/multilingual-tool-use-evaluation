@@ -1,0 +1,234 @@
+{
+  "id": "multiple_134_tr",
+  "source_id": "multiple_134",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 3115,
+  "total_output_tokens": 701,
+  "total_latency_s": 36.211901903152466,
+  "estimated_cost_usd": 0.015226,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "San Diyego İlçesi'nde CA123456 dava numaralı ağır suç kaydının ayrıntılarını araştır."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "crime_record.get_record": {
+        "case_number": [
+          "CA123456"
+        ],
+        "county": [
+          "San Diyego",
+          "San Diyego İlçesi"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "call_744adff9c7744a7e92417ccd"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 734,
+      "output_tokens": 273,
+      "latency_s": 32.094157457351685,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego County",
+            "details": true
+          },
+          "id": "call_33bb6d04229a44c3b84b8253"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego County",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1066,
+      "output_tokens": 190,
+      "latency_s": 1.9462130069732666,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diyego İlçesi",
+            "details": true
+          },
+          "id": "call_81e30403709e4838b726daec"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diyego İlçesi",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1315,
+      "output_tokens": 238,
+      "latency_s": 2.1715314388275146,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "San Diyego İlçesi'nde CA123456 dava numaralı ağır suç kaydının ayrıntılarını araştır."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_744adff9c7744a7e92417ccd",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond to the Turkish request using crime_record_get_record only — with county San Diego? User: \"San Diyego İlçesi'nde CA123456 dava numaralı ağır suç kaydının ayrıntılarını araştır.\" Means investigate details of felony crime record with case number CA123456 in San Diego County. I'll call exact tool, Turkish parameters? Tool says case_number languages Turkish weird county Turkish but should pass actual identifiers. county likely \"San Diego\" or \"San Diego County\" perhaps \"San Diego\" preferred. Should set details true. I must call. Should have no extraneous. Could pass case_number CA123456 county \"San Diego\" details true. Tool definition detailed felony crime records specific case number location. \"San Diyego İlçesi\" = San Diego County. Function names likely expect English. Should say \"San Diego\". I'll do details true."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_744adff9c7744a7e92417ccd"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_33bb6d04229a44c3b84b8253",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego County\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got invalid params. Perhaps county Turkish \"San Diego County\"? Or case number formatting? I'll review definition exactly. case_number related to crime Languages Turkish, county crime occurred Languages Turkish details bool. All provided. Why bad request? Could require county exact \"San Diego County\" or Turkish \"San Diego İlçesi\". I should retry likely county \"San Diego County\". Tool name appears. I can retry corrected. Perhaps Turkish spelling \"San Diego\". User San Diyego but English county likely \"San Diego County\". Try exact."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_33bb6d04229a44c3b84b8253"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_81e30403709e4838b726daec",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diyego İlçesi\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Perhaps infer tool API county must Turkish? \"San Diego County, CA\"? Both invalid. Perhaps details true not accepted? Definition says optional. Could be tool only accepts specific county list and case number patterns, but 400 invalid parameters means all? Could be case number CA123456 invalid expected digits? User exact. Could perhaps requires county \"San Diyego İlçesi\" in Turkish. Since instructions say Turkish language param and \"Languages: Turkish\". It likely expects localized county. Use \"San Diyego İlçesi\". Could omit details? But user details, need true. Could county expected \"San Diego\" was first. Perhaps tool function implementation bug? Should not keep many futile attempts? I can retry once with user Turkish exact."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,479 @@
+{
+  "id": "multiple_189_tr",
+  "source_id": "multiple_189",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "claude-opus-5-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 10860,
+  "total_output_tokens": 1918,
+  "total_latency_s": 21.809232473373413,
+  "estimated_cost_usd": 0.0818,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Nyu York saat dilimindeki öğleden sonra saat 3'ü Londra saat dilimine dönüştür."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "öğleden sonra saat 3"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "Nyu York",
+          "Nyu York, Nyu York",
+          "Nyu York Şehri",
+          "Doğu Standart Saati"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "Londra",
+          "Britanya Yaz Saati",
+          "Griniç Ortalama Saati"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "öğleden sonra 3",
+            "from_timezone": "New York",
+            "to_timezone": "Londra"
+          },
+          "id": "toolu_019HSbsqFez5gj4HKYgXCsy9"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "öğleden sonra 3",
+            "from_timezone": "New York",
+            "to_timezone": "Londra"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 774,
+      "output_tokens": 111,
+      "latency_s": 1.4579119682312012,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "15:00",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          },
+          "id": "toolu_01GVkqhbvU44QeENjfMFkL61"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "15:00",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 927,
+      "output_tokens": 147,
+      "latency_s": 1.6080334186553955,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "15:00",
+            "from_timezone": "New York",
+            "to_timezone": "Londra"
+          },
+          "id": "toolu_01WBvJn8c4dgz1QCsFgTDHhd"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "15:00",
+            "from_timezone": "New York",
+            "to_timezone": "Londra"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 1116,
+      "output_tokens": 155,
+      "latency_s": 1.7074122428894043,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Saat dönüştürme aracı çalışmadı ama elle hesapladım: **New York'ta öğleden sonra 3 (15:00), Londra'da genellikle akşam 8'e (20:00) denk geliyor.**\n\nAracı farklı biçimlerle üç kez denedim (\"öğleden sonra 3\" ile \"New York/Londra\", \"15:00\" ile \"America/New_York/Europe/London\" ve \"15:00\" ile \"New York/Londra\"). Her seferinde \"geçersiz parametre\" hatası verdi. Bu yüzden aşağıdaki hesap aracın sonucu değil, kendi bilgime dayanıyor.\n\n- **Yılın büyük bölümünde:** Londra, New York'tan 5 saat ileride. Bu durumda 15:00, Londra'da **20:00** oluyor.\n- **Yılda birkaç hafta:** İki ülke yaz saatine farklı tarihlerde geçip çıkıyor. Bu dönemlerde fark 4 saate düşüyor ve 15:00, Londra'da **19:00** oluyor. Bu haftalar mart ayının ortasından sonuna kadar olan 2-3 hafta ile ekim sonu ve kasım başındaki yaklaşık bir hafta.\n\nBelirli bir tarih verirseniz o güne göre hangi saatin geçerli olduğunu söyleyebilirim."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1313,
+      "output_tokens": 577,
+      "latency_s": 6.561912775039673,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "3:00 PM",
+            "from_timezone": "EST",
+            "to_timezone": "GMT"
+          },
+          "id": "toolu_015EzUcHVCcLrCAW3fpVqKCC"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "3:00 PM",
+            "from_timezone": "EST",
+            "to_timezone": "GMT"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 1922,
+      "output_tokens": 150,
+      "latency_s": 2.120248556137085,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "Saat dönüştürme aracı bu kez de çalışmadı, sonuç alamadım. Bu yüzden önceki cevabım geçerli: **New York'ta 15:00, Londra'da genellikle 20:00'ye denk geliyor.** Bu, aracın sonucu değil, kendi hesabım.\n\nBu kez \"3:00 PM\" ile \"EST/GMT\" biçimini denedim. Önceki üç denemede olduğu gibi yine \"geçersiz parametre\" hatası döndü. Dört farklı biçim de reddedildiğine göre sorun büyük olasılıkla girdinin biçiminde değil, aracın kendisinde. Aynı denemeyi tekrarlamanın bir yararı olmaz.\n\n- **Yılın büyük bölümünde:** Londra, New York'tan 5 saat ileride, yani 15:00 Londra'da **20:00** oluyor.\n- **Yaz saatine geçiş ve dönüş dönemlerinde:** Mart ortasından sonuna kadar 2-3 hafta ile ekim sonu ve kasım başında yaklaşık bir hafta fark 4 saate düşüyor. Bu günlerde 15:00 Londra'da **19:00** oluyor.\n\nBelirli bir tarih verirseniz o güne göre hangi saatin geçerli olduğunu söyleyebilirim."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 2114,
+      "output_tokens": 548,
+      "latency_s": 5.8061363697052,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "öğleden sonra saat 3",
+            "from_timezone": "Nyu York saat dilimi",
+            "to_timezone": "Londra saat dilimi"
+          },
+          "id": "toolu_01D2QhoEcqSjvCocpHeeR65n"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "öğleden sonra saat 3",
+            "from_timezone": "Nyu York saat dilimi",
+            "to_timezone": "Londra saat dilimi"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2694,
+      "output_tokens": 230,
+      "latency_s": 2.547577142715454,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Nyu York saat dilimindeki öğleden sonra saat 3'ü Londra saat dilimine dönüştür."
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_019HSbsqFez5gj4HKYgXCsy9",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "time": "öğleden sonra 3",
+            "from_timezone": "New York",
+            "to_timezone": "Londra"
+          },
+          "name": "timezone_convert",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_019HSbsqFez5gj4HKYgXCsy9"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSjwUKEAgTGAI4AUIIdGhpbmtpbmcSDJsCFfxYFIBejWNyHxoME4HTd0XryjQHMzL5IjDE69SJ/l3cLYnqud94idYS5mbIiJMD3HiUFzFtZFjFB/oNbF1YrQRj9LMNuiXTYzcqrATfXZY9k4SCN5lT9NwuVfKa+3ziU0kvvlKchJjQDqppUFxtkIL/BsQDfX+GfU2MjUdbGju3881XGSEWHgmoH9BQUq41Td0md5X6ipBnENiO0LLRt4STFXJwCxJDjsMw0wEFYr8ZD2/Gk1LZa6A97RMNH5Um1EUF9fqVfHBlnVurX24TkhN1lkoth9V41eIfHMSX/ziaS5aKt69mQpmloBb0UJe7aDBHEBCMIFDFyUNGui9JsAJGo4jiarKrR2eGjvixVvR8+yz18WwB41dqCH0IvgFqoHvKDY3ydKzqPjZTwBCKVunWYdMwgocq7ecMVX4YzP2owzkgNmiTIYT2/3tgQYsLlQ7kzUw82htEHauPTxtBY6IN2Mnybgw5aNJ63ILDpHCrS+vXOn/YmElPf+rNUauj4aTs7FBcnZXrQpyBIf59CpcSvvMvXhTJwtQSN1DnMSax0u3CfWRCzspvvxRedOpbl9ctDnznndTUnBzm72j06smi6sJzz7WCeoDkVaoWWpQRt062WA7hp2wdyl6fzjTJOw3+djobgXZ9lLCNWwTG4P2BM9Irr6FlmYsXmMbyLnrqeT13J1wsM7Sjlw5GZM9L3IK1RffrZ39dFPSAt2KLX0m2+1fM9VaHGbflUIY9PBdQgVPOofkXnwAxy7IpkDwYVR9qVpWlRG39UMpNDYdlreVFXOZs5zon/x4kZBpW5gVZeqVaUonbYlGlqmuIxKjqh/5vZ9Oh44H7GAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01GVkqhbvU44QeENjfMFkL61",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "time": "15:00",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          },
+          "name": "timezone_convert",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01GVkqhbvU44QeENjfMFkL61"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQS5gUKEAgTGAI4AUIIdGhpbmtpbmcSDBgSJJB5zltj163spBoMHKw4T60qY8vQtvpYIjD/SJCYW1fmGRj2OcYPsHoKip99aeiolCKAlExuWVtJ9uQjRvtcEbLtIAd10Ku83OYqgwVEo+nr8p38B7FUgrE62j4trmt7swc4bO5IrwgEgm8HglgmD9Ykuv5NCDhfme8dRsfKVOg1dlI4TP9gibGFf9W6GkudX0epc0j9KFRdnNSSyGZjAYrcmFcxn04PbMvS14XXES0s/zLsn2pdujW/jl2ZmZjIJ0bucnZOo6sud3VdWLbUCdYwcUabzRjK23wbYzyAf7itF77xsmWDIudZn3vqcrYQKaJOrxlQ0JH3+UfpR83+IN5XpFRcfzuQkSaPmw0nbXTgZ5mGTxWrR5Zr4A7NFBuAltBeylCWqpsHtQ1PEbjRIMGH22vdvT5FCEfsvZw3X5N1T5F3c6EjaR0pl93+R6gImn2KcT4T+NvP/JaMb942fiaK95S/NcIQDc2DS3HhGr+yQxzHXVcr7j41zgxT7SK7Dakl9/GEJNgimk+UXgi9lEaVLMT9Bdu8QxhTx1cO0tif9UhmOQnvscTnCoBKd9ZMLOcvmb62RV36s9RsjTBv/kigDu53KDmBd2gqUTmR6X5GjHedKzU9JL+GAlA4tBLFQNZjLrFhkZhbb4vXA5r7G3+J3EIMrcpfElQhFRiJjqIFRBj0hIREWaihswlg8evp4AbyR2hMvpakSbB6Z3wdD2MlG3kIdcY+W95zV8OSjywyR1thEpg6AKxKX7Y/Jg6MLz7UtGd+t9LPuL5mu4TKcTuAzPYXKca5cDuiJvrCyzNrD0+geRkJA95JE/MKLpO4Nz+X9K+SWoykjDqNEgbQlYSHXDe9j647lEFtGIJSsXM32Aq7hnCoIEvx9P0MjMK2kRy05cGsx5+vWGgkpRm7jOgtDmDZrWrW1iR8q3OoLtFhCtiRV1R6oBynGTejz6qjGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01WBvJn8c4dgz1QCsFgTDHhd",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "time": "15:00",
+            "from_timezone": "New York",
+            "to_timezone": "Londra"
+          },
+          "name": "timezone_convert",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01WBvJn8c4dgz1QCsFgTDHhd"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQS0gYKEAgTGAI4AUIIdGhpbmtpbmcSDKStk322lb4N+jGzlxoM8sskXLSCcF13gV/jIjDrnHxpEY8iod49Fvj9s2c/Ik/w5exen5PUd3sgEAPdmrAAL7I2UkNvgQBr4wCuteUq7wV++z5uADYMV1mF9atT8RzS2zGHV6ZCeRJlVc/WCjBaZ0PsUhJh4TVnDVkTLapuTjiYy99oP2gcKnii8ecSXsG1wvdNyO8yxY7u5TuvkWzu8Bx9eFCN/jd2tz6oCZ5clxCG3akvYVFfPT5y7MnFlqeWvLy12rkfLss1BzvO8dCfXYheM5sIz4llvsrLcJAduVRe/YEVqvVipR/Va3nSWMI0BQNIuc/XTAXLkoKlASDulEIyRTSwkLv1dCKGPC89BPJmIxJINjy5flOrX+BxT+/dmgL0G+4muNEUCaVL1vZXHr7mouGY/oaA+2N810Ni7xU/tN2/mKBFg7uVflVpUfQzGaBDaoqkobbi8S8zAdwfIhp/j6zJvdPDq3xYQTKokKO963pqBzlap+lOtM/z6ayfn/6fTSbtZFjzhTvadWC89jks3POgTZ2lQcjlhvyiGXXZuvWOu3H6hy2ITR4ABHR9yyNiGsWX+oHcwgUizpEoYtwNTI7jX6qpgd4Z37JAC5RySaKLaJKYtovvoVqm6zx0bsBQ6z9xQrDL40k2LqbADL++WbaiVQP3zg/UMRKkw/MvelES5Ay8k0C6S9RJps3+/5+y5aMo4JJBJxTibVvFPEmOjMH3GMZjdNE69o6olw1iIZsOKw8NEf7/HKcpZ3WA7XyWLXbDkgHgGXeVxV40Q33bpkZAjKTnbSRadkeVl/ZnfLRGdarTDMHW2CGzOdaUF5e+SDD8XQV87d22JqJswP8csy9hTAjh4Ff+YhVuOpKat1HnhfvcN24qSz1wBdWyqmVlGWHgYJYnOsu9BFVUh0jigfAvasyd1Xa4ObI72yzjGtjOOtYdc8cY54xbZX+lYx0EATimYn3467TvKFyCwlzkRuYMkHOVyMyPqA6oUQcCxCHMehBpfGiSEo+nDjTLIJGe7QXmIKC9rh2vamaqS4e+t2Hn2zdVM9Quzvi2eAImJsVZ14OnoFZrILTAQPxNMRCG5YjO8rFcAzX9RRHGGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Saat dönüştürme aracı çalışmadı ama elle hesapladım: **New York'ta öğleden sonra 3 (15:00), Londra'da genellikle akşam 8'e (20:00) denk geliyor.**\n\nAracı farklı biçimlerle üç kez denedim (\"öğleden sonra 3\" ile \"New York/Londra\", \"15:00\" ile \"America/New_York/Europe/London\" ve \"15:00\" ile \"New York/Londra\"). Her seferinde \"geçersiz parametre\" hatası verdi. Bu yüzden aşağıdaki hesap aracın sonucu değil, kendi bilgime dayanıyor.\n\n- **Yılın büyük bölümünde:** Londra, New York'tan 5 saat ileride. Bu durumda 15:00, Londra'da **20:00** oluyor.\n- **Yılda birkaç hafta:** İki ülke yaz saatine farklı tarihlerde geçip çıkıyor. Bu dönemlerde fark 4 saate düşüyor ve 15:00, Londra'da **19:00** oluyor. Bu haftalar mart ayının ortasından sonuna kadar olan 2-3 hafta ile ekim sonu ve kasım başındaki yaklaşık bir hafta.\n\nBelirli bir tarih verirseniz o güne göre hangi saatin geçerli olduğunu söyleyebilirim.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQS9wUKEAgTGAI4AUIIdGhpbmtpbmcSDKBfcqI/uOrtuCJoBhoMuv/ILNPOvIhExzT/IjBjz0Ut2M+ZWEhNBgmsclspH9646kH480hb+gY5+B0tqLHUWv8NmtpeTB2fw/clIgQqlAU/SVz7cSC++tvuKob9F+fx+RI67+zzWHD2QnzGDSLV/eNdmgVsC2N7uE5OIf9Z/fJ9tHCZTnuEfBljKw1e79Dvac/MSdyt+z5R097hkQ9GPpTP0NeSv0y9jmnmAjIcYJienNq9gAIO5AYcHVzktObMc/J+KLBLRwNiaMl/8dou/30qJ6KPHzocIcHENWAOW0WOkApG9Hb4HZINqLzcHgCq2/CvDrgOqhG/G6pqPYY0ozLUvNKU7T+O4hmMOr3vbX2GIhbfgYecaUrliI0nKOVkf3LcL1DpXB8goP/cgwkcdtnBV910cZySlQFLCT0OuNRuLDTV1UQphU5CJysKVsL1A2T7GytT08m5D6Tpmo2g5xpM3evmArDI9n57SiXwlfndTyiDOhxypyuF1e437PQ2cR24MPR71aGk+RTznQoZ8wn2HmxsO2dOPkAF43L2SfMGW9LV00r5h8cmYnpppy32Iv64zxygT51VdNw477GQNEis4rnYW+3YXy+PNDv6oCPwah0WOsWbfAxRvaum1m+2PRNHltdbU3NyAByp4+mr9Gw3wQ/T38p7x4cSu/zlfAs/EeY2K3ICZHeebBP0od0eapXkwx37NBqZOo4jAzute5PLFgf158nVhLKLlmnkln+CjaDa2ShFyvYoC3IL/i2YLTYonbGNlBefWr3bStPrGqU5I1ZgTb2BHy/axALmsQQnsE8oin+rxM2JeH3zFu3tqMETbpk3YohL4lcJD3+IlwVQ4QoQ8zofiPp5K0drWBiEbOvUNgk0DF3DlgJ7I0kEjcF3pEvjxzvRYsKi3LhUIr5mjYehGBOUNhkwHIUXXFAxKoAYwwlpASHUmxwCnqixJI/Fwcso6+DnvRTSseeDZXSDPIgYAQ==",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_015EzUcHVCcLrCAW3fpVqKCC",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "time": "3:00 PM",
+            "from_timezone": "EST",
+            "to_timezone": "GMT"
+          },
+          "name": "timezone_convert",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_015EzUcHVCcLrCAW3fpVqKCC"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSjAcKEAgTGAI4AUIIdGhpbmtpbmcSDM3kobj2z6SAj3XjThoMOWzd/YIPSBliL426IjDFBQ02z6GMEpKUYBibX0skeLExiyPBjn6nMXtpMKJ1n2d4mQdCjBapq4lw3sdWuIYqqQae5nt7Nn/J00KrG9TFxHRsdKfMXbBNwZ4So4830J4QKqe/yWAdoEyW3moj7R9p2yPR5icYin1aMYZ/OG3ZZYvONW8VwgFObmCYHSPoZmOE6PN07+xBD5Gt9KY2lrkW3rkVwJo5SmNLg7m3BnIcsx59wvNr0QHPcySQsOGUCbJG6FnpA2OFPcB+T0s4mI4uZsSspzINRBHQZo5hENAYUqLTQ3sFG4B/IIK4zliVlsUxSCVhk5a0VyLCjghi9tys2l2Y6h1Li8dulLcOsjZgc8Mzb2/bBS5tRt3CjPAMtzdC8YthMMkpt2ru7OUPSue4tfIWm2Ch626YjlGHpcTO2UCMq6ND4iE/PpCnjtAGPsJ9tnkElpaX6Wz3Df9cQnTPMBtG42uVgSypkWvixQTfv2pfoH26+4I1fTID5QRjPUETDWthshfmgELWS3e9BBAQBNj2pbIKXqO9Tnw9dZ4T/ueq/LBnaDOEKB6GmFrEq7hT7fV8VBg8JbT5r40W5URCC2taRVrnprrqCZeNGdniiBnI6Nad90Qn7zUZlvBvqpyv3h8S1VThXHoxytMnNff5Mg73HcgUwnNqu/wEX396pJjfCuHVz21ATSu2Z6v0PbfRvn8WSDFKpoKY67zo8pf+eY/2e6TsW7T/4Pztv8dpcTg9gZdOPG7jSSZn4sDq5Ebys4S/RlS3XIVAwMKd1ywBRD8Ghux9mpHtns6eEVIhql16TTujj/k4sPsf0rWvNAkVQJf2SqvLL+31za8QCI/aDSdwG9oLMCcQoawS78iBVMSI37TJMSHZY4M2zWlW4UNaYGfGA2IrasT7B3abHvs8IYPRo4HA6Q46xrNJ2mWjuhlFhttcPCkyHpC3cNOZHW3k00iJ7dboRTuc1iOEa9klwvcT2RyUjvzTUFfTRmJT8BB1mnFsT+El5bFpjo/oeT8SNnIiM8/KXmBpWuBXdTOd/bqTbtedBIEimKUNik1I5IqDX9AdkgsDk3aLO/b/sg8EWEExV/F22KVnF5D/C5gpeCPMuF4N/3tQ+br/xYPSusm3EbTXnTg968+kbsLc1lQZpIpIJ+XcuG61sxgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "Saat dönüştürme aracı bu kez de çalışmadı, sonuç alamadım. Bu yüzden önceki cevabım geçerli: **New York'ta 15:00, Londra'da genellikle 20:00'ye denk geliyor.** Bu, aracın sonucu değil, kendi hesabım.\n\nBu kez \"3:00 PM\" ile \"EST/GMT\" biçimini denedim. Önceki üç denemede olduğu gibi yine \"geçersiz parametre\" hatası döndü. Dört farklı biçim de reddedildiğine göre sorun büyük olasılıkla girdinin biçiminde değil, aracın kendisinde. Aynı denemeyi tekrarlamanın bir yararı olmaz.\n\n- **Yılın büyük bölümünde:** Londra, New York'tan 5 saat ileride, yani 15:00 Londra'da **20:00** oluyor.\n- **Yaz saatine geçiş ve dönüş dönemlerinde:** Mart ortasından sonuna kadar 2-3 hafta ile ekim sonu ve kasım başında yaklaşık bir hafta fark 4 saate düşüyor. Bu günlerde 15:00 Londra'da **19:00** oluyor.\n\nBelirli bir tarih verirseniz o güne göre hangi saatin geçerli olduğunu söyleyebilirim.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSmAcKEAgTGAI4AUIIdGhpbmtpbmcSDIye7ff48C33+3dN0hoMTPTCs3UbBggcCDu+IjAAMFnIOv/vcZo8ByLl/ZQePokUzEnHXDXCQl5YVn11x/UhuujVzn3b2M1Hiwnpf3IqtQbRIuZD2dSTpLOYdSK42El9vlbqY6INNl3qm8QukV9YucDR/9K+cn0lCkxgN/G3xBOLyuJlP67oLueDYalA9+iAb9pfbsv4KptAhNynKb1zQDpShvFy3GFWCvMWUWzAEanh1CO+gQ9iwsfFUCI60BT2Whrwhqo5i1p24qgvDlu3FRSVY5vNseLiRjPAWw0jzEK0zSV0YwuBh45Ha/+n+yxJH57ZyhE5BHNB4EVVhv5SBIhqCjx61D9vas8p9NanfU6FZ6PLyu+Pf3CDpKf4ihBi9GeoOsbqyR9fs1WVL4XI5dk9G6l8YKEn/DtGlXhxAXh2AANw465GYIiAQIbqFxApj88JTgdVDQLE/c83c5WpL2qMh/mdnzT64eX1O6tpmW+UVkcd+5MfB1+i/F/phWTTmuPiqnxGYHJUo28oA54AeAWNpccOcFkVbh9eaSx6/FZwgyk9OUQtU+o/BYcHMkm9zmDuHNpCs7WX2XnmoDFXSbtWnB5/dP8zQGylxQjrk2wPdZZVJIkZ5AIPkY90CHTYKleedqy/PtczODi8adStZj6VWrg2bC6Vf5OWxfMFOwWG9e2FWGxKPbH5cJHDG3HVJ7pnKvZg9tZN5oRILJ+2S2FVxWXQNh0/5IlktWJHYoW6urko199g716XAuRnAH8vzRxx71pX2EP4v+1MFNXIBItXdmnSuFa7e5jb/MNtxyOWgMt703LJTSMAF4WEwQhRF1NktaOqSSHy/pfO5WNxNegQnudPhqJKRNTGw6/yWIrn2FrIz0LHNm3/DKiWTR+bFiEjKSLBF1X6d/wSZ7gCPkdJgrTqzbeSZyEvrXQDke5Sjb/brF1D9fhBtdZHbN2DWz9uDt1+JOClcgQd94Aw4QL9kvHRQRsYLJXezoMu1STHqtd/MRI2KblUczCXpigapZ5tcjN30W25sLDQ4Z232X0gGHkcqKiubancmfVVHT2T7ZDzHpeoPoiqNA6m/xmPMUTlS4tiISrdusBfEzWAws7iGu4c3NwzlnBsPTs1XBtwSniQNTx3O8Tp4RQ6bfswxxheHqM3gs9cI5HvsRb9oCuSMi029NZZ6u7w46OVDqFe+wra0BgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01D2QhoEcqSjvCocpHeeR65n",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "time": "öğleden sonra saat 3",
+            "from_timezone": "Nyu York saat dilimi",
+            "to_timezone": "Londra saat dilimi"
+          },
+          "name": "timezone_convert",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

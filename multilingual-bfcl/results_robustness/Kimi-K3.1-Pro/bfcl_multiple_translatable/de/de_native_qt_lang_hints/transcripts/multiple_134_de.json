@@ -1,0 +1,112 @@
+{
+  "id": "multiple_134_de",
+  "source_id": "multiple_134",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 732,
+  "total_output_tokens": 217,
+  "total_latency_s": 1.3569786548614502,
+  "estimated_cost_usd": 0.0041791,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Suche nach Einzelheiten zu einer Strafakte wegen eines Verbrechens mit dem Aktenzeichen CA123456 im Landkreis San Diego"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "crime_record.get_record": {
+        "case_number": [
+          "CA123456"
+        ],
+        "county": [
+          "San Diego",
+          "Landkreis San Diego"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "call_90ff2d13ae994a45ad2ff401"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 732,
+      "output_tokens": 217,
+      "latency_s": 1.3569786548614502,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Suche nach Einzelheiten zu einer Strafakte wegen eines Verbrechens mit dem Aktenzeichen CA123456 im Landkreis San Diego"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_90ff2d13ae994a45ad2ff401",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to German request with function call exactly. Should parse: \"Suche nach Einzelheiten zu einer Strafakte wegen eines Verbrechens mit dem Aktenzeichen CA123456 im Landkreis San Diego\" Means search details of criminal record felony case CA123456 county San Diego. Tool crime_record_get_record(case_number, county, details optional). Should set details true. Should have exact call. No other output likely. I need be careful tool description \"Retrieve detailed felony crime records using a specific case number and location.\" parameters German language but values as is. County San Diego. case CA123456. details true. Do call."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

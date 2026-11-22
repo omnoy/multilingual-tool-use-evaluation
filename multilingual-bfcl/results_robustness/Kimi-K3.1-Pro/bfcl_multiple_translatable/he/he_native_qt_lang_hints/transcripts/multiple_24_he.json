@@ -1,0 +1,112 @@
+{
+  "id": "multiple_24_he",
+  "source_id": "multiple_24",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 445,
+  "total_output_tokens": 405,
+  "total_latency_s": 2.4075348377227783,
+  "estimated_cost_usd": 0.005681,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו המסלול המהיר ביותר מלונדון לאדינבורו כדי לשחק באליפות השחמט? כמו כן ספק הערכה של המרחק."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "route_planner.calculate_route": {
+        "start": [
+          "לונדון"
+        ],
+        "destination": [
+          "אדינבורו"
+        ],
+        "method": [
+          "fastest",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "לונדון",
+            "destination": "אדינבורו",
+            "method": "fastest"
+          },
+          "id": "call_6cd381392d4248199d1bcd63"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "לונדון",
+            "destination": "אדינבורו",
+            "method": "fastest"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 445,
+      "output_tokens": 405,
+      "latency_s": 2.4075348377227783,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו המסלול המהיר ביותר מלונדון לאדינבורו כדי לשחק באליפות השחמט? כמו כן ספק הערכה של המרחק."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_6cd381392d4248199d1bcd63",
+          "function": {
+            "arguments": "{\"start\": \"לונדון\", \"destination\": \"אדינבורו\", \"method\": \"fastest\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond Hebrew user: \"מהו המסלול המהיר ביותר מלונדון לאדינבורו כדי לשחק באליפות השחמט? כמו כן ספק הערכה של המרחק.\" Translate: What is fastest route from London to Edinburgh to play in chess championship? Also provide estimate of distance.\n\nTools: route planner calculate route Hebrew start, destination. Chess club details find requires city,name optional event. Should determine appropriate calls. User asks route London to Edinburgh, fastest, distance. Likely call route_planner only. Could chess club details be needed because \"כדי לשחק באליפות השחמט\" = to play in chess championship. User didn't specify club name. Tool chess club needs name and city. Perhaps route start London, destination Edinburgh fastest. Should respond call exactly as specified. Likely one call route planner. Could be hidden test expects chess_club_details_find then route planner? Should inspect context style. User may expect tool use sequence where find chess club city Edinburgh event championship and name? Missing name required. Could pass name empty? Can't fabricate. Since route endpoint Edinburgh explicitly. Call route_planner with Hebrew values? Parameters languages Hebrew, but could provide \"לונדון\", \"אדינבורו\". Should respond in Hebrew maybe function calls only? Instructions say understand request and respond with correct function call exactly as specified. So call route. Then based result tell user route and distance. I should call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

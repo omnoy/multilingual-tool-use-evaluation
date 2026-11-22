@@ -1,0 +1,169 @@
+{
+  "id": "multiple_170_tr",
+  "source_id": "multiple_170",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1448,
+  "total_output_tokens": 576,
+  "total_latency_s": 4.369644403457642,
+  "estimated_cost_usd": 0.0099544,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kristiyano Ronaldo'nun 2019-2020 sezonundaki oyuncu istatistiklerini getir"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_stat.get_player_stats": {
+        "player_name": [
+          "Kristiyano Ronaldo"
+        ],
+        "season": [
+          "2019-2020"
+        ],
+        "league": [
+          "tümü",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_stat_get_player_stats",
+          "arguments": {
+            "player_name": "Cristiano Ronaldo",
+            "season": "2019-2020"
+          },
+          "id": "call_5648f66c59874d668ff1f496"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_stat_get_player_stats": {
+            "player_name": "Cristiano Ronaldo",
+            "season": "2019-2020"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'soccer_stat_get_player_stats'. Please review the function definition and try again.",
+      "input_tokens": 610,
+      "output_tokens": 165,
+      "latency_s": 1.7333581447601318,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_stat_get_player_stats",
+          "arguments": {
+            "player_name": "Kristiyano Ronaldo",
+            "season": "2019-2020"
+          },
+          "id": "call_de3909c9804f485fb4f11d3e"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_stat_get_player_stats": {
+            "player_name": "Kristiyano Ronaldo",
+            "season": "2019-2020"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 838,
+      "output_tokens": 411,
+      "latency_s": 2.6362862586975098,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kristiyano Ronaldo'nun 2019-2020 sezonundaki oyuncu istatistiklerini getir"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5648f66c59874d668ff1f496",
+          "function": {
+            "arguments": "{\"player_name\": \"Cristiano Ronaldo\", \"season\": \"2019-2020\"}",
+            "name": "soccer_stat_get_player_stats"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi will respond in Turkish with a tool call exactly as specified. Should get Cristiano Ronaldo 2019-2020 player stats. User misspelled Kristiyano perhaps tool database Turkish. Call soccer_stat_get_player_stats player_name \"Cristiano Ronaldo\" or \"Kristiyano Ronaldo\"? Tool name player name languages Turkish, likely expects Cristiano Ronaldo. Season \"2019-2020\". League optional defaults all, don't include. Only call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'soccer_stat_get_player_stats'. Please review the function definition and try again.",
+      "tool_call_id": "call_5648f66c59874d668ff1f496"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_de3909c9804f485fb4f11d3e",
+          "function": {
+            "arguments": "{\"player_name\": \"Kristiyano Ronaldo\", \"season\": \"2019-2020\"}",
+            "name": "soccer_stat_get_player_stats"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I have error. Should adjust? Perhaps Turkish name exactly Kristiyano Ronaldo? Or season \"2019-20\"? Definition season usually specified by two years. User Turkish and tool Language Turkish. Should retry likely player_name \"Kristiyano Ronaldo\", season \"2019-2020\". Could be league required? optional. 400 invalid parameters perhaps name unsupported or format. Perhaps tool expected \"2019/2020\"? Should infer based these tasks. Usually synthetic tools accept Turkish names e.g. \"Cristiano Ronaldo\" perhaps valid but season should \"2019-20\". The user stated 2019-2020 and tool says season usually specified by two years. Common call examples player_name \"Cristiano Ronaldo\", season \"2020-2021\". Why 400? Could be season backend expects \"2019/2020\". Should choose retry intelligently. Could call with Turkish \"Kristiyano Ronaldo\" and league \"Juventus\"? But league should be league not team. \"Serie A\". The task likely parameterized general API that validates specific enum? Perhaps name \"Cristiano Ronaldo\" fine. Season should be \"2019-20\" perhaps. I'll inspect the wording: \"Retrieve soccer player statistics for a given season.\" player_name \"Name of the player. Languages: Turkish.\" season \"Soccer season, usually specified by two years. Languages: Turkish.\" league optional. This resembles API tools (RapidAPI) where soccer_stat_get_player_stats parameters likely player_name, season, league. It may accept known players Turkish transliteration? User's spelling \"Kristiyano Ronaldo\" might be expected exactly as prompt. I need try exactly inputs."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

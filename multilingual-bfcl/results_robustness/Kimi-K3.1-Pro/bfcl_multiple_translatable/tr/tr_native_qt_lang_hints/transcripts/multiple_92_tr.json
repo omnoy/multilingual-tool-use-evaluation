@@ -1,0 +1,185 @@
+{
+  "id": "multiple_92_tr",
+  "source_id": "multiple_92",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1282,
+  "total_output_tokens": 418,
+  "total_latency_s": 7.290608167648315,
+  "estimated_cost_usd": 0.0077556,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Denver yakınlarındaki Volmart'ta bulunan vejetaryen ve glutensiz yiyeceklerin listesini getir."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "walmart.vegan_products": {
+        "location": [
+          "Denver, Kolorado",
+          "Denver"
+        ],
+        "categories": [
+          [
+            "vegan",
+            "gluten-free"
+          ],
+          [
+            "gluten-free",
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "walmart_vegan_products",
+          "arguments": {
+            "location": "Denver, Colorado",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          },
+          "id": "call_d353d2b1d04649bbacee7f7f"
+        }
+      ],
+      "decoded": [
+        {
+          "walmart_vegan_products": {
+            "location": "Denver, Colorado",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'walmart_vegan_products'. Please review the function definition and try again.",
+      "input_tokens": 482,
+      "output_tokens": 257,
+      "latency_s": 2.0147829055786133,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "walmart_vegan_products",
+          "arguments": {
+            "location": "Denver, Kolorado",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          },
+          "id": "call_37ee78c4461b48a98a1383de"
+        }
+      ],
+      "decoded": [
+        {
+          "walmart_vegan_products": {
+            "location": "Denver, Kolorado",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 800,
+      "output_tokens": 161,
+      "latency_s": 5.275825262069702,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Denver yakınlarındaki Volmart'ta bulunan vejetaryen ve glutensiz yiyeceklerin listesini getir."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d353d2b1d04649bbacee7f7f",
+          "function": {
+            "arguments": "{\"location\": \"Denver, Colorado\", \"categories\": [\"vegan\", \"gluten-free\"]}",
+            "name": "walmart_vegan_products"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need interpret Turkish. User: \"Denver yakınlarındaki Volmart'ta bulunan vejetaryen ve glutensiz yiyeceklerin listesini getir.\" Likely Volmart typo Walmart. Tool walmart_vegan_products location city/state in Turkish? User requests vegan and gluten-free foods? Turkish \"vejetaryen\" vegetarian, but tools vegan categories. Should call correct function with categories [\"vegan\",\"gluten-free\"], location \"Denver, Colorado\" or \"Denver, CO\". Should have no clarification likely. Should have exact function call. Should consider \"Volmart\" perhaps Walmart intentional? Available Walmart tool. Use. \"Denver yakınlarındaki\" location Denver, Colorado. Categories vegan and gluten-free. The user says \"vejetaryen\" but function only vegan/gluten-free; correct map. I should just tool call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'walmart_vegan_products'. Please review the function definition and try again.",
+      "tool_call_id": "call_d353d2b1d04649bbacee7f7f"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_37ee78c4461b48a98a1383de",
+          "function": {
+            "arguments": "{\"location\": \"Denver, Kolorado\", \"categories\": [\"vegan\", \"gluten-free\"]}",
+            "name": "walmart_vegan_products"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Interesting 400. Perhaps location languages Turkish: user location must be Turkish? \"Denver, Kolorado\". Or categories exact? Schema correct. Could be Volmart not Walmart? No. Perhaps location expected Turkish \"Denver, Colorado\" still English? Tool says location City and state where Walmart store located. Languages: Turkish. Could mean location string Turkish. Try \"Denver, Kolorado\". I'll retry."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

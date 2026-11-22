@@ -1,0 +1,171 @@
+{
+  "id": "multiple_50_tr",
+  "source_id": "multiple_50",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1262,
+  "total_output_tokens": 403,
+  "total_latency_s": 5.577698469161987,
+  "estimated_cost_usd": 0.0075371,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Nyu York'ta gelecek ayın konut fiyatlarını tahmin et."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "house_price_forecast": {
+        "location": [
+          "Nyu York",
+          "Nyu York, NY",
+          "Nyu York Şehri"
+        ],
+        "months": [
+          1
+        ],
+        "features": [
+          [],
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "house_price_forecast",
+          "arguments": {
+            "location": "New York",
+            "months": 1
+          },
+          "id": "call_b18c5b8b9de34d9c88b5feff"
+        }
+      ],
+      "decoded": [
+        {
+          "house_price_forecast": {
+            "location": "New York",
+            "months": 1
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'house_price_forecast'. Please review the function definition and try again.",
+      "input_tokens": 482,
+      "output_tokens": 239,
+      "latency_s": 1.7405860424041748,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "house_price_forecast",
+          "arguments": {
+            "location": "Nyu York",
+            "months": 1
+          },
+          "id": "call_f9b6bbe26b9146939f9171c0"
+        }
+      ],
+      "decoded": [
+        {
+          "house_price_forecast": {
+            "location": "Nyu York",
+            "months": 1
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 780,
+      "output_tokens": 164,
+      "latency_s": 3.8371124267578125,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Nyu York'ta gelecek ayın konut fiyatlarını tahmin et."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b18c5b8b9de34d9c88b5feff",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"months\": 1}",
+            "name": "house_price_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond with a function call based on Turkish. User: \"Nyu York'ta gelecek ayın konut fiyatlarını tahmin et.\" Means forecast next month's housing prices in New York. Should call house_price_forecast location New York, months 1. Tools say location languages Turkish, but user misspelled Nyu York. I can pass \"New York\" or \"Nyu York\"? Should correctly map. \"gelecek ay\" = 1 month. Additional features not required. location likely \"New York\". Turkish \"Nyu York\" common transliteration. The tool location description \"The city ... Languages: Turkish\" weird means parameter language Turkish? Should I use \"Nyu York\" as user. Typically extraction: {\"location\":\"New York\",\"months\":1}. Should exactly correct function call. No response textual, just tool."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'house_price_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_b18c5b8b9de34d9c88b5feff"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f9b6bbe26b9146939f9171c0",
+          "function": {
+            "arguments": "{\"location\": \"Nyu York\", \"months\": 1}",
+            "name": "house_price_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400 invalid parameters. I'll retry perhaps location must Turkish \"Nyu York\" exactly? Or feature required? Description additional features not required default empty array. Could need features included? Usually these benchmark tools weird, call with location \"Nyu York\" and months 1. Error invalid params perhaps geography not supported? Could be \"New York\" not Turkish? It says Languages: Turkish meaning location should Turkish. User provided \"Nyu York'ta\". So pass \"Nyu York\"."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

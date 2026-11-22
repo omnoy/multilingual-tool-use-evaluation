@@ -1,0 +1,165 @@
+{
+  "id": "multiple_160_tr",
+  "source_id": "multiple_160",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1626,
+  "total_output_tokens": 435,
+  "total_latency_s": 4.802266836166382,
+  "estimated_cost_usd": 0.0087423,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ceyms Plensa'nın en yeni heykel eserini ayrıntılı açıklamasıyla birlikte bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_sculpture_info": {
+        "artist_name": [
+          "Ceyms Plensa"
+        ],
+        "detail": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_sculpture_info",
+          "arguments": {
+            "artist_name": "Jaume Plensa",
+            "detail": true
+          },
+          "id": "call_344d3934bb324a689e7e011f"
+        }
+      ],
+      "decoded": [
+        {
+          "get_sculpture_info": {
+            "artist_name": "Jaume Plensa",
+            "detail": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_sculpture_info'. Please review the function definition and try again.",
+      "input_tokens": 642,
+      "output_tokens": 279,
+      "latency_s": 3.2546849250793457,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_sculpture_info",
+          "arguments": {
+            "artist_name": "Ceyms Plensa",
+            "detail": true
+          },
+          "id": "call_509b75ff7278443b8a98b8de"
+        }
+      ],
+      "decoded": [
+        {
+          "get_sculpture_info": {
+            "artist_name": "Ceyms Plensa",
+            "detail": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 984,
+      "output_tokens": 156,
+      "latency_s": 1.5475819110870361,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ceyms Plensa'nın en yeni heykel eserini ayrıntılı açıklamasıyla birlikte bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_344d3934bb324a689e7e011f",
+          "function": {
+            "arguments": "{\"artist_name\": \"Jaume Plensa\", \"detail\": true}",
+            "name": "get_sculpture_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kullanıcı Türkçe yazıyor: \"Ceyms Plensa'nın en yeni heykel eserini ayrıntılı açıklamasıyla birlikte bul.\" Çeviri: \"Find Jaume Plensa's latest sculpture with its detailed description.\" Araç get_sculpture_info parametreleri artist_name ve detail. Sanatçı adı \"Ceyms Plensa\" Türkçe fonetik yazım; gerçek adı Jaume Plensa (Katalan heykeltıraş). Araç dilleri İngilizce/Türkçe. \"Ceyms Plensa\" mı yoksa \"Jaume Plensa\" mı kullanmalı? En doğru Jaume Plensa, detail true. Sadece doğru fonksiyon çağrısını yap, cevap metni belki tool sonrası. Kimi will call the tool."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_sculpture_info'. Please review the function definition and try again.",
+      "tool_call_id": "call_344d3934bb324a689e7e011f"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_509b75ff7278443b8a98b8de",
+          "function": {
+            "arguments": "{\"artist_name\": \"Ceyms Plensa\", \"detail\": true}",
+            "name": "get_sculpture_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid parameters. Kimi will retry with exact user artist name? Function definition straightforward. Perhaps expects Turkish transliteration \"Ceyms Plensa\" because languages English Turkish? Or schema issue? artist_name string detail true is valid. Could be backend artist not found misreported? I should retry perhaps artist_name \"Ceyms Plensa\". Kimi will make the correct function call exactly. Use user name."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,293 @@
+{
+  "id": "multiple_13_tr",
+  "source_id": "multiple_13",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 4,
+  "num_clarifications": 0,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 3189,
+  "total_output_tokens": 552,
+  "total_latency_s": 6.856690883636475,
+  "estimated_cost_usd": 0.00746982,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "A ürününün fiyatını aynı tutarken satış adedini %10 artırırsak XYZ şirketi ne kadar gelir elde eder?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.revenue_forecast": {
+        "company": [
+          "XYZ"
+        ],
+        "product": [
+          "A",
+          "A ürünü"
+        ],
+        "sales_units_increase_percentage": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "Bu soruyu yanıtlamak için önce A ürününün fiyatını öğrenmem, ardından satış adedindeki %10 artışla gelir tahminini hesaplamam gerekiyor. İki adımda ilerleyelim: önce fiyatı alalım."
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A"
+          },
+          "id": "call_8d4c252b377b488c89904aa8"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "A"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "input_tokens": 556,
+      "output_tokens": 139,
+      "latency_s": 1.413374662399292,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Hata aldım. Şirket ve ürün parametrelerini Türkçe olarak tekrar deneyeyim, belki farklı bir formatta bekliyordur."
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ şirketi",
+            "product": "A ürünü"
+          },
+          "id": "call_d446b49f7f984c13a7c38c1b"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ şirketi",
+            "product": "A ürünü"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "input_tokens": 731,
+      "output_tokens": 114,
+      "latency_s": 1.5492780208587646,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Görünüşe göre parametrelerin kısa ve öz olması gerekiyor. \"XYZ\" ve \"A\" olarak tekrar deneyelim."
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A"
+          },
+          "id": "call_a445cd6e7c674cf1b9be74f2"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "A"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "input_tokens": 881,
+      "output_tokens": 104,
+      "latency_s": 1.3399662971496582,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Beklenmedik bir durum. Görünüşe göre bu fonksiyon çağrısı bir türlü kabul edilmiyor. Fonksiyon tanımına göre parametreler string olmalı ve Türkçe olarak belirtilmeli. Doğrudan gelir tahmini fonksiyonunu deneyeyim, belki fiyatı otomatik olarak içeriden alıyordur."
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ",
+            "product": "A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "call_768faba7e0df4ced87ab74cc"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ",
+            "product": "A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1021,
+      "output_tokens": 195,
+      "latency_s": 2.5540719032287598,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "A ürününün fiyatını aynı tutarken satış adedini %10 artırırsak XYZ şirketi ne kadar gelir elde eder?"
+    },
+    {
+      "content": "Bu soruyu yanıtlamak için önce A ürününün fiyatını öğrenmem, ardından satış adedindeki %10 artışla gelir tahminini hesaplamam gerekiyor. İki adımda ilerleyelim: önce fiyatı alalım.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8d4c252b377b488c89904aa8",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_8d4c252b377b488c89904aa8"
+    },
+    {
+      "content": "Hata aldım. Şirket ve ürün parametrelerini Türkçe olarak tekrar deneyeyim, belki farklı bir formatta bekliyordur.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d446b49f7f984c13a7c38c1b",
+          "function": {
+            "arguments": "{\"company\": \"XYZ şirketi\", \"product\": \"A ürünü\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_d446b49f7f984c13a7c38c1b"
+    },
+    {
+      "content": "Görünüşe göre parametrelerin kısa ve öz olması gerekiyor. \"XYZ\" ve \"A\" olarak tekrar deneyelim.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a445cd6e7c674cf1b9be74f2",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_a445cd6e7c674cf1b9be74f2"
+    },
+    {
+      "content": "Beklenmedik bir durum. Görünüşe göre bu fonksiyon çağrısı bir türlü kabul edilmiyor. Fonksiyon tanımına göre parametreler string olmalı ve Türkçe olarak belirtilmeli. Doğrudan gelir tahmini fonksiyonunu deneyeyim, belki fiyatı otomatik olarak içeriden alıyordur.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_768faba7e0df4ced87ab74cc",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"A\", \"sales_units_increase_percentage\": 10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

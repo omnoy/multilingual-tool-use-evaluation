@@ -1,0 +1,192 @@
+{
+  "id": "multiple_93_he",
+  "source_id": "multiple_93",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1235,
+  "total_output_tokens": 615,
+  "total_latency_s": 5.527264833450317,
+  "estimated_cost_usd": 0.009913,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "הזמן חדר דה לוקס לשני לילות במלון מריוט בניו יורק והוסף ארוחת בוקר כשירות נוסף"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel.book": {
+        "location": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק סיטי",
+          "העיר ניו יורק"
+        ],
+        "roomType": [
+          "דה לוקס"
+        ],
+        "nights": [
+          2
+        ],
+        "additional_services": [
+          [
+            "breakfast"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "מלון מריוט בניו יורק",
+            "roomType": "חדר דה לוקס",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call_cb314be958224cdd88c69bdf"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "מלון מריוט בניו יורק",
+            "roomType": "חדר דה לוקס",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 494,
+      "output_tokens": 192,
+      "latency_s": 2.071197271347046,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "ניו יורק",
+            "roomType": "דה לוקס",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call_cfdc06047dff4179bcc42feb"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "ניו יורק",
+            "roomType": "דה לוקס",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 741,
+      "output_tokens": 423,
+      "latency_s": 3.4560675621032715,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "הזמן חדר דה לוקס לשני לילות במלון מריוט בניו יורק והוסף ארוחת בוקר כשירות נוסף"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cb314be958224cdd88c69bdf",
+          "function": {
+            "arguments": "{\"location\": \"מלון מריוט בניו יורק\", \"roomType\": \"חדר דה לוקס\", \"nights\": 2, \"additional_services\": [\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond with correct function call per Hebrew user. Should invoke hotel_book. Location Hebrew: \"מלון מריוט בניו יורק\". RoomType \"חדר דה לוקס\". nights 2. additional_services [\"breakfast\"]. I'll call only the exact function. No other text likely. Make sure languages Hebrew values. Yes. I'll call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "call_cb314be958224cdd88c69bdf"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cfdc06047dff4179bcc42feb",
+          "function": {
+            "arguments": "{\"location\": \"ניו יורק\", \"roomType\": \"דה לוקס\", \"nights\": 2, \"additional_services\": [\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got error. Should review definition. My parameters appear valid. Why? Perhaps \"roomType\" expected type of room booked Languages Hebrew. Perhaps exact \"דה לוקס\" instead of \"חדר דה לוקס\"? Or additional service enum issue? All correct schema. Error 400 invalid parameters perhaps location expected city only? User says ניו יורק and hotel Marriott, location string. Could be parameter values expected specific? Perhaps retry with \"ניו יורק\", \"דה לוקס\" perhaps. I need think conventions from these tasks. User wants simple exact tool call. Usually calls success. Error indicates bad params perhaps hotel_book schema has additional_services default but uses enum, breakfast accepted. Could be roomType in Hebrew \"חדר דה לוקס\" fine. Could be location needs Hebrew but includes \"בניו יורק\"? Nothing says restrictions. Perhaps API validators expect roomType values e.g. \"דה לוקס\". Should call again with location \"מלון מריוט בניו יורק\" etc? Error perhaps because nights type integer yes.\n\nCould perhaps additional_services must be omitted? But user requested. Enum \"break\". It's valid.\n\nCould be roomType allowed string and any string. Why 400? Perhaps generated parameter name case? Valid.\n\nI should retry sensible adjustments. Location \"ניו יורק\" (hotel name in location? Definition location of hotel, likely location should be city). roomType \"דה לוקס\". Additional [\"breakfast\"]. I'll call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

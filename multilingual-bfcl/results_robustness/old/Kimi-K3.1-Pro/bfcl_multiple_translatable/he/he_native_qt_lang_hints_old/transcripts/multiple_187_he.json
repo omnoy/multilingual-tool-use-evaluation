@@ -1,0 +1,216 @@
+{
+  "id": "multiple_187_he",
+  "source_id": "multiple_187",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 2499,
+  "total_output_tokens": 509,
+  "total_latency_s": 4.622633934020996,
+  "estimated_cost_usd": 0.010088,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "בדוק את המחיר של עגבניות וחסה ב-Whole Foods בלוס אנג'לס."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "whole_foods.check_price": {
+        "location": [
+          "לוס אנג'לס"
+        ],
+        "items": [
+          [
+            "עגבניות",
+            "חסה"
+          ],
+          [
+            "חסה",
+            "עגבניות"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\":\"whole_foods_check_price\",\"arguments\":{\"items\":[\"עגבניות\",\"חסה\"],\"location\":\"לוס אנג'לס\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 621,
+      "output_tokens": 197,
+      "latency_s": 1.5583853721618652,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "whole_foods_check_price",
+          "arguments": {
+            "location": "Los Angeles",
+            "items": [
+              "tomatoes",
+              "lettuce"
+            ]
+          },
+          "id": "call_984f5f51ec064699a0f4ed2a"
+        }
+      ],
+      "decoded": [
+        {
+          "whole_foods_check_price": {
+            "location": "Los Angeles",
+            "items": [
+              "tomatoes",
+              "lettuce"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'whole_foods_check_price'. Please review the function definition and try again.",
+      "input_tokens": 860,
+      "output_tokens": 96,
+      "latency_s": 1.2389845848083496,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "whole_foods_check_price",
+          "arguments": {
+            "location": "לוס אנג'לס",
+            "items": [
+              "עגבניות",
+              "חסה"
+            ]
+          },
+          "id": "call_9e9895e010864fdcaa0b6580"
+        }
+      ],
+      "decoded": [
+        {
+          "whole_foods_check_price": {
+            "location": "לוס אנג'לס",
+            "items": [
+              "עגבניות",
+              "חסה"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1018,
+      "output_tokens": 216,
+      "latency_s": 1.8252639770507812,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "בדוק את המחיר של עגבניות וחסה ב-Whole Foods בלוס אנג'לס."
+    },
+    {
+      "content": "{\"name\":\"whole_foods_check_price\",\"arguments\":{\"items\":[\"עגבניות\",\"חסה\"],\"location\":\"לוס אנג'לס\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need need respond via correct function call exactly. User Hebrew: \"Check price of tomatoes and lettuce at Whole Foods in Los Angeles.\" I'll call whole_foods_check_price items tomatoes lettuce, location Los Angeles. I should language? Tool supports English Hebrew. Could pass items [\"עגבניות\",\"חסה\"], location \"לוס אנג'לס\" or English likely tool response. Should have exact function call. Since user Hebrew and instructions say respond correct function call. Use Hebrew or English? Either. Usually these tasks expect function name and args. \"items\": [\"tomatoes\", \"lettuce\"], location \"Los Angeles\". Perhaps check price at specific Whole Foods location—Los Angeles. Do that. No need explanation."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_984f5f51ec064699a0f4ed2a",
+          "function": {
+            "arguments": "{\"location\": \"Los Angeles\", \"items\": [\"tomatoes\", \"lettuce\"]}",
+            "name": "whole_foods_check_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I erroneously attempted JSON string instead of tool. I'll call the actual tool functions.whole_foods_check_price. Do it."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'whole_foods_check_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_984f5f51ec064699a0f4ed2a"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9e9895e010864fdcaa0b6580",
+          "function": {
+            "arguments": "{\"location\": \"לוס אנג'לס\", \"items\": [\"עגבניות\", \"חסה\"]}",
+            "name": "whole_foods_check_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got the tool bad request for invalid params. Should assess why. Schema location string, items array strings. English okay. Perhaps tool language expects Hebrew? It said languages English Hebrew. Could be location should be specific \"Whole Foods, Los Angeles\" or store? Yet invalid parameters means parser. Perhaps item names in Hebrew? I need retry with Hebrew as initial perhaps. Could be function tool strict does not allow arrays? No. Should look at tool def exact. location required, items required. I provided. Could error if location not recognized? Perhaps locations supported need \"Los Angeles, CA\" likely. Try \"לוס אנג'לס\" and Hebrew items."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,150 @@
+{
+  "id": "multiple_59_de",
+  "source_id": "multiple_59",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 956,
+  "total_output_tokens": 238,
+  "total_latency_s": 2.99912428855896,
+  "estimated_cost_usd": 0.004935800000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde auf Strafrecht spezialisierte Rechtsanwälte in meiner Nähe in New York."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawyer_finder": {
+        "location": [
+          "New York",
+          "New York, New York",
+          "Stadt New York"
+        ],
+        "specialization": [
+          [
+            "Strafrecht"
+          ]
+        ],
+        "experience": [
+          "",
+          1
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"lawyer_finder\", \"arguments\": {\"location\": \"New York\", \"specialization\": [\"Strafrecht\"]}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 394,
+      "output_tokens": 126,
+      "latency_s": 1.6082940101623535,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_finder",
+          "arguments": {
+            "location": "New York",
+            "specialization": [
+              "Strafrecht"
+            ]
+          },
+          "id": "call_c6f6597967ff413ebf837130"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_finder": {
+            "location": "New York",
+            "specialization": [
+              "Strafrecht"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 562,
+      "output_tokens": 112,
+      "latency_s": 1.3908302783966064,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde auf Strafrecht spezialisierte Rechtsanwälte in meiner Nähe in New York."
+    },
+    {
+      "content": "{\"name\": \"lawyer_finder\", \"arguments\": {\"location\": \"New York\", \"specialization\": [\"Strafrecht\"]}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "Kimi needs to respond to the German request exactly as a function call. Should locate lawyers specialization criminal law, location New York, experience default 1 unless unspecified. Tool definitions German languages location. Perhaps use specialization [\"Strafrecht\"], location \"New York\". experience optional default 1, don't include unless needed. Should have \"in meiner Nähe in New York\" location New York. Respond only tool call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c6f6597967ff413ebf837130",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"specialization\": [\"Strafrecht\"]}",
+            "name": "lawyer_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need now must actually tool call via proper channel. Perhaps revisit previous assistant raw JSON not accepted. Use functions.lawyer_finder. Should have arguments. Location New York, specialization Strafrecht. Could experience default omitted."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

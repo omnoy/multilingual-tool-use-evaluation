@@ -1,0 +1,185 @@
+{
+  "id": "multiple_92_de",
+  "source_id": "multiple_92",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1283,
+  "total_output_tokens": 496,
+  "total_latency_s": 3.783334493637085,
+  "estimated_cost_usd": 0.0086549,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Besorge mir eine Liste der verfügbaren vegetarischen und glutenfreien Lebensmittel bei Wolmart in der Nähe von Denver."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "walmart.vegan_products": {
+        "location": [
+          "Denver, CO",
+          "Denver"
+        ],
+        "categories": [
+          [
+            "vegan",
+            "gluten-free"
+          ],
+          [
+            "gluten-free",
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "walmart_vegan_products",
+          "arguments": {
+            "location": "Denver, Colorado",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          },
+          "id": "call_1ef531dc2dbd4400b2f8669f"
+        }
+      ],
+      "decoded": [
+        {
+          "walmart_vegan_products": {
+            "location": "Denver, Colorado",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'walmart_vegan_products'. Please review the function definition and try again.",
+      "input_tokens": 481,
+      "output_tokens": 259,
+      "latency_s": 1.8953049182891846,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "walmart_vegan_products",
+          "arguments": {
+            "location": "Denver, CO",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          },
+          "id": "call_074512d53dcd4c4e99616750"
+        }
+      ],
+      "decoded": [
+        {
+          "walmart_vegan_products": {
+            "location": "Denver, CO",
+            "categories": [
+              "vegan",
+              "gluten-free"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 802,
+      "output_tokens": 237,
+      "latency_s": 1.8880295753479004,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Besorge mir eine Liste der verfügbaren vegetarischen und glutenfreien Lebensmittel bei Wolmart in der Nähe von Denver."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1ef531dc2dbd4400b2f8669f",
+          "function": {
+            "arguments": "{\"location\": \"Denver, Colorado\", \"categories\": [\"vegan\", \"gluten-free\"]}",
+            "name": "walmart_vegan_products"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond in German? Should call correct function as specified. User: \"Besorge mir eine Liste der verfügbaren vegetarischen und glutenfreien Lebensmittel bei Wolmart in der Nähe von Denver.\" Means get list available vegetarian and gluten-free foods at Wolmart near Denver. Tools only vegan products Safeway Whole Foods Walmart categories vegan gluten-free location German. \"Wolmart\" typo Walmart. \"vegetarischen\" vegetarian but tools only vegan and gluten-free; likely map vegetarian to vegan? Should choose walmart_vegan_products location Denver, perhaps \"Denver, Colorado\", categories [\"vegan\",\"gluten-free\"]. Should have no prose? Instructions say understand and respond correct function call exactly. So call walmart. Perhaps German location \"Denver, Colorado\" or \"Denver, CO\". Languages German refers location can German? likely \"Denver, Colorado\". Should call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'walmart_vegan_products'. Please review the function definition and try again.",
+      "tool_call_id": "call_1ef531dc2dbd4400b2f8669f"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_074512d53dcd4c4e99616750",
+          "function": {
+            "arguments": "{\"location\": \"Denver, CO\", \"categories\": [\"vegan\", \"gluten-free\"]}",
+            "name": "walmart_vegan_products"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid params. Should reason. Location City and state where Walmart store located. Languages: German. Could require \"Denver, CO\"? categories perhaps array valid. Why invalid? Could be typo Wolmart? No. Perhaps parameter order irrelevant. Should try location \"Denver, CO\". Could categories perhaps omit vegan because user vegetarian? No. Error likely location expected German? \"Denver, Colorado\" should accepted? Tool generated scenarios often requires location \"Denver, CO\". Should retry. Could call \"Denver, Colorado\" categories? I did. I'll inspect tool definitions exact: categories?: (\"vegan\"|\"gluten-free\")[] default empty; location string. Call valid JSON. 400 suggests location near Denver unresolved? Could be expected \"Denver, CO\" as standardized. Try."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

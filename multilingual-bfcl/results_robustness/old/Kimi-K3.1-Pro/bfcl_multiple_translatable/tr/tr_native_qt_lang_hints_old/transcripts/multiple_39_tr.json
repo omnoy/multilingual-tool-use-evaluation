@@ -1,0 +1,176 @@
+{
+  "id": "multiple_39_tr",
+  "source_id": "multiple_39",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1178,
+  "total_output_tokens": 460,
+  "total_latency_s": 3.298058271408081,
+  "estimated_cost_usd": 0.0079994,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Nyu York'tan Filadelfiya'ya en fazla 50 dolar tutacak bir yolculuk bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "ride_hailing.get_rides": {
+        "source": [
+          "Nyu York",
+          "Nyu York, En Vay",
+          "Nyu York Şehri",
+          "En Vay Si",
+          "En Vay"
+        ],
+        "destination": [
+          "Filadelfiya"
+        ],
+        "max_cost": [
+          50
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          },
+          "id": "call_f3632f462f834b02b44b77a6"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "input_tokens": 428,
+      "output_tokens": 259,
+      "latency_s": 1.6731758117675781,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "Nyu York",
+            "destination": "Filadelfiya",
+            "max_cost": 50
+          },
+          "id": "call_5615a9c5b51b4b94ba385fb3"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "Nyu York",
+            "destination": "Filadelfiya",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 750,
+      "output_tokens": 201,
+      "latency_s": 1.624882459640503,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Nyu York'tan Filadelfiya'ya en fazla 50 dolar tutacak bir yolculuk bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f3632f462f834b02b44b77a6",
+          "function": {
+            "arguments": "{\"source\": \"New York\", \"destination\": \"Philadelphia\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Turkish user with function call exactly as tool definitions. Should understand: \"Nyu York'tan Filadelfiya'ya en fazla 50 dolar tutacak bir yolculuk bul.\" Find ride from New York to Philadelphia max $50. Should call ride_hailing_get_rides source New York destination Philadelphia max_cost 50. Language fields English Turkish. Could use \"New York\" and \"Philadelphia\" or Turkish \"Nyu York\", \"Filadelfiya\". User specifically locations in Turkish but recognizable. I should call the function. No need prose. Ensure destination Philadelphia, source New York, max_cost 50 integer. Could preserve Turkish names \"Nyu York\" and \"Filadelfiya\". Tool likely best English names? Both supported. Perhaps source \"New York\", destination \"Philadelphia\". I should use direct."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "tool_call_id": "call_f3632f462f834b02b44b77a6"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5615a9c5b51b4b94ba385fb3",
+          "function": {
+            "arguments": "{\"source\": \"Nyu York\", \"destination\": \"Filadelfiya\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400 invalid parameters. Should review definition. source string, destination string, max_cost integer. Called valid. Perhaps tool requires Turkish exact? Or backend expects source destination different? Could be JSON? It was proper. Should try again perhaps max_cost omitted? But user constraint essential. Could use Turkish names. Perhaps tool rejects English? Says Languages English Turkish. 400 invalid parameters could be max_cost as 50? It's integer valid. Could be function wrapper weird? Should retry with source \"Nyu York\", destination \"Filadelfiya\", max_cost 50."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

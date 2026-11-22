@@ -1,0 +1,112 @@
+{
+  "id": "multiple_65_he",
+  "source_id": "multiple_65",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 473,
+  "total_output_tokens": 235,
+  "total_latency_s": 1.7960641384124756,
+  "estimated_cost_usd": 0.0037904,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את המרחק בין העיר ניו יורק ללוס אנג'לס."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "geodistance.find": {
+        "origin": [
+          "העיר ניו יורק",
+          "ניו יורק"
+        ],
+        "destination": [
+          "לוס אנג'לס",
+          "אל-איי"
+        ],
+        "unit": [
+          "מיילים",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "ניו יורק",
+            "destination": "לוס אנג'לס"
+          },
+          "id": "call_f27d3322f69b4d3f8d87cf48"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "ניו יורק",
+            "destination": "לוס אנג'לס"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 473,
+      "output_tokens": 235,
+      "latency_s": 1.7960641384124756,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את המרחק בין העיר ניו יורק ללוס אנג'לס."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f27d3322f69b4d3f8d87cf48",
+          "function": {
+            "arguments": "{\"origin\": \"ניו יורק\", \"destination\": \"לוס אנג'לס\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Hebrew? User asks \"מצא את המרחק בין העיר ניו יורק ללוס אנג'לס.\" = Find distance between New York City and Los Angeles. Must call geodistance_find with origin and destination Hebrew? Tool city languages Hebrew. I need exact function. unit optional. Could set origin \"ניו יורק\", destination \"לוס אנג'לס\", unit perhaps \"קילומטרים\" or \"km\"? Should infer from schema enum absent. Language Hebrew. I should call. User requests distance between NYC to LA. Use geodistance. Unit not provided, should omit to default rather than invent. Origin ניו יורק destination לוס אנג'לס. Call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,177 @@
+{
+  "id": "multiple_189_he",
+  "source_id": "multiple_189",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1200,
+  "total_output_tokens": 514,
+  "total_latency_s": 7.17216944694519,
+  "estimated_cost_usd": 0.008671,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "המר את השעה 15:00 מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "15:00"
+        ],
+        "from_timezone": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק סיטי",
+          "שעון החוף המזרחי הסטנדרטי"
+        ],
+        "to_timezone": [
+          "לונדון",
+          "שעון הקיץ הבריטי",
+          "שעון גריניץ'"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "15:00",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          },
+          "id": "call_6ee3a67d08624fad9663f90d"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "15:00",
+            "from_timezone": "America/New_York",
+            "to_timezone": "Europe/London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 406,
+      "output_tokens": 333,
+      "latency_s": 4.934969902038574,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "15:00",
+            "from_timezone": "ניו יורק",
+            "to_timezone": "לונדון"
+          },
+          "id": "call_963cde1d1b934321a16dfdff"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "15:00",
+            "from_timezone": "ניו יורק",
+            "to_timezone": "לונדון"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 794,
+      "output_tokens": 181,
+      "latency_s": 2.237199544906616,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "המר את השעה 15:00 מאזור הזמן של ניו יורק לאזור הזמן של לונדון."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_6ee3a67d08624fad9663f90d",
+          "function": {
+            "arguments": "{\"time\": \"15:00\", \"from_timezone\": \"America/New_York\", \"to_timezone\": \"Europe/London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to User in Hebrew request convert 15:00 from New York timezone to London. Should call the timezone_convert function exactly tool. Should determine args Hebrew strings? Tool description Languages Hebrew for timezone. I should use recognizable timezone names likely \"America/New_York\", \"Europe/London\" or Hebrew? Says parameters from_timezone description ... Languages: Hebrew. Means user language Hebrew, function can accept \"ניו יורק\" maybe. Should correctly call. Time \"15:00\", from_timezone \"America/New_York\", to_timezone \"Europe/London\". But instruction user will write Hebrew understand and respond with correct function call exactly specified. I should just call. Could use \"ניו יורק\" \"לונדון\" if Hebrew expected. Usually these tasks tools generated with arguments English standard? Should infer examples absent. Description \"Languages: Hebrew\" hints values should be Hebrew? Calculate energy_type Type renewable energy source. Languages: Hebrew. That means descriptions localized? User likely expects semantically arguments. Timezone converter accepts strings likely Olson names, can supply \"America/New_York\". Best to use actual IANA IDs to avoid ambiguity. Should have no date though conversion DST ambiguity. Tool handles. Call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "tool_call_id": "call_6ee3a67d08624fad9663f90d"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_963cde1d1b934321a16dfdff",
+          "function": {
+            "arguments": "{\"time\": \"15:00\", \"from_timezone\": \"ניו יורק\", \"to_timezone\": \"לונדון\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "The tool returned invalid. I'll try Hebrew timezone strings, likely \"ניו יורק\", \"לונדון\". Time format perhaps date? Definition local time string. Perhaps \"אזור הזמן של ניו יורק\" and \"אזור הזמן של לונדון\". I'll reason. Tools in these tasks expect exact input perhaps \"ניו יורק\" and \"לונדון\". I need retry."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

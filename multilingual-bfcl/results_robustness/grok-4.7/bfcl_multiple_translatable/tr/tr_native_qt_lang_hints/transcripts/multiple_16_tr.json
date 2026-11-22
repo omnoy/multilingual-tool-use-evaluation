@@ -1,0 +1,142 @@
+{
+  "id": "multiple_16_tr",
+  "source_id": "multiple_16",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1195,
+  "total_output_tokens": 69,
+  "total_latency_s": 8.760988712310791,
+  "estimated_cost_usd": 0.002804,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Yabani bir kaplan popülasyonunun genetik çeşitliliğini önümüzdeki 100 nesil boyunca 0.95 olasılıkla korumak için gereken minimum popülasyon büyüklüğü (Ne) nedir?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "population_genetics.calculate_ne": {
+        "species": [
+          "yabani kaplan",
+          "kaplan"
+        ],
+        "generations": [
+          100
+        ],
+        "probability": [
+          0.95
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"population_genetics_calculate_ne\", \"parameters\": {\"species\": \"kaplan\", \"generations\": 100, \"probability\": 0.95}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 564,
+      "output_tokens": 38,
+      "latency_s": 4.296464681625366,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "population_genetics_calculate_ne",
+          "arguments": {
+            "species": "kaplan",
+            "generations": 100,
+            "probability": 0.95
+          },
+          "id": "call-16b865ba-9ee3-463c-a2dc-e8ffecad5365-0"
+        }
+      ],
+      "decoded": [
+        {
+          "population_genetics_calculate_ne": {
+            "species": "kaplan",
+            "generations": 100,
+            "probability": 0.95
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 631,
+      "output_tokens": 31,
+      "latency_s": 4.464524030685425,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Yabani bir kaplan popülasyonunun genetik çeşitliliğini önümüzdeki 100 nesil boyunca 0.95 olasılıkla korumak için gereken minimum popülasyon büyüklüğü (Ne) nedir?"
+    },
+    {
+      "content": "{\"name\": \"population_genetics_calculate_ne\", \"parameters\": {\"species\": \"kaplan\", \"generations\": 100, \"probability\": 0.95}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-16b865ba-9ee3-463c-a2dc-e8ffecad5365-0",
+          "function": {
+            "arguments": "{\"species\":\"kaplan\",\"generations\":100,\"probability\":0.95}",
+            "name": "population_genetics_calculate_ne"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

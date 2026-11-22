@@ -1,0 +1,128 @@
+{
+  "id": "multiple_147_he",
+  "source_id": "multiple_147",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 555,
+  "total_output_tokens": 228,
+  "total_latency_s": 1.6803689002990723,
+  "estimated_cost_usd": 0.0038985,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "השג לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "map_service.get_directions": {
+        "start": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק סיטי"
+        ],
+        "end": [
+          "לוס אנג'לס",
+          "אל איי",
+          "אל-איי"
+        ],
+        "avoid": [
+          [
+            "highways",
+            "tolls"
+          ],
+          [
+            "tolls",
+            "highways"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "ניו יורק",
+            "end": "לוס אנג'לס",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "call_217f02452b5c44e6aec98832"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "ניו יורק",
+            "end": "לוס אנג'לס",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 555,
+      "output_tokens": 228,
+      "latency_s": 1.6803689002990723,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "השג לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_217f02452b5c44e6aec98832",
+          "function": {
+            "arguments": "{\"start\": \"ניו יורק\", \"end\": \"לוס אנג'לס\", \"avoid\": [\"highways\", \"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond with function call exactly. User Hebrew: \"Get me directions from New York to Los Angeles avoiding highways and toll roads.\" I'll call map_service_get_directions start New York end Los Angeles avoid highways,tolls. Tool languages Hebrew for locations? Schema says languages Hebrew but user uses English city names within Hebrew. Should I provide \"ניו יורק\" and \"לוס אנג'לס\" perhaps correct. Avoid array [\"highways\",\"tolls\"] as enum. Order request says כבישים מהירים וכבישי אגרה = highways and tolls. I'll call only, no prose."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

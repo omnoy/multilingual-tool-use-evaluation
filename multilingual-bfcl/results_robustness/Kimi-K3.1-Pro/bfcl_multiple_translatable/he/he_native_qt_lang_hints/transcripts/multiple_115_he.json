@@ -1,0 +1,154 @@
+{
+  "id": "multiple_115_he",
+  "source_id": "multiple_115",
+  "locale": "he",
+  "localization_level": "full",
+  "benchmark": "he_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1512,
+  "total_output_tokens": 299,
+  "total_latency_s": 3.3222568035125732,
+  "estimated_cost_usd": 0.0069161,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "אני רוצה למצוא 5 מסעדות בקרבת מקומי, מנהטן, שמציעות אוכל תאילנדי ותפריט טבעוני."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_restaurants": {
+        "location": [
+          "מנהטן"
+        ],
+        "food_type": [
+          "תאילנדי"
+        ],
+        "number": [
+          5
+        ],
+        "dietary_requirements": [
+          [
+            "טבעוני"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"location\":\"מנהטן\",\"food_type\":\"תאילנדי\",\"number\":5,\"dietary_requirements\":[\"טבעוני\"]}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 660,
+      "output_tokens": 150,
+      "latency_s": 1.9934732913970947,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "מנהטן",
+            "food_type": "תאילנדי",
+            "number": 5,
+            "dietary_requirements": [
+              "טבעוני"
+            ]
+          },
+          "id": "call_04469aa050a742f7bddbea2b"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "מנהטן",
+            "food_type": "תאילנדי",
+            "number": 5,
+            "dietary_requirements": [
+              "טבעוני"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 852,
+      "output_tokens": 149,
+      "latency_s": 1.3287835121154785,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "אני רוצה למצוא 5 מסעדות בקרבת מקומי, מנהטן, שמציעות אוכל תאילנדי ותפריט טבעוני."
+    },
+    {
+      "content": "{\"location\":\"מנהטן\",\"food_type\":\"תאילנדי\",\"number\":5,\"dietary_requirements\":[\"טבעוני\"]}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond Hebrew user wants find 5 restaurants near me Manhattan offering Thai food and vegan menu. Should call find_restaurants with location Manhattan Hebrew? Tool languages Hebrew descriptions. Should have parameters: dietary_requirements array special dietary vegan likely [\"טבעוני\"], food_type \"תאילנדי\", location \"מנהטן\", number 5. I'll respond with exact function call. No need prose. Make sure possibly \"טבעוני\" as dietary requirements. Yes. Call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_04469aa050a742f7bddbea2b",
+          "function": {
+            "arguments": "{\"location\": \"מנהטן\", \"food_type\": \"תאילנדי\", \"number\": 5, \"dietary_requirements\": [\"טבעוני\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need now understand previous assistant output raw JSON rather than tool call causing bad request. I'll call functions.find_restaurants properly. User system-like error. I'll use actual tool. Parameters same. Call."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

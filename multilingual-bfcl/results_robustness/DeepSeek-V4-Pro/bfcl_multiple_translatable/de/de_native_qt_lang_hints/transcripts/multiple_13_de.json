@@ -1,0 +1,233 @@
+{
+  "id": "multiple_13_de",
+  "source_id": "multiple_13",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_qt_lang_hints",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2101,
+  "total_output_tokens": 356,
+  "total_latency_s": 4.017355442047119,
+  "estimated_cost_usd": 0.00489462,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Wie viel Umsatz würde das Unternehmen XYZ erzielen, wenn wir die Absatzmenge von Produkt A um 10% erhöhen und den Preis unverändert lassen?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.revenue_forecast": {
+        "company": [
+          "XYZ"
+        ],
+        "product": [
+          "A",
+          "Produkt A"
+        ],
+        "sales_units_increase_percentage": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nUm den Umsatz zu berechnen, benötige ich zuerst den aktuellen Preis von Produkt A bei Unternehmen XYZ. Danach kann ich die Umsatzprognose mit einer 10%igen Erhöhung der Absatzmenge berechnen."
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "Produkt A"
+          },
+          "id": "call_ac2306dba7bb4632b04f989f"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "Produkt A"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "input_tokens": 553,
+      "output_tokens": 119,
+      "latency_s": 1.2488815784454346,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Es scheint ein Problem mit den Parametern gegeben zu haben. Lassen Sie mich den Aufruf noch einmal korrekt ausführen:"
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "Produkt A"
+          },
+          "id": "call_57b2c3d3dfc440f2b12057a5"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "Produkt A"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "input_tokens": 708,
+      "output_tokens": 96,
+      "latency_s": 1.0805168151855469,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Es tut mir leid, aber der Abruf des Preises schlägt derzeit fehl. Lassen Sie mich direkt die Umsatzprognose mit einer 10%igen Erhöhung der Absatzmenge versuchen:"
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ",
+            "product": "Produkt A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "call_8b6d4e61d7544c478e6cb2fc"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ",
+            "product": "Produkt A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 840,
+      "output_tokens": 141,
+      "latency_s": 1.6879570484161377,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Wie viel Umsatz würde das Unternehmen XYZ erzielen, wenn wir die Absatzmenge von Produkt A um 10% erhöhen und den Preis unverändert lassen?"
+    },
+    {
+      "content": "\n\nUm den Umsatz zu berechnen, benötige ich zuerst den aktuellen Preis von Produkt A bei Unternehmen XYZ. Danach kann ich die Umsatzprognose mit einer 10%igen Erhöhung der Absatzmenge berechnen.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ac2306dba7bb4632b04f989f",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"Produkt A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_ac2306dba7bb4632b04f989f"
+    },
+    {
+      "content": "Es scheint ein Problem mit den Parametern gegeben zu haben. Lassen Sie mich den Aufruf noch einmal korrekt ausführen:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_57b2c3d3dfc440f2b12057a5",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"Produkt A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "tool_call_id": "call_57b2c3d3dfc440f2b12057a5"
+    },
+    {
+      "content": "Es tut mir leid, aber der Abruf des Preises schlägt derzeit fehl. Lassen Sie mich direkt die Umsatzprognose mit einer 10%igen Erhöhung der Absatzmenge versuchen:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8b6d4e61d7544c478e6cb2fc",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"Produkt A\", \"sales_units_increase_percentage\": 10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,107 @@
+{
+  "id": "multiple_91_tr",
+  "source_id": "multiple_91",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 387,
+  "total_output_tokens": 290,
+  "total_latency_s": 1.8743765354156494,
+  "estimated_cost_usd": 0.0042251,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "5'ten az malzeme kullanarak yapabileceğim iyi bir elmalı turta tarifi bulabilir miyim?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "elmalı turta",
+          "elma"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "elma",
+            "ingredientLimit": 4
+          },
+          "id": "call_861c2df10ae54e2494ed22ab"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "elma",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 387,
+      "output_tokens": 290,
+      "latency_s": 1.8743765354156494,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "5'ten az malzeme kullanarak yapabileceğim iyi bir elmalı turta tarifi bulabilir miyim?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_861c2df10ae54e2494ed22ab",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"elma\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I'll respond in Turkish with tool call. User: \"5'ten az malzeme kullanarak yapabileceğim iyi bir elmalı turta tarifi bulabilir miyim?\" Can I find a good apple pie recipe using fewer than 5 ingredients? Should have recipe_find mainIngredient Turkish \"elma\" ingredientLimit integer. Should interpret fewer than 5 => max number ingredients should be 4? Tool says Max number ingredients recipe should use. User asks 5'ten az = <5, so ingredientLimit 4. But usual benchmark likely ingredientLimit 5? Should reason. They likely expect mainIngredient \"elma\", ingredientLimit 5 perhaps because \"5'ten az malzeme\" = fewer than 5, maximum 4. Should be exact. Could mainIngredient \"elmalı turta\" or \"elma\"? Tool main ingredient, Turkish. \"elma\" correct. Call recipe_find {\"ingredientLimit\":4,\"mainIngredient\":\"elma\"}. No need prose? Instructions say respond with correct function call exactly as specified. Do tool."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

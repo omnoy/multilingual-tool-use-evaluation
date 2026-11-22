@@ -1,0 +1,231 @@
+{
+  "id": "multiple_118_tr",
+  "source_id": "multiple_118",
+  "locale": "tr",
+  "localization_level": "full",
+  "benchmark": "tr_native_qt_lang_hints",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2831,
+  "total_output_tokens": 387,
+  "total_latency_s": 4.1650261878967285,
+  "estimated_cost_usd": 0.0062727,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "İnternet Film Veri Tabanı'ndan Leonardo Dikapriyo'nun başrol oynadığı 2010 yılındaki tüm filmleri bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "imdb.find_movies_by_actor": {
+        "actor_name": [
+          "Leonardo Dikapriyo"
+        ],
+        "year": [
+          2010
+        ],
+        "category": [
+          "",
+          "tümü"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          },
+          "id": "call_7d459d90f4694291ba812e54"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "input_tokens": 810,
+      "output_tokens": 73,
+      "latency_s": 1.0916879177093506,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Sanırım kategori parametresi eksik olduğu için hata aldık. Ancak kategori zorunlu bir parametre değil. Bir kez daha deneyelim, bu sefer kategoriyi de ekleyerek:"
+      ],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010,
+            "category": "Tümü"
+          },
+          "id": "call_994ac34c9abc4dc19f5653e7"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010,
+            "category": "Tümü"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "input_tokens": 921,
+      "output_tokens": 141,
+      "latency_s": 1.402280330657959,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "Fonksiyon tanımına göre `year` parametresi integer türünde olmalı. Ayrıca `actor_name` ve `year` zorunlu parametreler. Türkçe isimlendirme ile tekrar deneyelim. \"Leonardo Dikapriyo\" olarak yazmıştınız, belki de isim tam olarak bu şekilde aranmalıdır:"
+      ],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "Leonardo Dikapriyo",
+            "year": 2010
+          },
+          "id": "call_6b38674a407545fcaef01c06"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "Leonardo Dikapriyo",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1100,
+      "output_tokens": 173,
+      "latency_s": 1.671057939529419,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "İnternet Film Veri Tabanı'ndan Leonardo Dikapriyo'nun başrol oynadığı 2010 yılındaki tüm filmleri bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_7d459d90f4694291ba812e54",
+          "function": {
+            "arguments": "{\"actor_name\": \"Leonardo DiCaprio\", \"year\": 2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "tool_call_id": "call_7d459d90f4694291ba812e54"
+    },
+    {
+      "content": "Sanırım kategori parametresi eksik olduğu için hata aldık. Ancak kategori zorunlu bir parametre değil. Bir kez daha deneyelim, bu sefer kategoriyi de ekleyerek:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_994ac34c9abc4dc19f5653e7",
+          "function": {
+            "arguments": "{\"actor_name\": \"Leonardo DiCaprio\", \"year\": 2010, \"category\": \"Tümü\"}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "tool_call_id": "call_994ac34c9abc4dc19f5653e7"
+    },
+    {
+      "content": "Fonksiyon tanımına göre `year` parametresi integer türünde olmalı. Ayrıca `actor_name` ve `year` zorunlu parametreler. Türkçe isimlendirme ile tekrar deneyelim. \"Leonardo Dikapriyo\" olarak yazmıştınız, belki de isim tam olarak bu şekilde aranmalıdır:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_6b38674a407545fcaef01c06",
+          "function": {
+            "arguments": "{\"actor_name\": \"Leonardo Dikapriyo\", \"year\": 2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

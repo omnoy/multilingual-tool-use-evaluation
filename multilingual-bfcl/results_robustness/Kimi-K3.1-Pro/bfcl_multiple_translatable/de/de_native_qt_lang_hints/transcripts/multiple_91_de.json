@@ -1,0 +1,107 @@
+{
+  "id": "multiple_91_de",
+  "source_id": "multiple_91",
+  "locale": "de",
+  "localization_level": "full",
+  "benchmark": "de_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 381,
+  "total_output_tokens": 586,
+  "total_latency_s": 4.106298923492432,
+  "estimated_cost_usd": 0.0076153,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "Apfelkuchen",
+          "Apfel"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          },
+          "id": "call_ec004a088f1c46a9a2a766a1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 381,
+      "output_tokens": 586,
+      "latency_s": 4.106298923492432,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ec004a088f1c46a9a2a766a1",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"Apfel\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to the German request using the correct function exactly as specified. Should understand: \"Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?\" User wants recipe find main ingredient Apfel? IngredientLimit <5 i.e. max 4? Tool schema ingredientLimit max number ingredients recipe should use integer, mainIngredient German. I'll call recipe_find mainIngredient likely \"Apfel\" or \"Apfelkuchen\"? Tool locates cooking recipes based on main ingredient and number ingredients. Main ingredient should be \"Apfel\" (German). ingredientLimit: less than 5 = 4. I'll just call the function. I should not respond text perhaps tool call. Use functions.recipe_find {\"ingredientLimit\":4,\"mainIngredient\":\"Apfel\"} . Should consider if mainIngredient \"Apfelkuchen\" because request recipe for apple cake. But mainIngredient parameter main ingredient for recipe, Apfel. In similar benchmark they expect recipe_find ingredientLimit=5? Wording \"mit weniger als 5 Zutaten\" means max 4, but often tests map to 5? Should carefully infer likely generated requests and tool expected. They may use ingredientLimit 5 as threshold. But semantic max number ingredients = 4. I'll inspect tools: recipe_find mainIngredient languages German, ingredientLimit max number. Query \"Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?\" User likely expects mainIngredient \"Apfel\" and ingredientLimit 5? In common function calling tasks (Gorilla? German) requests generated around tool: \"Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?\" Function recipe_find(ingredientLimit: integer, mainIngredient: string). They intend ingredientLimit=5 perhaps since wording less than 5 but max should be 5? Should choose semantically correct 4. Could mainIngredient \"Apfelkuchen\" because recipe search by main ingredient only, perhaps Äpfel. I'll think of likely database backend. Perhaps recipe_find accepts ingredientLimit and mainIngredient, data e.g. mainIngredient \"Apfel\", limit 5. User German: \"Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?\" If user wants less than 5 ingredients, function should ingredientLimit=4. Correct function call exact. Do it."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

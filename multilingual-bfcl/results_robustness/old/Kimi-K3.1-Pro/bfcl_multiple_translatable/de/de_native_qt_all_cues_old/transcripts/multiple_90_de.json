@@ -1,0 +1,183 @@
+{
+  "id": "multiple_90_de",
+  "source_id": "multiple_90",
+  "locale": "de",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "de_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1284,
+  "total_output_tokens": 381,
+  "total_latency_s": 2.8460841178894043,
+  "estimated_cost_usd": 0.006378,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ich suche ein Fischrestaurant in Seattle, das Platz für eine Gruppe von 5 Personen hat."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_group": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          [
+            "Seafood"
+          ]
+        ],
+        "group_size": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_group",
+          "arguments": {
+            "location": "Seattle, Washington",
+            "group_size": 5,
+            "cuisine": [
+              "Seafood"
+            ]
+          },
+          "id": "call_7c42a8ad97924d7ab63ba9e9"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_group": {
+            "location": "Seattle, Washington",
+            "group_size": 5,
+            "cuisine": [
+              "Seafood"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_group'. Please review the function definition and try again.",
+      "input_tokens": 517,
+      "output_tokens": 191,
+      "latency_s": 1.5042335987091064,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_group",
+          "arguments": {
+            "location": "Seattle, WA",
+            "group_size": 5,
+            "cuisine": [
+              "Seafood"
+            ]
+          },
+          "id": "call_aa21876653b949279b02a0b7"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_group": {
+            "location": "Seattle, WA",
+            "group_size": 5,
+            "cuisine": [
+              "Seafood"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 767,
+      "output_tokens": 190,
+      "latency_s": 1.3418505191802979,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ich suche ein Fischrestaurant in Seattle, das Platz für eine Gruppe von 5 Personen hat."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_7c42a8ad97924d7ab63ba9e9",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, Washington\", \"group_size\": 5, \"cuisine\": [\"Seafood\"]}",
+            "name": "restaurant_find_group"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond in German and exactly correct function call. Should call restaurant_find_group cuisine Seafood, group_size 5 location Seattle likely \"Seattle, Washington\" or \"Seattle, WA\". Should understand tool definition German: location city and state, languages English German. User asks fish restaurant in Seattle for 5. Use Seafood. Call only tool no need respond? Instructions \"respond with correct function call exactly as specified\". I must call. Could use \"Seattle, Washington\". Perhaps verify state WA. Yes."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_group'. Please review the function definition and try again.",
+      "tool_call_id": "call_7c42a8ad97924d7ab63ba9e9"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_aa21876653b949279b02a0b7",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, WA\", \"group_size\": 5, \"cuisine\": [\"Seafood\"]}",
+            "name": "restaurant_find_group"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got bad request. Should inspect parameters? cuisine [\"Seafood\"], group size 5 location Seattle, Washington. Tool definition location \"Stadt und Bundesstaat. Sprachen: Englisch, Deutsch.\" Could require \"Seattle, WA\" perhaps. 400 invalid parameters perhaps expects \"Seattle, Washington\" should be valid? Perhaps enum cuisine valid? Yes Seafood. Could be location must be \"Seattle, WA\". I'll retry. Since error asks review try again. Use \"Seattle, WA\"."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

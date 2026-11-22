@@ -1,0 +1,171 @@
+{
+  "id": "multiple_50_tr",
+  "source_id": "multiple_50",
+  "locale": "tr",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "tr_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1461,
+  "total_output_tokens": 418,
+  "total_latency_s": 3.404421806335449,
+  "estimated_cost_usd": 0.0081673,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Nyu York'ta gelecek ayın konut fiyatlarını tahmin et."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "house_price_forecast": {
+        "location": [
+          "Nyu York",
+          "Nyu York, NY",
+          "Nyu York Şehri"
+        ],
+        "months": [
+          1
+        ],
+        "features": [
+          [],
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "house_price_forecast",
+          "arguments": {
+            "location": "New York",
+            "months": 1
+          },
+          "id": "call_94cb0e61544b48b987e7d70e"
+        }
+      ],
+      "decoded": [
+        {
+          "house_price_forecast": {
+            "location": "New York",
+            "months": 1
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'house_price_forecast'. Please review the function definition and try again.",
+      "input_tokens": 618,
+      "output_tokens": 166,
+      "latency_s": 1.4394168853759766,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "house_price_forecast",
+          "arguments": {
+            "location": "Nyu York",
+            "months": 1
+          },
+          "id": "call_75a7bba3b8dc42b19d1dff8a"
+        }
+      ],
+      "decoded": [
+        {
+          "house_price_forecast": {
+            "location": "Nyu York",
+            "months": 1
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 843,
+      "output_tokens": 252,
+      "latency_s": 1.9650049209594727,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Nyu York'ta gelecek ayın konut fiyatlarını tahmin et."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_94cb0e61544b48b987e7d70e",
+          "function": {
+            "arguments": "{\"location\": \"New York\", \"months\": 1}",
+            "name": "house_price_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Turkish request. Should parse \"Nyu York'ta gelecek ayın konut fiyatlarını tahmin et.\" Means predict housing prices next month in New York. Should call house_price_forecast with location New York, months 1. Features optional omit. Should have exact tool call. Perhaps location \"Nyu York\" or \"New York\". Tool accepts English Turkish. \"Nyu York\" transliteration. Could pass \"New York\". Should have no commentary extra. Call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'house_price_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_94cb0e61544b48b987e7d70e"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_75a7bba3b8dc42b19d1dff8a",
+          "function": {
+            "arguments": "{\"location\": \"Nyu York\", \"months\": 1}",
+            "name": "house_price_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need handle error. Should determine why. Schema location string months int features optional enum. New York perhaps expects Turkish \"Nyu York\" or location accepts city in English Turkish. 400 invalid parameters weird. Could be capitalization? Should retry perhaps location \"Nyu York\", months 1. Or include features? The user phrase Nyu York. Should understand. Tool error invalid params. Could be exactly location should be \"Nyu York\" due tool known dataset? I'll examine possibilities. I need correct call exactly specified. First call valid per schema except perhaps location \"New York\" unsupported? \"Diller: İngilizce, Türkçe\" means languages. Could require location \"Nyu York\" user. Months next month = 1. Error perhaps empty features is required? Definition features optional. Could be parameters maybe months 1 okay. Could be house_price_forecast broken? Should retry as user input."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,413 @@
+{
+  "id": "multiple_134_he",
+  "source_id": "multiple_134",
+  "locale": "he",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "he_native_qt_all_cues",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 4,
+  "final_error_type": null,
+  "total_input_tokens": 10696,
+  "total_output_tokens": 654,
+  "total_latency_s": 13.25523591041565,
+  "estimated_cost_usd": 0.020886960000000003,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חפש פרטים של רישום פלילי חמור עבור מספר תיק CA123456 במחוז סן דייגו"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "crime_record.get_record": {
+        "case_number": [
+          "CA123456"
+        ],
+        "county": [
+          "סן דייגו",
+          "מחוז סן דייגו"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "סן דייגו"
+          },
+          "id": "call_3d04d00644204484819113c9"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "סן דייגו"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1151,
+      "output_tokens": 72,
+      "latency_s": 2.5082807540893555,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "נראה שיש בעיה עם הפרמטרים. אנסה שוב עם המחוז באנגלית:"
+      ],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego"
+          },
+          "id": "call_babfa0b3b630428b86fcf708"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1256,
+      "output_tokens": 90,
+      "latency_s": 1.2982814311981201,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "בוא ננסה להוסיף את הפרמטר `details` שגם נתמך על ידי הפונקציה:"
+      ],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "call_2bce30453ea247ca9d866d08"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1379,
+      "output_tokens": 109,
+      "latency_s": 1.181225299835205,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "מתנצל על הקושי. נראה שהפונקציה מחזירה שגיאת 400 גם עם פרמטרים תקינים לכאורה. יכול להיות שמספר התיק או המחוז אינם קיימים במערכת, או שיש מגבלה אחרת. האם תוכל לבדוק אם:\n\n1. מספר התיק **CA123456** הוא מספר תקף?\n2. המחוז **סן דייגו** (San Diego) כתוב נכון?\n3. ייתכן שיש צורך במידע נוסף?\n\nאשמח לעזור אם תספק פרטים נוספים."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1521,
+      "output_tokens": 140,
+      "latency_s": 2.145092248916626,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "מתנצל על הטעות. אנסה לקרוא לפונקציה שוב כעת:"
+      ],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego"
+          },
+          "id": "call_2b93dedfc6c44bee84d90887"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1685,
+      "output_tokens": 89,
+      "latency_s": 1.5493943691253662,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "הפונקציה מחזירה שגיאת 400 - \"invalid parameters\". ייתכן שמספר התיק `CA123456` או המחוז `San Diego` אינם קיימים במערכת. האם ברצונך לנסות עם מספר תיק אחר או מחוז אחר?"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1807,
+      "output_tokens": 66,
+      "latency_s": 2.64404296875,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "סן דייגו",
+            "details": true
+          },
+          "id": "call_42507fe7d5ca42a28d1ea6b7"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "סן דייגו",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1897,
+      "output_tokens": 88,
+      "latency_s": 1.9289188385009766,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חפש פרטים של רישום פלילי חמור עבור מספר תיק CA123456 במחוז סן דייגו"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3d04d00644204484819113c9",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"סן דייגו\"}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_3d04d00644204484819113c9"
+    },
+    {
+      "content": "נראה שיש בעיה עם הפרמטרים. אנסה שוב עם המחוז באנגלית:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_babfa0b3b630428b86fcf708",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\"}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_babfa0b3b630428b86fcf708"
+    },
+    {
+      "content": "בוא ננסה להוסיף את הפרמטר `details` שגם נתמך על ידי הפונקציה:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2bce30453ea247ca9d866d08",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_2bce30453ea247ca9d866d08"
+    },
+    {
+      "content": "מתנצל על הקושי. נראה שהפונקציה מחזירה שגיאת 400 גם עם פרמטרים תקינים לכאורה. יכול להיות שמספר התיק או המחוז אינם קיימים במערכת, או שיש מגבלה אחרת. האם תוכל לבדוק אם:\n\n1. מספר התיק **CA123456** הוא מספר תקף?\n2. המחוז **סן דייגו** (San Diego) כתוב נכון?\n3. ייתכן שיש צורך במידע נוסף?\n\nאשמח לעזור אם תספק פרטים נוספים.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "מתנצל על הטעות. אנסה לקרוא לפונקציה שוב כעת:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2b93dedfc6c44bee84d90887",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\"}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_2b93dedfc6c44bee84d90887"
+    },
+    {
+      "content": "הפונקציה מחזירה שגיאת 400 - \"invalid parameters\". ייתכן שמספר התיק `CA123456` או המחוז `San Diego` אינם קיימים במערכת. האם ברצונך לנסות עם מספר תיק אחר או מחוז אחר?",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_42507fe7d5ca42a28d1ea6b7",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"סן דייגו\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

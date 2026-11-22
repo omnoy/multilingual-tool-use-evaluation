@@ -1,0 +1,191 @@
+{
+  "id": "multiple_190_tr",
+  "source_id": "multiple_190",
+  "locale": "tr",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "tr_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1748,
+  "total_output_tokens": 595,
+  "total_latency_s": 6.588352203369141,
+  "estimated_cost_usd": 0.0108629,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "10 Aralık 2022'den başlayarak Şikago'daki Hilton Oteli'nde iki geceliğine tek kişilik bir oda ayırt."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "Hilton Oteli",
+          "Hilton"
+        ],
+        "location": [
+          "Şikago"
+        ],
+        "room_type": [
+          "tek kişilik",
+          "Tek kişilik"
+        ],
+        "start_date": [
+          "2022-12-10",
+          "10/12/2022",
+          "10 Ara. 2022",
+          "10 Aralık 2022"
+        ],
+        "nights": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton Oteli",
+            "location": "Şikago",
+            "room_type": "tek kişilik oda",
+            "start_date": "10 Aralık 2022",
+            "nights": 2
+          },
+          "id": "call_fca6c748cabc4acb87d03980"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton Oteli",
+            "location": "Şikago",
+            "room_type": "tek kişilik oda",
+            "start_date": "10 Aralık 2022",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'book_hotel'. Please review the function definition and try again.",
+      "input_tokens": 675,
+      "output_tokens": 341,
+      "latency_s": 2.869464874267578,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton",
+            "location": "Şikago",
+            "room_type": "tek kişilik",
+            "start_date": "2022-12-10",
+            "nights": 2
+          },
+          "id": "call_36cdb474a2744089af958fca"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton",
+            "location": "Şikago",
+            "room_type": "tek kişilik",
+            "start_date": "2022-12-10",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1073,
+      "output_tokens": 254,
+      "latency_s": 3.7188873291015625,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "10 Aralık 2022'den başlayarak Şikago'daki Hilton Oteli'nde iki geceliğine tek kişilik bir oda ayırt."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fca6c748cabc4acb87d03980",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hilton Oteli\", \"location\": \"Şikago\", \"room_type\": \"tek kişilik oda\", \"start_date\": \"10 Aralık 2022\", \"nights\": 2}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Turkish user with exact tool call book_hotel. Should parse: \"10 Aralık 2022'den başlayarak Şikago'daki Hilton Oteli'nde iki geceliğine tek kişilik bir oda ayırt.\" Book starting Dec 10 2022 at Hilton Hotel in Chicago two nights single room. I'll call functions.book_hotel with hotel_name likely \"Hilton Oteli\" or \"Hilton\", location \"Şikago\", nights 2, room_type \"tek kişilik\", start_date \"10 Aralık 2022\". Tool descriptions Turkish. I'll respond with exactly the function call, no extra. Use book_hotel. Ensure date as string Turkish. Could use \"2022-12-10\" but user language Turkish and tool languages Turkish, likely \"10 Aralık 2022\". Hotel_name \"Hilton Oteli\", location \"Şikago\", room_type \"tek kişilik oda\" perhaps \"tek kişilik\". I should call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'book_hotel'. Please review the function definition and try again.",
+      "tool_call_id": "call_fca6c748cabc4acb87d03980"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_36cdb474a2744089af958fca",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hilton\", \"location\": \"Şikago\", \"room_type\": \"tek kişilik\", \"start_date\": \"2022-12-10\", \"nights\": 2}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid params. Should review definitions and try again. Perhaps tool expects hotel_name \"Hilton\", location \"Chicago\", room_type \"single\", start_date format \"2022-12-10\"? But descriptions languages Turkish suggests Turkish values okay. Should infer error. Perhaps function call JSON parameters order? No. Could be strict room_type allowed \"tek kişilik\" vs \"tek kişilik oda\". Try exact values more standard: hotel_name \"Hilton\", location \"Şikago\", room_type \"tek kişilik\", start_date \"2022-12-10\", nights 2. Should not ask user. Retry."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

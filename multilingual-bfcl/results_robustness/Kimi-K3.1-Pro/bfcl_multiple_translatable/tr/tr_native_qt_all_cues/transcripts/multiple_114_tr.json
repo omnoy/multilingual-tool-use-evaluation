@@ -1,0 +1,174 @@
+{
+  "id": "multiple_114_tr",
+  "source_id": "multiple_114",
+  "locale": "tr",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "tr_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1602,
+  "total_output_tokens": 475,
+  "total_latency_s": 5.405573606491089,
+  "estimated_cost_usd": 0.0091471,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Darvin modelini kullanarak Homo Sapiyens türünün önümüzdeki 50 yıl için evrim hızı tahminlerini getir."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "prediction.evolution": {
+        "species": [
+          "Homo Sapiyens",
+          "Homo sapiyens"
+        ],
+        "years": [
+          50
+        ],
+        "model": [
+          "Darvin",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "prediction_evolution",
+          "arguments": {
+            "species": "Homo sapiens",
+            "years": 50,
+            "model": "Darwin"
+          },
+          "id": "call_cc0227555c7b4cd98c2bd1ef"
+        }
+      ],
+      "decoded": [
+        {
+          "prediction_evolution": {
+            "species": "Homo sapiens",
+            "years": 50,
+            "model": "Darwin"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'prediction_evolution'. Please review the function definition and try again.",
+      "input_tokens": 650,
+      "output_tokens": 245,
+      "latency_s": 2.0963356494903564,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "prediction_evolution",
+          "arguments": {
+            "species": "Homo Sapiyens",
+            "years": 50,
+            "model": "Darvin"
+          },
+          "id": "call_ef797682a14743f484c14b6c"
+        }
+      ],
+      "decoded": [
+        {
+          "prediction_evolution": {
+            "species": "Homo Sapiyens",
+            "years": 50,
+            "model": "Darvin"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 952,
+      "output_tokens": 230,
+      "latency_s": 3.3092379570007324,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Darvin modelini kullanarak Homo Sapiyens türünün önümüzdeki 50 yıl için evrim hızı tahminlerini getir."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cc0227555c7b4cd98c2bd1ef",
+          "function": {
+            "arguments": "{\"species\": \"Homo sapiens\", \"years\": 50, \"model\": \"Darwin\"}",
+            "name": "prediction_evolution"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs respond to Turkish user with tool prediction_evolution. Should parse: \"Darvin modelini kullanarak Homo Sapiyens türünün önümüzdeki 50 yıl için evrim hızı tahminlerini getir.\" User means Darwin model, Homo Sapiens misspelled. Should call function model \"Darvin\" or \"Darwin\" species \"Homo Sapiyens\" corrected? Should correct function call exactly specified. Should use tool. params model optional, species, years. Should use model \"Darwin\", species \"Homo sapiens\", years 50. Should consider exact as specified in tool definitions, descriptions Turkish. I can normalize scientific name. User asked Darvin model perhaps Darwin. Tool likely mocks. I'll call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'prediction_evolution'. Please review the function definition and try again.",
+      "tool_call_id": "call_cc0227555c7b4cd98c2bd1ef"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ef797682a14743f484c14b6c",
+          "function": {
+            "arguments": "{\"species\": \"Homo Sapiyens\", \"years\": 50, \"model\": \"Darvin\"}",
+            "name": "prediction_evolution"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid params. Should diagnose. Definition accepts species string years integer model optional. I used all valid. Perhaps expects exact model \"Darvin\" or species exact? Strange. Should retry perhaps model \"Darvin\", species \"Homo Sapiyens\", years 50. Since user typo perhaps expected? Invalid parameters perhaps tool backend accepted model choices? Should see function spec no constraints. Could be my JSON order? no. Should call again with required only? But user explicitly model Darwin. Perhaps optional model parameter must be \"Darvin modeli\"? Yet no enumeration. Could be typo model? Should not give up. Try exactly user values with model \"Darvin\" and species \"Homo Sapiyens\"."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

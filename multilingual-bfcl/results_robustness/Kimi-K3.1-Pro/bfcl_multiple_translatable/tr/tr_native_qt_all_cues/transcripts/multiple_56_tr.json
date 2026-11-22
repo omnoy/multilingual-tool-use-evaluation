@@ -1,0 +1,142 @@
+{
+  "id": "multiple_56_tr",
+  "source_id": "multiple_56",
+  "locale": "tr",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "tr_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1461,
+  "total_output_tokens": 269,
+  "total_latency_s": 4.253793001174927,
+  "estimated_cost_usd": 0.0064538,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Son 60 günde Epıl hisselerinin ortalama kapanış fiyatını bul"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "avg_closing_price": {
+        "company": [
+          "Epıl"
+        ],
+        "days": [
+          60
+        ],
+        "data_source": [
+          "Yahu Finans",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\":\"avg_closing_price\",\"arguments\":{\"company\":\"Epıl\",\"days\":60}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 632,
+      "output_tokens": 155,
+      "latency_s": 2.552600383758545,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "Epıl",
+            "days": 60
+          },
+          "id": "call_127f3927872a4f7d824880af"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "Epıl",
+            "days": 60
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 829,
+      "output_tokens": 114,
+      "latency_s": 1.7011926174163818,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Son 60 günde Epıl hisselerinin ortalama kapanış fiyatını bul"
+    },
+    {
+      "content": "{\"name\":\"avg_closing_price\",\"arguments\":{\"company\":\"Epıl\",\"days\":60}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond function call exact as tool definitions Turkish user. Should understand \"Son 60 günde Epıl hisselerinin ortalama kapanış fiyatını bul\" Find avg closing price of Epıl stocks last 60 days. Tool avg_closing_price requires company, days, optional data_source. Should company \"Epıl\" likely typo? Could be EPI? \"Epıl\" as written. I should call avg_closing_price company \"Epıl\", days 60, omit data_source since not specified. Only correct function call exactly. JSON. Do not add response text."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_127f3927872a4f7d824880af",
+          "function": {
+            "arguments": "{\"company\": \"Epıl\", \"days\": 60}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need actually use tool not raw JSON? Previous assistant gave final raw JSON not tool. Now user says 400 no function call made must answer by calling available functions. I should call functions.avg_closing_price with args. Should invoke tool in commentary."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

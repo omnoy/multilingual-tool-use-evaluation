@@ -1,0 +1,155 @@
+{
+  "id": "multiple_151_he",
+  "source_id": "multiple_151",
+  "locale": "he",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "he_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1779,
+  "total_output_tokens": 298,
+  "total_latency_s": 5.105688095092773,
+  "estimated_cost_usd": 0.006538,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את האדם בעל מספר העוקבים הגבוה ביותר בטוויטר שמצייץ על פסיכולוגיה הקשורה להתנהגות ולדינמיקה קבוצתית."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "social_media_analytics.most_followed": {
+        "topic": [
+          "פסיכולוגיה"
+        ],
+        "sub_topics": [
+          [
+            "התנהגות",
+            "דינמיקה קבוצתית"
+          ],
+          [
+            "דינמיקה קבוצתית",
+            "התנהגות"
+          ]
+        ],
+        "region": [
+          "",
+          "גלובלי"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"social_media_analytics_most_followed\", \"arguments\": \"{\\\"topic\\\": \\\"פסיכולוגיה\\\", \\\"sub_topics\\\": [\\\"התנהגות\\\", \\\"דינמיקה קבוצתית\\\"]}\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 780,
+      "output_tokens": 177,
+      "latency_s": 1.3373758792877197,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "social_media_analytics_most_followed",
+          "arguments": {
+            "topic": "פסיכולוגיה",
+            "sub_topics": [
+              "התנהגות",
+              "דינמיקה קבוצתית"
+            ]
+          },
+          "id": "call_01f097369c5041b7acefbdbe"
+        }
+      ],
+      "decoded": [
+        {
+          "social_media_analytics_most_followed": {
+            "topic": "פסיכולוגיה",
+            "sub_topics": [
+              "התנהגות",
+              "דינמיקה קבוצתית"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 999,
+      "output_tokens": 121,
+      "latency_s": 3.7683122158050537,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את האדם בעל מספר העוקבים הגבוה ביותר בטוויטר שמצייץ על פסיכולוגיה הקשורה להתנהגות ולדינמיקה קבוצתית."
+    },
+    {
+      "content": "{\"name\": \"social_media_analytics_most_followed\", \"arguments\": \"{\\\"topic\\\": \\\"פסיכולוגיה\\\", \\\"sub_topics\\\": [\\\"התנהגות\\\", \\\"דינמיקה קבוצתית\\\"]}\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond function call exactly. Should parse Hebrew. User: \"Find the person with highest number followers on Twitter who tweets about psychology related to behavior and group dynamics.\" Should social_media_analytics_most_followed topic psychology, sub_topics behavior and group dynamics perhaps Hebrew or English. Should region optional none. Should call functions. Make sure topic main and subtopics. Could use topic \"פסיכולוגיה\", sub_topics [\"התנהגות\", \"דינמיקה קבוצתית\"]. Tool accepts Hebrew. Do that."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_01f097369c5041b7acefbdbe",
+          "function": {
+            "arguments": "{\"topic\": \"פסיכולוגיה\", \"sub_topics\": [\"התנהגות\", \"דינמיקה קבוצתית\"]}",
+            "name": "social_media_analytics_most_followed"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need actually tool call, not JSON content. I'll call functions.social_media... using tool syntax. I did incorrectly in response due tool interface? Now invoke."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

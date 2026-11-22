@@ -1,0 +1,143 @@
+{
+  "id": "multiple_85_tr",
+  "source_id": "multiple_85",
+  "locale": "tr",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "tr_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1140,
+  "total_output_tokens": 219,
+  "total_latency_s": 2.9565978050231934,
+  "estimated_cost_usd": 0.005140499999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Real Madrid'in La Liga'da son 5 haftada oynadığı futbol maçlarının skorlarını getir."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_scores.get_scores": {
+        "team": [
+          "Real Madrid"
+        ],
+        "league": [
+          "La Liga"
+        ],
+        "rounds": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"league\":\"La Liga\",\"rounds\":5,\"team\":\"Real Madrid\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 505,
+      "output_tokens": 88,
+      "latency_s": 1.3030834197998047,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          },
+          "id": "call_36486f596af4423ca95d1e36"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 635,
+      "output_tokens": 131,
+      "latency_s": 1.6535143852233887,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Real Madrid'in La Liga'da son 5 haftada oynadığı futbol maçlarının skorlarını getir."
+    },
+    {
+      "content": "{\"league\":\"La Liga\",\"rounds\":5,\"team\":\"Real Madrid\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond function call exactly tool definitions. User Turkish requests Real Madrid in La Liga last 5 weeks football match scores. Kimi will call soccer_scores_get_scores league La Liga, rounds 5, team Real Madrid. Turkish language strings okay. Should have no prose, exactly call."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_36486f596af4423ca95d1e36",
+          "function": {
+            "arguments": "{\"team\": \"Real Madrid\", \"league\": \"La Liga\", \"rounds\": 5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need user says error no function call; I'll actually invoke the tool via functions.soccer_scores_get_scores in commentary, not raw JSON. Should do that. Parameters league La Liga rounds 5 team Real Madrid. Kimi will call."
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

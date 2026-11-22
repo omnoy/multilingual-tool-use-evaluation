@@ -1,0 +1,173 @@
+{
+  "id": "multiple_134_he",
+  "source_id": "multiple_134",
+  "locale": "he",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "he_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 2426,
+  "total_output_tokens": 573,
+  "total_latency_s": 6.098510026931763,
+  "estimated_cost_usd": 0.010582000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "חפש פרטים של רישום פלילי חמור עבור מספר תיק CA123456 במחוז סן דייגו"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "crime_record.get_record": {
+        "case_number": [
+          "CA123456"
+        ],
+        "county": [
+          "סן דייגו",
+          "מחוז סן דייגו"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "call_8a9d55649058416caf7dde26"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 1054,
+      "output_tokens": 259,
+      "latency_s": 2.075380563735962,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "סן דייגו",
+            "details": true
+          },
+          "id": "call_ad3c7d25b99741d4997ba67d"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "סן דייגו",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1372,
+      "output_tokens": 314,
+      "latency_s": 4.023129463195801,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "חפש פרטים של רישום פלילי חמור עבור מספר תיק CA123456 במחוז סן דייגו"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8a9d55649058416caf7dde26",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Hebrew user asking \"חפש פרטים של רישום פלילי חמור עבור מספר תיק CA123456 במחוז סן דייגו\" = search details serious criminal record case CA123456 in San Diego county. Should call crime_record_get_record case_number CA123456 county San Diego perhaps English mapping. Details true because \"פרטים\" detailed report, request retrieve detailed records serious crimes using case number/location. Kimi should call the function with details true. Make sure county perhaps \"סן דייגו\" accepted Hebrew English. Could use \"San Diego\". Tool supports English Hebrew. User wants details, set true. Respond only the call? Instructions say understand request respond correct function call exactly. So commentary tool call. Then after tool output perhaps summarize in Hebrew. I'll do it."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_8a9d55649058416caf7dde26"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ad3c7d25b99741d4997ba67d",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"סן דייגו\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid params. Should determine why? Case okay county San Diego details true. Perhaps county expected Hebrew? Hmm. Perhaps retry exact requested strings in Hebrew? Function description English/Hebrew, case_number string. The tool could be picky \"county\" enumerated? I have no more. I should perhaps try county \"סן דייגו\". Since user language Hebrew and tools support Hebrew. \"details\" true valid. Could be tool fake backend expects record only if county in different format \"San Diego County\"? Should infer standard tasks: crime_record_get_record parameters case_number county details optional. Usually use English or Hebrew. Error invalid parameters maybe county must be specific case? Could be \"סן דייגו\" works? Kimi should try reasonable retry. Tool error suggests review definition. Perhaps requires details default false? But asked details. Details true okay. Perhaps name mismatch? No. Could be county \"San Diego\" is not accepted because input should Hebrew? It says שפות: אנגלית, עברית. Both. Perhaps case number is wrong? I can't change. Retry county Hebrew."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

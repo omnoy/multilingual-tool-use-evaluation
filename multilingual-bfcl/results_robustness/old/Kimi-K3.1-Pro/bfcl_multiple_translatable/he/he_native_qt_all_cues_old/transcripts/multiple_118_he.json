@@ -1,0 +1,169 @@
+{
+  "id": "multiple_118_he",
+  "source_id": "multiple_118",
+  "locale": "he",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "he_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1953,
+  "total_output_tokens": 252,
+  "total_latency_s": 2.630171060562134,
+  "estimated_cost_usd": 0.006426,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא את כל הסרטים בכיכובו של לאונרדו דיקפריו בשנת 2010 ממסד הנתונים של IMDB."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "imdb.find_movies_by_actor": {
+        "actor_name": [
+          "לאונרדו דיקפריו"
+        ],
+        "year": [
+          2010
+        ],
+        "category": [
+          "",
+          "הכל"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          },
+          "id": "call_f1bae96de5ee406fb6961f6d"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "Leonardo DiCaprio",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "input_tokens": 883,
+      "output_tokens": 124,
+      "latency_s": 1.3040177822113037,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "imdb_find_movies_by_actor",
+          "arguments": {
+            "actor_name": "לאונרדו דיקפריו",
+            "year": 2010
+          },
+          "id": "call_3abd0a04ebdc465480c9fe7e"
+        }
+      ],
+      "decoded": [
+        {
+          "imdb_find_movies_by_actor": {
+            "actor_name": "לאונרדו דיקפריו",
+            "year": 2010
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1070,
+      "output_tokens": 128,
+      "latency_s": 1.32615327835083,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא את כל הסרטים בכיכובו של לאונרדו דיקפריו בשנת 2010 ממסד הנתונים של IMDB."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f1bae96de5ee406fb6961f6d",
+          "function": {
+            "arguments": "{\"actor_name\": \"Leonardo DiCaprio\", \"year\": 2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Hebrew request: \"Find all movies starring Leonardo DiCaprio in 2010 from IMDB database.\" Should use imdb_find_movies_by_actor exactly. Perhaps actor_name English Leonardo DiCaprio year 2010 category optional omit. Call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'imdb_find_movies_by_actor'. Please review the function definition and try again.",
+      "tool_call_id": "call_f1bae96de5ee406fb6961f6d"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3abd0a04ebdc465480c9fe7e",
+          "function": {
+            "arguments": "{\"actor_name\": \"לאונרדו דיקפריו\", \"year\": 2010}",
+            "name": "imdb_find_movies_by_actor"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need handle bad request. Should review function. Required actor_name year valid. Perhaps language Hebrew? English accepted. Could be category? Optional. 400 odd. Perhaps actor name in Hebrew \"לאונרדו דיקפריו\". Try retry with Hebrew."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

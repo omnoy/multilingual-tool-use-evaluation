@@ -1,0 +1,174 @@
+{
+  "id": "multiple_27_de",
+  "source_id": "multiple_27",
+  "locale": "de",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "de_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1217,
+  "total_output_tokens": 465,
+  "total_latency_s": 5.871166944503784,
+  "estimated_cost_usd": 0.007084,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Was ist der kürzeste Weg von Paris, Frankreich, nach Rom, Italien, mit öffentlichen Verkehrsmitteln?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.shortest_path": {
+        "start_location": [
+          "Paris, Frankreich",
+          "Paris"
+        ],
+        "end_location": [
+          "Rom, Italien",
+          "Rom"
+        ],
+        "mode": [
+          "öffentliche Verkehrsmittel"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, Frankreich",
+            "end_location": "Rom, Italien",
+            "mode": "transit"
+          },
+          "id": "call_9c405e52286f48e08257bb29"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, Frankreich",
+            "end_location": "Rom, Italien",
+            "mode": "transit"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "input_tokens": 463,
+      "output_tokens": 232,
+      "latency_s": 1.5983695983886719,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, Frankreich",
+            "end_location": "Rom, Italien",
+            "mode": "öffentliche Verkehrsmittel"
+          },
+          "id": "call_2a09d7c727b64c16af515218"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, Frankreich",
+            "end_location": "Rom, Italien",
+            "mode": "öffentliche Verkehrsmittel"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 754,
+      "output_tokens": 233,
+      "latency_s": 4.272797346115112,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Was ist der kürzeste Weg von Paris, Frankreich, nach Rom, Italien, mit öffentlichen Verkehrsmitteln?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9c405e52286f48e08257bb29",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, Frankreich\", \"end_location\": \"Rom, Italien\", \"mode\": \"transit\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi needs to respond with the correct function call exactly as specified. User German asks shortest path Paris France to Rome Italy by public transit. Should call maps_shortest_path start \"Paris, Frankreich\" end \"Rom, Italien\" mode public transit perhaps German/English allowed. Should know tool mode likely \"transit\" or \"public_transport\"? I need infer conventional supported mode. Tool description mode string, languages English German. Should send mode \"öffentliche Verkehrsmittel\" or \"transit\". User asks \"mit öffentlichen Verkehrsmitteln\". Likely use \"transit\" standard. Should make one function call, no answer unless result perhaps function returns. I need invoke."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "tool_call_id": "call_9c405e52286f48e08257bb29"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2a09d7c727b64c16af515218",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, Frankreich\", \"end_location\": \"Rom, Italien\", \"mode\": \"öffentliche Verkehrsmittel\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi got invalid params, needs retry perhaps mode \"public_transport\" or \"public transportation\" German. Should inspect pattern. Tools mode accepts string no enum. Bad request perhaps name order? Inputs correct. Perhaps mode must be \"public transit\" or \"öffentliche Verkehrsmittel\". Google Directions API travel modes: DRIVING, WALKING, BICYCLING, TRANSIT. Could be \"public transportation\" in English. Usually benchmark tool maps_shortest_path expects mode values \"driving\", \"walking\", \"bicycling\", \"transit\". I did transit, why bad? Perhaps requires \"public transportation\". Perhaps route via \"public transport\". Try German phrase."
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

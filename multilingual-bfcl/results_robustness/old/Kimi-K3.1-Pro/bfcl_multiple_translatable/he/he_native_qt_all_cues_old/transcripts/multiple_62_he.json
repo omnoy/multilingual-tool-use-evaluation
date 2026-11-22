@@ -1,0 +1,185 @@
+{
+  "id": "multiple_62_he",
+  "source_id": "multiple_62",
+  "locale": "he",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "he_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1329,
+  "total_output_tokens": 386,
+  "total_latency_s": 7.140192031860352,
+  "estimated_cost_usd": 0.006518,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מצא לי את פארק הטבע הקרוב ביותר שמאפשר קמפינג ויש בו נופים ציוריים בבוסטון, מסצ'וסטס."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "nature_park.find_nearby": {
+        "location": [
+          "בוסטון, מסצ'וסטס",
+          "בוסטון"
+        ],
+        "features": [
+          [
+            "Camping",
+            "Scenic View"
+          ],
+          [
+            "Scenic View",
+            "Camping"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "Boston, Massachusetts",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_5f7c8138a7e24d9cb5189e5f"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "Boston, Massachusetts",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 543,
+      "output_tokens": 178,
+      "latency_s": 5.219068765640259,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "בוסטון, מסצ'וסטס",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_97c368647ab244a3b786ae83"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "בוסטון, מסצ'וסטס",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 786,
+      "output_tokens": 208,
+      "latency_s": 1.9211232662200928,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מצא לי את פארק הטבע הקרוב ביותר שמאפשר קמפינג ויש בו נופים ציוריים בבוסטון, מסצ'וסטס."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5f7c8138a7e24d9cb5189e5f",
+          "function": {
+            "arguments": "{\"location\": \"Boston, Massachusetts\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Hebrew likely call nature_park_find_nearby. Should parse: find nearest nature park allowing camping and scenic views in Boston, Massachusetts. Tool features Camping Scenic View, location city/state English or Hebrew. Should have exact call. \"בוסטון, מסצ'וסטס\" or \"Boston, Massachusetts\". Use location \"Boston, Massachusetts\" features [\"Camping\",\"Scenic View\"]. No need extra text? User says respond correct function call exactly as specified. So call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_5f7c8138a7e24d9cb5189e5f"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_97c368647ab244a3b786ae83",
+          "function": {
+            "arguments": "{\"location\": \"בוסטון, מסצ'וסטס\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned bad request invalid parameters. Should figure issue? Definition location languages English Hebrew, features enums. I supplied exactly. Perhaps order irrelevant. Could be expects Hebrew location? Should retry per instruction. Could be bug? Should consider use location \"בוסטון, מסצ'וסטס\" rather than English? Should be valid. Why 400? Perhaps feature \"Scenic View\" valid. It says features preferred. Could possibly not allow spaces? But enum yes. Should try exactly Hebrew perhaps. Could be tool backend issue. The instruction says review definition and try again. I'll call with Hebrew location."
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

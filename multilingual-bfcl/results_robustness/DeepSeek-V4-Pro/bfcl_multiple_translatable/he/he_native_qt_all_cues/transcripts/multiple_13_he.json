@@ -1,0 +1,136 @@
+{
+  "id": "multiple_13_he",
+  "source_id": "multiple_13",
+  "locale": "he",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "he_native_qt_all_cues",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": true,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 638,
+  "total_output_tokens": 257,
+  "total_latency_s": 2.1762988567352295,
+  "estimated_cost_usd": 0.0020044800000000003,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.revenue_forecast": {
+        "company": [
+          "XYZ"
+        ],
+        "product": [
+          "A",
+          "מוצר A"
+        ],
+        "sales_units_increase_percentage": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nאפרק את השאלה: צריך לחשב את ההכנסות של חברת XYZ עבור מוצר A, עם הגדלה של 10% ביחידות המכירה. קודם אשלוף את המחיר הנוכחי, ובמקביל אפשר גם לחשב את תחזית ההכנסות (אם הפונקציה יודעת לקחת בחשבון את המחיר בעצמה).\n\nבוא נפעיל את שתי הקריאות במקביל:"
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "מוצר A"
+          },
+          "id": "call_70b4f0cf637a4466b5d47a3c"
+        },
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ",
+            "product": "מוצר A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "call_2fe34503ef564718a2be3d2d"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "מוצר A"
+          }
+        },
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ",
+            "product": "מוצר A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 638,
+      "output_tokens": 257,
+      "latency_s": 2.1762988567352295,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": true
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+    },
+    {
+      "content": "\n\nאפרק את השאלה: צריך לחשב את ההכנסות של חברת XYZ עבור מוצר A, עם הגדלה של 10% ביחידות המכירה. קודם אשלוף את המחיר הנוכחי, ובמקביל אפשר גם לחשב את תחזית ההכנסות (אם הפונקציה יודעת לקחת בחשבון את המחיר בעצמה).\n\nבוא נפעיל את שתי הקריאות במקביל:",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_70b4f0cf637a4466b5d47a3c",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"מוצר A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_2fe34503ef564718a2be3d2d",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"מוצר A\", \"sales_units_increase_percentage\": 10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

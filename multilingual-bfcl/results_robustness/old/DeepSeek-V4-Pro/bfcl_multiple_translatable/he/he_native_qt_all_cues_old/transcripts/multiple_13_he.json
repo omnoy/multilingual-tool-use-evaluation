@@ -1,0 +1,136 @@
+{
+  "id": "multiple_13_he",
+  "source_id": "multiple_13",
+  "locale": "he",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "he_native_qt_all_cues",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": true,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 654,
+  "total_output_tokens": 205,
+  "total_latency_s": 2.201577663421631,
+  "estimated_cost_usd": 0.0018513599999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.revenue_forecast": {
+        "company": [
+          "XYZ"
+        ],
+        "product": [
+          "A",
+          "מוצר A"
+        ],
+        "sales_units_increase_percentage": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "\n\nאפרק את השאלה לשני שלבים: קודם אשלוף את המחיר הנוכחי של המוצר, ולאחר מכן אחשב את ההכנסה עם גידול של 10% ביחידות המכירה."
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ",
+            "product": "מוצר A"
+          },
+          "id": "call_3dca9f6ebec34cf79d05967f"
+        },
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ",
+            "product": "מוצר A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "call_9056be498c2a4528b32c385c"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ",
+            "product": "מוצר A"
+          }
+        },
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ",
+            "product": "מוצר A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 654,
+      "output_tokens": 205,
+      "latency_s": 2.201577663421631,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": true
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "כמה הכנסות תייצר חברת XYZ אם נגדיל את יחידות המכירה של מוצר A ב-10% תוך שמירה על אותו מחיר?"
+    },
+    {
+      "content": "\n\nאפרק את השאלה לשני שלבים: קודם אשלוף את המחיר הנוכחי של המוצר, ולאחר מכן אחשב את ההכנסה עם גידול של 10% ביחידות המכירה.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3dca9f6ebec34cf79d05967f",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"מוצר A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_9056be498c2a4528b32c385c",
+          "function": {
+            "arguments": "{\"company\": \"XYZ\", \"product\": \"מוצר A\", \"sales_units_increase_percentage\": 10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -77,7 +77,7 @@ def main() -> None:
     parser.add_argument("--category", required=True,
                         help="Benchmark category folder under data/benchmarks/.")
     parser.add_argument("--locales", nargs="+", default=None,
-                        help="Target locale codes, e.g. he zh-CN. Required unless --retrieve.")
+                        help="Target locale codes, e.g. he zh. Required unless --retrieve.")
     parser.add_argument("--level", choices=[lv.value for lv in LocalizationLevel],
                         default=LocalizationLevel.QUERY.value,
                         help="Translation scope: 'query' or 'full'.")

@@ -93,7 +93,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--suffix",
-        default="lang_desc",
+        default="lang_hints",
         help="Suffix for the output filename (<stem>_<suffix><ext>); for a known experiment "
         "it maps to the experiment name, e.g. he_native_query_native_target + lang_desc "
         "-> he_native_qt_lang_hints. "

@@ -50,9 +50,9 @@ SUPPORTED_LOCALES: dict[str, Locale] = {
         thousands_separator=",",
         model_hints=["Use Modern Standard Arabic (MSA). Avoid dialect-specific expressions."],
     ),
-    "zh-CN": Locale(
-        code="zh-CN",
-        name="Chinese (Simplified)",
+    "zh": Locale(
+        code="zh",
+        name="Chinese",
         date_format="%Y年%m月%d日",
         thousands_separator=",",
         model_hints=["Use Simplified Chinese characters. Use Chinese punctuation conventions (，。？！)."],

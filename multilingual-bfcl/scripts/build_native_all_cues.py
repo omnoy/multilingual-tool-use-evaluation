@@ -39,8 +39,8 @@ sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 
 from multilingual_bfcl.experiment_names import experiment_of_level, experiment_stem  # noqa: E402
 
-LEVEL = experiment_of_level("full_full_full")  # stored localization_level: native_qt_all_cues
-OUTPUT_VARIANT = "full_full_full"
+LEVEL = experiment_of_level("native_qt_all_cues")  # stored localization_level: native_qt_all_cues
+OUTPUT_VARIANT = "native_qt_all_cues"
 
 # Matches the English descriptor appended by translator.add_language_descriptors_to_entry.
 HINT_RE = re.compile(r"\s*Languages: ([^.]+)\.$")
@@ -59,10 +59,6 @@ LOCALIZED_HINTS: dict[str, dict[str, Any]] = {
     "ar": {
         "label": "اللغات", "colon": ": ", "sep": "، ", "end": ".",
         "names": {"English": "الإنجليزية", "Arabic": "العربية"},
-    },
-    "zh-CN": {
-        "label": "语言", "colon": "：", "sep": "、", "end": "。",
-        "names": {"English": "英语", "Chinese (Simplified)": "简体中文"},
     },
     "zh": {
         "label": "语言", "colon": "：", "sep": "、", "end": "。",

@@ -10,8 +10,8 @@ maximum steering signal (no API calls — pure deterministic merge):
 
 The descriptor is localized into the target language: e.g. for Hebrew the English
 "Languages: Hebrew." becomes "שפות: עברית.". Which parameters get a
-descriptor (and which languages it lists) is read from the full_lang_desc file, so
-the tagging is exactly the one used there.
+descriptor (and which languages it lists) is read from the native_qt_lang_hints file,
+so the tagging is exactly the one used there.
 
 All three sources must exist and share the same ids and function structure
 (ignoring descriptions); any mismatch raises an error.
@@ -20,7 +20,7 @@ Output:
   data/benchmarks/<benchmark>/<locale>/<locale>_native_qt_all_cues.jsonl
 
 Usage:
-    python scripts/build_native_max_context.py --benchmark bfcl_multiple_translatable --locale he
+    python scripts/build_native_all_cues.py --benchmark bfcl_multiple_translatable --locale he
 """
 
 from __future__ import annotations
@@ -37,10 +37,12 @@ PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 BENCHMARKS_ROOT = PACKAGE_ROOT / "data" / "benchmarks"
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 
-from multilingual_bfcl.experiment_names import experiment_of_level, experiment_stem  # noqa: E402
+from multilingual_bfcl.experiment_names import experiment_stem  # noqa: E402
 
-LEVEL = experiment_of_level("native_qt_all_cues")  # stored localization_level: native_qt_all_cues
-OUTPUT_VARIANT = "native_qt_all_cues"
+QUERY_TARGET_EXP = "native_query_native_target"
+FUNC_DESCS_EXP = "native_qt_func_descs"
+LANG_HINTS_EXP = "native_qt_lang_hints"
+OUTPUT_EXP = "native_qt_all_cues"  # also the stored localization_level
 
 # Matches the English descriptor appended by translator.add_language_descriptors_to_entry.
 HINT_RE = re.compile(r"\s*Languages: ([^.]+)\.$")
@@ -117,7 +119,7 @@ def localize_hint(english_languages: str, locale: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Build the full_full_full variation (translated query + translated "
+        description="Build the native_qt_all_cues variation (translated query + translated "
                     "function descriptions + localized language descriptors).",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
@@ -132,29 +134,29 @@ def main() -> None:
                          f"supported: {', '.join(LOCALIZED_HINTS)}")
 
     locale_dir = BENCHMARKS_ROOT / args.benchmark / args.locale
-    full = _load_jsonl(locale_dir / f"{experiment_stem(args.locale, 'full')}.jsonl")
-    func_desc = _load_jsonl(locale_dir / f"{experiment_stem(args.locale, 'full_func_desc')}.jsonl")
-    lang_desc = _load_jsonl(locale_dir / f"{experiment_stem(args.locale, 'full_lang_desc')}.jsonl")
+    query_target = _load_jsonl(locale_dir / f"{experiment_stem(args.locale, QUERY_TARGET_EXP)}.jsonl")
+    func_descs = _load_jsonl(locale_dir / f"{experiment_stem(args.locale, FUNC_DESCS_EXP)}.jsonl")
+    lang_hints = _load_jsonl(locale_dir / f"{experiment_stem(args.locale, LANG_HINTS_EXP)}.jsonl")
 
-    if not (set(full) == set(func_desc) == set(lang_desc)):
-        diff = sorted((set(full) | set(func_desc) | set(lang_desc))
-                      - (set(full) & set(func_desc) & set(lang_desc)))
+    if not (set(query_target) == set(func_descs) == set(lang_hints)):
+        diff = sorted((set(query_target) | set(func_descs) | set(lang_hints))
+                      - (set(query_target) & set(func_descs) & set(lang_hints)))
         raise ValueError(f"{len(diff)} id(s) not present in all three sources, e.g. {diff[:5]}")
 
     out_entries: list[dict] = []
     tagged = 0
-    for entry_id, fd_entry in func_desc.items():  # preserve func_desc order
-        ld_entry = lang_desc[entry_id]
+    for entry_id, fd_entry in func_descs.items():  # preserve func_descs order
+        ld_entry = lang_hints[entry_id]
         if _strip_descriptions(fd_entry["function"]) != _strip_descriptions(ld_entry["function"]):
             raise ValueError(f"{entry_id}: function structure differs between "
-                             f"full_func_desc and full_lang_desc")
-        if "ground_truth" not in full[entry_id]:
-            raise ValueError(f"{entry_id}: no ground_truth in the full source")
+                             f"{FUNC_DESCS_EXP} and {LANG_HINTS_EXP}")
+        if "ground_truth" not in query_target[entry_id]:
+            raise ValueError(f"{entry_id}: no ground_truth in the {QUERY_TARGET_EXP} source")
 
         merged = copy.deepcopy(fd_entry)  # translated function descriptions
-        merged["messages"] = full[entry_id]["messages"]  # translated query
-        merged["ground_truth"] = full[entry_id]["ground_truth"]
-        merged["localization_level"] = LEVEL
+        merged["messages"] = query_target[entry_id]["messages"]  # translated query
+        merged["ground_truth"] = query_target[entry_id]["ground_truth"]
+        merged["localization_level"] = OUTPUT_EXP
 
         for fd_func, ld_func in zip(merged["function"], ld_entry["function"]):
             ld_props = ld_func.get("parameters", {}).get("properties", {})
@@ -170,7 +172,7 @@ def main() -> None:
 
         out_entries.append(merged)
 
-    out_path = locale_dir / f"{experiment_stem(args.locale, OUTPUT_VARIANT)}.jsonl"
+    out_path = locale_dir / f"{experiment_stem(args.locale, OUTPUT_EXP)}.jsonl"
     _write_jsonl(out_path, out_entries)
     print(f"wrote {len(out_entries)} entries -> {out_path}")
     print(f"      {tagged} parameter description(s) tagged with a localized descriptor")

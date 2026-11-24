@@ -1,0 +1,156 @@
+{
+  "id": "multiple_190_zh",
+  "source_id": "multiple_190",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1190,
+  "total_output_tokens": 422,
+  "total_latency_s": 4.159557580947876,
+  "estimated_cost_usd": 0.00759,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "预订芝加哥希尔顿酒店的一间单人房，从2022年12月10日起入住两晚。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "希尔顿酒店",
+          "希尔顿"
+        ],
+        "location": [
+          "芝加哥"
+        ],
+        "room_type": [
+          "单人房"
+        ],
+        "start_date": [
+          "2022-12-10",
+          "10/12/2022",
+          "2022年12月10日"
+        ],
+        "nights": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "book_hotel(hotel_name=\"希尔顿酒店\", location=\"芝加哥\", room_type=\"单人房\", start_date=\"2022年12月10日\", nights=2)"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 509,
+      "output_tokens": 130,
+      "latency_s": 1.4889509677886963,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "希尔顿酒店",
+            "location": "芝加哥",
+            "room_type": "单人房",
+            "start_date": "2022年12月10日",
+            "nights": 2
+          },
+          "id": "call_9181175c070841a39ddc455b"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "希尔顿酒店",
+            "location": "芝加哥",
+            "room_type": "单人房",
+            "start_date": "2022年12月10日",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 681,
+      "output_tokens": 292,
+      "latency_s": 2.6706066131591797,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "预订芝加哥希尔顿酒店的一间单人房，从2022年12月10日起入住两晚。"
+    },
+    {
+      "content": "book_hotel(hotel_name=\"希尔顿酒店\", location=\"芝加哥\", room_type=\"单人房\", start_date=\"2022年12月10日\", nights=2)",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "用户要求预订芝加哥希尔顿酒店的一间单人房，从2022年12月10日起入住两晚。\n\n我需要调用book_hotel函数，参数如下：\n- hotel_name: 希尔顿酒店\n- location: 芝加哥\n- room_type: 单人房\n- start_date: 2022年12月10日\n- nights: 2\n\n按照工具定义，直接调用即可。"
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9181175c070841a39ddc455b",
+          "function": {
+            "arguments": "{\"hotel_name\": \"希尔顿酒店\", \"location\": \"芝加哥\", \"room_type\": \"单人房\", \"start_date\": \"2022年12月10日\", \"nights\": 2}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to latest user message. Should understand. I have tools defined. Previous assistant apparently output plain text pseudo-call, user says 400 Bad Request: no function call was made. Must answer by calling one available functions. I'll actually call functions.book_hotel with params. Should use Chinese language values per tool. hotel_name 希尔顿酒店, location 芝加哥, nights 2, room_type 单人房, start_date 2022年12月10日. Could use exact hotel name 芝加哥希尔顿酒店? Original: 预订芝加哥希尔顿酒店的一间单人房. The hotel is \"芝加哥希尔顿酒店\" perhaps hotel_name=\"希尔顿酒店\", location=\"芝加哥\". Both plausible. Should not have textual response? I need call the tool. In this environment, call the functions.book_hotel tool. Do that. Could say nothing else. I'll call."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

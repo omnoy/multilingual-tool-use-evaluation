@@ -1,0 +1,118 @@
+{
+  "id": "multiple_166_zh",
+  "source_id": "multiple_166",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 518,
+  "total_output_tokens": 256,
+  "total_latency_s": 1.9708197116851807,
+  "estimated_cost_usd": 0.0041354,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "帮我找一场本周末在洛杉矶举行、票价便宜的古典音乐会。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.search": {
+        "genre": [
+          "classical"
+        ],
+        "location": [
+          "Los Angeles",
+          "LA"
+        ],
+        "date": [
+          "this weekend",
+          "weekend"
+        ],
+        "price_range": [
+          "cheap"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_search",
+          "arguments": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "this weekend",
+            "price_range": "cheap"
+          },
+          "id": "call_851c5d592aa54d7b9b1b31ad"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_search": {
+            "genre": "classical",
+            "location": "Los Angeles",
+            "date": "this weekend",
+            "price_range": "cheap"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 518,
+      "output_tokens": 256,
+      "latency_s": 1.9708197116851807,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "帮我找一场本周末在洛杉矶举行、票价便宜的古典音乐会。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_851c5d592aa54d7b9b1b31ad",
+          "function": {
+            "arguments": "{\"genre\": \"classical\", \"location\": \"Los Angeles\", \"date\": \"this weekend\", \"price_range\": \"cheap\"}",
+            "name": "concert_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户请求：帮我找一场本周末在洛杉矶举行、票价便宜的古典音乐会。需要调用 concert_search，参数 genre 古典音乐? 工具定义 genre string, location city, date e.g. this weekend, price_range enum free cheap moderate expensive any. 需要正确函数调用。中文理解：本周末 = this weekend；洛杉矶 = Los Angeles；票价便宜 = cheap；古典音乐会 genre classical 可能 \"classical\"。应调用 concert_search 只返回工具。 Already doing. 调用 concert_search date this weekend genre classical location Los Angeles price_range cheap. 无需回复除此之外。 Ensure exactly as specified. Could use \"古典音乐\" or \"classical\"? Tool likely expects English? Examples genre no enum. Usually use \"classical\". Location \"Los Angeles\". Do that."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

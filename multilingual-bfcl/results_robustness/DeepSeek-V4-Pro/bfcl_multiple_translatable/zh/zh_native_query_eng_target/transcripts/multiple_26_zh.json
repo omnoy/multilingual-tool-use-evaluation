@@ -1,0 +1,221 @@
+{
+  "id": "multiple_26_zh",
+  "source_id": "multiple_26",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": true,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1488,
+  "total_output_tokens": 284,
+  "total_latency_s": 18.13924479484558,
+  "estimated_cost_usd": 0.00357744,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查明在游戏站平台上玩《堡垒之夜》时，不同任务和奖杯对应的奖励"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "game_rewards.get": {
+        "game": [
+          "Fortnite"
+        ],
+        "platform": [
+          "Playstation",
+          "PS"
+        ],
+        "mission": [
+          ""
+        ],
+        "trophy": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "好的，我来帮你查询《堡垒之夜》在游戏站平台上的奖励信息。我需要同时查询任务列表、奖杯奖励和任务奖励。不过任务奖励需要指定具体任务，让我先获取所有任务列表。"
+      ],
+      "tool_calls": [
+        {
+          "name": "game_missions_list",
+          "arguments": {
+            "game": "堡垒之夜"
+          },
+          "id": "call_bf51a60b8e86421998fd0056"
+        },
+        {
+          "name": "game_rewards_get",
+          "arguments": {
+            "game": "堡垒之夜",
+            "platform": "游戏站"
+          },
+          "id": "call_ce1a9ad5e09048548b2737bc"
+        }
+      ],
+      "decoded": [
+        {
+          "game_missions_list": {
+            "game": "堡垒之夜"
+          }
+        },
+        {
+          "game_rewards_get": {
+            "game": "堡垒之夜",
+            "platform": "游戏站"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'game_missions_list'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'game_rewards_get'. Please review the function definition and try again.",
+      "input_tokens": 642,
+      "output_tokens": 142,
+      "latency_s": 16.68403148651123,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "参数可能有问题，让我检查一下。《堡垒之夜》的英文名可能是 \"Fortnite\"，而且 \"游戏站\" 平台对应的英文可能是 \"PlayStation\" 或 \"GameStation\"。让我用英文名称重试。"
+      ],
+      "tool_calls": [
+        {
+          "name": "game_missions_list",
+          "arguments": {
+            "game": "Fortnite"
+          },
+          "id": "call_4328102fa4404c0eb2ea2e29"
+        },
+        {
+          "name": "game_rewards_get",
+          "arguments": {
+            "game": "Fortnite",
+            "platform": "PlayStation"
+          },
+          "id": "call_845e1a3e6f3e47aebfbbf4d7"
+        }
+      ],
+      "decoded": [
+        {
+          "game_missions_list": {
+            "game": "Fortnite"
+          }
+        },
+        {
+          "game_rewards_get": {
+            "game": "Fortnite",
+            "platform": "PlayStation"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 846,
+      "output_tokens": 142,
+      "latency_s": 1.4552133083343506,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": true
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查明在游戏站平台上玩《堡垒之夜》时，不同任务和奖杯对应的奖励"
+    },
+    {
+      "content": "好的，我来帮你查询《堡垒之夜》在游戏站平台上的奖励信息。我需要同时查询任务列表、奖杯奖励和任务奖励。不过任务奖励需要指定具体任务，让我先获取所有任务列表。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_bf51a60b8e86421998fd0056",
+          "function": {
+            "arguments": "{\"game\": \"堡垒之夜\"}",
+            "name": "game_missions_list"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_ce1a9ad5e09048548b2737bc",
+          "function": {
+            "arguments": "{\"game\": \"堡垒之夜\", \"platform\": \"游戏站\"}",
+            "name": "game_rewards_get"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'game_missions_list'. Please review the function definition and try again.",
+      "tool_call_id": "call_bf51a60b8e86421998fd0056"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'game_rewards_get'. Please review the function definition and try again.",
+      "tool_call_id": "call_ce1a9ad5e09048548b2737bc"
+    },
+    {
+      "content": "参数可能有问题，让我检查一下。《堡垒之夜》的英文名可能是 \"Fortnite\"，而且 \"游戏站\" 平台对应的英文可能是 \"PlayStation\" 或 \"GameStation\"。让我用英文名称重试。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4328102fa4404c0eb2ea2e29",
+          "function": {
+            "arguments": "{\"game\": \"Fortnite\"}",
+            "name": "game_missions_list"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_845e1a3e6f3e47aebfbbf4d7",
+          "function": {
+            "arguments": "{\"game\": \"Fortnite\", \"platform\": \"PlayStation\"}",
+            "name": "game_rewards_get"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

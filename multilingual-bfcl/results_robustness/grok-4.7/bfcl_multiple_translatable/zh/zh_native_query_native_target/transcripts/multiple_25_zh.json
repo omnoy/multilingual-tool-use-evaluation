@@ -1,0 +1,231 @@
+{
+  "id": "multiple_25_zh",
+  "source_id": "multiple_25",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2132,
+  "total_output_tokens": 134,
+  "total_latency_s": 19.772512197494507,
+  "estimated_cost_usd": 0.0050680000000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "《刺客信条：英灵殿》在美国游戏站商店的最低售价是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "video_games.store_price": {
+        "game_title": [
+          "刺客信条：英灵殿"
+        ],
+        "platform": [
+          "游戏站"
+        ],
+        "region": [
+          "美国",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "video_games_store_price",
+          "arguments": {
+            "game_title": "Assassin's Creed Valhalla",
+            "platform": "PlayStation",
+            "region": "US"
+          },
+          "id": "call-f2737aa2-383f-4cbb-9daf-81d4e889315c-0"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_store_price": {
+            "game_title": "Assassin's Creed Valhalla",
+            "platform": "PlayStation",
+            "region": "US"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'video_games_store_price'. Please review the function definition and try again.",
+      "input_tokens": 414,
+      "output_tokens": 36,
+      "latency_s": 10.578120470046997,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "看起来调用商店价格接口时参数有问题。我先确认一下美国区游戏站商店使用的货币，再重新查询《刺客信条：英灵殿》的价格。"
+      ],
+      "tool_calls": [
+        {
+          "name": "video_games_store_currency",
+          "arguments": {
+            "platform": "PlayStation",
+            "region": "US"
+          },
+          "id": "call-75651f27-7cac-4326-bbec-97e527af9f1f-1"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_store_currency": {
+            "platform": "PlayStation",
+            "region": "US"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'video_games_store_currency'. Please review the function definition and try again.",
+      "input_tokens": 476,
+      "output_tokens": 61,
+      "latency_s": 1.806415319442749,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "video_games_store_price",
+          "arguments": {
+            "game_title": "刺客信条：英灵殿",
+            "platform": "游戏站",
+            "region": "美国"
+          },
+          "id": "call-2cdf0747-3da7-428c-9da5-cce51412af61-2"
+        }
+      ],
+      "decoded": [
+        {
+          "video_games_store_price": {
+            "game_title": "刺客信条：英灵殿",
+            "platform": "游戏站",
+            "region": "美国"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1242,
+      "output_tokens": 37,
+      "latency_s": 7.387976408004761,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "《刺客信条：英灵殿》在美国游戏站商店的最低售价是多少？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-f2737aa2-383f-4cbb-9daf-81d4e889315c-0",
+          "function": {
+            "arguments": "{\"game_title\":\"Assassin's Creed Valhalla\",\"platform\":\"PlayStation\",\"region\":\"US\"}",
+            "name": "video_games_store_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'video_games_store_price'. Please review the function definition and try again.",
+      "tool_call_id": "call-f2737aa2-383f-4cbb-9daf-81d4e889315c-0"
+    },
+    {
+      "content": "看起来调用商店价格接口时参数有问题。我先确认一下美国区游戏站商店使用的货币，再重新查询《刺客信条：英灵殿》的价格。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-75651f27-7cac-4326-bbec-97e527af9f1f-1",
+          "function": {
+            "arguments": "{\"platform\":\"PlayStation\",\"region\":\"US\"}",
+            "name": "video_games_store_currency"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'video_games_store_currency'. Please review the function definition and try again.",
+      "tool_call_id": "call-75651f27-7cac-4326-bbec-97e527af9f1f-1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-2cdf0747-3da7-428c-9da5-cce51412af61-2",
+          "function": {
+            "arguments": "{\"game_title\":\"刺客信条：英灵殿\",\"platform\":\"游戏站\",\"region\":\"美国\"}",
+            "name": "video_games_store_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

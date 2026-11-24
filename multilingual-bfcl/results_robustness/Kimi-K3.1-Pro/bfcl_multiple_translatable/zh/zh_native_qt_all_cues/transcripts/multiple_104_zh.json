@@ -1,0 +1,172 @@
+{
+  "id": "multiple_104_zh",
+  "source_id": "multiple_104",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1319,
+  "total_output_tokens": 359,
+  "total_latency_s": 3.608370542526245,
+  "estimated_cost_usd": 0.0071622000000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找纽约市与华盛顿哥伦比亚特区之间的最短驾车距离。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_shortest_driving_distance": {
+        "origin": [
+          "纽约市"
+        ],
+        "destination": [
+          "华盛顿哥伦比亚特区",
+          "哥伦比亚特区"
+        ],
+        "unit": [
+          "",
+          "千米"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_shortest_driving_distance",
+          "arguments": {
+            "origin": "纽约市",
+            "destination": "华盛顿哥伦比亚特区",
+            "unit": "公里"
+          },
+          "id": "call_e876b1f936754db4b1974057"
+        }
+      ],
+      "decoded": [
+        {
+          "get_shortest_driving_distance": {
+            "origin": "纽约市",
+            "destination": "华盛顿哥伦比亚特区",
+            "unit": "公里"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_shortest_driving_distance'. Please review the function definition and try again.",
+      "input_tokens": 554,
+      "output_tokens": 148,
+      "latency_s": 1.6358587741851807,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_shortest_driving_distance",
+          "arguments": {
+            "origin": "纽约市",
+            "destination": "华盛顿哥伦比亚特区"
+          },
+          "id": "call_1f6ec68e82834f0bb2c31cad"
+        }
+      ],
+      "decoded": [
+        {
+          "get_shortest_driving_distance": {
+            "origin": "纽约市",
+            "destination": "华盛顿哥伦比亚特区"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 765,
+      "output_tokens": 211,
+      "latency_s": 1.9725117683410645,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找纽约市与华盛顿哥伦比亚特区之间的最短驾车距离。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e876b1f936754db4b1974057",
+          "function": {
+            "arguments": "{\"origin\": \"纽约市\", \"destination\": \"华盛顿哥伦比亚特区\", \"unit\": \"公里\"}",
+            "name": "get_shortest_driving_distance"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要求查找纽约市与华盛顿哥伦比亚特区之间的最短驾车距离。我需要调用 get_shortest_driving_distance 函数，起点是纽约市，终点是华盛顿哥伦比亚特区。单位可以选择公里或英里，用户没有指定，我可以选择\"公里\"作为首选单位，或者不填。为了完整，我填\"公里\"。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_shortest_driving_distance'. Please review the function definition and try again.",
+      "tool_call_id": "call_e876b1f936754db4b1974057"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1f6ec68e82834f0bb2c31cad",
+          "function": {
+            "arguments": "{\"origin\": \"纽约市\", \"destination\": \"华盛顿哥伦比亚特区\"}",
+            "name": "get_shortest_driving_distance"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回 400 Bad Request，参数无效。可能是 unit 参数只接受特定值，例如 \"km\" 或 \"mile\" 等，或者地点名称需要不同。函数定义中 unit 是\"首选的距离单位。语言：中文。\" 我填了\"公里\"看似符合。可能原因是单位只接受\"km\"/\"mi\"，或必须为\"公里\"但 origin/destination 需要\"纽约\"和\"华盛顿特区\"？需要重试。最可能 unit 不接受中文？虽然描述说语言中文，但错误可能因 unit 值。可以尝试省略 unit，仅提供必需参数。origin 和 destination 必填，unit 可选。重试调用，不带 unit。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

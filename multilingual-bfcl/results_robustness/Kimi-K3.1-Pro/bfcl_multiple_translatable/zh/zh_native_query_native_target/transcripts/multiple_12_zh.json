@@ -1,0 +1,121 @@
+{
+  "id": "multiple_12_zh",
+  "source_id": "multiple_12",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 562,
+  "total_output_tokens": 361,
+  "total_latency_s": 4.299519062042236,
+  "estimated_cost_usd": 0.0054440999999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "“科技股份有限公司”2019年的营收为100万美元，2020年的营收为120万美元，其同比增长率是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.calculate_YOY_growth_rate": {
+        "company_name": [
+          "科技股份有限公司"
+        ],
+        "year1": [
+          2019
+        ],
+        "year1_revenue": [
+          1000000
+        ],
+        "year2": [
+          2020
+        ],
+        "year2_revenue": [
+          1200000
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_calculate_YOY_growth_rate",
+          "arguments": {
+            "company_name": "科技股份有限公司",
+            "year1": 2019,
+            "year1_revenue": 1000000,
+            "year2": 2020,
+            "year2_revenue": 1200000
+          },
+          "id": "call_ca2a41afbc404dcd9951a60c"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_calculate_YOY_growth_rate": {
+            "company_name": "科技股份有限公司",
+            "year1": 2019,
+            "year1_revenue": 1000000,
+            "year2": 2020,
+            "year2_revenue": 1200000
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 562,
+      "output_tokens": 361,
+      "latency_s": 4.299519062042236,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "“科技股份有限公司”2019年的营收为100万美元，2020年的营收为120万美元，其同比增长率是多少？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ca2a41afbc404dcd9951a60c",
+          "function": {
+            "arguments": "{\"company_name\": \"科技股份有限公司\", \"year1\": 2019, \"year1_revenue\": 1000000, \"year2\": 2020, \"year2_revenue\": 1200000}",
+            "name": "corporate_finance_calculate_YOY_growth_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问的是\"科技股份有限公司\"2019年营收100万美元，2020年营收120万美元，同比增长率是多少。\n\n这是一个YOY增长率的计算问题。我需要调用corporate_finance_calculate_YOY_growth_rate函数。\n\n参数：\n- company_name: \"科技股份有限公司\"\n- year1: 2019\n- year1_revenue: 100万美元。工具定义为integer。100万美元 = 1,000,000美元。但是用户说\"100万美元\"，我可以用1000000。year2_revenue: 1200000。或者也可以用100和120（以万美元为单位？其实100万美元 = 1百万美元）。重要的是增长率。(120-100)/100 = 20%。无论用1000000和1200000还是100和120，增长率一样。为了准确，用1000000和1200000（美元）。\n\n公司名就是\"科技股份有限公司\"。\n\n调用函数即可。结果20%。我应该调用工具，然后回复。\n\n按照指令\"respond with the correct function call exactly as specified in the tool definitions\"，需要调用工具。调用后可简要说明结果。通常在工具调用后给出回答。我现在调用。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

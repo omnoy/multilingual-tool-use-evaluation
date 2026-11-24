@@ -1,0 +1,138 @@
+{
+  "id": "multiple_155_zh",
+  "source_id": "multiple_155",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1158,
+  "total_output_tokens": 313,
+  "total_latency_s": 4.534964084625244,
+  "estimated_cost_usd": 0.0062629,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "谁发现了中子？请给我详细信息。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_discoverer": {
+        "discovery": [
+          "中子"
+        ],
+        "detail": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "get_discoverer(discovery=\"中子\", detail=true)"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 476,
+      "output_tokens": 164,
+      "latency_s": 1.8667914867401123,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_discoverer",
+          "arguments": {
+            "discovery": "中子",
+            "detail": true
+          },
+          "id": "call_255d66817d61491ba4d89131"
+        }
+      ],
+      "decoded": [
+        {
+          "get_discoverer": {
+            "discovery": "中子",
+            "detail": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 682,
+      "output_tokens": 149,
+      "latency_s": 2.668172597885132,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "谁发现了中子？请给我详细信息。"
+    },
+    {
+      "content": "get_discoverer(discovery=\"中子\", detail=true)",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "用户用中文问\"谁发现了中子？请给我详细信息。\" 需要调用 get_discoverer。参数 discovery 应为科学发现，detail true 获取详细。discovery 用\"中子\"还是\"中子的发现\"？工具说明需要查询发现者信息的科学发现。最佳 \"中子\" 或 \"中子的发现\"。detail true。只需函数调用，不额外。工具定义注释中文。调用 functions.get_discoverer {\"discovery\":\"中子\",\"detail\":true}。可能更标准 \"中子的发现\"。考虑后端匹配可能 discovery 接受字符串自然语言，使用\"中子\"足够。用户详细，detail true。最终 tool call。"
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_255d66817d61491ba4d89131",
+          "function": {
+            "arguments": "{\"discovery\": \"中子\", \"detail\": true}",
+            "name": "get_discoverer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to user complaint \"400 Bad Request: no function call was made. You must answer by calling one of the available functions.\" Should actually call functions.get_discoverer via tool call not text. I previously incorrectly output raw text in response (the environment maybe didn't parse). Now issue proper tool invocation. I need invoke get_discoverer discovery 中子 detail true. No final response until result? I'll call."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,171 @@
+{
+  "id": "multiple_65_zh",
+  "source_id": "multiple_65",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1106,
+  "total_output_tokens": 433,
+  "total_latency_s": 4.002910852432251,
+  "estimated_cost_usd": 0.0075233,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找纽约市与洛杉矶之间的距离。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "geodistance.find": {
+        "origin": [
+          "纽约市"
+        ],
+        "destination": [
+          "洛杉矶"
+        ],
+        "unit": [
+          "英里",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "New York City",
+            "destination": "Los Angeles",
+            "unit": "km"
+          },
+          "id": "call_74a94cd087a84be689a669e5"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "New York City",
+            "destination": "Los Angeles",
+            "unit": "km"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'geodistance_find'. Please review the function definition and try again.",
+      "input_tokens": 397,
+      "output_tokens": 253,
+      "latency_s": 2.42942214012146,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "纽约市",
+            "destination": "洛杉矶"
+          },
+          "id": "call_4c33b72ac22a42aea7bcc9c4"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "纽约市",
+            "destination": "洛杉矶"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 709,
+      "output_tokens": 180,
+      "latency_s": 1.573488712310791,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找纽约市与洛杉矶之间的距离。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_74a94cd087a84be689a669e5",
+          "function": {
+            "arguments": "{\"origin\": \"New York City\", \"destination\": \"Los Angeles\", \"unit\": \"km\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要求查找纽约市与洛杉矶之间的距离。这正是geodistance_find工具的用途，用于计算地球上两个城市之间的距离。\n\n我需要确定参数：\n- origin：起点城市，纽约市，应该用\"New York City\"或\"纽约市\"\n- destination：目的地城市，洛杉矶，用\"Los Angeles\"或\"洛杉矶\"\n- unit：距离单位，用户没有指定，可以不填，或者用默认值。单位通常支持km或miles。用户没指定，我可以选择km（公里），因为中文用户通常使用公里。不过unit不是必填的（required只有origin和destination）。为了明确，我可以填\"km\"。\n\n工具描述是中文的，城市名称可能用英文更稳妥，因为这些工具通常接受英文城市名。我用origin: \"New York City\", destination: \"Los Angeles\", unit: \"km\"。\n\n调用工具即可。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'geodistance_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_74a94cd087a84be689a669e5"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4c33b72ac22a42aea7bcc9c4",
+          "function": {
+            "arguments": "{\"origin\": \"纽约市\", \"destination\": \"洛杉矶\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回400错误，参数无效。可能是unit参数不支持\"km\"，或者城市名需要中文。让我尝试去掉unit参数，或者使用中文城市名。\n\nrequired只有origin和destination，unit是可选的。可能是unit=\"km\"不被接受，或者城市名问题。先尝试中文城市名并去掉unit试试？为减少错误，我可以一次尝试origin: \"纽约市\", destination: \"洛杉矶\"，不带unit。或者保留英文但去掉unit。\n\n考虑到底层工具可能接受中文（因为描述全中文），我用中文再试，并去掉unit。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

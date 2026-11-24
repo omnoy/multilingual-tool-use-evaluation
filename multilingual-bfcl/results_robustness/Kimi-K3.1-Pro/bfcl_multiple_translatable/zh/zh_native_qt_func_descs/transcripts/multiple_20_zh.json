@@ -1,0 +1,171 @@
+{
+  "id": "multiple_20_zh",
+  "source_id": "multiple_20",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1049,
+  "total_output_tokens": 326,
+  "total_latency_s": 5.374290466308594,
+  "estimated_cost_usd": 0.0061617,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "委托制作一尊尺寸为3英尺的大理石雕塑需要多少钱？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture_price.calculate": {
+        "material": [
+          "大理石"
+        ],
+        "size": [
+          3
+        ],
+        "complexity": [
+          "medium",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "marble",
+            "size": 3
+          },
+          "id": "call_eb110bfcb4b94b09a227b7b0"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "marble",
+            "size": 3
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sculpture_price_calculate'. Please review the function definition and try again.",
+      "input_tokens": 403,
+      "output_tokens": 180,
+      "latency_s": 1.6761760711669922,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "大理石",
+            "size": 3,
+            "complexity": "medium"
+          },
+          "id": "call_0b7c6a997c054a2f9498c4e8"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "大理石",
+            "size": 3,
+            "complexity": "medium"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 646,
+      "output_tokens": 146,
+      "latency_s": 3.6981143951416016,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "委托制作一尊尺寸为3英尺的大理石雕塑需要多少钱？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_eb110bfcb4b94b09a227b7b0",
+          "function": {
+            "arguments": "{\"material\": \"marble\", \"size\": 3}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I'll respond to user Chinese: \"委托制作一尊尺寸为3英尺的大理石雕塑需要多少钱？\" I'll call sculpture_price_calculate with material marble, size 3, default complexity medium probably omit or specify? Tool calculates commission estimate based material size. I'll call. I'll respond likely with function result afterwards. Should use Chinese material? Tool likely expects material string; use \"marble\" or \"大理石\"? Should infer. Price calculator material. User asks Chinese and respond correct function call exactly tool defs. Most tasks expect material \"marble\", size 3. Call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sculpture_price_calculate'. Please review the function definition and try again.",
+      "tool_call_id": "call_eb110bfcb4b94b09a227b7b0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0b7c6a997c054a2f9498c4e8",
+          "function": {
+            "arguments": "{\"material\": \"大理石\", \"size\": 3, \"complexity\": \"medium\"}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid parameters. Perhaps material must be Chinese? Function definition allows anything. Size integer correct. Perhaps material should \"大理石\". Try with complexity perhaps medium? Could be API expects material e.g. \"marble\" but error surprising. Perhaps size integer 3 is fine. Should try material \"大理石\" and complexity medium."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

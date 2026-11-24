@@ -1,0 +1,172 @@
+{
+  "id": "multiple_199_zh",
+  "source_id": "multiple_199",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1098,
+  "total_output_tokens": 319,
+  "total_latency_s": 3.429765462875366,
+  "estimated_cost_usd": 0.0061939,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "预测黄石地区未来5年的森林生长情况，包括人类活动的影响。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "forest_growth_forecast": {
+        "location": [
+          "黄石"
+        ],
+        "years": [
+          5
+        ],
+        "include_human_impact": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "黄石地区",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "call_ca0012c660474bcdbf5f2f95"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "黄石地区",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "input_tokens": 447,
+      "output_tokens": 143,
+      "latency_s": 1.7842586040496826,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "黄石",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "call_252409be07ef4cef859c68ab"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "黄石",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 651,
+      "output_tokens": 176,
+      "latency_s": 1.6455068588256836,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "预测黄石地区未来5年的森林生长情况，包括人类活动的影响。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ca0012c660474bcdbf5f2f95",
+          "function": {
+            "arguments": "{\"location\": \"黄石地区\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要求预测黄石地区未来5年的森林生长情况，包括人类活动的影响。\n\n需要调用 forest_growth_forecast 函数：\n- location: \"黄石地区\" 或 \"黄石\"（中文）\n- years: 5\n- include_human_impact: true\n\n直接调用该工具。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_ca0012c660474bcdbf5f2f95"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_252409be07ef4cef859c68ab",
+          "function": {
+            "arguments": "{\"location\": \"黄石\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回 400 参数无效。我检查定义：location 中文 string，years integer，include_human_impact boolean。刚才参数似乎符合。可能位置需要更具体？或工具实现只接受特定地名如“黄石”？需要重试，调整 location 为“黄石”，其它不变。也可能 include_human_impact 不应显式？用户明确要求包括人类活动，必须 true。years 5 合法。先重试 location \"黄石\"。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,173 @@
+{
+  "id": "multiple_142_zh",
+  "source_id": "multiple_142",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1031,
+  "total_output_tokens": 464,
+  "total_latency_s": 4.524075508117676,
+  "estimated_cost_usd": 0.0077073,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "佛罗里达州迈阿密未来7天的湿度是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "weather.humidity_forecast": {
+        "location": [
+          "迈阿密",
+          "佛罗里达州迈阿密",
+          "佛罗里达州"
+        ],
+        "days": [
+          7
+        ],
+        "min_humidity": [
+          "",
+          0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "location": "Miami, Florida",
+            "days": 7
+          },
+          "id": "call_a221c13048c24bc6b238058d"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "location": "Miami, Florida",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'weather_humidity_forecast'. Please review the function definition and try again.",
+      "input_tokens": 376,
+      "output_tokens": 216,
+      "latency_s": 1.908888816833496,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "location": "迈阿密",
+            "days": 7,
+            "min_humidity": 0
+          },
+          "id": "call_6b0bdb36a2f24e99adfb4252"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "location": "迈阿密",
+            "days": 7,
+            "min_humidity": 0
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 655,
+      "output_tokens": 248,
+      "latency_s": 2.6151866912841797,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "佛罗里达州迈阿密未来7天的湿度是多少？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a221c13048c24bc6b238058d",
+          "function": {
+            "arguments": "{\"location\": \"Miami, Florida\", \"days\": 7}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问：佛罗里达州迈阿密未来7天的湿度是多少？需要调用湿度预报工具。参数 location 要查询湿度的城市，可用“迈阿密”或“Miami, Florida”。days=7。min_humidity 可选默认0，不必提供。需要理解中文并正确函数调用。只需工具调用，无额外文字？最终可能要根据工具结果回答，但目前先调用。考虑地点包含州更精确：“Miami, Florida”或中文“佛罗里达州迈阿密”。工具接受字符串。最好用“Miami, Florida”确保识别，但用户中文，开发要求中文理解并正确调用，不限制参数语言。选择 location=\"Miami, Florida\", days=7。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'weather_humidity_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_a221c13048c24bc6b238058d"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_6b0bdb36a2f24e99adfb4252",
+          "function": {
+            "arguments": "{\"location\": \"迈阿密\", \"days\": 7, \"min_humidity\": 0}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回 400 invalid parameters。需要检查定义：days integer, location string, min_humidity integer optional default 0。我们传了 location Miami, Florida days 7，看似合法。可能工具只接受中文城市？或者需要 min_humidity? 错误无效参数可能位置格式？需要重试。可以用中文“迈阿密”并显式 min_humidity=0? 根据工具定义 days 必填，location 必填。未来7天是否 days 上限？无说明。可能是模拟工具要求特定城市名称？先尝试 location=\"迈阿密\", days=7。如果还失败，加 min_humidity 0。需要考虑工具调用失败不能编造。用户需要 humidity。可以重试合理参数。我们已经用了工具。现在再调用。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

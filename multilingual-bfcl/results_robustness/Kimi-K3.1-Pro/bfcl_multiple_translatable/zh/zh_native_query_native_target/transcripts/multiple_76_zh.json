@@ -1,0 +1,111 @@
+{
+  "id": "multiple_76_zh",
+  "source_id": "multiple_76",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 395,
+  "total_output_tokens": 367,
+  "total_latency_s": 2.3740203380584717,
+  "estimated_cost_usd": 0.005128999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "我想订制一尊马的青铜雕塑。有哪些材质可供选择？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture.create_custom": {
+        "item": [
+          "马"
+        ],
+        "material": [
+          "Bronze",
+          "bronze"
+        ],
+        "size": [
+          "",
+          12
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_create_custom",
+          "arguments": {
+            "item": "马",
+            "material": "Bronze"
+          },
+          "id": "call_4756b60876834e819824f290"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_create_custom": {
+            "item": "马",
+            "material": "Bronze"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 395,
+      "output_tokens": 367,
+      "latency_s": 2.3740203380584717,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "我想订制一尊马的青铜雕塑。有哪些材质可供选择？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4756b60876834e819824f290",
+          "function": {
+            "arguments": "{\"item\": \"马\", \"material\": \"Bronze\"}",
+            "name": "sculpture_create_custom"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户想订制一尊马的青铜雕塑，并问有哪些材质可供选择。需要用中文理解请求，并按工具定义正确调用函数。需要在回应中说明材质选项并调用 sculpture_create_custom 吗？需要判断意图：用户说想订制马的青铜雕塑，问有哪些材质可供选择。工具 sculpture_create_custom 参数 item, material enum Bronze Marble Terracotta Wood Stone, size optional default 12。用户已经明确要青铜雕塑，可视为订制请求，同时问材质。可能需要回答材质有青铜、大理石、陶土、木材、石材，并调用创建定制雕塑（马、Bronze）。需要 exact function call as specified. I should call the tool. Should decide whether only respond list or also create. User says “我想订制一尊马的青铜雕塑。有哪些材质可供选择？” User wants order custom bronze horse sculpture, asks materials available. I can list materials and perhaps proceed with bronze order since specified. Could call sculpture_create_custom item 马 material Bronze, perhaps size omit default 12. Then respond concise in Chinese: 可选材质包括青铜、大理石、陶土、木材和石材；已按青铜为你提交马的雕塑订制，尺寸默认12英寸 (depending tool result). Now call first. Item can be \"马\" or \"horse\". Tool likely accepts any string. Use Chinese?_subject item: \"马\". material Bronze. Size optional not specified by user; omit to default 12. Could call and then list. Make sure no extra unsupported parameters. I'll call."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,172 @@
+{
+  "id": "multiple_182_zh",
+  "source_id": "multiple_182",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1648,
+  "total_output_tokens": 533,
+  "total_latency_s": 9.061060905456543,
+  "estimated_cost_usd": 0.0099199,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "帮我找一款评分高于4.5且兼容视窗 10的多人游戏。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "multiplayer_game_finder": {
+        "platform": [
+          "视窗 10"
+        ],
+        "rating": [
+          4.5
+        ],
+        "genre": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "我来帮你查找符合这些条件的多人游戏。"
+      ],
+      "tool_calls": [
+        {
+          "name": "multiplayer_game_finder",
+          "arguments": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          },
+          "id": "call_e82772fe34fa4cfc97b7c5a6"
+        }
+      ],
+      "decoded": [
+        {
+          "multiplayer_game_finder": {
+            "platform": "Windows 10",
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "input_tokens": 682,
+      "output_tokens": 225,
+      "latency_s": 6.632644414901733,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "平台参数可能未识别，我按你提供的平台名称重试一次。"
+      ],
+      "tool_calls": [
+        {
+          "name": "multiplayer_game_finder",
+          "arguments": {
+            "platform": "视窗 10",
+            "rating": 4.5
+          },
+          "id": "call_01fb627c20264705a0356a0f"
+        }
+      ],
+      "decoded": [
+        {
+          "multiplayer_game_finder": {
+            "platform": "视窗 10",
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 966,
+      "output_tokens": 308,
+      "latency_s": 2.4284164905548096,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "帮我找一款评分高于4.5且兼容视窗 10的多人游戏。"
+    },
+    {
+      "content": "我来帮你查找符合这些条件的多人游戏。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e82772fe34fa4cfc97b7c5a6",
+          "function": {
+            "arguments": "{\"platform\": \"Windows 10\", \"rating\": 4.5}",
+            "name": "multiplayer_game_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户想找一款多人游戏，条件：\n- 评分高于4.5（rating > 4.5，工具参数是最低评分，满分5.0，所以rating设为4.5）\n- 兼容视窗10（Windows 10），platform参数用\"Windows 10\"或中文\"视窗 10\"？工具描述说平台语言中文，但通常platform用\"Windows 10\"比较合适。用户说\"兼容视窗 10\"，可以用\"Windows 10\"。\n- 类型未指定，genre默认''，可以不传或传空。\n\n调用multiplayer_game_finder，platform: \"Windows 10\"，rating: 4.5。genre可选，用户没指定类型，可以不传。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'multiplayer_game_finder'. Please review the function definition and try again.",
+      "tool_call_id": "call_e82772fe34fa4cfc97b7c5a6"
+    },
+    {
+      "content": "平台参数可能未识别，我按你提供的平台名称重试一次。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_01fb627c20264705a0356a0f",
+          "function": {
+            "arguments": "{\"platform\": \"视窗 10\", \"rating\": 4.5}",
+            "name": "multiplayer_game_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "调用返回400参数错误。可能是platform需要中文？工具描述\"您希望游戏兼容的平台。 语言：中文。\" 意味着参数描述语言中文，不一定值必须中文。但可能平台值需要\"视窗 10\"或\"Windows10\"？rating 4.5 float OK。也可能需要genre必须提供？默认值''说明可选。错误invalid parameters可能platform不接受\"Windows 10\"，尝试用户原词\"视窗 10\"。如果还错，尝试\"windows 10\"或\"PC\"。需要正确调用。可以先重试platform \"视窗 10\"，rating 4.5，genre \"\"? 为避免缺少genre导致错误，可显式genre \"Action\"？但用户没指定类型，不应随意限制。genre默认''，可传\"genre\":\"\"， schema enum包含? enum没有空字符串，但默认值为''，说明允许省略，不一定允许显式空。最佳只修改platform为\"视窗 10\"。rating高于4.5，最低评分4.5合理（边界略瑕疵但工具只能最低评分）。重试。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

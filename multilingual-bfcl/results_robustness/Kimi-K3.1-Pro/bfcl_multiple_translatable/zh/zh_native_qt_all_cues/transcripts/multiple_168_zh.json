@@ -1,0 +1,110 @@
+{
+  "id": "multiple_168_zh",
+  "source_id": "multiple_168",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 442,
+  "total_output_tokens": 447,
+  "total_latency_s": 3.253216505050659,
+  "estimated_cost_usd": 0.0061571,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找皇后乐队演唱的歌曲《波西米亚狂想曲》的歌词。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_song_lyrics": {
+        "song_title": [
+          "波西米亚狂想曲"
+        ],
+        "artist_name": [
+          "皇后乐队"
+        ],
+        "lang": [
+          "English",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_song_lyrics",
+          "arguments": {
+            "song_title": "波西米亚狂想曲",
+            "artist_name": "皇后乐队"
+          },
+          "id": "call_98d7f24365bc4da8a691c346"
+        }
+      ],
+      "decoded": [
+        {
+          "get_song_lyrics": {
+            "song_title": "波西米亚狂想曲",
+            "artist_name": "皇后乐队"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 442,
+      "output_tokens": 447,
+      "latency_s": 3.253216505050659,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找皇后乐队演唱的歌曲《波西米亚狂想曲》的歌词。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_98d7f24365bc4da8a691c346",
+          "function": {
+            "arguments": "{\"song_title\": \"波西米亚狂想曲\", \"artist_name\": \"皇后乐队\"}",
+            "name": "get_song_lyrics"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户想查找皇后乐队演唱的歌曲《波西米亚狂想曲》的歌词。我需要使用 get_song_lyrics 工具，参数为 artist_name 和 song_title，语言为中文。皇后乐队是 Queen，歌曲是 Bohemian Rhapsody。但是工具描述说参数语言为中文，所以应该传中文吗？需要思考。\n\n工具定义：get_song_lyrics: 根据艺人姓名和歌曲标题获取歌词。参数 artist_name: 演唱该歌曲的艺人的姓名。 语言：中文。 song_title: 歌曲的标题。 语言：中文。 lang 默认英语，可选 English 等。用户写中文，要求正确函数调用 exactly as specified。通常这些任务期望将中文用户输入映射为实际实体的英文还是中文？描述语言中文可能只是说明参数描述是中文，要求输入中文？在过去的类似工具调用基准，artist_name 和 song_title 需要保持用户给出的中文还是翻译？例如用户“查找皇后乐队演唱的歌曲《波西米亚狂想曲》的歌词。” 正确调用可能是 {\"artist_name\":\"Queen\",\"song_title\":\"Bohemian Rhapsody\"} 或中文。需要推断。\n\n公司股价工具 company_names 语言中文，国家公园 park_name 语言中文，歌词艺人姓名和歌曲标题语言中文。这些工具是模拟，可能接受中英文？一般应直接按用户语言提供参数，即“皇后乐队”“波西米亚狂想曲”。但有些 benchmark API calls require translated to English for real entities? The schema comment \"语言：中文\" explicitly says language Chinese, likely instructs us to use Chinese values. I'll respond with function call only, no extra text. lang omitted because default English and song is English. Use artist_name \"皇后乐队\", song_title \"波西米亚狂想曲\"。I need call the tool."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

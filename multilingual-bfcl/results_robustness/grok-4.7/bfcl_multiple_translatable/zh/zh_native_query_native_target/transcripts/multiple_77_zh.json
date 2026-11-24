@@ -1,0 +1,173 @@
+{
+  "id": "multiple_77_zh",
+  "source_id": "multiple_77",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 957,
+  "total_output_tokens": 53,
+  "total_latency_s": 10.597480535507202,
+  "estimated_cost_usd": 0.002232,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "搜索纽约著名的当代雕塑。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "artwork_search.find": {
+        "type": [
+          "雕塑"
+        ],
+        "location": [
+          "纽约",
+          "纽约州纽约市",
+          "纽约市"
+        ],
+        "era": [
+          "当代",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "artwork_search_find",
+          "arguments": {
+            "type": "sculpture",
+            "location": "New York",
+            "era": "contemporary"
+          },
+          "id": "call-d131e69d-16d7-4076-809f-fb0201e46a32-0"
+        }
+      ],
+      "decoded": [
+        {
+          "artwork_search_find": {
+            "type": "sculpture",
+            "location": "New York",
+            "era": "contemporary"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'artwork_search_find'. Please review the function definition and try again.",
+      "input_tokens": 374,
+      "output_tokens": 27,
+      "latency_s": 3.93723464012146,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "artwork_search_find",
+          "arguments": {
+            "type": "雕塑",
+            "location": "纽约",
+            "era": "当代"
+          },
+          "id": "call-63578f0b-1c39-468e-82f1-d8bcbe4ca6c7-1"
+        }
+      ],
+      "decoded": [
+        {
+          "artwork_search_find": {
+            "type": "雕塑",
+            "location": "纽约",
+            "era": "当代"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 583,
+      "output_tokens": 26,
+      "latency_s": 6.660245895385742,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "搜索纽约著名的当代雕塑。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-d131e69d-16d7-4076-809f-fb0201e46a32-0",
+          "function": {
+            "arguments": "{\"type\":\"sculpture\",\"location\":\"New York\",\"era\":\"contemporary\"}",
+            "name": "artwork_search_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'artwork_search_find'. Please review the function definition and try again.",
+      "tool_call_id": "call-d131e69d-16d7-4076-809f-fb0201e46a32-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-63578f0b-1c39-468e-82f1-d8bcbe4ca6c7-1",
+          "function": {
+            "arguments": "{\"type\":\"雕塑\",\"location\":\"纽约\",\"era\":\"当代\"}",
+            "name": "artwork_search_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

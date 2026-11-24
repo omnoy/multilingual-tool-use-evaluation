@@ -1,0 +1,114 @@
+{
+  "id": "multiple_77_zh",
+  "source_id": "multiple_77",
+  "locale": "zh",
+  "localization_level": "native_qt_lang_hints",
+  "benchmark": "zh_native_qt_lang_hints",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 444,
+  "total_output_tokens": 294,
+  "total_latency_s": 3.128021001815796,
+  "estimated_cost_usd": 0.0044022,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "搜索纽约著名的当代雕塑。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "artwork_search.find": {
+        "type": [
+          "雕塑"
+        ],
+        "location": [
+          "纽约",
+          "纽约州纽约市",
+          "纽约市"
+        ],
+        "era": [
+          "当代",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "artwork_search_find",
+          "arguments": {
+            "type": "雕塑",
+            "location": "纽约",
+            "era": "当代"
+          },
+          "id": "call_5b33b472e17f438b96b78818"
+        }
+      ],
+      "decoded": [
+        {
+          "artwork_search_find": {
+            "type": "雕塑",
+            "location": "纽约",
+            "era": "当代"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 444,
+      "output_tokens": 294,
+      "latency_s": 3.128021001815796,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "搜索纽约著名的当代雕塑。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5b33b472e17f438b96b78818",
+          "function": {
+            "arguments": "{\"type\": \"雕塑\", \"location\": \"纽约\", \"era\": \"当代\"}",
+            "name": "artwork_search_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户想在纽约搜索著名的当代雕塑。我已经收到了工具定义：tourist_attraction_find（旅游景点搜索）、artwork_search_find（艺术品搜索，参数 era（可选）、location、type）、park_search_find（公园搜索）。最匹配的是 artwork_search_find：type 用 “雕塑” 或 “当代雕塑”，location 用 “纽约”，era 可选 “当代”。系统提示用户用中文，需要理解并用正确函数调用，工具参数语言中文。这里 location 可中文 “纽约”；type “雕塑”；era “当代”。用户说著名的当代雕塑，工具没有 famous 参数，era 可以 “当代”，type “雕塑”。应该调用 artwork_search_find 一次。无需额外 text，直接 function call。确保 exactly as specified：artwork_search_find({“era”:“当代”,“location”:“纽约”,“type”:“雕塑”})。可能 type 直接 “当代雕塑”，era 可空？工具 artwork search based on type and location, era optional. Search contemporary sculpture, type=雕塑, era=当代 most semantic."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

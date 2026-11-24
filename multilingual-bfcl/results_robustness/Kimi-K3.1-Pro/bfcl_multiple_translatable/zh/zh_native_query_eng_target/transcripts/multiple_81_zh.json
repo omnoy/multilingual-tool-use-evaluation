@@ -1,0 +1,118 @@
+{
+  "id": "multiple_81_zh",
+  "source_id": "multiple_81",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 426,
+  "total_output_tokens": 225,
+  "total_latency_s": 1.7323594093322754,
+  "estimated_cost_usd": 0.0035673,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "预订一张埃米纳姆即将在纽约市举办的演唱会门票，我想要包含后台通行权限的票。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.book_ticket": {
+        "artist": [
+          "Eminem"
+        ],
+        "location": [
+          "New York City",
+          "NYC"
+        ],
+        "add_ons": [
+          [
+            "Backstage Pass"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York City",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_272c018f1abf47cd848b1c5c"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York City",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 426,
+      "output_tokens": 225,
+      "latency_s": 1.7323594093322754,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "预订一张埃米纳姆即将在纽约市举办的演唱会门票，我想要包含后台通行权限的票。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_272c018f1abf47cd848b1c5c",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York City\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need act on Chinese user: \"预订一张埃米纳姆即将在纽约市举办的演唱会门票，我想要包含后台通行权限的票。\" I'll book concert ticket via tool. Artist Eminem (埃米纳姆), location New York City. Add-ons Backstage Pass. Should have exactly correct function call as specified. Use concert_book_ticket artist perhaps \"Eminem\", location \"New York City\", add_ons [\"Backstage Pass\"]. Should consider location city could \"纽约市\" or \"New York City\"? Tool parameters string, likely expect Eminem and New York City. Booking action real side effect but user explicitly requests. One ticket default no quantity. Call."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

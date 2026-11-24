@@ -1,0 +1,172 @@
+{
+  "id": "multiple_85_zh",
+  "source_id": "multiple_85",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1066,
+  "total_output_tokens": 408,
+  "total_latency_s": 3.392179250717163,
+  "estimated_cost_usd": 0.0071438000000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "获取皇家马德里在西甲联赛最近5轮比赛中的足球比分。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_scores.get_scores": {
+        "team": [
+          "Real Madrid"
+        ],
+        "league": [
+          "La Liga"
+        ],
+        "rounds": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "皇家马德里",
+            "league": "西甲联赛",
+            "rounds": 5
+          },
+          "id": "call_b7cc347bffbf4942bf88b20f"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "皇家马德里",
+            "league": "西甲联赛",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'soccer_scores_get_scores'. Please review the function definition and try again.",
+      "input_tokens": 399,
+      "output_tokens": 207,
+      "latency_s": 1.5375566482543945,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          },
+          "id": "call_1bc41f62cc0a44c58bfcb50b"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 667,
+      "output_tokens": 201,
+      "latency_s": 1.8546226024627686,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "获取皇家马德里在西甲联赛最近5轮比赛中的足球比分。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b7cc347bffbf4942bf88b20f",
+          "function": {
+            "arguments": "{\"team\": \"皇家马德里\", \"league\": \"西甲联赛\", \"rounds\": 5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要求获取皇家马德里在西甲联赛最近5轮比赛中的足球比分。这对应soccer_scores_get_scores函数。team应为\"皇家马德里\"或\"Real Madrid\"?工具描述参数是字符串，中文用户，通常使用中文队名和联赛名。需要正确函数调用，league西甲联赛，rounds 5，team皇家马德里。直接调用，不需要额外文本。确保不是篮球。函数名soccer_scores_get_scores。参数 league \"西甲联赛\", team \"皇家马德里\", rounds 5。可能需要 league \"西甲\"更常见。User明确西甲联赛，按原文。调用。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'soccer_scores_get_scores'. Please review the function definition and try again.",
+      "tool_call_id": "call_b7cc347bffbf4942bf88b20f"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1bc41f62cc0a44c58bfcb50b",
+          "function": {
+            "arguments": "{\"team\": \"Real Madrid\", \"league\": \"La Liga\", \"rounds\": 5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "调用失败 400 invalid parameters。Should审查定义参数有 league rounds team，都类型正确。可能 API 仅接受英文名称？Should重试，如 team Real Madrid, league La Liga。函数错误提示 review definition and try again. 很可能是参数值不被接受，需要英文。用户要皇家马德里/西甲。标准 soccer scores API perhaps team \"Real Madrid\", league \"La Liga\". Kimi 应再次调用英文。Could league \"Primera División\"? Should infer common dataset. Use Real Madrid and La Liga。rounds 5. 工具调用。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

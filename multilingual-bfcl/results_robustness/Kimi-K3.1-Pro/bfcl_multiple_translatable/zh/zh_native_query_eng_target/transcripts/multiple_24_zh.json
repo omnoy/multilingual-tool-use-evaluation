@@ -1,0 +1,112 @@
+{
+  "id": "multiple_24_zh",
+  "source_id": "multiple_24",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 392,
+  "total_output_tokens": 345,
+  "total_latency_s": 3.9368066787719727,
+  "estimated_cost_usd": 0.0048690999999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "从伦敦前往爱丁堡参加国际象棋锦标赛，最快的路线是什么？另请提供预计路程。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "route_planner.calculate_route": {
+        "start": [
+          "London"
+        ],
+        "destination": [
+          "Edinburgh"
+        ],
+        "method": [
+          "fastest",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "route_planner_calculate_route",
+          "arguments": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          },
+          "id": "call_8e3340ece78542108f93ac77"
+        }
+      ],
+      "decoded": [
+        {
+          "route_planner_calculate_route": {
+            "start": "London",
+            "destination": "Edinburgh",
+            "method": "fastest"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 392,
+      "output_tokens": 345,
+      "latency_s": 3.9368066787719727,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "从伦敦前往爱丁堡参加国际象棋锦标赛，最快的路线是什么？另请提供预计路程。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8e3340ece78542108f93ac77",
+          "function": {
+            "arguments": "{\"start\": \"London\", \"destination\": \"Edinburgh\", \"method\": \"fastest\"}",
+            "name": "route_planner_calculate_route"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户用中文提问：\"从伦敦前往爱丁堡参加国际象棋锦标赛，最快的路线是什么？另请提供预计路程。\"\n\n需要理解请求并调用正确函数。可用工具：route_planner_calculate_route(start,destination,method fastest/shortest/balanced)，chess_club_details_find(name,city,event)。用户要求从伦敦到爱丁堡参加国际象棋锦标赛，最快路线及预计路程。需要路线规划，起点伦敦，目的地爱丁堡，方法 fastest。可能还需要象棋俱乐部细节？没有提供俱乐部名称，只赛事。工具 chess_club_details_find 需要 name 和 city，event可选，缺少name，不必调用。可直接调用路线工具。需要回应 correct function call exactly as specified；通常只需工具调用，之后依据结果中文回答。先调用 route_planner_calculate_route start \"伦敦\" destination \"爱丁堡\" method \"fastest\"。工具可能接受中文地名，或英文 London/Edinburgh 更稳。用户中文但工具数据可能英文。应根据工具说明用字符串。可以用 \"London\" 和 \"Edinburgh\"。要考虑是否直接并行调用 chess_club_details_find？不行，因为赛事国际象棋锦标赛可作为event，城市 Edinburgh，但 name required。不能臆造名称。只路线。\n\n调用后等待结果。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

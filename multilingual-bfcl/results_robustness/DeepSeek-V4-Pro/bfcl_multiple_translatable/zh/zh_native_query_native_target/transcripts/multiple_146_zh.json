@@ -1,0 +1,390 @@
+{
+  "id": "multiple_146_zh",
+  "source_id": "multiple_146",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 5191,
+  "total_output_tokens": 644,
+  "total_latency_s": 8.041062593460083,
+  "estimated_cost_usd": 0.011273459999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找西雅图距离我 10 英里以内提供中餐的餐厅。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "西雅图",
+          "华盛顿州西雅图"
+        ],
+        "cuisine": [
+          "中餐"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "中餐",
+            "max_distance": 10
+          },
+          "id": "call_a6e4ca679144410a8a29fc0f"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "中餐",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 503,
+      "output_tokens": 87,
+      "latency_s": 1.084747552871704,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "看起来参数有问题，让我重新检查一下函数定义。`max_distance` 参数类型应该是整数，但可能\"中餐\"这个 cuisine 值需要调整。让我用英语的 cuisine 类型再试一次。"
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call_12e42f50fc1f4a148eb989c8"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 626,
+      "output_tokens": 130,
+      "latency_s": 1.229736566543579,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "让我再仔细检查一下函数定义。`restaurant_find_nearby` 的必需参数是 `location` 和 `cuisine`，而 `max_distance` 是可选参数。错误可能是由于其他原因。让我尝试不传 `max_distance` 参数，看看是否能成功："
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese"
+          },
+          "id": "call_322a4602ffef4a298be5eccd"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 792,
+      "output_tokens": 131,
+      "latency_s": 1.2062327861785889,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "看来可能是 `location` 的格式问题。让我尝试不同的位置格式："
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call_6d2c09d492fa404f9d2ef8fc"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 959,
+      "output_tokens": 99,
+      "latency_s": 1.8417129516601562,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "抱歉，该函数似乎目前无法正常响应，持续返回 400 错误。可能是服务端的临时问题。函数所需的参数如下：\n\n- **location**: \"Seattle, WA\"（城市和州）\n- **cuisine**: \"Chinese\"（中餐）\n- **max_distance**: 10（英里）\n\n参数看起来是正确的，但服务端未成功处理。建议您稍后重试，或者我可以帮您尝试其他查询方式。需要我做其他操作吗？"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1094,
+      "output_tokens": 99,
+      "latency_s": 1.4125828742980957,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "非常抱歉之前的错误。让我严格按照函数定义再试一次："
+      ],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call_0fc38ee4af3d4cdc8634cd04"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1217,
+      "output_tokens": 98,
+      "latency_s": 1.266049861907959,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找西雅图距离我 10 英里以内提供中餐的餐厅。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a6e4ca679144410a8a29fc0f",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, WA\", \"cuisine\": \"中餐\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_a6e4ca679144410a8a29fc0f"
+    },
+    {
+      "content": "看起来参数有问题，让我重新检查一下函数定义。`max_distance` 参数类型应该是整数，但可能\"中餐\"这个 cuisine 值需要调整。让我用英语的 cuisine 类型再试一次。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_12e42f50fc1f4a148eb989c8",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, WA\", \"cuisine\": \"Chinese\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_12e42f50fc1f4a148eb989c8"
+    },
+    {
+      "content": "让我再仔细检查一下函数定义。`restaurant_find_nearby` 的必需参数是 `location` 和 `cuisine`，而 `max_distance` 是可选参数。错误可能是由于其他原因。让我尝试不传 `max_distance` 参数，看看是否能成功：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_322a4602ffef4a298be5eccd",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, WA\", \"cuisine\": \"Chinese\"}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_322a4602ffef4a298be5eccd"
+    },
+    {
+      "content": "看来可能是 `location` 的格式问题。让我尝试不同的位置格式：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_6d2c09d492fa404f9d2ef8fc",
+          "function": {
+            "arguments": "{\"location\": \"Seattle\", \"cuisine\": \"Chinese\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'restaurant_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_6d2c09d492fa404f9d2ef8fc"
+    },
+    {
+      "content": "抱歉，该函数似乎目前无法正常响应，持续返回 400 错误。可能是服务端的临时问题。函数所需的参数如下：\n\n- **location**: \"Seattle, WA\"（城市和州）\n- **cuisine**: \"Chinese\"（中餐）\n- **max_distance**: 10（英里）\n\n参数看起来是正确的，但服务端未成功处理。建议您稍后重试，或者我可以帮您尝试其他查询方式。需要我做其他操作吗？",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "非常抱歉之前的错误。让我严格按照函数定义再试一次：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0fc38ee4af3d4cdc8634cd04",
+          "function": {
+            "arguments": "{\"location\": \"Seattle, WA\", \"cuisine\": \"Chinese\", \"max_distance\": 10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

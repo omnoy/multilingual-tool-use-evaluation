@@ -1,0 +1,191 @@
+{
+  "id": "multiple_184_zh",
+  "source_id": "multiple_184",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1454,
+  "total_output_tokens": 648,
+  "total_latency_s": 5.4795637130737305,
+  "estimated_cost_usd": 0.0107962,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "给我一份供2人食用的奶酪素食意大利面食谱。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "dietary_restriction": [
+          "素食"
+        ],
+        "ingredients": [
+          [
+            "意大利面",
+            "奶酪"
+          ],
+          [
+            "奶酪",
+            "意大利面"
+          ]
+        ],
+        "servings": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "dietary_restriction": "奶素（含奶酪等奶制品，不含肉类）",
+            "ingredients": [
+              "奶酪",
+              "意大利面"
+            ],
+            "servings": 2
+          },
+          "id": "call_2ad9b1f2211943afaa001214"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "dietary_restriction": "奶素（含奶酪等奶制品，不含肉类）",
+            "ingredients": [
+              "奶酪",
+              "意大利面"
+            ],
+            "servings": 2
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 470,
+      "output_tokens": 458,
+      "latency_s": 3.561897039413452,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "dietary_restriction": "素食",
+            "ingredients": [
+              "奶酪",
+              "意大利面"
+            ],
+            "servings": 2
+          },
+          "id": "call_35248882aea14421b78669b3"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "dietary_restriction": "素食",
+            "ingredients": [
+              "奶酪",
+              "意大利面"
+            ],
+            "servings": 2
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 984,
+      "output_tokens": 190,
+      "latency_s": 1.9176666736602783,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "给我一份供2人食用的奶酪素食意大利面食谱。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2ad9b1f2211943afaa001214",
+          "function": {
+            "arguments": "{\"dietary_restriction\": \"奶素（含奶酪等奶制品，不含肉类）\", \"ingredients\": [\"奶酪\", \"意大利面\"], \"servings\": 2}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要求\"给我一份供2人食用的奶酪素食意大利面食谱\"。这是一个食谱搜索请求，需要使用 recipe_search 工具。\n\n参数分析：\n- dietary_restriction（饮食限制）：素食，具体是\"奶酪素食\"，即 lacto-vegetarian（奶素）。用户说\"奶酪素食意大利面\"，所以饮食限制可以写\"奶素\"或\"素食（含奶制品）\"。工具参数语言为中文。可以写\"奶素\"或者\"素食\"。为了精确，\"奶素（含奶酪等奶制品，不含肉蛋）\"？其实奶素通常含蛋？ lacto-vegetarian 不含蛋。用户说\"奶酪素食\"，可理解为含乳制品的素食。用\"奶素\"较贴切，或\"素食（含奶制品）\"。\n- ingredients（食材列表）：用户提到的食材：奶酪、意大利面。应该传 [\"奶酪\", \"意大利面\"]。可能不需要额外添加食材，严格根据用户请求。可以包含\"奶酪\",\"意大利面\"。\n- servings：2。\n\n只需要调用该工具，不需要其他工具。最终应按工具定义正确调用。是否需要在工具后给出食谱？通常工具会返回结果，然后我们再总结。现在直接调用。\n\n注意系统说\"respond with the correct function call exactly as specified in the tool definitions\"，所以只调用函数，不多余解释。\n\n选择 dietary_restriction: \"奶素\" 可能搜索系统理解？中文\"素食\"更通用，但用户明确\"奶酪素食\"，所以\"奶素\"准确。也可以用\"素食（含奶制品）\"。我觉得\"奶素\"是标准术语，不过为了让工具理解，\"蛋奶素\"会包含蛋，不准确。\"奶素\"准确。食材 [\"奶酪\",\"意大利面\"]，份数 2。\n\n调用。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_2ad9b1f2211943afaa001214"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_35248882aea14421b78669b3",
+          "function": {
+            "arguments": "{\"dietary_restriction\": \"素食\", \"ingredients\": [\"奶酪\", \"意大利面\"], \"servings\": 2}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回 400 invalid parameters。需要检查函数定义并重试。可能 dietary_restriction 期望简单受支持词，比如\"素食\"。或者 ingredients 不能含\"意大利面\"？不，参数结构看似正确。可能是 servings 必须整数（已是2），dietary_restriction 中文正确。也许工具只接受固定枚举如\"素食\"，不接受括号描述。试着简化为 dietary_restriction: \"素食\", ingredients: [\"奶酪\",\"意大利面\"], servings:2。需要重试。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,159 @@
+{
+  "id": "multiple_18_zh",
+  "source_id": "multiple_18",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 891,
+  "total_output_tokens": 266,
+  "total_latency_s": 3.3610239028930664,
+  "estimated_cost_usd": 0.0051083,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "斯大林格勒战役的主要参战方有哪些，战役发生在哪里？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "european_history.battle_details": {
+        "battle": [
+          "斯大林格勒战役",
+          "斯大林格勒"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "european_history_battle_details",
+          "arguments": {
+            "battle": "Battle of Stalingrad"
+          },
+          "id": "call_fc94e2c861d64d4fa003e2bd"
+        }
+      ],
+      "decoded": [
+        {
+          "european_history_battle_details": {
+            "battle": "Battle of Stalingrad"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'european_history_battle_details'. Please review the function definition and try again.",
+      "input_tokens": 335,
+      "output_tokens": 158,
+      "latency_s": 1.919008493423462,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "european_history_battle_details",
+          "arguments": {
+            "battle": "斯大林格勒战役"
+          },
+          "id": "call_efea85bea32d4ebb9dc00c2c"
+        }
+      ],
+      "decoded": [
+        {
+          "european_history_battle_details": {
+            "battle": "斯大林格勒战役"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 556,
+      "output_tokens": 108,
+      "latency_s": 1.4420154094696045,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "斯大林格勒战役的主要参战方有哪些，战役发生在哪里？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fc94e2c861d64d4fa003e2bd",
+          "function": {
+            "arguments": "{\"battle\": \"Battle of Stalingrad\"}",
+            "name": "european_history_battle_details"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问斯大林格勒战役的主要参战方有哪些，战役发生在哪里。需要用工具 european_history_battle_details battle=斯大林格勒战役? 工具名称特定历史欧洲战役。需要用中文理解请求并正确函数调用。需要调用。然后回复答案。需看工具结果。只需函数调用。battle 可以 \"Battle of Stalingrad\" 或 \"斯大林格勒战役\"。工具可能识别英文。定义\"Name of the battle\". 为了确保工具检索，用 \"Battle of Stalingrad\"。调用。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'european_history_battle_details'. Please review the function definition and try again.",
+      "tool_call_id": "call_fc94e2c861d64d4fa003e2bd"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_efea85bea32d4ebb9dc00c2c",
+          "function": {
+            "arguments": "{\"battle\": \"斯大林格勒战役\"}",
+            "name": "european_history_battle_details"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回400无效参数。需要重试可能名称中文? 需要审查定义只是一个字符串没问题，可能battle需枚举? 我们可再调用\"Stalingrad\"或\"斯大林格勒战役\"。需要避免无谓？用户要答案，工具必须。可尝试中文。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

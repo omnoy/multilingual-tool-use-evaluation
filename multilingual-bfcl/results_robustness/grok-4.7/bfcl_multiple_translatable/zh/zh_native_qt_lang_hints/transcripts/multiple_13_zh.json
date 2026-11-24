@@ -1,0 +1,289 @@
+{
+  "id": "multiple_13_zh",
+  "source_id": "multiple_13",
+  "locale": "zh",
+  "localization_level": "native_qt_lang_hints",
+  "benchmark": "zh_native_qt_lang_hints",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 4,
+  "num_clarifications": 0,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 3177,
+  "total_output_tokens": 214,
+  "total_latency_s": 46.67033648490906,
+  "estimated_cost_usd": 0.007638000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "如果我们将产品A的销量提高10%，同时保持价格不变，XYZ公司的收入将达到多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.revenue_forecast": {
+        "company": [
+          "XYZ"
+        ],
+        "product": [
+          "A",
+          "产品A"
+        ],
+        "sales_units_increase_percentage": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ公司",
+            "product": "产品A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "call-f4d1b9c1-c324-48ff-b970-7d171817125a-0"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ公司",
+            "product": "产品A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_revenue_forecast'. Please review the function definition and try again.",
+      "input_tokens": 337,
+      "output_tokens": 35,
+      "latency_s": 4.352532625198364,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_product_price",
+          "arguments": {
+            "company": "XYZ公司",
+            "product": "产品A"
+          },
+          "id": "call-040f1d8e-fe94-459e-9375-bb9a6aa39d35-1"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_product_price": {
+            "company": "XYZ公司",
+            "product": "产品A"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "input_tokens": 399,
+      "output_tokens": 24,
+      "latency_s": 22.7453932762146,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "The function call was invalid, so perhaps I need to look for how to format it.\n\nThe available tools are given in JSON schema.\n\nPerhaps \"XYZ公司\" has letters that are ok.\n\nPerhaps the issue is the tool expects the company in Chinese, and for this query it's correct, but the backend is dummy and always returns 400 for these? \n\nThat doesn't help.\n\nPerhaps I can try without the increase first.\n\nLet me try the revenue with percentage 0 or omit it."
+      ],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ公司",
+            "product": "产品A"
+          },
+          "id": "call-24051b70-071b-4459-9075-523c101f005b-2"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ公司",
+            "product": "产品A"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'corporate_finance_revenue_forecast'. Please review the function definition and try again.",
+      "input_tokens": 1681,
+      "output_tokens": 121,
+      "latency_s": 13.694511651992798,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_revenue_forecast",
+          "arguments": {
+            "company": "XYZ",
+            "product": "产品A",
+            "sales_units_increase_percentage": 10
+          },
+          "id": "call-80827bb8-d7d9-4a80-ba46-216ff6dfbe4d-3"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_revenue_forecast": {
+            "company": "XYZ",
+            "product": "产品A",
+            "sales_units_increase_percentage": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 760,
+      "output_tokens": 34,
+      "latency_s": 5.877898931503296,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "如果我们将产品A的销量提高10%，同时保持价格不变，XYZ公司的收入将达到多少？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-f4d1b9c1-c324-48ff-b970-7d171817125a-0",
+          "function": {
+            "arguments": "{\"company\":\"XYZ公司\",\"product\":\"产品A\",\"sales_units_increase_percentage\":10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_revenue_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call-f4d1b9c1-c324-48ff-b970-7d171817125a-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-040f1d8e-fe94-459e-9375-bb9a6aa39d35-1",
+          "function": {
+            "arguments": "{\"company\":\"XYZ公司\",\"product\":\"产品A\"}",
+            "name": "corporate_finance_product_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_product_price'. Please review the function definition and try again.",
+      "tool_call_id": "call-040f1d8e-fe94-459e-9375-bb9a6aa39d35-1"
+    },
+    {
+      "content": "The function call was invalid, so perhaps I need to look for how to format it.\n\nThe available tools are given in JSON schema.\n\nPerhaps \"XYZ公司\" has letters that are ok.\n\nPerhaps the issue is the tool expects the company in Chinese, and for this query it's correct, but the backend is dummy and always returns 400 for these? \n\nThat doesn't help.\n\nPerhaps I can try without the increase first.\n\nLet me try the revenue with percentage 0 or omit it.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-24051b70-071b-4459-9075-523c101f005b-2",
+          "function": {
+            "arguments": "{\"company\":\"XYZ公司\",\"product\":\"产品A\"}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'corporate_finance_revenue_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call-24051b70-071b-4459-9075-523c101f005b-2"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-80827bb8-d7d9-4a80-ba46-216ff6dfbe4d-3",
+          "function": {
+            "arguments": "{\"company\":\"XYZ\",\"product\":\"产品A\",\"sales_units_increase_percentage\":10}",
+            "name": "corporate_finance_revenue_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

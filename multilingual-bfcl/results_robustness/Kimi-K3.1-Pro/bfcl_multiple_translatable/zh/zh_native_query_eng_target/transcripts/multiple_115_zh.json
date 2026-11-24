@@ -1,0 +1,189 @@
+{
+  "id": "multiple_115_zh",
+  "source_id": "multiple_115",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1516,
+  "total_output_tokens": 450,
+  "total_latency_s": 3.8648760318756104,
+  "estimated_cost_usd": 0.008661799999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "我想在我所在的曼哈顿附近找5家提供泰国菜和纯素菜单的餐厅。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_restaurants": {
+        "location": [
+          "Manhattan"
+        ],
+        "food_type": [
+          "Thai"
+        ],
+        "number": [
+          5
+        ],
+        "dietary_requirements": [
+          [
+            "vegan"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "曼哈顿",
+            "food_type": "泰国菜",
+            "number": 5,
+            "dietary_requirements": [
+              "纯素"
+            ]
+          },
+          "id": "call_2c0822a85da34f2db441bcd5"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "曼哈顿",
+            "food_type": "泰国菜",
+            "number": 5,
+            "dietary_requirements": [
+              "纯素"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.",
+      "input_tokens": 588,
+      "output_tokens": 283,
+      "latency_s": 1.8105547428131104,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_restaurants",
+          "arguments": {
+            "location": "Manhattan",
+            "food_type": "Thai",
+            "number": 5,
+            "dietary_requirements": [
+              "Vegan"
+            ]
+          },
+          "id": "call_86a921c930cc452189da32cf"
+        }
+      ],
+      "decoded": [
+        {
+          "find_restaurants": {
+            "location": "Manhattan",
+            "food_type": "Thai",
+            "number": 5,
+            "dietary_requirements": [
+              "Vegan"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 928,
+      "output_tokens": 167,
+      "latency_s": 2.0543212890625,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "我想在我所在的曼哈顿附近找5家提供泰国菜和纯素菜单的餐厅。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2c0822a85da34f2db441bcd5",
+          "function": {
+            "arguments": "{\"location\": \"曼哈顿\", \"food_type\": \"泰国菜\", \"number\": 5, \"dietary_requirements\": [\"纯素\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond in Chinese? User asks find 5 restaurants near Manhattan providing Thai cuisine and vegan menu. I'll call find_restaurants exactly schema. Should interpret dietary_requirements [\"vegan\"] likely Chinese \"纯素\" or English? Tool expects strings no enum. Food_type Thai, location Manhattan, number 5, dietary_requirements [\"Vegan\"] or [\"纯素\"]. Should correct function call. Since user Chinese, but tools likely parameters English conventional. I should call functions.find_restaurants with dietary_requirements [\"vegan\"], food_type \"泰国菜\" or \"Thai\", location \"Manhattan\", number 5. Should think task likely benchmark expects exact arguments. Should be \"Thai\", \"Manhattan\", [\"vegan\"]. Could use location \"曼哈顿\" but tool may work English. Usually these tasks user Chinese but tool arguments likely semantic translation. I need call exactly. No need prose."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_restaurants'. Please review the function definition and try again.",
+      "tool_call_id": "call_2c0822a85da34f2db441bcd5"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_86a921c930cc452189da32cf",
+          "function": {
+            "arguments": "{\"location\": \"Manhattan\", \"food_type\": \"Thai\", \"number\": 5, \"dietary_requirements\": [\"Vegan\"]}",
+            "name": "find_restaurants"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid parameters. Should retry likely English values? Schema number integer yes, dietary array. Could be location expects Manhattan, food_type Thai, dietary requirements perhaps \"Vegan\". Should call again exactly. 400 suggests backend unknown? It says review definition. All required present. Perhaps cannot have Chinese? likely. Use English."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

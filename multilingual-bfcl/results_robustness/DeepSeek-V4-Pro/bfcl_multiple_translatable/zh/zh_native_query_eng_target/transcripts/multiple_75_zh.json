@@ -1,0 +1,163 @@
+{
+  "id": "multiple_75_zh",
+  "source_id": "multiple_75",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1225,
+  "total_output_tokens": 132,
+  "total_latency_s": 2.1465086936950684,
+  "estimated_cost_usd": 0.0025908599999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "目前客厅最流行用什么颜色的油漆？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "paint_color.trends": {
+        "room": [
+          "living room",
+          "Living room"
+        ],
+        "period": [
+          "",
+          "Daily"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "paint_color_trends",
+          "arguments": {
+            "room": "客厅"
+          },
+          "id": "call_620cdd6a4d974e3197b7223f"
+        }
+      ],
+      "decoded": [
+        {
+          "paint_color_trends": {
+            "room": "客厅"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'paint_color_trends'. Please review the function definition and try again.",
+      "input_tokens": 571,
+      "output_tokens": 48,
+      "latency_s": 0.9143412113189697,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "让我检查一下参数。工具定义中 `room` 参数的类型是 `string`，但描述是 \"Type of the room.\"。让我用英文再试一次。"
+      ],
+      "tool_calls": [
+        {
+          "name": "paint_color_trends",
+          "arguments": {
+            "room": "Living Room"
+          },
+          "id": "call_55ad2f21d418410d8e2d0331"
+        }
+      ],
+      "decoded": [
+        {
+          "paint_color_trends": {
+            "room": "Living Room"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 654,
+      "output_tokens": 84,
+      "latency_s": 1.2321674823760986,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "目前客厅最流行用什么颜色的油漆？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_620cdd6a4d974e3197b7223f",
+          "function": {
+            "arguments": "{\"room\": \"客厅\"}",
+            "name": "paint_color_trends"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'paint_color_trends'. Please review the function definition and try again.",
+      "tool_call_id": "call_620cdd6a4d974e3197b7223f"
+    },
+    {
+      "content": "让我检查一下参数。工具定义中 `room` 参数的类型是 `string`，但描述是 \"Type of the room.\"。让我用英文再试一次。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_55ad2f21d418410d8e2d0331",
+          "function": {
+            "arguments": "{\"room\": \"Living Room\"}",
+            "name": "paint_color_trends"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

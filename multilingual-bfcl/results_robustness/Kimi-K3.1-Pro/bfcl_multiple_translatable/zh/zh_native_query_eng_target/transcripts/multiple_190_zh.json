@@ -1,0 +1,127 @@
+{
+  "id": "multiple_190_zh",
+  "source_id": "multiple_190",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 512,
+  "total_output_tokens": 352,
+  "total_latency_s": 2.142835855484009,
+  "estimated_cost_usd": 0.0052255999999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "预订芝加哥希尔顿酒店的一间单人房，从2022年12月10日开始入住两晚。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "Hilton Hotel",
+          "Hilton"
+        ],
+        "location": [
+          "Chicago"
+        ],
+        "room_type": [
+          "single",
+          "Single"
+        ],
+        "start_date": [
+          "2022-12-10",
+          "10/12/2022",
+          "Dec.10,2022",
+          "10th December 2022",
+          "10 December 2022"
+        ],
+        "nights": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "single",
+            "start_date": "2022-12-10",
+            "nights": 2
+          },
+          "id": "call_474e34d1df704f80b30f0d9d"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "single",
+            "start_date": "2022-12-10",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 512,
+      "output_tokens": 352,
+      "latency_s": 2.142835855484009,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "预订芝加哥希尔顿酒店的一间单人房，从2022年12月10日开始入住两晚。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_474e34d1df704f80b30f0d9d",
+          "function": {
+            "arguments": "{\"hotel_name\": \"Hilton\", \"location\": \"Chicago\", \"room_type\": \"single\", \"start_date\": \"2022-12-10\", \"nights\": 2}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要求预订芝加哥希尔顿酒店的一间单人房，从2022年12月10日开始入住两晚。\n\n我需要使用 book_hotel 工具，参数如下：\n- hotel_name: 希尔顿酒店（Hilton）\n- location: 芝加哥（Chicago）\n- room_type: 单人房（Single room）\n- start_date: 2022-12-10\n- nights: 2\n\n酒店名称用\"Hilton\"还是\"希尔顿酒店\"？工具定义是英文的，但用户用中文。通常这类任务用英文参数比较合适，比如 \"Hilton\", \"Chicago\", \"single\"。不过也可以保留中文。我倾向于使用标准英文格式，因为工具定义是英文的，日期格式用 2022-12-10。\n\nhotel_name: \"Hilton\" 或 \"Chicago Hilton\"。用户说\"芝加哥希尔顿酒店\"，location 已经指明 Chicago，所以 hotel_name 用 \"Hilton\" 即可，或者 \"Hilton Hotel\"。我用 \"Hilton\"。\n\nroom_type: \"single\" 或 \"单人房\"。用 \"single\" 比较合适，或者 \"single room\"。我用 \"single\"。\n\n直接调用工具。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

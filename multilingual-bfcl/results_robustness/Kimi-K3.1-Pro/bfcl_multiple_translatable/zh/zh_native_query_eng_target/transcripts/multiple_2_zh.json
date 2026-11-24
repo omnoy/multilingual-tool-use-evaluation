@@ -1,0 +1,158 @@
+{
+  "id": "multiple_2_zh",
+  "source_id": "multiple_2",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 850,
+  "total_output_tokens": 220,
+  "total_latency_s": 5.450715780258179,
+  "estimated_cost_usd": 0.004484999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "巴西的首都是哪里？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "country_info.capital": {
+        "country": [
+          "Brazil"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "country_info_capital",
+          "arguments": {
+            "country": "巴西"
+          },
+          "id": "call_baeaf782db10442da1af22c6"
+        }
+      ],
+      "decoded": [
+        {
+          "country_info_capital": {
+            "country": "巴西"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'country_info_capital'. Please review the function definition and try again.",
+      "input_tokens": 325,
+      "output_tokens": 141,
+      "latency_s": 3.80788254737854,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "country_info_capital",
+          "arguments": {
+            "country": "Brazil"
+          },
+          "id": "call_8ca83887a66b4434bc5f0475"
+        }
+      ],
+      "decoded": [
+        {
+          "country_info_capital": {
+            "country": "Brazil"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 525,
+      "output_tokens": 79,
+      "latency_s": 1.6428332328796387,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "巴西的首都是哪里？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_baeaf782db10442da1af22c6",
+          "function": {
+            "arguments": "{\"country\": \"巴西\"}",
+            "name": "country_info_capital"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问“巴西的首都是哪里？”开发者要求用户用中文，理解请求并用工具定义准确函数调用回应。需要调用 country_info_capital，country 巴西。工具可能返回结果，然后最终用中文回应。需要只调用该函数，不直接知识。分析：巴西首都 Brasília 巴西利亚。但按工具调用。country 可以是“巴西”或“Brazil”。定义名称国家，用户中文，最好“巴西”。调用。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'country_info_capital'. Please review the function definition and try again.",
+      "tool_call_id": "call_baeaf782db10442da1af22c6"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8ca83887a66b4434bc5f0475",
+          "function": {
+            "arguments": "{\"country\": \"Brazil\"}",
+            "name": "country_info_capital"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具报400 invalid parameters，可能要求英文名 Brazil。需要重试。只参数 country string，巴西应该符合但服务可能识别英文。调用 Brazil。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,174 @@
+{
+  "id": "multiple_27_zh",
+  "source_id": "multiple_27",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 955,
+  "total_output_tokens": 357,
+  "total_latency_s": 3.9701902866363525,
+  "estimated_cost_usd": 0.0063019999999999994,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "乘坐公共交通从法国巴黎到意大利罗马的最短路线是什么？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.shortest_path": {
+        "start_location": [
+          "Paris, France",
+          "Paris"
+        ],
+        "end_location": [
+          "Rome, Italy",
+          "Rome"
+        ],
+        "mode": [
+          "transit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "public transit"
+          },
+          "id": "call_5ed4aff457d840ba9a205bf0"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "public transit"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "input_tokens": 355,
+      "output_tokens": 186,
+      "latency_s": 2.140906572341919,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "transit"
+          },
+          "id": "call_fbf3e2c1987f47f3a58c8e07"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "transit"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 600,
+      "output_tokens": 171,
+      "latency_s": 1.8292837142944336,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "乘坐公共交通从法国巴黎到意大利罗马的最短路线是什么？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5ed4aff457d840ba9a205bf0",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, France\", \"end_location\": \"Rome, Italy\", \"mode\": \"public transit\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户用中文问：乘坐公共交通从法国巴黎到意大利罗马的最短路线是什么？需要调用 maps_shortest_path，mode 应为公共交通，可能 \"public transit\" 或 \"transit\"。工具定义 mode string，无枚举。start_location \"Paris, France\"，end_location \"Rome, Italy\"，mode \"public transit\"。需要正确函数调用。无需 route_times，因为只问最短路线。直接用中文地点也可以，但英文更稳。最终只需工具调用，不需解释。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'maps_shortest_path'. Please review the function definition and try again.",
+      "tool_call_id": "call_5ed4aff457d840ba9a205bf0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_fbf3e2c1987f47f3a58c8e07",
+          "function": {
+            "arguments": "{\"start_location\": \"Paris, France\", \"end_location\": \"Rome, Italy\", \"mode\": \"transit\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具报400 invalid parameters。需调整 mode 取值。可能要求 \"transit\" 而非 public transit，或中文 \"公共交通\"。定义仅 string，但后端可能枚举 driving/walking/bicycling/transit。常用 Google Maps mode: driving, walking, bicycling, transit。用户说公共交通，应 mode \"transit\"。地点可 \"Paris, France\" and \"Rome, Italy\"。重试。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

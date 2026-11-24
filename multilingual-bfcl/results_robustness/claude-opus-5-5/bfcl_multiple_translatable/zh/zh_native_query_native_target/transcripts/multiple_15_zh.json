@@ -1,0 +1,519 @@
+{
+  "id": "multiple_15_zh",
+  "source_id": "multiple_15",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "claude-opus-5-5",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 7,
+  "num_clarifications": 2,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 10414,
+  "total_output_tokens": 1318,
+  "total_latency_s": 16.19043254852295,
+  "estimated_cost_usd": 0.068016,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "位于坐标 [43.653225, -79.383186] 的太阳能发电场，太阳能电池板总面积为 80000 平方英尺，其十二月的潜在发电量是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "solarFarm.potential": {
+        "coordinates": [
+          [
+            43.653225,
+            -79.383186
+          ]
+        ],
+        "panelArea": [
+          80000
+        ],
+        "month": [
+          "十二月"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          },
+          "id": "toolu_01FAzieAoBkciCrUuYmCKnxu"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+      "input_tokens": 830,
+      "output_tokens": 112,
+      "latency_s": 1.282026767730713,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "第一次请求被拒绝，可能是月份格式不对。我换一种月份写法再试一次。"
+      ],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "12"
+          },
+          "id": "toolu_01JSPXqsfPsexWb3rYjzeTS7"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "12"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+      "input_tokens": 986,
+      "output_tokens": 230,
+      "latency_s": 2.501513957977295,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000
+          },
+          "id": "toolu_019RAt2BvopXuAT7EKM4nbBw"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+      "input_tokens": 1260,
+      "output_tokens": 111,
+      "latency_s": 1.327073097229004,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "抱歉，我没能算出这个太阳能电站十二月的潜在发电量。估算工具连续三次都拒绝了请求，只提示“参数无效”，没有说明具体是哪个参数有问题：\n\n1. 坐标 [43.653225, -79.383186]、面积 80000 平方英尺、月份写成 “December”：失败\n2. 同样的坐标和面积，月份改成 “12”：失败\n3. 只填坐标和面积这两个必填项，不填月份：仍然失败\n\n第三次没填月份也失败了，说明问题可能不在月份格式。您给的参数看起来都正确（这个坐标在多伦多），所以更可能是工具本身出了问题，比如服务暂时不可用。建议过一会儿再试。如果工具对坐标格式或面积单位有特别要求，告诉我后我可以按要求重新计算。"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1415,
+      "output_tokens": 310,
+      "latency_s": 3.996142864227295,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          },
+          "id": "toolu_012Haq1FcaXgdbuuXZUcexe4"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+      "input_tokens": 1757,
+      "output_tokens": 151,
+      "latency_s": 1.9399135112762451,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "我按您的要求又调用了一次工具，用的是原始参数（坐标 [43.653225, -79.383186]、面积 80000 平方英尺、月份 “December”），但还是返回“参数无效”，所以仍然算不出十二月的潜在发电量。\n\n这已经是第四次失败了。之前只填两个必填项、不填月份时也同样失败，说明问题应该出在工具或服务这边，不是您给的数据。再用同样的参数调用很可能还是同样的结果。\n\n可以过一段时间再试。如果您了解这个工具对参数有特别要求，比如坐标写法、面积单位或月份格式，告诉我后我按要求重新调用。"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1952,
+      "output_tokens": 230,
+      "latency_s": 2.9886133670806885,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 7,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          },
+          "id": "toolu_01QTKTW8jp43TL1qcvsw6DQd"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 2214,
+      "output_tokens": 174,
+      "latency_s": 2.155148983001709,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "位于坐标 [43.653225, -79.383186] 的太阳能发电场，太阳能电池板总面积为 80000 平方英尺，其十二月的潜在发电量是多少？"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01FAzieAoBkciCrUuYmCKnxu",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          },
+          "name": "solarFarm_potential",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01FAzieAoBkciCrUuYmCKnxu"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQShwYKEAgUGAI4AUIIdGhpbmtpbmcSDEXuvMrbudh1bUzF6BoMV5Ra1f8GfDiB5G2NIjAkZOg618nLS9IZNoIRpjS1fUSMW4Vf1ifFPyByB4Yk2AxQmSwiJRyKJhOg/3l5f/kqpAVYa6GbDujtJimQ8NlzJBqih6zl5VkS8Z5cxxAoQ/5TuGQdhRFbhPmo9SvLOzD2vhBeWHsfNg6edqzQ23Al2E0ekWqxEZNFWKjvXic+Oh8a6INAeG9SfkOYVEAAgfVMsrQ6Lqr6Czvf58m8d4O6AqhjQ/VbQPwbvWmF8Bp9qMBdnZT8rz9JSBIN70oRjUvEWP13ljtSAQjF8btqNhrxuSIrFvglZvTJL9+56ZbAFugLEE+dZuY8WILmBdmORkKFizXNBl7IL4bgBuFT6i7G0qhx3dnnHNioCEWmVf/nMWvUf/sj24R3XQ12qVp1J1cVoA5QxIs7E0NP19923wZWGX4QXiEU22/gj4ycXlg3qky4+IP2t6aEBO+R0LcRlDoe8DOD2huL8bRV/nXtAKITCrAYa5rpa6/6jOZPy/XmPJLO95jAkUgG3IjKo6MFqZgr5apBPnl9v2Ser2aVlKF9bDhP1H25QWLd1Xd+6GJv1GJyJ/0PD5sKgyn/4/lF993brXt/LRV9xbUYCWBqGi7pjk9MNxn001H0Q2QmoH08vh+v4O1jJfc7YNnFp3ycS8vyKXPTWXMNcu8nNfD/ctJ7VIPQ0jLaCyp2wwGxwgQKXUxmEj1vBjjWxVQp5TfbOiEdB8Z4+iqfZPv94AHzckQC4C2qQXovFnfBeBoVImqtzXMMK/1DHXl2+2ARbI046RZ63iSCFa9C2RwyUZuwrzWU+IAk/0F0GJLFO/V5JAo+Z7ryXRMFrAX6enme2fp0msZn1Gyug4Y98xJelO4QOmadpRMnybIPCSbOr7bGHsWNVOUausiGoo1VPo5A4KXQ/WT2rpZcMjjgFeusoKRbedEEUwrrZrmcp2iX9Fqv64fdZOiibLrUDQHIoSK5QRPKV1QQ4bACBc1JGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "第一次请求被拒绝，可能是月份格式不对。我换一种月份写法再试一次。",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01JSPXqsfPsexWb3rYjzeTS7",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "12"
+          },
+          "name": "solarFarm_potential",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_01JSPXqsfPsexWb3rYjzeTS7"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSswUKEAgUGAI4AUIIdGhpbmtpbmcSDL30j1or7weC2HqenhoMVOTUCu+DUl47rGKCIjBUzeETT653Zw4X6+LPJhH+IegiAgO3eiMEFJJiJWUBlzVmkF6kIehH8lhkY1gf2sMq0ASLkFph4LzIieiSPBP8xi4m9J4wB6BDV3tbDdqeSKsnCwg98r1+5/xOoCJaW8Zm8FNYJzlJew3uNpdAjoc9FCz0XWyM/I79s2xQkZwy6AZzjaUkoTVFnIllexQ72k277hfsqKY1tYTtvQSLTQEMRlnKfXxH5iedxKK2kAGHVMQ+/oJ5xiNQlcUOGa5EhMDOmPNKiEsEUEyl7DPrF4yLLyWmHZSXXZxMQscmZDsnCnskD+xmdOISlFrFN9GCKqG8Pyu3EnfD5pTXfVGIzwPvWczGAH1QX9ieD3YydcleFNS0k1e/7vo8TFX7U08IBp6ztYi1rQJ8xazPlzsQEc02I/kqgmNpiW8xJ3/TxRQbx/R1MfEi3vmafq+cc2LbOtMzSeELSY4En6DlGIbocSTNpohxC1MGiTn/QmowmYGBEhMX8e9WqLDumy+Rtyx8rhNoSde0oTi/4kc65qQtDhNOJu/NjPl41r8EYU4gO+DJHf8fpGzSgpKjAPb3KPQF0BUWKdjxnhkxaER4lCixbdhvoloNEXIabSRmSCiGIlQJ2sP1bIEQ7FzL9d63jEdY/a/rkhZbCyr+NyXHI8hpVmWT6hB/L4w5Q+KKmkrm4D2tBCOOdSCjPhIxkWPK9koq+KFDATaMbcnyrhobXTB++m7PCjUsrsFYn1GnYwcZWkAIE/Q7h7Hp3RktOxZlVe5R7w3U06x1yFhUXS+FFR3+8vWvJGVmBXn4QPKBLjdKTbIaa0Xf+u5iyH5N3hI+rWOWDTMdkzh76Ore5pgzrGOn+8SNXRHmGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_019RAt2BvopXuAT7EKM4nbBw",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000
+          },
+          "name": "solarFarm_potential",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_019RAt2BvopXuAT7EKM4nbBw"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSugUKEAgUGAI4AUIIdGhpbmtpbmcSDIXD6Q2O2L5ZavXyJBoMwPvCiqKvbzcO/26gIjCi5rR/pNKyqNsoiIiqAZ0vt+0m5QHslZB+F92b1kWHvG5MBZUUbjsUhVg+Ue/wkkkq1wRkN1h/50/r8+Gk0G28lpDfpqq0yHm7lfW2zq90dXQYRSy8uYZyGq4nEwnZQ22Mf1bv0FKQsi5+ct/F8dXIaP/R3iH6kHT2s67JNSKDvHKgqRIiOSdqV1vI9YNR5ZR+SiKGy5yyVSiI3il/1gVdoIoXeYnFEdofHxzy64VuX06fuyByJaWd0G5NCNZR+NFpYwNojl4I4UASrYCv1DH6e2GklD8jOUh/maqBKruX3Z0dG2gMG0+fj+Rz+49rQh4OWLcDcENh3N6nGabWTRCFXRXrpJY3i2YUuUN0br/xAINsIps6h8SSJ2Hqvfaa+jmTGWGeVmOJdvci4KNtfMjVy5wLNJSRteNWaoIh56l27SANLfgHwYIp4guQEM3zH8BwyAtDPOSDAfbBV80TjceiZOnPfbR4qIDS0GT5Dc9CLzYKtXhvO6wA/MB5bbvu94ieTr99pZL/BxojaIGqmvwbkGiVNW4hWtcUfmCKFwucvdvecvR4KvDZKOgzJigT+Jn+psa09Lz9a3v/3RhMyQITRfwl4XubYB9kzAzQDW0XmMN9aPGL/f/KkqQM92lB4BIyF+/vwwt7csdyNcQOhXlkzMDYu0RnNyxWbE99sP/R+waJN7IOxqCl2Peyfc9o2MAC3tz/t1IBKyjxiO4u0Nn8QSXueg9so2/VDHj+K852FuxSa1SfkeYiZhYvgASqqQfSL0vSBuYJ7eWuO+272lIvLdPsMdAwEF4c4SKt1yKEVjG9mQFVOtID7I6SoJk+Johnc67DfXSzZTIxiycOwLDI4dcFS1hUmhrOMRgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "citations": null,
+          "text": "抱歉，我没能算出这个太阳能电站十二月的潜在发电量。估算工具连续三次都拒绝了请求，只提示“参数无效”，没有说明具体是哪个参数有问题：\n\n1. 坐标 [43.653225, -79.383186]、面积 80000 平方英尺、月份写成 “December”：失败\n2. 同样的坐标和面积，月份改成 “12”：失败\n3. 只填坐标和面积这两个必填项，不填月份：仍然失败\n\n第三次没填月份也失败了，说明问题可能不在月份格式。您给的参数看起来都正确（这个坐标在多伦多），所以更可能是工具本身出了问题，比如服务暂时不可用。建议过一会儿再试。如果工具对坐标格式或面积单位有特别要求，告诉我后我可以按要求重新计算。",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSoAYKEAgUGAI4AUIIdGhpbmtpbmcSDH2Rx3EhLYVqjU5h9BoMeSfsZZsh49KPwTwBIjCbhOAy5Qy6tcNlPdRcjngh8hNQYaqrUZtOWrXvTtzcgfTSX1Sqh8MR/yTH95vdJ+cqvQWFWVUt8PJ83rbCqFvHkDtKJpT1NPAXwcDXYBbOsEb5c7xpRA508GIxHaqViGTYi6D4JfMQdmUvF6BLCea5kw/CKZyvzXVkohQYB4wGPs7MZPSDZCQ0vxA6nCGe/5ywMBBfP06Ik1mExh/uExEcb3dKlac5hwGEjCHSIKTzKb+dU1PDeqbfUnn8RNpX9o9SXzLoMAXtA69eKGC4RAs6TQNtPY5w5OkW14+xkPsMEVNhJZEeDsXfLV2ckY1XhutiOZC4ar+epOVu+rkW3tsGG0QdeQRqsSUKDW3OKYdF5YwzbKo9ec424Pm/5vnNr8jfYPDafvHrV5gUdM+e41HHHLun9kfAxFvkumOT4FZaAe9fLtXiu+lDdBRUGPASPxYyOgU81Out3BVp2BymEM05UJ1/0ZUlnueuIADs0A2pWdqRqWMGo417jWffCnoEDZ02hTnR/QPjpV5C1E/HOHJ65B3iey57xU+RFTkFSvwxgHc5e2viNnh8sGBq8XFqPBKei5VelLtvLmExYaBGq7FO/xbjzydTmxOZTK3RHSNcjfSRI+BmuxQ202F9vWKPWk2Qn0THk8bulYVF26YNK/GJwidjHjzPVYWiGeWHxO+P54LmQWEuFI5Xc2v0QFNJNo8OFd/VnLD3uejB5EsT2qRRNnFWDnftzJk2/S5wYpzspeWMdCU/69weR8EVEs7G5XkmTMbT3P5sQdHSbhzQ2K3TyDw9wGQB5gDW9UW57Wt4/cl5J7dpxVgGRLB0iwqjj1p5g7hed8Pjsv1kD8Ay5KmmlIr6KevPKszYM2YMOTATuMiMf6dppT0/LTBKtG1n/EaFw2fC8r74jbQ3nXdFfmHUCcYi6risOZ1awRczXSZMOAnSLpivd1fp42c19rdVFEqAiUy2g8YVsEtBumrzI2IvcQ4IvOLWzKX2NN2m8x80HRgB",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_012Haq1FcaXgdbuuXZUcexe4",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          },
+          "name": "solarFarm_potential",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "content": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+          "tool_use_id": "toolu_012Haq1FcaXgdbuuXZUcexe4"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "我按您的要求又调用了一次工具，用的是原始参数（坐标 [43.653225, -79.383186]、面积 80000 平方英尺、月份 “December”），但还是返回“参数无效”，所以仍然算不出十二月的潜在发电量。\n\n这已经是第四次失败了。之前只填两个必填项、不填月份时也同样失败，说明问题应该出在工具或服务这边，不是您给的数据。再用同样的参数调用很可能还是同样的结果。\n\n可以过一段时间再试。如果您了解这个工具对参数有特别要求，比如坐标写法、面积单位或月份格式，告诉我后我按要求重新调用。",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "signature": "CAQSggcKEAgUGAI4AUIIdGhpbmtpbmcSDAxSdrxgyMpj00C4NRoMijb0FnasC5Hv/2SpIjBqxpx3CR7cA3hAO11r3Fi4paGVQFDd7/lQKffxB0PpnBtqbsGOy+1fFUcZTMj4Z+0qnwbNFPPJ/3KpD7ZSh+mpSWZwTy1C3BUSOClsjrWohcE1iHCk3vNCIQP2e6O8Jk6Kmzlbt1qlBYHy7uMuCodJi7W+rkHF4kgbC331oJJZtQBKMy6eXxYUhI7UUvzzFYcp3/sE7VOx9fYnqicwUZzI3A7MpYUaGYO+rFuauwOoltEYqSo0Mp6Xkw/ujK4d1J+kXWSJ5IyE0hEvaazM9DHv4YlNFiv0WuuMITLkHZ9NYELDxNojDEgt6OnBTvysZPF733Q5PR/t8r8W8ovfpICM+weKhwUnNILZk1U0yO8sO5KHUFbMJ1pmyFJq50o6rky8awsv8ta64K4CX82Ot6Qe4wkRnhVmxwRvcab6JHBjdF9wP0HcYB4xLT4Hkw2qBAt+ZiF7Oobgt0rprZQSHKrI4A2RT3cusbTWpFwDKMo5i9brl8o8qW/9XBwPHUnTxzPLAbK3Ooi1NPZoEPtDiPEyO0+Pqo+zg3hRmY2yuOEqhjZXsHivZUEgrB9hD1jN0dKOFgQ8BcUU4tskwEwYA4ne3eCuHEItbnQst0JG5ZfJ0AI3HLGUc2aCbxsJ7baChEXCx0+pZfxuAwpMzzuEAoM07QIr/M+wi+MYMaXF8sOjTDOO5HX78C/+6JQXW8ubas5Lb5+Sc2Ij/OFRAqLt8QWKd6fy3wQZQFNErznyzduorEXdsb8bzVfrIFNnmEviume8VUS3POXL7vnoH1ByXcfV3QX6ZbH4uqz6MKqujKEwx1NoIz8a5rz7DSkTRPMs8by1JdURraPQzKvL5xuJaX+PBXDTOg10hAjw4Xw1wMithOTV2gdqqkDrnYl23NEqEVT11CgKjvzrnT254G0TcFIXNOm9G4AnYzT92rlW/pimLEwLGzcLtc6ugUp2299Ow8NRog0X74GFZenZCCcZk8/U97qND5704zkIPXJQwc7NfsE+jjyKb3V3Zx3QcAkHWLWCN1/CuabIRZXW8JzgSj8gxIaVUg5LgS3LFeW0P0PNd5Z7bXxoeUzayDl4XZz9fE08DLvNlG6xvAyAQO+P3gys9EjfM//q0XvPbQADP6Tny7rSGAE=",
+          "thinking": "",
+          "type": "thinking"
+        },
+        {
+          "id": "toolu_01QTKTW8jp43TL1qcvsw6DQd",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          },
+          "name": "solarFarm_potential",
+          "type": "tool_use",
+          "toolset_name": null
+        }
+      ]
+    }
+  ],
+  "system_prompt": [
+    {
+      "type": "text",
+      "text": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    }
+  ]
+}

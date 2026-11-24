@@ -1,0 +1,165 @@
+{
+  "id": "multiple_70_zh",
+  "source_id": "multiple_70",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1166,
+  "total_output_tokens": 265,
+  "total_latency_s": 3.0239431858062744,
+  "estimated_cost_usd": 0.0057293,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "18世纪法国有哪些国王？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "european_history.get_monarchs": {
+        "country": [
+          "法国"
+        ],
+        "century": [
+          18
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "european_history_get_monarchs",
+          "arguments": {
+            "country": "France",
+            "century": 18
+          },
+          "id": "call_2cb8bab9bb134a4f8c5e9069"
+        }
+      ],
+      "decoded": [
+        {
+          "european_history_get_monarchs": {
+            "country": "France",
+            "century": 18
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'european_history_get_monarchs'. Please review the function definition and try again.",
+      "input_tokens": 473,
+      "output_tokens": 155,
+      "latency_s": 1.5269815921783447,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "european_history_get_monarchs",
+          "arguments": {
+            "country": "法国",
+            "century": 18
+          },
+          "id": "call_65521ad95a4e4cf8966efdb3"
+        }
+      ],
+      "decoded": [
+        {
+          "european_history_get_monarchs": {
+            "country": "法国",
+            "century": 18
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 693,
+      "output_tokens": 110,
+      "latency_s": 1.4969615936279297,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "18世纪法国有哪些国王？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2cb8bab9bb134a4f8c5e9069",
+          "function": {
+            "arguments": "{\"country\": \"France\", \"century\": 18}",
+            "name": "european_history_get_monarchs"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问18世纪法国有哪些国王。需要用工具 european_history_get_monarchs，country France，century 18。只需要调用工具，然后基于结果回答中文。注意工具可能返回包括路易十四（到1715）、路易十五、路易十六，可能还有路易十七/十八？18世纪严格为1701-1800或常见的1700s（1700-1799）。需要看结果。直接调用。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'european_history_get_monarchs'. Please review the function definition and try again.",
+      "tool_call_id": "call_2cb8bab9bb134a4f8c5e9069"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_65521ad95a4e4cf8966efdb3",
+          "function": {
+            "arguments": "{\"country\": \"法国\", \"century\": 18}",
+            "name": "european_history_get_monarchs"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具报400无效参数。定义需要country string century integer。可能country需要中文？函数名欧洲历史，可能支持的国家名为\"法国\"？需要重试。我们用country \"法国\"，century 18。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

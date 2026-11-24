@@ -32,16 +32,26 @@ from multilingual_bfcl.experiment_names import EXPERIMENT_ORDER, split_stem  # n
 
 FAMILY_PREFIXES = {
     "claude": "Claude",
-    "gpt": "OpenAI",
+    "gpt": "GPT",
     "grok": "Grok",
     "kimi": "Kimi",
+    "deepseek": "DeepSeek",
 }
 
 LANGAUGE_ORDER: list[str] = [
     "en",
     "de",
+    "zh",
     "tr",
     "he"
+]
+
+MODEL_FAMILY_ORDER: list[str] = [
+    "Claude",
+    "GPT",
+    "Grok",
+    "DeepSeek",
+    "Kimi"
 ]
 
 COLUMNS = [
@@ -71,12 +81,16 @@ def experiment_name(benchmark: str, lang: str) -> str:
 
 
 def sort_key(row: dict) -> tuple:
+    model_family_name = row["model_family"]
     lang = row["language"]
     exp = row["experiment"]
-    exp_rank = EXPERIMENT_ORDER.index(exp) if exp in EXPERIMENT_ORDER else len(EXPERIMENT_ORDER)
+
+    model_family_rank = MODEL_FAMILY_ORDER.index(model_family_name) if model_family_name in MODEL_FAMILY_ORDER else len(MODEL_FAMILY_ORDER)
     lang_rank = LANGAUGE_ORDER.index(lang) if lang in LANGAUGE_ORDER else len(LANGAUGE_ORDER)
+    exp_rank = EXPERIMENT_ORDER.index(exp) if exp in EXPERIMENT_ORDER else len(EXPERIMENT_ORDER)
+
     return (
-        row["model_family"].lower(),
+        (model_family_rank, model_family_name),
         row["model_name"].lower(),
         row["benchmark"],
         (lang_rank, lang),

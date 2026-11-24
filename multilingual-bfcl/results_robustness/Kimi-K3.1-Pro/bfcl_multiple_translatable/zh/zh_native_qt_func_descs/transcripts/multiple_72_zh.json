@@ -1,0 +1,165 @@
+{
+  "id": "multiple_72_zh",
+  "source_id": "multiple_72",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 894,
+  "total_output_tokens": 291,
+  "total_latency_s": 4.697591781616211,
+  "estimated_cost_usd": 0.0054027,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "1970年加利福尼亚州的人口是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "us_history.population_by_state_year": {
+        "state": [
+          "加利福尼亚州"
+        ],
+        "year": [
+          1970
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "California",
+            "year": 1970
+          },
+          "id": "call_dc4e699dcf8344f88a608aaa"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "California",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "input_tokens": 367,
+      "output_tokens": 95,
+      "latency_s": 2.674034357070923,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "us_history_population_by_state_year",
+          "arguments": {
+            "state": "加利福尼亚州",
+            "year": 1970
+          },
+          "id": "call_c1597a0afcfd4433b8567063"
+        }
+      ],
+      "decoded": [
+        {
+          "us_history_population_by_state_year": {
+            "state": "加利福尼亚州",
+            "year": 1970
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 527,
+      "output_tokens": 196,
+      "latency_s": 2.023557424545288,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "1970年加利福尼亚州的人口是多少？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_dc4e699dcf8344f88a608aaa",
+          "function": {
+            "arguments": "{\"state\": \"California\", \"year\": 1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问1970年加利福尼亚州的人口，需要调用历史人口工具。state应使用California，year=1970。直接调用函数。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'us_history_population_by_state_year'. Please review the function definition and try again.",
+      "tool_call_id": "call_dc4e699dcf8344f88a608aaa"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c1597a0afcfd4433b8567063",
+          "function": {
+            "arguments": "{\"state\": \"加利福尼亚州\", \"year\": 1970}",
+            "name": "us_history_population_by_state_year"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "收到400无效参数，需要检查函数定义。state字符串，year整数。可能工具需要州中文名？描述“要获取人口数据的美国州”，未限定格式。先前call正确JSON。可能内部只接受特定年份？1970应支持。需要重试也许state \"加利福尼亚州\" 或 \"CA\"。工具错误泛化。我们需正确调用。可以尝试中文州名，因用户中文且函数描述中文。但通常这些任务工具接受英文州名。400 invalid parameters可能年份范围？函数仅定义无范围。GDP类似。可能是要求 state: \"加利福尼亚州\"。我重试中文。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

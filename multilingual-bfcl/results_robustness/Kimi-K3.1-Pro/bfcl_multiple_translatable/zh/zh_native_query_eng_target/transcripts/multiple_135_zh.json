@@ -1,0 +1,112 @@
+{
+  "id": "multiple_135_zh",
+  "source_id": "multiple_135",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 399,
+  "total_output_tokens": 216,
+  "total_latency_s": 1.4853365421295166,
+  "estimated_cost_usd": 0.0034017,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "加利福尼亚州案卷编号为2022/AL2562的案件中，受害者是谁？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_case_info": {
+        "docket": [
+          "2022/AL2562"
+        ],
+        "court": [
+          "California",
+          "CA"
+        ],
+        "info_type": [
+          "victim"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_case_info",
+          "arguments": {
+            "docket": "2022/AL2562",
+            "court": "California",
+            "info_type": "victim"
+          },
+          "id": "call_cb44bc2382ee4547aee7b46b"
+        }
+      ],
+      "decoded": [
+        {
+          "get_case_info": {
+            "docket": "2022/AL2562",
+            "court": "California",
+            "info_type": "victim"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 399,
+      "output_tokens": 216,
+      "latency_s": 1.4853365421295166,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "加利福尼亚州案卷编号为2022/AL2562的案件中，受害者是谁？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_cb44bc2382ee4547aee7b46b",
+          "function": {
+            "arguments": "{\"docket\": \"2022/AL2562\", \"court\": \"California\", \"info_type\": \"victim\"}",
+            "name": "get_case_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问的是加利福尼亚州案卷编号为2022/AL2562的案件中，受害者是谁。\n\n这是一个案件信息查询，需要用到 get_case_info 工具。参数：\n- court: 法院，用户说\"加利福尼亚州\"，所以 court 可以填 \"California\" 或 \"加利福尼亚州\"。工具描述是\"Court in which the case was heard.\"，通常用英文 \"California\"。\n- docket: \"2022/AL2562\"\n- info_type: 需要的信息类型，受害者，可以填 \"victim\" 或 \"victims\"。\n\nrespond with the correct function call exactly as specified。直接调用。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

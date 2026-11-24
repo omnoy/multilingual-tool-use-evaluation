@@ -1,0 +1,112 @@
+{
+  "id": "multiple_54_zh",
+  "source_id": "multiple_54",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 370,
+  "total_output_tokens": 307,
+  "total_latency_s": 2.301603317260742,
+  "estimated_cost_usd": 0.0043815,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找苹果公司过去五年的历史股息支付情况。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.dividend_data": {
+        "company": [
+          "Apple Inc",
+          "Apple",
+          "Apple Inc."
+        ],
+        "years": [
+          5
+        ],
+        "frequency": [
+          "",
+          "annually"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Apple Inc.",
+            "years": 5
+          },
+          "id": "call_767450cd3ed84c8b81406702"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Apple Inc.",
+            "years": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 370,
+      "output_tokens": 307,
+      "latency_s": 2.301603317260742,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找苹果公司过去五年的历史股息支付情况。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_767450cd3ed84c8b81406702",
+          "function": {
+            "arguments": "{\"company\": \"Apple Inc.\", \"years\": 5}",
+            "name": "corporate_finance_dividend_data"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问：“查找苹果公司过去五年的历史股息支付情况。”中文请求，需要调用 corporate_finance_dividend_data 工具。需要确定 company、years=5、frequency 可选 quarterly/annually。用户没有指定频率，历史股息支付情况一般可用 annually（年度）或 quarterly？工具描述：Get historical dividend data of a specific company within a particular duration. 参数 company, frequency 可选, years required. 过去五年 => years 5. 苹果公司 => Apple 或 Apple Inc. 正确调用格式。是否需提供 frequency？可选。用户问“股息支付情况”可能期望每年数据，工具 frequency 可 annually/quarterly。为避免凭空假设，可省略 frequency。需要只调用工具，不直接回复。公司名可以 \"Apple Inc.\"。调用 corporate_finance_dividend_data {\"company\":\"Apple Inc.\",\"years\":5}。如果必须 frequency? schema required [\"company\",\"years\"]，所以省略可。股息数据通常 quarterly，苹果季度付息。但要求“过去五年的历史股息支付情况”未指定频率，默认年度较概览。可不设置，让工具默认。最终工具调用。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

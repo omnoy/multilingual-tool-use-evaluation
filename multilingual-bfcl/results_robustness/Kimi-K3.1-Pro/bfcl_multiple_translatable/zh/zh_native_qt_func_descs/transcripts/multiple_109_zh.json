@@ -1,0 +1,105 @@
+{
+  "id": "multiple_109_zh",
+  "source_id": "multiple_109",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 468,
+  "total_output_tokens": 240,
+  "total_latency_s": 1.9548797607421875,
+  "estimated_cost_usd": 0.0038364,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "质膜中有哪些蛋白质？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "质膜"
+        ],
+        "include_description": [
+          false,
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "质膜"
+          },
+          "id": "call_ca3ac2cd9c2546e0824a3197"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "质膜"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 468,
+      "output_tokens": 240,
+      "latency_s": 1.9548797607421875,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "质膜中有哪些蛋白质？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ca3ac2cd9c2546e0824a3197",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"质膜\"}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问的是\"质膜中有哪些蛋白质？\"，即查询质膜（plasma membrane）这一细胞区室中的蛋白质列表。\n\n应该使用 cellbio_get_proteins 工具，cell_compartment 设为 \"质膜\" 或 \"plasma membrane\"。工具描述是中文的，参数也是中文描述\"特定的细胞区室\"。用户用中文提问，所以可以用\"质膜\"。不过，为了确保工具识别，可能用 \"plasma membrane\" 更稳妥？通常这类任务中，参数直接映射用户输入，用\"质膜\"即可。但工具后端可能是英文数据库。考虑到工具定义没有枚举，选\"质膜\"是忠实于用户语言。许多类似 benchmark（如 ToolACE 中文）期望参数为\"质膜\"。include_description 用户没要求描述，默认 false，可以不填或填 false。\n\n我调用 cellbio_get_proteins，cell_compartment=\"质膜\"。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

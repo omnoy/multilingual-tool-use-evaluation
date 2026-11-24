@@ -1,0 +1,176 @@
+{
+  "id": "multiple_39_zh",
+  "source_id": "multiple_39",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1062,
+  "total_output_tokens": 377,
+  "total_latency_s": 3.357372283935547,
+  "estimated_cost_usd": 0.0067781,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "找一趟从纽约到费城的车，费用不超过50美元。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "ride_hailing.get_rides": {
+        "source": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "NYC",
+          "NY"
+        ],
+        "destination": [
+          "Philadelphia"
+        ],
+        "max_cost": [
+          50
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "纽约",
+            "destination": "费城",
+            "max_cost": 50
+          },
+          "id": "call_0a3413312aa74ad7bb074ed5"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "纽约",
+            "destination": "费城",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "input_tokens": 389,
+      "output_tokens": 221,
+      "latency_s": 1.8018324375152588,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          },
+          "id": "call_9e3da2d9d80541df9050fe45"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 673,
+      "output_tokens": 156,
+      "latency_s": 1.555539846420288,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "找一趟从纽约到费城的车，费用不超过50美元。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0a3413312aa74ad7bb074ed5",
+          "function": {
+            "arguments": "{\"source\": \"纽约\", \"destination\": \"费城\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond to Chinese user request with correct function call exactly tool definition. Should parse: \"找一趟从纽约到费城的车，费用不超过50美元。\" Find ride from NYC to Philadelphia, cost not exceed $50. Tool ride_hailing_get_rides source destination max_cost integer optional. Should call with source \"纽约\", destination \"费城\", max_cost 50 likely Chinese accepted? Could use \"New York\" and \"Philadelphia\"? Instructions user Chinese understand request and respond correct function call exactly. Usually call function with Chinese strings matching request. Should not have text. Call the ride_hailing tool. Ensure no grocery. Parameters {\"source\":\"纽约\",\"destination\":\"费城\",\"max_cost\":50}."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "tool_call_id": "call_0a3413312aa74ad7bb074ed5"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9e3da2d9d80541df9050fe45",
+          "function": {
+            "arguments": "{\"source\": \"New York\", \"destination\": \"Philadelphia\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi has a tool error 400 invalid parameters. Should review def and try again. What could be invalid? max_cost int 50 fine. Source/dest strings Chinese perhaps must be English? Tool backend expects locations perhaps exact English names. Should infer. Should retry with source \"New York\", destination \"Philadelphia\", max_cost 50. Should call correct."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

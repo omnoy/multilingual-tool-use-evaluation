@@ -1,0 +1,185 @@
+{
+  "id": "multiple_62_zh",
+  "source_id": "multiple_62",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 942,
+  "total_output_tokens": 298,
+  "total_latency_s": 3.5262014865875244,
+  "estimated_cost_usd": 0.0055936,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "帮我找一下马萨诸塞州波士顿最近的允许露营且风景优美的自然公园。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "nature_park.find_nearby": {
+        "location": [
+          "Boston, MA",
+          "Boston"
+        ],
+        "features": [
+          [
+            "Camping",
+            "Scenic View"
+          ],
+          [
+            "Scenic View",
+            "Camping"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "Boston, Massachusetts",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_a63b2ee901e54ffba907436a"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "Boston, Massachusetts",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "input_tokens": 370,
+      "output_tokens": 136,
+      "latency_s": 1.1589741706848145,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "nature_park_find_nearby",
+          "arguments": {
+            "location": "Boston, MA",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          },
+          "id": "call_e35794dba977450fbab10346"
+        }
+      ],
+      "decoded": [
+        {
+          "nature_park_find_nearby": {
+            "location": "Boston, MA",
+            "features": [
+              "Camping",
+              "Scenic View"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 572,
+      "output_tokens": 162,
+      "latency_s": 2.36722731590271,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "帮我找一下马萨诸塞州波士顿最近的允许露营且风景优美的自然公园。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a63b2ee901e54ffba907436a",
+          "function": {
+            "arguments": "{\"location\": \"Boston, Massachusetts\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户想找一个位于马萨诸塞州波士顿附近、允许露营且风景优美的自然公园。需要调用 nature_park_find_nearby，location 为 \"Boston, Massachusetts\"（工具定义是 city and state，用英文较合适），features 包含 Camping 和 Scenic View。直接调用。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'nature_park_find_nearby'. Please review the function definition and try again.",
+      "tool_call_id": "call_a63b2ee901e54ffba907436a"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e35794dba977450fbab10346",
+          "function": {
+            "arguments": "{\"location\": \"Boston, MA\", \"features\": [\"Camping\", \"Scenic View\"]}",
+            "name": "nature_park_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回 400 invalid parameters。需要检查参数定义：location 字符串，features 数组枚举 Camping/Scenic View/Trails/Picnic Areas。我传的好像符合。可能 location 期望 \"Boston, MA\" 或 \"Boston, Massachusetts\" 应该没问题？也许 features 顺序或必须使用精确？可能是 location 需要州缩写？尝试 \"Boston, MA\"。仍然符合定义。重新调用。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

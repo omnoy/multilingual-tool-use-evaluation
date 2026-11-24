@@ -1,0 +1,166 @@
+{
+  "id": "multiple_196_zh",
+  "source_id": "multiple_196",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1422,
+  "total_output_tokens": 357,
+  "total_latency_s": 33.571608781814575,
+  "estimated_cost_usd": 0.0073761,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "质膜中有哪些蛋白质？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "cellbio.get_proteins": {
+        "cell_compartment": [
+          "质膜"
+        ],
+        "include_description": [
+          "",
+          false
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          },
+          "id": "call_e744f0d2de114d4e8c31e28a"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "plasma membrane",
+            "include_description": false
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "input_tokens": 609,
+      "output_tokens": 143,
+      "latency_s": 30.611641883850098,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "cellbio_get_proteins",
+          "arguments": {
+            "cell_compartment": "质膜",
+            "include_description": false
+          },
+          "id": "call_594f98185a7748fb91d7cade"
+        }
+      ],
+      "decoded": [
+        {
+          "cellbio_get_proteins": {
+            "cell_compartment": "质膜",
+            "include_description": false
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 813,
+      "output_tokens": 214,
+      "latency_s": 2.9599668979644775,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "质膜中有哪些蛋白质？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e744f0d2de114d4e8c31e28a",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"plasma membrane\", \"include_description\": false}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问的是\"质膜中有哪些蛋白质？\"，即plasma membrane。需要用cellbio_get_proteins，cell_compartment设置为质膜对应的英文，通常为\"plasma membrane\"。include_description用户未要求描述，可省略或false。需要直接工具调用。注意系统说用户中文，理解请求并正确函数调用。调用后根据返回列蛋白。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'cellbio_get_proteins'. Please review the function definition and try again.",
+      "tool_call_id": "call_e744f0d2de114d4e8c31e28a"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_594f98185a7748fb91d7cade",
+          "function": {
+            "arguments": "{\"cell_compartment\": \"质膜\", \"include_description\": false}",
+            "name": "cellbio_get_proteins"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400 invalid params. Should inspect function perhaps cell compartment expects specific Chinese? Definition: cell_compartment string, include_description boolean default false. I passed valid JSON. Could be compartment should be \"细胞质膜\" or \"细胞膜\"? Should retry. Should reason about tool backend accepted compartments. Could be enum hidden? It says 获取特定细胞区室中的蛋白质列表, cell_compartment 特定的细胞区室. Might require exact \"细胞膜\" or \"质膜\". I should try user wording \"质膜\" with include_description false? Since error invalid parameters could be include_description explicitly false issue? Usually valid. Could be compartment \"plasma membrane\" unsupported, should be \"细胞膜\". I'll retry \"质膜\"."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

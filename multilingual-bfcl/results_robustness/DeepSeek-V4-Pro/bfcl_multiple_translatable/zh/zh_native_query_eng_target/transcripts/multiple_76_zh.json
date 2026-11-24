@@ -1,0 +1,388 @@
+{
+  "id": "multiple_76_zh",
+  "source_id": "multiple_76",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 4,
+  "final_error_type": null,
+  "total_input_tokens": 5205,
+  "total_output_tokens": 619,
+  "total_latency_s": 9.916451454162598,
+  "estimated_cost_usd": 0.01121082,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "我想订制一尊马的青铜雕塑。有哪些材质可供选择？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture.create_custom": {
+        "item": [
+          "horse",
+          "Horse"
+        ],
+        "material": [
+          "Bronze",
+          "bronze"
+        ],
+        "size": [
+          "",
+          12
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "好的！您想订制一尊**马**的**青铜**雕塑。\n\n关于您询问的材质选项，目前可供选择的材质有以下几种：\n\n- **Bronze（青铜）**\n- **Marble（大理石）**\n- **Terracotta（赤陶）**\n- **Wood（木材）**\n- **Stone（石材）**\n\n既然您已经选定青铜材质，我现在就为您下单。请问雕塑的尺寸您有特别要求吗？如果没有指定，默认是 **12英寸**。"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 542,
+      "output_tokens": 104,
+      "latency_s": 1.4622268676757812,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "好的，我先为您默认尺寸下单。确认一下：**马雕塑，青铜材质，默认12英寸**。"
+      ],
+      "tool_calls": [
+        {
+          "name": "sculpture_create_custom",
+          "arguments": {
+            "item": "马",
+            "material": "Bronze"
+          },
+          "id": "call_f4b76f91b87f42c9a703cda0"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_create_custom": {
+            "item": "马",
+            "material": "Bronze"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sculpture_create_custom'. Please review the function definition and try again.",
+      "input_tokens": 670,
+      "output_tokens": 87,
+      "latency_s": 1.5351378917694092,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "让我重新检查参数。看起来问题可能出在参数值上。让我修正一下："
+      ],
+      "tool_calls": [
+        {
+          "name": "sculpture_create_custom",
+          "arguments": {
+            "item": "马",
+            "material": "Bronze",
+            "size": 12
+          },
+          "id": "call_956d1046fb6141dcb921aa39"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_create_custom": {
+            "item": "马",
+            "material": "Bronze",
+            "size": 12
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sculpture_create_custom'. Please review the function definition and try again.",
+      "input_tokens": 792,
+      "output_tokens": 98,
+      "latency_s": 2.0892117023468018,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "让我再次确认参数格式。`material` 必须是枚举值之一，`size` 是整数类型。让我严格按照定义再试："
+      ],
+      "tool_calls": [
+        {
+          "name": "sculpture_create_custom",
+          "arguments": {
+            "item": "马",
+            "material": "Bronze",
+            "size": 12
+          },
+          "id": "call_d37e2fa7727449e88a626823"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_create_custom": {
+            "item": "马",
+            "material": "Bronze",
+            "size": 12
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sculpture_create_custom'. Please review the function definition and try again.",
+      "input_tokens": 925,
+      "output_tokens": 109,
+      "latency_s": 1.5768816471099854,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "抱歉遇到了问题。让我检查一下参数，`material` 枚举值中写的是 \"Bronze\"，这是正确的。让我尝试不使用 `size` 参数，因为它本身是可选的："
+      ],
+      "tool_calls": [
+        {
+          "name": "sculpture_create_custom",
+          "arguments": {
+            "item": "马",
+            "material": "Bronze"
+          },
+          "id": "call_b9465649c48146e483106ee5"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_create_custom": {
+            "item": "马",
+            "material": "Bronze"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'sculpture_create_custom'. Please review the function definition and try again.",
+      "input_tokens": 1069,
+      "output_tokens": 103,
+      "latency_s": 1.2818198204040527,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "奇怪，让我再次仔细核对函数定义。`required` 字段是 `[\"item\", \"material\"]`，`material` 的枚举值包含 \"Bronze\"。参数看起来完全正确。也许系统对中文有编码问题，让我尝试用英文："
+      ],
+      "tool_calls": [
+        {
+          "name": "sculpture_create_custom",
+          "arguments": {
+            "item": "horse",
+            "material": "Bronze"
+          },
+          "id": "call_0eaef254e2714e528b3e2b07"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_create_custom": {
+            "item": "horse",
+            "material": "Bronze"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1207,
+      "output_tokens": 118,
+      "latency_s": 1.9711735248565674,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "我想订制一尊马的青铜雕塑。有哪些材质可供选择？"
+    },
+    {
+      "content": "好的！您想订制一尊**马**的**青铜**雕塑。\n\n关于您询问的材质选项，目前可供选择的材质有以下几种：\n\n- **Bronze（青铜）**\n- **Marble（大理石）**\n- **Terracotta（赤陶）**\n- **Wood（木材）**\n- **Stone（石材）**\n\n既然您已经选定青铜材质，我现在就为您下单。请问雕塑的尺寸您有特别要求吗？如果没有指定，默认是 **12英寸**。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "好的，我先为您默认尺寸下单。确认一下：**马雕塑，青铜材质，默认12英寸**。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_f4b76f91b87f42c9a703cda0",
+          "function": {
+            "arguments": "{\"item\": \"马\", \"material\": \"Bronze\"}",
+            "name": "sculpture_create_custom"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sculpture_create_custom'. Please review the function definition and try again.",
+      "tool_call_id": "call_f4b76f91b87f42c9a703cda0"
+    },
+    {
+      "content": "让我重新检查参数。看起来问题可能出在参数值上。让我修正一下：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_956d1046fb6141dcb921aa39",
+          "function": {
+            "arguments": "{\"item\": \"马\", \"material\": \"Bronze\", \"size\": 12}",
+            "name": "sculpture_create_custom"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sculpture_create_custom'. Please review the function definition and try again.",
+      "tool_call_id": "call_956d1046fb6141dcb921aa39"
+    },
+    {
+      "content": "让我再次确认参数格式。`material` 必须是枚举值之一，`size` 是整数类型。让我严格按照定义再试：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_d37e2fa7727449e88a626823",
+          "function": {
+            "arguments": "{\"item\": \"马\", \"material\": \"Bronze\", \"size\": 12}",
+            "name": "sculpture_create_custom"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sculpture_create_custom'. Please review the function definition and try again.",
+      "tool_call_id": "call_d37e2fa7727449e88a626823"
+    },
+    {
+      "content": "抱歉遇到了问题。让我检查一下参数，`material` 枚举值中写的是 \"Bronze\"，这是正确的。让我尝试不使用 `size` 参数，因为它本身是可选的：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b9465649c48146e483106ee5",
+          "function": {
+            "arguments": "{\"item\": \"马\", \"material\": \"Bronze\"}",
+            "name": "sculpture_create_custom"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'sculpture_create_custom'. Please review the function definition and try again.",
+      "tool_call_id": "call_b9465649c48146e483106ee5"
+    },
+    {
+      "content": "奇怪，让我再次仔细核对函数定义。`required` 字段是 `[\"item\", \"material\"]`，`material` 的枚举值包含 \"Bronze\"。参数看起来完全正确。也许系统对中文有编码问题，让我尝试用英文：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0eaef254e2714e528b3e2b07",
+          "function": {
+            "arguments": "{\"item\": \"horse\", \"material\": \"Bronze\"}",
+            "name": "sculpture_create_custom"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

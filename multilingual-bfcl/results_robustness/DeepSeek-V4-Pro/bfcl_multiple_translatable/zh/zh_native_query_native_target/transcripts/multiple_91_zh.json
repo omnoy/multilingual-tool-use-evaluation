@@ -1,0 +1,166 @@
+{
+  "id": "multiple_91_zh",
+  "source_id": "multiple_91",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1071,
+  "total_output_tokens": 162,
+  "total_latency_s": 2.527327060699463,
+  "estimated_cost_usd": 0.0024273,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "能帮我找一个使用少于5种食材的优质苹果派食谱吗？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "苹果派",
+          "苹果"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "苹果",
+            "ingredientLimit": 5
+          },
+          "id": "call_14aa0ce7a7184cb392a89a83"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "苹果",
+            "ingredientLimit": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_find'. Please review the function definition and try again.",
+      "input_tokens": 487,
+      "output_tokens": 65,
+      "latency_s": 1.3636140823364258,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "抱歉，让我重新调整参数。`ingredientLimit` 需要是一个整数，且必须小于5（即少于5种食材）。让我再试一次："
+      ],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "苹果",
+            "ingredientLimit": 4
+          },
+          "id": "call_09d21d4ad3784b699f5a4fab"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "苹果",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 584,
+      "output_tokens": 97,
+      "latency_s": 1.163712978363037,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "能帮我找一个使用少于5种食材的优质苹果派食谱吗？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_14aa0ce7a7184cb392a89a83",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"苹果\", \"ingredientLimit\": 5}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_14aa0ce7a7184cb392a89a83"
+    },
+    {
+      "content": "抱歉，让我重新调整参数。`ingredientLimit` 需要是一个整数，且必须小于5（即少于5种食材）。让我再试一次：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_09d21d4ad3784b699f5a4fab",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"苹果\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

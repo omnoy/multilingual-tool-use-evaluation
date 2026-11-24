@@ -1,0 +1,143 @@
+{
+  "id": "multiple_85_zh",
+  "source_id": "multiple_85",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 953,
+  "total_output_tokens": 318,
+  "total_latency_s": 3.366288423538208,
+  "estimated_cost_usd": 0.005848899999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "获取皇家马德里在西班牙足球甲级联赛最近5轮比赛的比分。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_scores.get_scores": {
+        "team": [
+          "皇家马德里"
+        ],
+        "league": [
+          "西班牙足球甲级联赛"
+        ],
+        "rounds": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "soccer_scores_get_scores(team=\"皇家马德里\", league=\"西班牙足球甲级联赛\", rounds=5)"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 377,
+      "output_tokens": 157,
+      "latency_s": 1.695171594619751,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "皇家马德里",
+            "league": "西班牙足球甲级联赛",
+            "rounds": 5
+          },
+          "id": "call_e703c0aaa7c241b381c30f83"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "皇家马德里",
+            "league": "西班牙足球甲级联赛",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 576,
+      "output_tokens": 161,
+      "latency_s": 1.671116828918457,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "获取皇家马德里在西班牙足球甲级联赛最近5轮比赛的比分。"
+    },
+    {
+      "content": "soccer_scores_get_scores(team=\"皇家马德里\", league=\"西班牙足球甲级联赛\", rounds=5)",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "用户需要获取皇家马德里在西班牙足球甲级联赛最近5轮比赛的比分。这是一个足球比分查询请求，应该使用`soccer_scores_get_scores`函数。\n\n参数分析：\n- team: 皇家马德里 (Real Madrid)\n- league: 西班牙足球甲级联赛 (La Liga / Spanish La Liga)\n- rounds: 5\n\n根据工具定义，league参数描述为\"该球队参加的联赛\"，team参数描述为\"要检索其比赛比分的足球队\"。参数值可以使用中文，因为这是中文工具。我应该使用皇家马德里和西班牙足球甲级联赛作为参数值，rounds为5。"
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e703c0aaa7c241b381c30f83",
+          "function": {
+            "arguments": "{\"team\": \"皇家马德里\", \"league\": \"西班牙足球甲级联赛\", \"rounds\": 5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户提示说没有进行函数调用，我必须通过调用一个可用函数来回答。上一轮我直接输出了文本形式的函数调用，但没有使用实际的工具调用。现在我需要正确地调用 soccer_scores_get_scores 函数。\n\n参数：\n- team: 皇家马德里\n- league: 西班牙足球甲级联赛\n- rounds: 5\n\n我应该使用工具调用来完成这个请求。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

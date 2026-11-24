@@ -1,0 +1,315 @@
+{
+  "id": "multiple_81_zh",
+  "source_id": "multiple_81",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 4,
+  "num_api_calls": 4,
+  "num_clarifications": 0,
+  "num_failed_calls": 3,
+  "final_error_type": null,
+  "total_input_tokens": 3114,
+  "total_output_tokens": 473,
+  "total_latency_s": 5.142431259155273,
+  "estimated_cost_usd": 0.0070644,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "预订一张埃米纳姆即将在纽约市举办的演唱会门票，我想要包含后台通行权限的票。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.book_ticket": {
+        "artist": [
+          "Eminem"
+        ],
+        "location": [
+          "New York City",
+          "NYC"
+        ],
+        "add_ons": [
+          [
+            "Backstage Pass"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_665c65b6b99844c4a13450ea"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 581,
+      "output_tokens": 87,
+      "latency_s": 1.0458755493164062,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "看起来参数名称需要是英文的。让我再试一次，使用正确的参数格式："
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_056bf90e28324edfbbc5da31"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 701,
+      "output_tokens": 104,
+      "latency_s": 1.1998684406280518,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "让我再仔细检查一下函数定义。参数看起来是正确的：`artist`（字符串）、`location`（字符串）、`add_ons`（数组）。让我再试一次："
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_c9074e380dcf47a589233e84"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "input_tokens": 838,
+      "output_tokens": 123,
+      "latency_s": 1.2881829738616943,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "让我重新审视函数定义。`add_ons` 的枚举值包括 \"Backstage Pass\"、\"VIP Seating\"、\"Parking Pass\"，而 `add_ons` 本身是一个数组类型。也许问题在于 `location` 参数，用户说的是\"纽约市\"即 New York City。让我尝试使用 \"New York City\"："
+      ],
+      "tool_calls": [
+        {
+          "name": "concert_book_ticket",
+          "arguments": {
+            "artist": "Eminem",
+            "location": "New York City",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          },
+          "id": "call_0c95258b676748408cd2cf6d"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_book_ticket": {
+            "artist": "Eminem",
+            "location": "New York City",
+            "add_ons": [
+              "Backstage Pass"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 994,
+      "output_tokens": 159,
+      "latency_s": 1.608504295349121,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "预订一张埃米纳姆即将在纽约市举办的演唱会门票，我想要包含后台通行权限的票。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_665c65b6b99844c4a13450ea",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "call_665c65b6b99844c4a13450ea"
+    },
+    {
+      "content": "看起来参数名称需要是英文的。让我再试一次，使用正确的参数格式：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_056bf90e28324edfbbc5da31",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "call_056bf90e28324edfbbc5da31"
+    },
+    {
+      "content": "让我再仔细检查一下函数定义。参数看起来是正确的：`artist`（字符串）、`location`（字符串）、`add_ons`（数组）。让我再试一次：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c9074e380dcf47a589233e84",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_book_ticket'. Please review the function definition and try again.",
+      "tool_call_id": "call_c9074e380dcf47a589233e84"
+    },
+    {
+      "content": "让我重新审视函数定义。`add_ons` 的枚举值包括 \"Backstage Pass\"、\"VIP Seating\"、\"Parking Pass\"，而 `add_ons` 本身是一个数组类型。也许问题在于 `location` 参数，用户说的是\"纽约市\"即 New York City。让我尝试使用 \"New York City\"：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0c95258b676748408cd2cf6d",
+          "function": {
+            "arguments": "{\"artist\": \"Eminem\", \"location\": \"New York City\", \"add_ons\": [\"Backstage Pass\"]}",
+            "name": "concert_book_ticket"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,148 @@
+{
+  "id": "multiple_38_zh",
+  "source_id": "multiple_38",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1049,
+  "total_output_tokens": 284,
+  "total_latency_s": 3.0717501640319824,
+  "estimated_cost_usd": 0.0056787,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "在纽约市内的图书馆分馆中查找《牧羊少年奇幻之旅》这本书。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "library.search_book": {
+        "book_name": [
+          "牧羊少年奇幻之旅"
+        ],
+        "city": [
+          "纽约",
+          "纽约州纽约市",
+          "纽约市",
+          "纽约州"
+        ],
+        "availability": [
+          "",
+          false
+        ],
+        "genre": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"book_name\": \"牧羊少年奇幻之旅\", \"city\": \"纽约\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 416,
+      "output_tokens": 175,
+      "latency_s": 1.6531364917755127,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_book",
+          "arguments": {
+            "book_name": "牧羊少年奇幻之旅",
+            "city": "纽约市"
+          },
+          "id": "call_e709298b9043429f93223c27"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_book": {
+            "book_name": "牧羊少年奇幻之旅",
+            "city": "纽约市"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 633,
+      "output_tokens": 109,
+      "latency_s": 1.4186136722564697,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "在纽约市内的图书馆分馆中查找《牧羊少年奇幻之旅》这本书。"
+    },
+    {
+      "content": "{\"book_name\": \"牧羊少年奇幻之旅\", \"city\": \"纽约\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need respond tool call exactly. User Chinese: \"在纽约市内的图书馆分馆中查找《牧羊少年奇幻之旅》这本书。\" Should search book in library within city New York. Book name Chinese 牧羊少年奇幻之旅. Should have availability? User says search no available specification. Tool library_search_book book_name city, availability default false or omitted, genre optional. Should call with book_name \"牧羊少年奇幻之旅\", city \"纽约市\" or \"纽约\". Should infer city input likely \"纽约\" perhaps \"New York\"? User said 纽约市内. Most tasks use Chinese values. Call exactly. Could set city \"纽约\" and book_name \"牧羊少年奇幻之旅\". Should have no prose perhaps tool call only."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e709298b9043429f93223c27",
+          "function": {
+            "arguments": "{\"book_name\": \"牧羊少年奇幻之旅\", \"city\": \"纽约市\"}",
+            "name": "library_search_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need correct function call actually use tool. Previous assistant output bad response string. Now user error instruct must answer calling available functions. I should invoke. Same parameters. City perhaps 纽约市. Use book Chinese."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

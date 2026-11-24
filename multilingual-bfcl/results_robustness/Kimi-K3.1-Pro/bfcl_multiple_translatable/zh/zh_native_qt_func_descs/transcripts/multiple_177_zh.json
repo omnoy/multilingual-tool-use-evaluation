@@ -1,0 +1,112 @@
+{
+  "id": "multiple_177_zh",
+  "source_id": "multiple_177",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 481,
+  "total_output_tokens": 326,
+  "total_latency_s": 2.765840530395508,
+  "estimated_cost_usd": 0.0048553,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找纽约等级分高于2300的顶尖国际象棋棋手。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "board_game.chess.get_top_players": {
+        "location": [
+          "纽约",
+          "纽约州纽约市",
+          "纽约市"
+        ],
+        "minimum_rating": [
+          2300
+        ],
+        "number_of_players": [
+          "",
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "board_game_chess_get_top_players",
+          "arguments": {
+            "location": "纽约",
+            "minimum_rating": 2300
+          },
+          "id": "call_b2f68c0484bd475b8e6f0d45"
+        }
+      ],
+      "decoded": [
+        {
+          "board_game_chess_get_top_players": {
+            "location": "纽约",
+            "minimum_rating": 2300
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 481,
+      "output_tokens": 326,
+      "latency_s": 2.765840530395508,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找纽约等级分高于2300的顶尖国际象棋棋手。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b2f68c0484bd475b8e6f0d45",
+          "function": {
+            "arguments": "{\"location\": \"纽约\", \"minimum_rating\": 2300}",
+            "name": "board_game_chess_get_top_players"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户用中文要求：查找纽约等级分高于2300的顶尖国际象棋棋手。需要使用工具 board_game_chess_get_top_players。参数 location 纽约，minimum_rating 2300（高于2300，工具最低等级分筛选，整数，2300即可，或2301？需要思考）。用户说高于2300，工具定义 minimum_rating 用于筛选棋手的最低等级分。通常这类任务直接映射 minimum_rating=2300。number_of_players 默认10，无需指定。需要输出正确函数调用，不要多余文本？指令：Understand request in Chinese and respond with correct function call exactly as specified in tool definitions. 所以调用工具。位置用“纽约”还是“New York”？工具描述中文，但location是城市，用户说纽约。以往类似任务调用 location:\"纽约\", minimum_rating:2300。可能需要英文 \"New York\" 以提高检索。该工具可能模拟数据，期待参数精确？需要根据典型 benchmark: 用户中文，函数位置描述中文，示例常直接翻译为 \"纽约\"。工具不涉及真实执行？我必须 call. 选择 location:\"纽约\", minimum_rating:2300。高于2300可能最低等级分设为2300，常规。默认 number_of_players 10。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

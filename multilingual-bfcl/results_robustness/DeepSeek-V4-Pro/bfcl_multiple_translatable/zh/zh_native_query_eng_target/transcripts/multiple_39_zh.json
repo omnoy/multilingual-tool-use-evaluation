@@ -1,0 +1,238 @@
+{
+  "id": "multiple_39_zh",
+  "source_id": "multiple_39",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1969,
+  "total_output_tokens": 308,
+  "total_latency_s": 3.7215349674224854,
+  "estimated_cost_usd": 0.0044979,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "找一趟从纽约到费城的车，费用不超过50美元。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "ride_hailing.get_rides": {
+        "source": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "NYC",
+          "NY"
+        ],
+        "destination": [
+          "Philadelphia"
+        ],
+        "max_cost": [
+          50
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "纽约",
+            "destination": "费城",
+            "max_cost": 50
+          },
+          "id": "call_9f7bec8390e44fa29ac7cc44"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "纽约",
+            "destination": "费城",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "input_tokens": 531,
+      "output_tokens": 82,
+      "latency_s": 1.2679729461669922,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "看起来参数有问题，让我重新检查一下函数定义。`max_cost` 应该是整数类型。让我修正后重试。"
+      ],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "纽约",
+            "destination": "费城",
+            "max_cost": 50
+          },
+          "id": "call_396a24605b974d11a98b1edf"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "纽约",
+            "destination": "费城",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "input_tokens": 648,
+      "output_tokens": 107,
+      "latency_s": 1.1593971252441406,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "让我再仔细看一下函数定义。`max_cost` 的类型是 `integer`，50 是整数应该没问题。可能中文地名需要转换成英文。让我用英文地名试试。"
+      ],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          },
+          "id": "call_77fd467aaec44dec8a476e4a"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 790,
+      "output_tokens": 119,
+      "latency_s": 1.2941648960113525,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "找一趟从纽约到费城的车，费用不超过50美元。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9f7bec8390e44fa29ac7cc44",
+          "function": {
+            "arguments": "{\"source\": \"纽约\", \"destination\": \"费城\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "tool_call_id": "call_9f7bec8390e44fa29ac7cc44"
+    },
+    {
+      "content": "看起来参数有问题，让我重新检查一下函数定义。`max_cost` 应该是整数类型。让我修正后重试。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_396a24605b974d11a98b1edf",
+          "function": {
+            "arguments": "{\"source\": \"纽约\", \"destination\": \"费城\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "tool_call_id": "call_396a24605b974d11a98b1edf"
+    },
+    {
+      "content": "让我再仔细看一下函数定义。`max_cost` 的类型是 `integer`，50 是整数应该没问题。可能中文地名需要转换成英文。让我用英文地名试试。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_77fd467aaec44dec8a476e4a",
+          "function": {
+            "arguments": "{\"source\": \"New York\", \"destination\": \"Philadelphia\", \"max_cost\": 50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

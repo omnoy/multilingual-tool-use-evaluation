@@ -1,0 +1,385 @@
+{
+  "id": "multiple_93_zh",
+  "source_id": "multiple_93",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 5,
+  "num_clarifications": 0,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 4439,
+  "total_output_tokens": 643,
+  "total_latency_s": 8.233880519866943,
+  "estimated_cost_usd": 0.009961500000000002,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "在纽约的万豪酒店预订一间豪华客房，入住2晚，并添加早餐作为额外服务"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel.book": {
+        "location": [
+          "纽约",
+          "纽约州纽约市",
+          "纽约市"
+        ],
+        "roomType": [
+          "豪华"
+        ],
+        "nights": [
+          2
+        ],
+        "additional_services": [
+          [
+            "breakfast"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "纽约",
+            "roomType": "豪华客房",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call_ad45972d7dac4933a4ba28e7"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "纽约",
+            "roomType": "豪华客房",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 575,
+      "output_tokens": 100,
+      "latency_s": 2.077119827270508,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "我注意到之前的调用出现了参数错误。让我重新检查一下函数定义并再次尝试。"
+      ],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "纽约",
+            "roomType": "豪华客房",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call_a523af4707e04553912902a5"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "纽约",
+            "roomType": "豪华客房",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 707,
+      "output_tokens": 117,
+      "latency_s": 1.4131410121917725,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "让我仔细检查函数定义。`hotel_book` 的参数包括 `location`、`roomType`、`nights` 和 `additional_services`。问题可能出在酒店名称上——该函数只接受 `location`（地点），而不是具体的酒店名称。让我按照函数定义重新调用："
+      ],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "纽约万豪酒店",
+            "roomType": "豪华客房",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call_edca1678431a4dc891598b38"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "纽约万豪酒店",
+            "roomType": "豪华客房",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 856,
+      "output_tokens": 166,
+      "latency_s": 1.5799388885498047,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "让我再次仔细核对参数。函数定义的 `required` 字段是 `[\"location\", \"roomType\", \"nights\"]`，`additional_services` 是可选的。`additional_services` 是一个字符串数组，枚举值包括 `\"breakfast\"`, `\"parking\"`, `\"spa\"`。让我尝试将额外的参数作为 JSON 数组而不是字符串："
+      ],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "纽约万豪酒店",
+            "roomType": "豪华客房",
+            "nights": 2
+          },
+          "id": "call_119c8f30844845de81847832"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "纽约万豪酒店",
+            "roomType": "豪华客房",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "input_tokens": 1054,
+      "output_tokens": 161,
+      "latency_s": 1.5414862632751465,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "让我尝试将 `location` 简化为 \"纽约\"，并且检查 `roomType` 的值："
+      ],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "纽约",
+            "roomType": "豪华客房",
+            "nights": 2
+          },
+          "id": "call_31c7cd0e1a2445448a01a930"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "纽约",
+            "roomType": "豪华客房",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1247,
+      "output_tokens": 99,
+      "latency_s": 1.622194528579712,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "在纽约的万豪酒店预订一间豪华客房，入住2晚，并添加早餐作为额外服务"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ad45972d7dac4933a4ba28e7",
+          "function": {
+            "arguments": "{\"location\": \"纽约\", \"roomType\": \"豪华客房\", \"nights\": 2, \"additional_services\": [\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "call_ad45972d7dac4933a4ba28e7"
+    },
+    {
+      "content": "我注意到之前的调用出现了参数错误。让我重新检查一下函数定义并再次尝试。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a523af4707e04553912902a5",
+          "function": {
+            "arguments": "{\"location\": \"纽约\", \"roomType\": \"豪华客房\", \"nights\": 2, \"additional_services\": [\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "call_a523af4707e04553912902a5"
+    },
+    {
+      "content": "让我仔细检查函数定义。`hotel_book` 的参数包括 `location`、`roomType`、`nights` 和 `additional_services`。问题可能出在酒店名称上——该函数只接受 `location`（地点），而不是具体的酒店名称。让我按照函数定义重新调用：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_edca1678431a4dc891598b38",
+          "function": {
+            "arguments": "{\"location\": \"纽约万豪酒店\", \"roomType\": \"豪华客房\", \"nights\": 2, \"additional_services\": [\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "call_edca1678431a4dc891598b38"
+    },
+    {
+      "content": "让我再次仔细核对参数。函数定义的 `required` 字段是 `[\"location\", \"roomType\", \"nights\"]`，`additional_services` 是可选的。`additional_services` 是一个字符串数组，枚举值包括 `\"breakfast\"`, `\"parking\"`, `\"spa\"`。让我尝试将额外的参数作为 JSON 数组而不是字符串：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_119c8f30844845de81847832",
+          "function": {
+            "arguments": "{\"location\": \"纽约万豪酒店\", \"roomType\": \"豪华客房\", \"nights\": 2}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'hotel_book'. Please review the function definition and try again.",
+      "tool_call_id": "call_119c8f30844845de81847832"
+    },
+    {
+      "content": "让我尝试将 `location` 简化为 \"纽约\"，并且检查 `roomType` 的值：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_31c7cd0e1a2445448a01a930",
+          "function": {
+            "arguments": "{\"location\": \"纽约\", \"roomType\": \"豪华客房\", \"nights\": 2}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

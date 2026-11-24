@@ -1,0 +1,169 @@
+{
+  "id": "multiple_87_zh",
+  "source_id": "multiple_87",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 994,
+  "total_output_tokens": 435,
+  "total_latency_s": 3.7360706329345703,
+  "estimated_cost_usd": 0.0072887,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找艾克斯博克斯平台上游戏《赛博朋克2077》的最新更新或补丁。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "games.update.find": {
+        "game": [
+          "赛博朋克2077"
+        ],
+        "platform": [
+          "艾克斯博克斯"
+        ],
+        "region": [
+          "",
+          "全球"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "games_update_find",
+          "arguments": {
+            "game": "赛博朋克2077",
+            "platform": "Xbox"
+          },
+          "id": "call_e379982712714563803fd551"
+        }
+      ],
+      "decoded": [
+        {
+          "games_update_find": {
+            "game": "赛博朋克2077",
+            "platform": "Xbox"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'games_update_find'. Please review the function definition and try again.",
+      "input_tokens": 384,
+      "output_tokens": 169,
+      "latency_s": 1.6158394813537598,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "games_update_find",
+          "arguments": {
+            "game": "赛博朋克2077",
+            "platform": "艾克斯博克斯"
+          },
+          "id": "call_0336617c4d57485dac19ed48"
+        }
+      ],
+      "decoded": [
+        {
+          "games_update_find": {
+            "game": "赛博朋克2077",
+            "platform": "艾克斯博克斯"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 610,
+      "output_tokens": 266,
+      "latency_s": 2.1202311515808105,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找艾克斯博克斯平台上游戏《赛博朋克2077》的最新更新或补丁。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e379982712714563803fd551",
+          "function": {
+            "arguments": "{\"game\": \"赛博朋克2077\", \"platform\": \"Xbox\"}",
+            "name": "games_update_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要查找Xbox平台上《赛博朋克2077》的最新更新或补丁。工具games_update_find需要game和platform，region可选。用户中文“艾克斯博克斯”就是Xbox。需要正确调用，platform用\"Xbox\"还是\"艾克斯博克斯\"？工具描述没有枚举，通常标准平台名Xbox。game《赛博朋克2077》可传\"赛博朋克2077\"。直接调用。不需要region。完成后根据结果回答。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'games_update_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_e379982712714563803fd551"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0336617c4d57485dac19ed48",
+          "function": {
+            "arguments": "{\"game\": \"赛博朋克2077\", \"platform\": \"艾克斯博克斯\"}",
+            "name": "games_update_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回400无效参数，需要审查定义重试。可能平台中文需要\"艾克斯博克斯\"或\"xbox\"？用户特意写艾克斯博克斯，可能工具期望platform精确某值，但没有枚举。 usually tasks generated with Chinese platform synonyms, must call with platform=\"艾克斯博克斯\" perhaps region required? Definition region optional. Could error because English names? game perhaps \"Cyberpunk 2077\" and platform \"Xbox\". Should reason typical benchmark. Chinese user says 查找艾克斯博克斯平台上游戏《赛博朋克2077》的最新更新或补丁。 Tools likely custom mocked, expected parameters perhaps game = \"赛博朋克2077\", platform = \"艾克斯博克斯\". We used Xbox and got invalid. Now retry changing platform to 艾克斯博克斯. Could be platform accepts \"xbox\" lowercase? \"艾克斯博克斯\" is odd phonetic Xbox likely expected exact user value. Call with that."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

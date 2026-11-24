@@ -1,0 +1,166 @@
+{
+  "id": "multiple_60_zh",
+  "source_id": "multiple_60",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1068,
+  "total_output_tokens": 240,
+  "total_latency_s": 2.9859607219696045,
+  "estimated_cost_usd": 0.0052163999999999995,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "7天后纽约市的湿度和气温会是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "humidity_temperature_forecast": {
+        "location": [
+          "New York City",
+          "NYC"
+        ],
+        "days": [
+          7
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "纽约市",
+            "days": 7
+          },
+          "id": "call_01a58b2bcac64955bc6c90a9"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "纽约市",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'humidity_temperature_forecast'. Please review the function definition and try again.",
+      "input_tokens": 435,
+      "output_tokens": 137,
+      "latency_s": 1.427126169204712,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "humidity_temperature_forecast",
+          "arguments": {
+            "location": "New York City",
+            "days": 7
+          },
+          "id": "call_946d3b5fe74d4c87ab7192b1"
+        }
+      ],
+      "decoded": [
+        {
+          "humidity_temperature_forecast": {
+            "location": "New York City",
+            "days": 7
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 633,
+      "output_tokens": 103,
+      "latency_s": 1.5588345527648926,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "7天后纽约市的湿度和气温会是多少？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_01a58b2bcac64955bc6c90a9",
+          "function": {
+            "arguments": "{\"location\": \"纽约市\", \"days\": 7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Kimi will respond in Chinese. Should call humidity_temperature_forecast days 7 location New York City likely \"纽约市\" or \"New York City\". User asks 7 days later NY humidity temperature. Tool retrieve forecast specific location future date days. Use days 7, location New York City or 纽约市. Exact schema no constraint. Must call only."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'humidity_temperature_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_01a58b2bcac64955bc6c90a9"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_946d3b5fe74d4c87ab7192b1",
+          "function": {
+            "arguments": "{\"location\": \"New York City\", \"days\": 7}",
+            "name": "humidity_temperature_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool error invalid parameters perhaps needs English location or days max? Should analyze. User said 7 days after, days integer. location city. Perhaps backend expects \"New York City\". Try."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

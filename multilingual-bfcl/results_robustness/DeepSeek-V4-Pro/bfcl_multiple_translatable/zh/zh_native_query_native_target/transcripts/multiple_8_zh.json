@@ -1,0 +1,400 @@
+{
+  "id": "multiple_8_zh",
+  "source_id": "multiple_8",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 5,
+  "num_clarifications": 0,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 4836,
+  "total_output_tokens": 682,
+  "total_latency_s": 555.573303937912,
+  "estimated_cost_usd": 0.010787999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "寻找位于圣迭戈、售价在300,000至400,000美元预算范围内的3卧室别墅。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "realestate.find_properties": {
+        "location": [
+          "圣迭戈",
+          "加利福尼亚州圣迭戈",
+          "加利福尼亚州"
+        ],
+        "propertyType": [
+          "别墅"
+        ],
+        "bedrooms": [
+          3
+        ],
+        "budget": [
+          {
+            "min": [
+              300000
+            ],
+            "max": [
+              400000
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call_aa448bcd8bf3434995cf65fc"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "input_tokens": 634,
+      "output_tokens": 116,
+      "latency_s": 2.9198789596557617,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "让我重新尝试，调整参数格式："
+      ],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000.0,
+              "max": 400000.0
+            }
+          },
+          "id": "call_403ad2c2a060467c9a17e3ef"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000.0,
+              "max": 400000.0
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "input_tokens": 786,
+      "output_tokens": 127,
+      "latency_s": 184.70252203941345,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "让我仔细检查函数定义。`budget` 参数是一个对象，包含 `min` 和 `max` 两个浮点数字段。让我尝试将 budget 作为嵌套 JSON 对象传递："
+      ],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": "{\"min\": 300000.0, \"max\": 400000.0}"
+          },
+          "id": "call_46de03e13ffa4e7f891dbc96"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": "{\"min\": 300000.0, \"max\": 400000.0}"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "input_tokens": 949,
+      "output_tokens": 162,
+      "latency_s": 121.79397702217102,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "让我尝试另一种方式——也许 `budget` 对象的参数需要分别传递，或者使用不同的格式："
+      ],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call_b2282e557e1346b19ae92358"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "input_tokens": 1147,
+      "output_tokens": 134,
+      "latency_s": 133.35923647880554,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "让我回顾函数定义中的 `budget` 参数，它是一个对象类型，包含 `min` 和 `max`。也许需要使用字符串形式："
+      ],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": "{\"min\":300000,\"max\":400000}"
+          },
+          "id": "call_ddaad21a1ec749bfb3aaae75"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, California",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": "{\"min\":300000,\"max\":400000}"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1320,
+      "output_tokens": 143,
+      "latency_s": 112.79768943786621,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "寻找位于圣迭戈、售价在300,000至400,000美元预算范围内的3卧室别墅。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_aa448bcd8bf3434995cf65fc",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": {\"min\": 300000, \"max\": 400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "tool_call_id": "call_aa448bcd8bf3434995cf65fc"
+    },
+    {
+      "content": "让我重新尝试，调整参数格式：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_403ad2c2a060467c9a17e3ef",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": {\"min\": 300000.0, \"max\": 400000.0}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "tool_call_id": "call_403ad2c2a060467c9a17e3ef"
+    },
+    {
+      "content": "让我仔细检查函数定义。`budget` 参数是一个对象，包含 `min` 和 `max` 两个浮点数字段。让我尝试将 budget 作为嵌套 JSON 对象传递：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_46de03e13ffa4e7f891dbc96",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": \"{\\\"min\\\": 300000.0, \\\"max\\\": 400000.0}\"}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "tool_call_id": "call_46de03e13ffa4e7f891dbc96"
+    },
+    {
+      "content": "让我尝试另一种方式——也许 `budget` 对象的参数需要分别传递，或者使用不同的格式：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b2282e557e1346b19ae92358",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": {\"min\":300000,\"max\":400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'realestate_find_properties'. Please review the function definition and try again.",
+      "tool_call_id": "call_b2282e557e1346b19ae92358"
+    },
+    {
+      "content": "让我回顾函数定义中的 `budget` 参数，它是一个对象类型，包含 `min` 和 `max`。也许需要使用字符串形式：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_ddaad21a1ec749bfb3aaae75",
+          "function": {
+            "arguments": "{\"location\": \"San Diego, California\", \"propertyType\": \"villa\", \"bedrooms\": 3, \"budget\": \"{\\\"min\\\":300000,\\\"max\\\":400000}\"}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

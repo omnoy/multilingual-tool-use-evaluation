@@ -1,0 +1,200 @@
+{
+  "id": "multiple_79_zh",
+  "source_id": "multiple_79",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1540,
+  "total_output_tokens": 403,
+  "total_latency_s": 6.027379989624023,
+  "estimated_cost_usd": 0.0081765,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找纽约现代艺术博物馆下个月的艺术展览。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "exhibition_info": {
+        "museum_name": [
+          "Museum of Modern Art",
+          "MOMA",
+          "Museum of Modern Art, New York"
+        ],
+        "month": [
+          "",
+          1
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"month\": 1, \"museum_name\": \"The Museum of Modern Art, New York\"}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 337,
+      "output_tokens": 149,
+      "latency_s": 2.1734907627105713,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "exhibition_info",
+          "arguments": {
+            "museum_name": "The Museum of Modern Art, New York",
+            "month": 1
+          },
+          "id": "call_a469d2bb42f74eb7aec3b093"
+        }
+      ],
+      "decoded": [
+        {
+          "exhibition_info": {
+            "museum_name": "The Museum of Modern Art, New York",
+            "month": 1
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'exhibition_info'. Please review the function definition and try again.",
+      "input_tokens": 528,
+      "output_tokens": 90,
+      "latency_s": 1.291877031326294,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "exhibition_info",
+          "arguments": {
+            "museum_name": "Museum of Modern Art",
+            "month": 1
+          },
+          "id": "call_7eb242e9ab5c4091b3bb0c94"
+        }
+      ],
+      "decoded": [
+        {
+          "exhibition_info": {
+            "museum_name": "Museum of Modern Art",
+            "month": 1
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 675,
+      "output_tokens": 164,
+      "latency_s": 2.562012195587158,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找纽约现代艺术博物馆下个月的艺术展览。"
+    },
+    {
+      "content": "{\"month\": 1, \"museum_name\": \"The Museum of Modern Art, New York\"}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "I need need respond Chinese with function call exactly specified. User: 查找纽约现代艺术博物馆下个月的艺术展览。Tool exhibition_info month integer number upcoming months default 1, museum_name name. Should have \"New York Museum of Modern Art\" or \"Museum of Modern Art\" (MoMA), month 1 (next month). Should decide parameters exactly. Call exhibition_info {\"month\":1,\"museum_name\":\"Museum of Modern Art\"} perhaps \"纽约现代艺术博物馆\" translated \"The Museum of Modern Art, New York\". I should call. No other text."
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_a469d2bb42f74eb7aec3b093",
+          "function": {
+            "arguments": "{\"museum_name\": \"The Museum of Modern Art, New York\", \"month\": 1}",
+            "name": "exhibition_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I'll actually tool call. Use functions.exhibition_info properly. I mistakenly raw JSON. Now call commentary."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'exhibition_info'. Please review the function definition and try again.",
+      "tool_call_id": "call_a469d2bb42f74eb7aec3b093"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_7eb242e9ab5c4091b3bb0c94",
+          "function": {
+            "arguments": "{\"museum_name\": \"Museum of Modern Art\", \"month\": 1}",
+            "name": "exhibition_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got 400 invalid parameters. Definition month integer, museum_name string. Those valid? Perhaps museum name must exact expected \"Museum of Modern Art\"? Could be weird previous context? I'll retry with standard \"Museum of Modern Art\" and month 1. Could be month semantics \"next month\" month=1 correct. Why invalid parameters? The name \"The Museum of Modern Art, New York\" perhaps invalid as expected known specific museum. Try \"Museum of Modern Art\"."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

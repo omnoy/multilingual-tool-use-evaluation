@@ -1,0 +1,170 @@
+{
+  "id": "multiple_85_zh",
+  "source_id": "multiple_85",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 884,
+  "total_output_tokens": 63,
+  "total_latency_s": 7.853851795196533,
+  "estimated_cost_usd": 0.002146,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "获取皇家马德里在西班牙足球甲级联赛最近5轮比赛的比分。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer_scores.get_scores": {
+        "team": [
+          "皇家马德里"
+        ],
+        "league": [
+          "西班牙足球甲级联赛"
+        ],
+        "rounds": [
+          5
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          },
+          "id": "call-3e63b3e9-fb0e-43db-8a02-72888a8645db-0"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "Real Madrid",
+            "league": "La Liga",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'soccer_scores_get_scores'. Please review the function definition and try again.",
+      "input_tokens": 344,
+      "output_tokens": 29,
+      "latency_s": 4.085228681564331,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_scores_get_scores",
+          "arguments": {
+            "team": "皇家马德里",
+            "league": "西班牙足球甲级联赛",
+            "rounds": 5
+          },
+          "id": "call-c7439675-2c1d-4b9e-937c-bda0f867085f-1"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_scores_get_scores": {
+            "team": "皇家马德里",
+            "league": "西班牙足球甲级联赛",
+            "rounds": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 540,
+      "output_tokens": 34,
+      "latency_s": 3.768623113632202,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "获取皇家马德里在西班牙足球甲级联赛最近5轮比赛的比分。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-3e63b3e9-fb0e-43db-8a02-72888a8645db-0",
+          "function": {
+            "arguments": "{\"team\":\"Real Madrid\",\"league\":\"La Liga\",\"rounds\":5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'soccer_scores_get_scores'. Please review the function definition and try again.",
+      "tool_call_id": "call-3e63b3e9-fb0e-43db-8a02-72888a8645db-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-c7439675-2c1d-4b9e-937c-bda0f867085f-1",
+          "function": {
+            "arguments": "{\"team\":\"皇家马德里\",\"league\":\"西班牙足球甲级联赛\",\"rounds\":5}",
+            "name": "soccer_scores_get_scores"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

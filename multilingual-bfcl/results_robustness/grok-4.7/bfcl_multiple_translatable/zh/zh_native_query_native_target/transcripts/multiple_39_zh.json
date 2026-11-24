@@ -1,0 +1,173 @@
+{
+  "id": "multiple_39_zh",
+  "source_id": "multiple_39",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 747,
+  "total_output_tokens": 61,
+  "total_latency_s": 12.270360946655273,
+  "estimated_cost_usd": 0.00186,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "找一趟从纽约到费城的车，费用不超过50美元"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "ride_hailing.get_rides": {
+        "source": [
+          "纽约",
+          "纽约州纽约市",
+          "纽约市",
+          "纽约州"
+        ],
+        "destination": [
+          "费城"
+        ],
+        "max_cost": [
+          50
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          },
+          "id": "call-587bb403-aa48-4485-857f-ba752e47a119-0"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "New York",
+            "destination": "Philadelphia",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "input_tokens": 344,
+      "output_tokens": 31,
+      "latency_s": 2.365584135055542,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "ride_hailing_get_rides",
+          "arguments": {
+            "source": "纽约",
+            "destination": "费城",
+            "max_cost": 50
+          },
+          "id": "call-224c7e27-1385-419e-8745-5c11ecf13ff5-1"
+        }
+      ],
+      "decoded": [
+        {
+          "ride_hailing_get_rides": {
+            "source": "纽约",
+            "destination": "费城",
+            "max_cost": 50
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 403,
+      "output_tokens": 30,
+      "latency_s": 9.904776811599731,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "找一趟从纽约到费城的车，费用不超过50美元"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-587bb403-aa48-4485-857f-ba752e47a119-0",
+          "function": {
+            "arguments": "{\"source\":\"New York\",\"destination\":\"Philadelphia\",\"max_cost\":50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'ride_hailing_get_rides'. Please review the function definition and try again.",
+      "tool_call_id": "call-587bb403-aa48-4485-857f-ba752e47a119-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-224c7e27-1385-419e-8745-5c11ecf13ff5-1",
+          "function": {
+            "arguments": "{\"source\":\"纽约\",\"destination\":\"费城\",\"max_cost\":50}",
+            "name": "ride_hailing_get_rides"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

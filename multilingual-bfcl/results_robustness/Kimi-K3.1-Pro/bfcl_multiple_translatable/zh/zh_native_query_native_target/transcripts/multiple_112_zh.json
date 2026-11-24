@@ -1,0 +1,172 @@
+{
+  "id": "multiple_112_zh",
+  "source_id": "multiple_112",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 962,
+  "total_output_tokens": 409,
+  "total_latency_s": 3.741485357284546,
+  "estimated_cost_usd": 0.0069161,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "预测黄石国家公园未来5年的森林生长情况，包括人类活动的影响。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "forest_growth_forecast": {
+        "location": [
+          "黄石国家公园"
+        ],
+        "years": [
+          5
+        ],
+        "include_human_impact": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "Yellowstone National Park",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "call_1b9102380e9b4d6ca519ed89"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "Yellowstone National Park",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "input_tokens": 356,
+      "output_tokens": 189,
+      "latency_s": 1.6449377536773682,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "forest_growth_forecast",
+          "arguments": {
+            "location": "黄石国家公园",
+            "years": 5,
+            "include_human_impact": true
+          },
+          "id": "call_bf4cab1acc7b43b4b82d6a50"
+        }
+      ],
+      "decoded": [
+        {
+          "forest_growth_forecast": {
+            "location": "黄石国家公园",
+            "years": 5,
+            "include_human_impact": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 606,
+      "output_tokens": 220,
+      "latency_s": 2.0965476036071777,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "预测黄石国家公园未来5年的森林生长情况，包括人类活动的影响。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_1b9102380e9b4d6ca519ed89",
+          "function": {
+            "arguments": "{\"location\": \"Yellowstone National Park\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户希望预测黄石国家公园未来5年的森林生长情况，包括人类活动影响。需要调用函数 forest_growth_forecast，location 为黄石国家公园，years=5，include_human_impact=true。按照工具定义输出函数调用。位置可以用 \"Yellowstone National Park\" 或中文？通常工具接受字符串，用户中文，地点可中文也可英文。为确保准确用 \"Yellowstone National Park\" 可能更好。需要 exactly as specified in tool definitions，即仅工具调用，不额外解释。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'forest_growth_forecast'. Please review the function definition and try again.",
+      "tool_call_id": "call_1b9102380e9b4d6ca519ed89"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_bf4cab1acc7b43b4b82d6a50",
+          "function": {
+            "arguments": "{\"location\": \"黄石国家公园\", \"years\": 5, \"include_human_impact\": true}",
+            "name": "forest_growth_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回400 invalid parameters。需要检查定义：location string, years integer, include_human_impact boolean optional defaults false。我们传入似乎符合。可能是位置需要中文？或者该工具模拟只接受特定值？需要重试。也许参数顺序无关。错误无效参数而非位置。可能 years 需要整数（已是5），include_human_impact true 是 bool。莫非工具只接受 location 中某些格式？用户中文，可能必须 location=\"黄石国家公园\"。重试用中文位置。若仍失败，可尝试省略 include_human_impact 但用户明确要求包括人类影响，不可省略。可能需要 location 字符串 \"黄石国家公园\" 才有效。调用。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

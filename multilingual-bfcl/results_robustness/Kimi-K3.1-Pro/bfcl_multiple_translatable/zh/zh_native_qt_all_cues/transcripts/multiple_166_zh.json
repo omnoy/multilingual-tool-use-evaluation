@@ -1,0 +1,180 @@
+{
+  "id": "multiple_166_zh",
+  "source_id": "multiple_166",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1241,
+  "total_output_tokens": 489,
+  "total_latency_s": 3.605708599090576,
+  "estimated_cost_usd": 0.008477799999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "帮我找一场本周末在洛杉矶举办、票价便宜的古典音乐会。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "concert.search": {
+        "genre": [
+          "古典音乐"
+        ],
+        "location": [
+          "洛杉矶"
+        ],
+        "date": [
+          "本周末",
+          "周末"
+        ],
+        "price_range": [
+          "cheap"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_search",
+          "arguments": {
+            "genre": "古典",
+            "location": "洛杉矶",
+            "date": "本周末",
+            "price_range": "cheap"
+          },
+          "id": "call_590a19bf9ab6444c8bf728b1"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_search": {
+            "genre": "古典",
+            "location": "洛杉矶",
+            "date": "本周末",
+            "price_range": "cheap"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'concert_search'. Please review the function definition and try again.",
+      "input_tokens": 515,
+      "output_tokens": 154,
+      "latency_s": 1.630385398864746,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "concert_search",
+          "arguments": {
+            "genre": "古典音乐",
+            "location": "洛杉矶",
+            "date": "本周末",
+            "price_range": "cheap"
+          },
+          "id": "call_5f2a5d36b6364372ae42e744"
+        }
+      ],
+      "decoded": [
+        {
+          "concert_search": {
+            "genre": "古典音乐",
+            "location": "洛杉矶",
+            "date": "本周末",
+            "price_range": "cheap"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 726,
+      "output_tokens": 335,
+      "latency_s": 1.97532320022583,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "帮我找一场本周末在洛杉矶举办、票价便宜的古典音乐会。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_590a19bf9ab6444c8bf728b1",
+          "function": {
+            "arguments": "{\"genre\": \"古典\", \"location\": \"洛杉矶\", \"date\": \"本周末\", \"price_range\": \"cheap\"}",
+            "name": "concert_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户想找一场本周末在洛杉矶举办、票价便宜的古典音乐会。Kimi 需要调用 concert_search 函数，参数如下：\n\n- genre: \"古典\" （古典音乐）\n- location: \"洛杉矶\"\n- date: \"本周末\"\n- price_range: \"cheap\"\n\n直接调用即可。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'concert_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_590a19bf9ab6444c8bf728b1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5f2a5d36b6364372ae42e744",
+          "function": {
+            "arguments": "{\"genre\": \"古典音乐\", \"location\": \"洛杉矶\", \"date\": \"本周末\", \"price_range\": \"cheap\"}",
+            "name": "concert_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户想找一场本周末在洛杉矶举办、票价便宜的古典音乐会。第一次调用返回了 400 Bad Request: invalid parameters，需要检查函数定义并重试。\n\n函数定义：\nconcert_search:\n- date: string, required，例如本周末、今天、明天或日期字符串。语言：中文。\n- genre: string, required，音乐类型。语言：中文。\n- location: string, required，城市。语言：中文。\n- price_range: enum [\"free\",\"cheap\",\"moderate\",\"expensive\",\"any\"], default any。\n\n我上次用了 genre \"古典\"、location \"洛杉矶\"、date \"本周末\"、price_range \"cheap\"，都符合定义。可能是 genre 需要更明确的 \"古典音乐\"，或者参数顺序不应该是问题。可能是工具模拟要求 location 用 \"洛杉矶\"，date \"本周末\"，genre \"古典音乐\"，price_range \"cheap\"。为避免 again error，可设置 price_range 默认 any？但用户明确便宜，应该 cheap。错误可能来自 genre 取值 \"古典\" 不符合后端（只支持 \"古典音乐\"?）。我应重试一次，改 genre 为 \"古典音乐\"，其余不变。需直接调用工具，不多解释。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

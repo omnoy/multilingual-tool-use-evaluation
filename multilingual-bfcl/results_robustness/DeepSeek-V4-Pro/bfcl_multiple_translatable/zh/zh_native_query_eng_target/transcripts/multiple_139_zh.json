@@ -1,0 +1,601 @@
+{
+  "id": "multiple_139_zh",
+  "source_id": "multiple_139",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 7913,
+  "total_output_tokens": 1253,
+  "total_latency_s": 15.37076735496521,
+  "estimated_cost_usd": 0.018129060000000002,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找自2010年以来涉及“苹果公司”的专利诉讼详情。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuit_details.find": {
+        "company_name": [
+          "Apple Inc."
+        ],
+        "year": [
+          2010
+        ],
+        "case_type": [
+          "Patent"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "苹果公司",
+            "year": 2010,
+            "case_type": "专利"
+          },
+          "id": "call_c237f6f730c14fb1b253af24"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "苹果公司",
+            "year": 2010,
+            "case_type": "专利"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "input_tokens": 778,
+      "output_tokens": 83,
+      "latency_s": 0.998887300491333,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "我注意到参数有问题。让我检查一下函数定义，然后修正。`case_type` 参数不是必填项，且 `year` 需要是整数类型。让我重新调用，同时也尝试多个年份来覆盖\"自2010年以来\"的范围。"
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "苹果公司",
+            "year": 2010,
+            "case_type": "专利诉讼"
+          },
+          "id": "call_394f042a7aa94f748f7d87e5"
+        },
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple",
+            "year": 2010,
+            "case_type": "专利诉讼"
+          },
+          "id": "call_f61a079f9485429cb35a7d32"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "苹果公司",
+            "year": 2010,
+            "case_type": "专利诉讼"
+          }
+        },
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple",
+            "year": 2010,
+            "case_type": "专利诉讼"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "input_tokens": 895,
+      "output_tokens": 205,
+      "latency_s": 2.172187328338623,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "让我重新审视函数定义。`lawsuit_details_find` 的必填参数是 `company_name` 和 `year`，`case_type` 是可选参数。可能 `case_type` 的值格式有问题。让我尝试只使用必填参数，并使用不同年份进行查询。"
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "苹果公司",
+            "year": 2010
+          },
+          "id": "call_0aabdb1aef5c449a831c18e5"
+        },
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "苹果公司",
+            "year": 2011
+          },
+          "id": "call_3001e531db00495b8a5faa57"
+        },
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "苹果公司",
+            "year": 2012
+          },
+          "id": "call_5603a5b8e46e4882bbfc7d3d"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "苹果公司",
+            "year": 2010
+          }
+        },
+        {
+          "lawsuit_details_find": {
+            "company_name": "苹果公司",
+            "year": 2011
+          }
+        },
+        {
+          "lawsuit_details_find": {
+            "company_name": "苹果公司",
+            "year": 2012
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "input_tokens": 1165,
+      "output_tokens": 231,
+      "latency_s": 5.560459613800049,
+      "num_calls": 3,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "仍然报错。让我尝试使用英文公司名 \"Apple Inc.\"，这可能是系统所期望的格式。"
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple Inc.",
+            "year": 2010
+          },
+          "id": "call_4c07ea2c09464a2698d95a1b"
+        },
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple",
+            "year": 2011
+          },
+          "id": "call_2f2b468501474f26b6ecd9ee"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple Inc.",
+            "year": 2010
+          }
+        },
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple",
+            "year": 2011
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again. | 400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "input_tokens": 1492,
+      "output_tokens": 139,
+      "latency_s": 1.6802618503570557,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [
+        "抱歉，目前对 `lawsuit_details_find` 函数的调用持续返回参数无效的错误。我尝试了多种参数组合（不同的公司名称写法、不同年份等），但系统均返回 `400 Bad Request`。\n\n这可能是由于以下原因造成的：\n\n1. **服务端问题**：该函数的后端服务可能暂时不可用或存在技术问题。\n2. **参数格式限制**：可能有我尚未发现的特定参数格式要求。\n\n**建议**：您可以尝试以下替代方案：\n\n- 稍后重试此查询，看服务是否恢复。\n- 通过其他渠道（如法律数据库、新闻搜索等）查询苹果公司自2010年以来的专利诉讼信息。\n- 如果您有其他可以查询此类信息的工具或平台，也可以尝试使用。\n\n请问您希望我如何进一步协助您？"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 1696,
+      "output_tokens": 167,
+      "latency_s": 1.9585776329040527,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [
+        "您说得对，让我严格按照函数定义再次尝试。回顾 `lawsuit_details_find` 的定义：\n\n- 必填参数：`company_name` (string)、`year` (integer)\n- 可选参数：`case_type` (string)\n\n让我用最简洁的参数再次尝试，并覆盖2010年至今的关键年份："
+      ],
+      "tool_calls": [
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple",
+            "year": 2010,
+            "case_type": "patent"
+          },
+          "id": "call_b9dbc83c79744880b03bd3ae"
+        },
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple",
+            "year": 2011,
+            "case_type": "patent"
+          },
+          "id": "call_aeab60dad5f647a983840cf0"
+        },
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple",
+            "year": 2012,
+            "case_type": "patent"
+          },
+          "id": "call_fd56975fc4a342cb8163ae5f"
+        },
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple",
+            "year": 2013,
+            "case_type": "patent"
+          },
+          "id": "call_0fabb5fd56cf4849a1f1db6a"
+        },
+        {
+          "name": "lawsuit_details_find",
+          "arguments": {
+            "company_name": "Apple",
+            "year": 2014,
+            "case_type": "patent"
+          },
+          "id": "call_f6b5b2bdd6ec4debb8bee921"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple",
+            "year": 2010,
+            "case_type": "patent"
+          }
+        },
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple",
+            "year": 2011,
+            "case_type": "patent"
+          }
+        },
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple",
+            "year": 2012,
+            "case_type": "patent"
+          }
+        },
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple",
+            "year": 2013,
+            "case_type": "patent"
+          }
+        },
+        {
+          "lawsuit_details_find": {
+            "company_name": "Apple",
+            "year": 2014,
+            "case_type": "patent"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1887,
+      "output_tokens": 428,
+      "latency_s": 3.0003936290740967,
+      "num_calls": 5,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找自2010年以来涉及“苹果公司”的专利诉讼详情。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_c237f6f730c14fb1b253af24",
+          "function": {
+            "arguments": "{\"company_name\": \"苹果公司\", \"year\": 2010, \"case_type\": \"专利\"}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_c237f6f730c14fb1b253af24"
+    },
+    {
+      "content": "我注意到参数有问题。让我检查一下函数定义，然后修正。`case_type` 参数不是必填项，且 `year` 需要是整数类型。让我重新调用，同时也尝试多个年份来覆盖\"自2010年以来\"的范围。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_394f042a7aa94f748f7d87e5",
+          "function": {
+            "arguments": "{\"company_name\": \"苹果公司\", \"year\": 2010, \"case_type\": \"专利诉讼\"}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_f61a079f9485429cb35a7d32",
+          "function": {
+            "arguments": "{\"company_name\": \"Apple\", \"year\": 2010, \"case_type\": \"专利诉讼\"}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_394f042a7aa94f748f7d87e5"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_f61a079f9485429cb35a7d32"
+    },
+    {
+      "content": "让我重新审视函数定义。`lawsuit_details_find` 的必填参数是 `company_name` 和 `year`，`case_type` 是可选参数。可能 `case_type` 的值格式有问题。让我尝试只使用必填参数，并使用不同年份进行查询。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_0aabdb1aef5c449a831c18e5",
+          "function": {
+            "arguments": "{\"company_name\": \"苹果公司\", \"year\": 2010}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_3001e531db00495b8a5faa57",
+          "function": {
+            "arguments": "{\"company_name\": \"苹果公司\", \"year\": 2011}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 1
+        },
+        {
+          "id": "call_5603a5b8e46e4882bbfc7d3d",
+          "function": {
+            "arguments": "{\"company_name\": \"苹果公司\", \"year\": 2012}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_0aabdb1aef5c449a831c18e5"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_3001e531db00495b8a5faa57"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_5603a5b8e46e4882bbfc7d3d"
+    },
+    {
+      "content": "仍然报错。让我尝试使用英文公司名 \"Apple Inc.\"，这可能是系统所期望的格式。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4c07ea2c09464a2698d95a1b",
+          "function": {
+            "arguments": "{\"company_name\": \"Apple Inc.\", \"year\": 2010}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_2f2b468501474f26b6ecd9ee",
+          "function": {
+            "arguments": "{\"company_name\": \"Apple\", \"year\": 2011}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_4c07ea2c09464a2698d95a1b"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_details_find'. Please review the function definition and try again.",
+      "tool_call_id": "call_2f2b468501474f26b6ecd9ee"
+    },
+    {
+      "content": "抱歉，目前对 `lawsuit_details_find` 函数的调用持续返回参数无效的错误。我尝试了多种参数组合（不同的公司名称写法、不同年份等），但系统均返回 `400 Bad Request`。\n\n这可能是由于以下原因造成的：\n\n1. **服务端问题**：该函数的后端服务可能暂时不可用或存在技术问题。\n2. **参数格式限制**：可能有我尚未发现的特定参数格式要求。\n\n**建议**：您可以尝试以下替代方案：\n\n- 稍后重试此查询，看服务是否恢复。\n- 通过其他渠道（如法律数据库、新闻搜索等）查询苹果公司自2010年以来的专利诉讼信息。\n- 如果您有其他可以查询此类信息的工具或平台，也可以尝试使用。\n\n请问您希望我如何进一步协助您？",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "您说得对，让我严格按照函数定义再次尝试。回顾 `lawsuit_details_find` 的定义：\n\n- 必填参数：`company_name` (string)、`year` (integer)\n- 可选参数：`case_type` (string)\n\n让我用最简洁的参数再次尝试，并覆盖2010年至今的关键年份：",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_b9dbc83c79744880b03bd3ae",
+          "function": {
+            "arguments": "{\"company_name\": \"Apple\", \"year\": 2010, \"case_type\": \"patent\"}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call_aeab60dad5f647a983840cf0",
+          "function": {
+            "arguments": "{\"company_name\": \"Apple\", \"year\": 2011, \"case_type\": \"patent\"}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 1
+        },
+        {
+          "id": "call_fd56975fc4a342cb8163ae5f",
+          "function": {
+            "arguments": "{\"company_name\": \"Apple\", \"year\": 2012, \"case_type\": \"patent\"}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 2
+        },
+        {
+          "id": "call_0fabb5fd56cf4849a1f1db6a",
+          "function": {
+            "arguments": "{\"company_name\": \"Apple\", \"year\": 2013, \"case_type\": \"patent\"}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 3
+        },
+        {
+          "id": "call_f6b5b2bdd6ec4debb8bee921",
+          "function": {
+            "arguments": "{\"company_name\": \"Apple\", \"year\": 2014, \"case_type\": \"patent\"}",
+            "name": "lawsuit_details_find"
+          },
+          "type": "function",
+          "index": 4
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

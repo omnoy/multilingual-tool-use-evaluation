@@ -1,0 +1,188 @@
+{
+  "id": "multiple_15_zh",
+  "source_id": "multiple_15",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "DeepSeek-V4-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1304,
+  "total_output_tokens": 201,
+  "total_latency_s": 14.820092916488647,
+  "estimated_cost_usd": 0.00296844,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "位于坐标 [43.653225, -79.383186] 处的太阳能电站，太阳能电池板总面积为 80000 平方英尺，其在十二月的潜在发电量是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "solarFarm.potential": {
+        "coordinates": [
+          [
+            43.653225,
+            -79.383186
+          ]
+        ],
+        "panelArea": [
+          80000
+        ],
+        "month": [
+          "December",
+          "Dec"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "十二月"
+          },
+          "id": "call_9f2ac74b14a442e89474d4d6"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "十二月"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+      "input_tokens": 588,
+      "output_tokens": 93,
+      "latency_s": 1.688976526260376,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "参数有误，让我修正一下月份的格式。月份参数应该使用英文。"
+      ],
+      "tool_calls": [
+        {
+          "name": "solarFarm_potential",
+          "arguments": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          },
+          "id": "call_e31b9bff4b4b424f80db3e93"
+        }
+      ],
+      "decoded": [
+        {
+          "solarFarm_potential": {
+            "coordinates": [
+              43.653225,
+              -79.383186
+            ],
+            "panelArea": 80000,
+            "month": "December"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 716,
+      "output_tokens": 108,
+      "latency_s": 13.131116390228271,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "位于坐标 [43.653225, -79.383186] 处的太阳能电站，太阳能电池板总面积为 80000 平方英尺，其在十二月的潜在发电量是多少？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9f2ac74b14a442e89474d4d6",
+          "function": {
+            "arguments": "{\"coordinates\": [43.653225, -79.383186], \"panelArea\": 80000, \"month\": \"十二月\"}",
+            "name": "solarFarm_potential"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'solarFarm_potential'. Please review the function definition and try again.",
+      "tool_call_id": "call_9f2ac74b14a442e89474d4d6"
+    },
+    {
+      "content": "参数有误，让我修正一下月份的格式。月份参数应该使用英文。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_e31b9bff4b4b424f80db3e93",
+          "function": {
+            "arguments": "{\"coordinates\": [43.653225, -79.383186], \"panelArea\": 80000, \"month\": \"December\"}",
+            "name": "solarFarm_potential"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,182 @@
+{
+  "id": "multiple_137_zh",
+  "source_id": "multiple_137",
+  "locale": "zh",
+  "localization_level": "native_qt_func_descs",
+  "benchmark": "zh_native_qt_func_descs",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1416,
+  "total_output_tokens": 539,
+  "total_latency_s": 4.489592552185059,
+  "estimated_cost_usd": 0.0094553,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "搜索2021年1月1日之后在加利福尼亚州提起的与“谷歌”公司相关的正在审理中的诉讼。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawsuit_search": {
+        "company": [
+          "谷歌"
+        ],
+        "start_date": [
+          "2021-01-01",
+          "01/01/2021",
+          "2021年1月1日"
+        ],
+        "location": [
+          "加利福尼亚州"
+        ],
+        "status": [
+          "ongoing",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "Google",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          },
+          "id": "call_339d7e4725244a5787402e18"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "Google",
+            "start_date": "2021-01-01",
+            "location": "California",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "input_tokens": 509,
+      "output_tokens": 339,
+      "latency_s": 2.106718063354492,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawsuit_search",
+          "arguments": {
+            "company": "谷歌",
+            "start_date": "2021-01-01",
+            "location": "加利福尼亚州",
+            "status": "ongoing"
+          },
+          "id": "call_3ff7eeb1f65b42e3a2e0496c"
+        }
+      ],
+      "decoded": [
+        {
+          "lawsuit_search": {
+            "company": "谷歌",
+            "start_date": "2021-01-01",
+            "location": "加利福尼亚州",
+            "status": "ongoing"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 907,
+      "output_tokens": 200,
+      "latency_s": 2.3828744888305664,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "搜索2021年1月1日之后在加利福尼亚州提起的与“谷歌”公司相关的正在审理中的诉讼。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_339d7e4725244a5787402e18",
+          "function": {
+            "arguments": "{\"company\": \"Google\", \"start_date\": \"2021-01-01\", \"location\": \"California\", \"status\": \"ongoing\"}",
+            "name": "lawsuit_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要求搜索2021年1月1日之后在加利福尼亚州提起的与\"谷歌\"公司相关的正在审理中的诉讼。\n\n我需要使用 lawsuit_search 函数：\n- company: \"谷歌\" 或 \"Google\" — 用户写的是\"谷歌\"，工具描述是公司相关。用 \"谷歌\" 可能搜索不到，但按照用户输入，应该转换为Google更合适？通常这类任务期待 company=\"谷歌\" 或 \"Google\"。考虑工具是英文描述，但用户中文。一般正确做法是使用 \"Google\" 因为数据库可能英文。不过很多类似评测期待保留关键词？需要判断。\n- location: \"加利福尼亚州\" 或 \"California\"。同样问题。\n- start_date: \"2021-01-01\"\n- status: \"ongoing\"（正在审理中）\n\n此类工具调用任务通常需要把中文地名和公司名翻成英文，以便工具使用。但评分可能基于精确参数。我倾向于 company: \"Google\", location: \"California\", start_date: \"2021-01-01\", status: \"ongoing\"。\n\n“2021年1月1日之后”指起始日期2021-01-01。调用即可。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'lawsuit_search'. Please review the function definition and try again.",
+      "tool_call_id": "call_339d7e4725244a5787402e18"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_3ff7eeb1f65b42e3a2e0496c",
+          "function": {
+            "arguments": "{\"company\": \"谷歌\", \"start_date\": \"2021-01-01\", \"location\": \"加利福尼亚州\", \"status\": \"ongoing\"}",
+            "name": "lawsuit_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回400无效参数。需要检查定义。必需 company,start_date,location。status可选 ongoing等。可能 company 必须中文？或 location格式？start_date 格式？我按定义给了字符串。可能后端期待中文输入\"谷歌\"和\"加利福尼亚州\"。由于任务中文、数据可能中文。重试使用用户原始中文。也许400是因为company不认识? 但说invalid parameters，不是无结果。可能location必须是\"加利福尼亚州\"，company \"谷歌\"。试试。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

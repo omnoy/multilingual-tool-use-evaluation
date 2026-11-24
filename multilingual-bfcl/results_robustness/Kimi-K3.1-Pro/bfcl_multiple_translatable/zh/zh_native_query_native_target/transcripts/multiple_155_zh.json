@@ -1,0 +1,165 @@
+{
+  "id": "multiple_155_zh",
+  "source_id": "multiple_155",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1258,
+  "total_output_tokens": 299,
+  "total_latency_s": 4.200522422790527,
+  "estimated_cost_usd": 0.0063319,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "谁发现了中子？请给我详细信息。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_discoverer": {
+        "discovery": [
+          "中子"
+        ],
+        "detail": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_discoverer",
+          "arguments": {
+            "discovery": "neutron",
+            "detail": true
+          },
+          "id": "call_02fd83fbb39f424792b942a8"
+        }
+      ],
+      "decoded": [
+        {
+          "get_discoverer": {
+            "discovery": "neutron",
+            "detail": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_discoverer'. Please review the function definition and try again.",
+      "input_tokens": 500,
+      "output_tokens": 199,
+      "latency_s": 2.703561544418335,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_discoverer",
+          "arguments": {
+            "discovery": "中子",
+            "detail": true
+          },
+          "id": "call_dad4fada5a7e4e17b5e9f45e"
+        }
+      ],
+      "decoded": [
+        {
+          "get_discoverer": {
+            "discovery": "中子",
+            "detail": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 758,
+      "output_tokens": 100,
+      "latency_s": 1.4969608783721924,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "谁发现了中子？请给我详细信息。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_02fd83fbb39f424792b942a8",
+          "function": {
+            "arguments": "{\"discovery\": \"neutron\", \"detail\": true}",
+            "name": "get_discoverer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户用中文问\"谁发现了中子？请给我详细信息。\" 需要调用get_discoverer工具，discovery为\"中子\"或\"neutron\"，detail为true。工具描述是英文，discovery字段\"The discovery for which the discoverer's information is needed\"，可能用英文更稳妥，但用户中文请求可用\"中子\"。需要正确函数调用，不直接回答。选择discovery=\"发现中子\"还是\"中子\"？通常这类工具期望discovery名称，如\"neutron\"。为了匹配后端可能英文知识库，用\"neutron\"更稳妥。detail true。调用后根据结果用中文回复详细信息。现在只需调用。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_discoverer'. Please review the function definition and try again.",
+      "tool_call_id": "call_02fd83fbb39f424792b942a8"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_dad4fada5a7e4e17b5e9f45e",
+          "function": {
+            "arguments": "{\"discovery\": \"中子\", \"detail\": true}",
+            "name": "get_discoverer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回400 invalid parameters。可能discovery需要中文？或者detail? schema正确。需要重试。可能函数只接受特定发现字符串如\"中子\"。我用中文试试。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

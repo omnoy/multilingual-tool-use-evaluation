@@ -1,0 +1,234 @@
+{
+  "id": "multiple_134_zh",
+  "source_id": "multiple_134",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2720,
+  "total_output_tokens": 579,
+  "total_latency_s": 6.701819658279419,
+  "estimated_cost_usd": 0.012914499999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查询圣迭戈县案件编号为 CA123456 的重罪犯罪记录详情"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "crime_record.get_record": {
+        "case_number": [
+          "CA123456"
+        ],
+        "county": [
+          "圣迭戈",
+          "圣迭戈县"
+        ],
+        "details": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego County",
+            "details": true
+          },
+          "id": "call_9d67e00fb99144d8808627bf"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego County",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 688,
+      "output_tokens": 189,
+      "latency_s": 2.8541553020477295,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          },
+          "id": "call_11ef01c30eea4941ab790068"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "San Diego",
+            "details": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "input_tokens": 936,
+      "output_tokens": 101,
+      "latency_s": 1.4592657089233398,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "crime_record_get_record",
+          "arguments": {
+            "case_number": "CA123456",
+            "county": "圣迭戈县",
+            "details": true
+          },
+          "id": "call_8275a93123cc46f2b17b0eb5"
+        }
+      ],
+      "decoded": [
+        {
+          "crime_record_get_record": {
+            "case_number": "CA123456",
+            "county": "圣迭戈县",
+            "details": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1096,
+      "output_tokens": 289,
+      "latency_s": 2.3883986473083496,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查询圣迭戈县案件编号为 CA123456 的重罪犯罪记录详情"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9d67e00fb99144d8808627bf",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego County\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need respond with tool call correct. User Chinese: \"查询圣迭戈县案件编号为 CA123456 的重罪犯罪记录详情\" Query felony crime record details in San Diego County case CA123456. Should call crime_record_get_record case_number CA123456 county San Diego perhaps \"San Diego County\"? Tool specific county string. details true. Should decide language output? I just call function exactly. Use county \"San Diego\" or \"San Diego County\". Likely San Diego County. Should have no other."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_9d67e00fb99144d8808627bf"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_11ef01c30eea4941ab790068",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"San Diego\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I got invalid. Should review likely county enum expected \"San Diego\" no County. Try."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'crime_record_get_record'. Please review the function definition and try again.",
+      "tool_call_id": "call_11ef01c30eea4941ab790068"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8275a93123cc46f2b17b0eb5",
+          "function": {
+            "arguments": "{\"case_number\": \"CA123456\", \"county\": \"圣迭戈县\", \"details\": true}",
+            "name": "crime_record_get_record"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "I need figure why. Could county should Chinese \"圣迭戈县\"? Tool defined simple strings. Perhaps details true only? All present. Potential tool rejects uppercase? Data county \"san_diego\"? Case valid. Should adjust likely expected county \"San Diego\" or \"san diego\". First two no. Could expected county Chinese as user? Most tasks synthetic tool with fixed accepted values? Should systematically infer. Function 400 invalid parameters likely validation against required types? I have format correct. The tool might expect \"county\": \"San Diego County\" but detailed boolean true? It was. Perhaps only details omitted? But details requested, must true. Perhaps \"San Diego, CA\"? Or \"圣迭戈县\". Should try Chinese exact user for county. The instruction says understand Chinese and respond correct call. Could be county location \"San Diego\" known. Yet failed. Perhaps case number expects \"CA-123456\"? Given CA123456. Should not alter? I should try county \"圣迭戈县\"."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

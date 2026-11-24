@@ -1,0 +1,158 @@
+{
+  "id": "multiple_73_zh",
+  "source_id": "multiple_73",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 749,
+  "total_output_tokens": 205,
+  "total_latency_s": 3.341718912124634,
+  "estimated_cost_usd": 0.004080199999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "佛教的创始人是谁？佛教起源于哪里？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "religion.get_origin": {
+        "religion": [
+          "Buddhism"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_get_origin",
+          "arguments": {
+            "religion": "佛教"
+          },
+          "id": "call_8bf9e079e72144db8b4e978d"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_get_origin": {
+            "religion": "佛教"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'religion_get_origin'. Please review the function definition and try again.",
+      "input_tokens": 304,
+      "output_tokens": 82,
+      "latency_s": 1.4019935131072998,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "religion_get_origin",
+          "arguments": {
+            "religion": "Buddhism"
+          },
+          "id": "call_863cb3f66480429ead898c50"
+        }
+      ],
+      "decoded": [
+        {
+          "religion_get_origin": {
+            "religion": "Buddhism"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 445,
+      "output_tokens": 123,
+      "latency_s": 1.939725399017334,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "佛教的创始人是谁？佛教起源于哪里？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_8bf9e079e72144db8b4e978d",
+          "function": {
+            "arguments": "{\"religion\": \"佛教\"}",
+            "name": "religion_get_origin"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问佛教的创始人是谁？佛教起源于哪里？需要调用 religion_get_origin，参数 religion 佛教。然后回答中文。需要正确函数调用。我们调用工具。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'religion_get_origin'. Please review the function definition and try again.",
+      "tool_call_id": "call_8bf9e079e72144db8b4e978d"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_863cb3f66480429ead898c50",
+          "function": {
+            "arguments": "{\"religion\": \"Buddhism\"}",
+            "name": "religion_get_origin"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具报 400 invalid parameters，奇怪 schema 仅 religion string。可能工具期望英文佛教名称？需要重试 Buddhism 或 Buddhism? 用户中文理解请求，但工具可指定宗教英文。需要审查函数定义 religion string。可能内部只支持英文，错误 invalid parameters 并非 not found。试试 religion: \"Buddhism\"。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

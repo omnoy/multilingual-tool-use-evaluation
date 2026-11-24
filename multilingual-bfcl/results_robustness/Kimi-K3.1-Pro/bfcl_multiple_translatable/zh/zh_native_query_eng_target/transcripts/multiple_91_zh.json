@@ -1,0 +1,107 @@
+{
+  "id": "multiple_91_zh",
+  "source_id": "multiple_91",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 356,
+  "total_output_tokens": 186,
+  "total_latency_s": 1.4940664768218994,
+  "estimated_cost_usd": 0.0029577999999999996,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "能找到一个使用少于5种食材的优质苹果派食谱吗？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "apple pie",
+          "apple"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          },
+          "id": "call_722cf883adf74c1abd579ed1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 356,
+      "output_tokens": 186,
+      "latency_s": 1.4940664768218994,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "能找到一个使用少于5种食材的优质苹果派食谱吗？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_722cf883adf74c1abd579ed1",
+          "function": {
+            "arguments": "{\"mainIngredient\": \"apple\", \"ingredientLimit\": 4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户要求找一个使用少于5种食材的优质苹果派食谱。工具是 recipe_find，参数 mainIngredient 和 ingredientLimit（最大食材数）.\"少于5种\" 意味着 ingredientLimit 应该是4（因为 max number of ingredients, 少于5 => 最多4）。主料 apple。要回应正确函数调用。需要思考是否 mainIngredient 用 \"apple\" 还是 \"apple pie\"? 工具定义 main ingredient for recipe, 用户苹果派，主料苹果。填 apple, ingredientLimit 4。不要额外文本？用户中文，回应函数调用即可。只需调用 recipe_find。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

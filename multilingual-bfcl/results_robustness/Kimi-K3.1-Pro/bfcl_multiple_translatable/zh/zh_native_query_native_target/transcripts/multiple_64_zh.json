@@ -1,0 +1,165 @@
+{
+  "id": "multiple_64_zh",
+  "source_id": "multiple_64",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1042,
+  "total_output_tokens": 231,
+  "total_latency_s": 2.913524627685547,
+  "estimated_cost_usd": 0.0050531,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "请告诉我东京明天（2023年6月1日）的紫外线指数。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "uv_index.get_future": {
+        "location": [
+          "东京"
+        ],
+        "date": [
+          "06-01-2023"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "location": "Tokyo",
+            "date": "06-01-2023"
+          },
+          "id": "call_46e83409798549b3ab3b0987"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "location": "Tokyo",
+            "date": "06-01-2023"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "input_tokens": 428,
+      "output_tokens": 127,
+      "latency_s": 1.5066521167755127,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "uv_index_get_future",
+          "arguments": {
+            "location": "东京",
+            "date": "06-01-2023"
+          },
+          "id": "call_9ca493ba77f1445f99ef9577"
+        }
+      ],
+      "decoded": [
+        {
+          "uv_index_get_future": {
+            "location": "东京",
+            "date": "06-01-2023"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 614,
+      "output_tokens": 104,
+      "latency_s": 1.4068725109100342,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "请告诉我东京明天（2023年6月1日）的紫外线指数。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_46e83409798549b3ab3b0987",
+          "function": {
+            "arguments": "{\"location\": \"Tokyo\", \"date\": \"06-01-2023\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问的是东京明天（2023年6月1日）的紫外线指数。我需要使用 uv_index_get_future 工具，location 为 Tokyo（或者 东京），date 格式为 mm-dd-yyyy，即 06-01-2023。\n\n直接调用工具即可。"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'uv_index_get_future'. Please review the function definition and try again.",
+      "tool_call_id": "call_46e83409798549b3ab3b0987"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_9ca493ba77f1445f99ef9577",
+          "function": {
+            "arguments": "{\"location\": \"东京\", \"date\": \"06-01-2023\"}",
+            "name": "uv_index_get_future"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "工具返回400错误，可能是location需要用中文\"东京\"或者其他格式问题。日期格式看起来正确：06-01-2023。我尝试用\"东京\"作为location。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

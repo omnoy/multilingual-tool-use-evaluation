@@ -1,0 +1,110 @@
+{
+  "id": "multiple_20_zh",
+  "source_id": "multiple_20",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 1,
+  "num_clarifications": 0,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 424,
+  "total_output_tokens": 255,
+  "total_latency_s": 2.0776870250701904,
+  "estimated_cost_usd": 0.0039077,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "委托制作一座尺寸为3英尺的大理石雕塑需要多少钱？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "sculpture_price.calculate": {
+        "material": [
+          "marble"
+        ],
+        "size": [
+          3
+        ],
+        "complexity": [
+          "medium",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "sculpture_price_calculate",
+          "arguments": {
+            "material": "marble",
+            "size": 3
+          },
+          "id": "call_426eb40a59d5416fb45ed4f2"
+        }
+      ],
+      "decoded": [
+        {
+          "sculpture_price_calculate": {
+            "material": "marble",
+            "size": 3
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 424,
+      "output_tokens": 255,
+      "latency_s": 2.0776870250701904,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "委托制作一座尺寸为3英尺的大理石雕塑需要多少钱？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_426eb40a59d5416fb45ed4f2",
+          "function": {
+            "arguments": "{\"material\": \"marble\", \"size\": 3}",
+            "name": "sculpture_price_calculate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户问委托制作一座尺寸为3英尺的大理石雕塑需要多少钱。需要调用价格计算工具，material marble，size 3。用户没有指定复杂度，工具默认medium，可省略或显式medium。需要正确函数调用。因为工具说明英文接口，material可传\"marble\"。commission price estimate. 应直接 tool call，不留多余。之后根据结果用中文回答。注意 instructions: user writes Chinese, understand request and respond with correct function call exactly specified. 我现在调用 functions.sculpture_price_calculate.  complexity default medium perhaps include? User didn't specify, schema default. Best omit complexity? Function call exactly specified permits optional. I can pass {\"material\":\"marble\",\"size\":3,\"complexity\":\"medium\"} but user didn't request complexity; default medium likely. The price tool calculates. Use omit to rely default or set medium. I should call with material marble size 3."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

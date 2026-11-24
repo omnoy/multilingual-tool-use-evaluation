@@ -1,0 +1,144 @@
+{
+  "id": "multiple_142_zh",
+  "source_id": "multiple_142",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 957,
+  "total_output_tokens": 314,
+  "total_latency_s": 3.677903890609741,
+  "estimated_cost_usd": 0.0058121,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "佛罗里达州迈阿密未来7天的湿度是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "weather.humidity_forecast": {
+        "location": [
+          "迈阿密",
+          "佛罗里达州迈阿密",
+          "佛罗里达州"
+        ],
+        "days": [
+          7
+        ],
+        "min_humidity": [
+          "",
+          0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"location\":\"佛罗里达州迈阿密\",\"days\":7}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 391,
+      "output_tokens": 133,
+      "latency_s": 1.6356775760650635,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "location": "佛罗里达州迈阿密",
+            "days": 7
+          },
+          "id": "call_5ccb41f96c1441dfbebdecf6"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "location": "佛罗里达州迈阿密",
+            "days": 7
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 566,
+      "output_tokens": 181,
+      "latency_s": 2.0422263145446777,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "佛罗里达州迈阿密未来7天的湿度是多少？"
+    },
+    {
+      "content": "{\"location\":\"佛罗里达州迈阿密\",\"days\":7}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null,
+      "reasoning_content": "用户问佛罗里达州迈阿密未来7天的湿度。需要调用湿度预测工具。location 参数要中文，工具描述“要查询湿度的城市。 语言：中文。” 用户提供的城市是迈阿密，佛罗里达州可补充为“佛罗里达州迈阿密”或“迈阿密”。days=7。min_humidity 可省略默认0。直接调用。需要注意用户要求“respond with correct function call exactly as specified”，不额外文本。调用 weather_humidity_forecast。"
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_5ccb41f96c1441dfbebdecf6",
+          "function": {
+            "arguments": "{\"location\": \"佛罗里达州迈阿密\", \"days\": 7}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户请求：佛罗里达州迈阿密未来7天湿度。之前助手错误地输出了JSON文本没有调用工具，现在系统反馈400。需要实际调用 functions.weather_humidity_forecast，location 中文，可以“迈阿密”或“佛罗里达州迈阿密”。工具参数城市中文，描述支持地点和时间范围。最好 location \"迈阿密\"（中文城市），days 7。也可包含州以避免歧义：\"佛罗里达州迈阿密\"。需要调用。min_humidity 可省略。调用即可。"
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,172 @@
+{
+  "id": "multiple_148_zh",
+  "source_id": "multiple_148",
+  "locale": "zh",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "zh_native_qt_all_cues",
+  "model": "Kimi-K3.1-Pro",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1119,
+  "total_output_tokens": 549,
+  "total_latency_s": 6.3943517208099365,
+  "estimated_cost_usd": 0.0088872,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "请提供苹果公司股票的详细信息。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_stock_info": {
+        "company_name": [
+          "苹果公司",
+          "苹果"
+        ],
+        "detail_level": [
+          "详细"
+        ],
+        "market": [
+          "纳斯达克",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_stock_info",
+          "arguments": {
+            "company_name": "苹果公司",
+            "detail_level": "详细",
+            "market": "美国"
+          },
+          "id": "call_4a21d8f8933f40748c2b0f47"
+        }
+      ],
+      "decoded": [
+        {
+          "get_stock_info": {
+            "company_name": "苹果公司",
+            "detail_level": "详细",
+            "market": "美国"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'get_stock_info'. Please review the function definition and try again.",
+      "input_tokens": 358,
+      "output_tokens": 346,
+      "latency_s": 2.3278374671936035,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_stock_info",
+          "arguments": {
+            "company_name": "苹果公司",
+            "detail_level": "详细"
+          },
+          "id": "call_2b2199c5c1ef4f529a300e59"
+        }
+      ],
+      "decoded": [
+        {
+          "get_stock_info": {
+            "company_name": "苹果公司",
+            "detail_level": "详细"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 761,
+      "output_tokens": 203,
+      "latency_s": 4.066514253616333,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "请提供苹果公司股票的详细信息。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_4a21d8f8933f40748c2b0f47",
+          "function": {
+            "arguments": "{\"company_name\": \"苹果公司\", \"detail_level\": \"详细\", \"market\": \"美国\"}",
+            "name": "get_stock_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "用户请求提供苹果公司股票的详细信息。我需要使用get_stock_info工具，company_name为\"苹果公司\"，detail_level为\"详细\"（工具描述语言中文，detail_level是字符串），market可选。用户没有指定市场，苹果在纳斯达克/美国市场，但是否需要填market？工具定义market非必填（required只有company_name和detail_level）。为了准确可提供market=\"美国\"或\"纳斯达克\"。需要考虑\"correct function call exactly as specified\"即调用函数。detail_level应填\"详细\"或\"详细信息\"? 没有枚举。用\"详细\"合理。market可填\"美国\"因为感兴趣股票市场，苹果主要在美国纳斯达克上市。是否不应擅自添加？用户问苹果公司股票详细信息，明显市场为美国，可填\"纳斯达克\"更精确。但工具可能期待中文company_name和detail_level。 past tasks likely benchmark where call get_stock_info(company_name=\"苹果公司\", detail_level=\"详细\", market=\"美国\")? Should decide.\n\nKimi will respond with just the tool call, no extra. Use market \"美国\" perhaps. Since market optional and user didn't specify, can omit to avoid assumption. However获取苹果股票需要市场，工具也能根据公司检索特定股票信息，market感兴趣的股票市场 optional. Apple unambiguous, omit market. detail_level = \"详细\". Now call."
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'get_stock_info'. Please review the function definition and try again.",
+      "tool_call_id": "call_4a21d8f8933f40748c2b0f47"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call_2b2199c5c1ef4f529a300e59",
+          "function": {
+            "arguments": "{\"company_name\": \"苹果公司\", \"detail_level\": \"详细\"}",
+            "name": "get_stock_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "reasoning_content": "Tool returned 400 invalid parameters. Should review and retry. Could be market expects specific value or detail_level values? I need infer. Perhaps company_name should be \"苹果\" not \"苹果公司\"? Or detail_level \"高\" instead of \"详细\"? Tool schema generic strings. 400 invalid parameters often because detail_level expects e.g. \"comprehensive\" or market \"NASDAQ\"? But instructions language Chinese. Should think likely evaluation environment. User Chinese. Tool definitions generated with params but no enums. I must call correctly. First call failed. Now adjust. Could omit optional market; perhaps invalid market value \"美国\" not accepted. detail_level \"详细\" may be okay. Retry without market."
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

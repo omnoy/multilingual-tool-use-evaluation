@@ -50,7 +50,7 @@ DATA_ROOT = PACKAGE_ROOT / "data"
 BENCHMARKS_ROOT = DATA_ROOT / "benchmarks"
 
 DEFAULT_EXCLUDE = ("_full_func_desc", "_full_full_full")
-# Appended by add_language_descriptors.py, e.g. " Languages: English, Hebrew."
+# Appended by add_language_hints.py, e.g. " Languages: English, Hebrew."
 LANG_SUFFIX_RE = re.compile(r"( Languages?: [^.]*\.)$")
 
 

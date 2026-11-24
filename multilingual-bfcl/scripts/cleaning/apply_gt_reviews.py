@@ -65,7 +65,7 @@ DATA_ROOT = PACKAGE_ROOT / "data"
 BENCHMARKS_ROOT = DATA_ROOT / "benchmarks"
 REVIEWS_ROOT = DATA_ROOT / "gt_reviews"
 
-# Appended by add_language_descriptors.py, e.g. " Languages: English, Hebrew."
+# Appended by add_language_hints.py, e.g. " Languages: English, Hebrew."
 LANG_SUFFIX_RE = re.compile(r"( Languages?: [^.]*\.)$")
 
 # variant built on a level-"full" file (e.g. he_native_query_native_target) -> mode.

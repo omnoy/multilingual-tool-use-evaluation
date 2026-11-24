@@ -1,22 +1,22 @@
 """
-add_language_descriptors.py — annotate a benchmark's natural-language parameters
-with an explicit "Languages: <lang>." descriptor naming the native language.
+add_language_hints.py — annotate a benchmark's natural-language parameters
+with an explicit "Languages: <lang>." hint naming the native language.
 
-Unlike `mbfcl descriptors` (which derives the language list per entry from each
+Unlike `mbfcl hints` (which derives the language list per entry from each
 entry's own `locale` field), this standalone script takes the languages
 explicitly on the command line, so you control exactly what appears in the hint
 regardless of what locale the entries claim to be in. This is the "do the same
-thing" variant for building descriptor benchmarks with an arbitrary language set.
+thing" variant for building hint benchmarks with an arbitrary language set.
 
 Detection is unchanged and ground-truth driven (see
-translator.add_language_descriptors_to_entry):
+translator.add_language_hints_to_entry):
   - a parameter is natural-language if at least one of its ground-truth values
     passes the basic is_translatable_string regex (not a number/bool/date);
   - enums are excluded;
-  - the descriptor is propagated to structurally-identical params in sibling
+  - the hint is propagated to structurally-identical params in sibling
     (distractor) functions so it never reveals which function is the answer.
 
-The descriptor lists only the NAME of the target (`--dest_locale`) language, e.g.
+The hint lists only the NAME of the target (`--dest_locale`) language, e.g.
 
   --dest_locale he                     ->  "Languages: Hebrew."
 
@@ -26,7 +26,7 @@ behaviour, which mentioned English alongside the native language):
   --source_locale en --dest_locale he  ->  "Languages: English, Hebrew."
 
 Usage:
-  python scripts/add_language_descriptors.py --input_file he_native_query_native_target \
+  python scripts/add_language_hints.py --input_file he_native_query_native_target \
       --category bfcl_multiple_translatable --dest_locale he
 """
 
@@ -44,7 +44,7 @@ sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 from multilingual_bfcl.experiment_names import EXPERIMENT_TO_LEVEL, derived_stem, split_stem  # noqa: E402
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
 from multilingual_bfcl.localization.translator import (  # noqa: E402
-    add_language_descriptors_to_entry,
+    add_language_hints_to_entry,
 )
 
 
@@ -66,7 +66,7 @@ def build_language_string(dest_locale: str, source_locale: str | None = None) ->
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Append an explicit 'Languages: <lang>.' descriptor to the "
+        description="Append an explicit 'Languages: <lang>.' hint to the "
         "natural-language parameters of a built benchmark .jsonl.",
     )
 
@@ -84,12 +84,12 @@ def main() -> None:
         "--source_locale", "-L",
         default=None,
         help="Optional extra locale listed before the target language. By default the "
-        "descriptor names only the target (native) language.",
+        "hint names only the target (native) language.",
     )
     parser.add_argument(
         "--dest_locale", "-l",
         required=True,
-        help="Target (native) locale code whose name the descriptor lists, e.g. he.",
+        help="Target (native) locale code whose name the hint lists, e.g. he.",
     )
     parser.add_argument(
         "--suffix",
@@ -131,7 +131,7 @@ def main() -> None:
     for entry in entries:
         if out_experiment in EXPERIMENT_TO_LEVEL and "localization_level" in entry:
             entry["localization_level"] = out_experiment
-        n = add_language_descriptors_to_entry(entry, languages)
+        n = add_language_hints_to_entry(entry, languages)
         total_modified += n
         if n:
             tagged_entries += 1

@@ -23,7 +23,7 @@ Past renames done with earlier versions of this script (for reference):
     <lang>_translatable_func_desc      -> <lang>_native_query_func_descs
 
 Applied to file CONTENTS (text files) and to file/folder NAMES, across the whole repo
-(data/, results_robustness/, old/ folders, scripts, notebooks, ...). Skips .git, virtualenvs,
+(data/, results_robustness/, old/ folders, scripts, analysis gui, ...). Skips .git, virtualenvs,
 IDE folders and caches. Names are matched as whole tokens only (no letter/digit right before the
 language code, nothing but an optional "_shuffled" after the suffix), so e.g.
 `he_native_qt_max_context_v2` is untouched. Running it twice is a no-op as long as no new suffix

@@ -351,7 +351,7 @@ def collect_textual_value_contexts(
 
 
 # ---------------------------------------------------------------------------
-# Language descriptors — annotate natural-language parameters with the set of
+# Language hints — annotate natural-language parameters with the set of
 # languages their value may be given in (e.g. "Languages: English, Hebrew.").
 #
 # Detection combines two signals so that distractor functions — which are never
@@ -389,7 +389,7 @@ def is_natural_language_param(
     pdef: dict[str, Any],
     gt_values: list | None,
 ) -> bool:
-    """Whether a parameter should carry a language descriptor.
+    """Whether a parameter should carry a language hint.
 
     `gt_values` is the parameter's ground-truth value list, or None when the
     parameter does not appear in the ground truth (a distractor param). Strings
@@ -413,12 +413,12 @@ def is_natural_language_param(
     return _is_textual_schema(pdef)
 
 
-def add_language_descriptors_to_entry(
+def add_language_hints_to_entry(
     entry: dict[str, Any],
     languages: str,
     template: str = "Languages: {languages}.",
 ) -> int:
-    """Append a language descriptor to each natural-language parameter's description.
+    """Append a language hint to each natural-language parameter's description.
 
     A parameter is natural-language per is_natural_language_param: ground truth
     decides for params it references (the correct function), and the schema type is

@@ -41,8 +41,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-PACKAGE_ROOT = Path(__file__).resolve().parent.parent
-EVAL_SCRIPT = PACKAGE_ROOT / "scripts" / "run_robustness_eval.py"
+PACKAGE_ROOT = Path(__file__).resolve().parent.parent.parent
+EVAL_SCRIPT = PACKAGE_ROOT / "scripts" / "run_robustness_experiments" /"run_robustness_eval.py"
 
 MODEL_DATA_CSV = PACKAGE_ROOT / "model_data.csv"
 

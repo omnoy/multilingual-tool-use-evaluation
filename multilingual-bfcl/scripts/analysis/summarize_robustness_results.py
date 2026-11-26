@@ -26,7 +26,7 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from multilingual_bfcl.experiment_names import EXPERIMENT_ORDER, split_stem  # noqa: E402
 

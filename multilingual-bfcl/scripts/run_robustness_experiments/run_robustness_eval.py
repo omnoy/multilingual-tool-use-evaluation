@@ -112,7 +112,7 @@ from typing import Any
 from dotenv import load_dotenv
 
 # Make the package importable when run as a plain script.
-PACKAGE_ROOT = Path(__file__).resolve().parent.parent
+PACKAGE_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 load_dotenv(PACKAGE_ROOT / ".env")
 

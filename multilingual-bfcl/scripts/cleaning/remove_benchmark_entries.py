@@ -120,7 +120,7 @@ def main() -> None:
                         help="Only report what would be removed and from where; change nothing.")
     args = parser.parse_args()
 
-    root = Path(f'../{args.folder}').resolve()
+    root = Path(f'../../{args.folder}').resolve()
     if not root.is_dir():
         parser.error(f"not a directory: {root}")
     ids = read_ids(args, parser)

@@ -37,7 +37,7 @@ import glob
 from collections import defaultdict
 from pathlib import Path
 
-PACKAGE_ROOT = Path(__file__).resolve().parent.parent
+PACKAGE_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 def candidate_names(entry: str, lang_dir: str) -> set[str]:

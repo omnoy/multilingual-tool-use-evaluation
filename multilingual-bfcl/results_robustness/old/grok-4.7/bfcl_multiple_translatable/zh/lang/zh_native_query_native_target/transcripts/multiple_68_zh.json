@@ -1,0 +1,170 @@
+{
+  "id": "multiple_68_zh",
+  "source_id": "multiple_68",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 762,
+  "total_output_tokens": 47,
+  "total_latency_s": 12.540462970733643,
+  "estimated_cost_usd": 0.0018059999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "我能在纽约公共图书馆找到一本历史小说吗？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "library.search_books": {
+        "location": [
+          "纽约",
+          "纽约州纽约",
+          "纽约市",
+          "纽约州纽约市",
+          "纽约公共图书馆"
+        ],
+        "genre": [
+          "历史小说"
+        ],
+        "title": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_books",
+          "arguments": {
+            "location": "New York Public Library",
+            "genre": "historical fiction"
+          },
+          "id": "call-0ed91831-9afb-4bfe-9846-7c85b655148d-0"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_books": {
+            "location": "New York Public Library",
+            "genre": "historical fiction"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'library_search_books'. Please review the function parameters and try again.",
+      "input_tokens": 355,
+      "output_tokens": 24,
+      "latency_s": 3.862352132797241,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_books",
+          "arguments": {
+            "location": "纽约公共图书馆",
+            "genre": "历史小说"
+          },
+          "id": "call-e70a2f20-3f3a-4531-b80f-324b860741ea-1"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_books": {
+            "location": "纽约公共图书馆",
+            "genre": "历史小说"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 407,
+      "output_tokens": 23,
+      "latency_s": 8.678110837936401,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "我能在纽约公共图书馆找到一本历史小说吗？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-0ed91831-9afb-4bfe-9846-7c85b655148d-0",
+          "function": {
+            "arguments": "{\"location\":\"New York Public Library\",\"genre\":\"historical fiction\"}",
+            "name": "library_search_books"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'library_search_books'. Please review the function parameters and try again.",
+      "tool_call_id": "call-0ed91831-9afb-4bfe-9846-7c85b655148d-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-e70a2f20-3f3a-4531-b80f-324b860741ea-1",
+          "function": {
+            "arguments": "{\"location\":\"纽约公共图书馆\",\"genre\":\"历史小说\"}",
+            "name": "library_search_books"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

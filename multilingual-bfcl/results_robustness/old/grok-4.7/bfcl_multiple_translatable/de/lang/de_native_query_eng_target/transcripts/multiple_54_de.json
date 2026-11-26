@@ -1,0 +1,169 @@
+{
+  "id": "multiple_54_de",
+  "source_id": "multiple_54",
+  "locale": "de",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "de_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 688,
+  "total_output_tokens": 45,
+  "total_latency_s": 11.818712711334229,
+  "estimated_cost_usd": 0.0016460000000000001,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Ermittle die historischen Dividendenzahlungen der Äppel AG für die letzten fünf Jahre."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "corporate_finance.dividend_data": {
+        "company": [
+          "Apple Inc",
+          "Apple",
+          "Apple Inc."
+        ],
+        "years": [
+          5
+        ],
+        "frequency": [
+          "",
+          "annually"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Äppel AG",
+            "years": 5
+          },
+          "id": "call-90d0dc68-49a3-4027-a911-ad5213935d47-0"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Äppel AG",
+            "years": 5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'corporate_finance_dividend_data'. Please review the function parameters and try again.",
+      "input_tokens": 317,
+      "output_tokens": 23,
+      "latency_s": 2.1662397384643555,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "corporate_finance_dividend_data",
+          "arguments": {
+            "company": "Apple Inc",
+            "years": 5
+          },
+          "id": "call-9910ee5a-a8d5-4eb1-b6ee-74998a27449e-1"
+        }
+      ],
+      "decoded": [
+        {
+          "corporate_finance_dividend_data": {
+            "company": "Apple Inc",
+            "years": 5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 371,
+      "output_tokens": 22,
+      "latency_s": 9.652472972869873,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Ermittle die historischen Dividendenzahlungen der Äppel AG für die letzten fünf Jahre."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-90d0dc68-49a3-4027-a911-ad5213935d47-0",
+          "function": {
+            "arguments": "{\"company\":\"Äppel AG\",\"years\":5}",
+            "name": "corporate_finance_dividend_data"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'corporate_finance_dividend_data'. Please review the function parameters and try again.",
+      "tool_call_id": "call-90d0dc68-49a3-4027-a911-ad5213935d47-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-9910ee5a-a8d5-4eb1-b6ee-74998a27449e-1",
+          "function": {
+            "arguments": "{\"company\":\"Apple Inc\",\"years\":5}",
+            "name": "corporate_finance_dividend_data"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

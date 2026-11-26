@@ -1,0 +1,230 @@
+{
+  "id": "multiple_188_zh",
+  "source_id": "multiple_188",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1644,
+  "total_output_tokens": 103,
+  "total_latency_s": 14.166459321975708,
+  "estimated_cost_usd": 0.003906,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找距离伯克利最近、评分至少为4.5星，且同时销售西红柿和宠物食品的杂货店。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "grocery_store.find_best": {
+        "my_location": [
+          "Berkeley",
+          "Berkeley,California",
+          "Berkeley,CA",
+          "Berkeley, CA"
+        ],
+        "rating": [
+          4.5
+        ],
+        "products": [
+          [
+            "tomatoes",
+            "pet food"
+          ],
+          [
+            "pet food",
+            "tomatoes"
+          ],
+          [
+            "Tomatoes",
+            "Pet food"
+          ],
+          [
+            "Pet food",
+            "Tomatoes"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "grocery_store_find_best",
+          "arguments": {
+            "my_location": "伯克利",
+            "products": [
+              "西红柿",
+              "宠物食品"
+            ],
+            "rating": 4.5
+          },
+          "id": "call-585e0fa8-8699-49a5-bac5-7a85c510e41b-0"
+        }
+      ],
+      "decoded": [
+        {
+          "grocery_store_find_best": {
+            "my_location": "伯克利",
+            "products": [
+              "西红柿",
+              "宠物食品"
+            ],
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'grocery_store_find_best'. Please review the function parameters and try again.",
+      "input_tokens": 611,
+      "output_tokens": 66,
+      "latency_s": 8.213629484176636,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "my_location",
+            "value": "伯克利",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "zh"
+            ],
+            "expected_langs": [
+              "en"
+            ]
+          },
+          {
+            "param": "products",
+            "value": [
+              "西红柿",
+              "宠物食品"
+            ],
+            "method": "lingua",
+            "value_lang": [
+              "zh"
+            ],
+            "expected_langs": [
+              "en"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "grocery_store_find_best",
+          "arguments": {
+            "my_location": "Berkeley",
+            "products": [
+              "tomatoes",
+              "pet food"
+            ],
+            "rating": 4.5
+          },
+          "id": "call-75257f81-1aa0-4b62-b45a-199167b5d5fe-1"
+        }
+      ],
+      "decoded": [
+        {
+          "grocery_store_find_best": {
+            "my_location": "Berkeley",
+            "products": [
+              "tomatoes",
+              "pet food"
+            ],
+            "rating": 4.5
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1033,
+      "output_tokens": 37,
+      "latency_s": 5.952829837799072,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找距离伯克利最近、评分至少为4.5星，且同时销售西红柿和宠物食品的杂货店。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-585e0fa8-8699-49a5-bac5-7a85c510e41b-0",
+          "function": {
+            "arguments": "{\"my_location\":\"伯克利\",\"products\":[\"西红柿\",\"宠物食品\"],\"rating\":4.5}",
+            "name": "grocery_store_find_best"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'grocery_store_find_best'. Please review the function parameters and try again.",
+      "tool_call_id": "call-585e0fa8-8699-49a5-bac5-7a85c510e41b-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-75257f81-1aa0-4b62-b45a-199167b5d5fe-1",
+          "function": {
+            "arguments": "{\"my_location\":\"Berkeley\",\"products\":[\"tomatoes\",\"pet food\"],\"rating\":4.5}",
+            "name": "grocery_store_find_best"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

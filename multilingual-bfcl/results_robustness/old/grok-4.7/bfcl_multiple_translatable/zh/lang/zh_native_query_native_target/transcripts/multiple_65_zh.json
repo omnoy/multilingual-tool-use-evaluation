@@ -1,0 +1,167 @@
+{
+  "id": "multiple_65_zh",
+  "source_id": "multiple_65",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 885,
+  "total_output_tokens": 44,
+  "total_latency_s": 5.443281173706055,
+  "estimated_cost_usd": 0.0020340000000000002,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找纽约市与洛杉矶之间的距离。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "geodistance.find": {
+        "origin": [
+          "纽约市"
+        ],
+        "destination": [
+          "洛杉矶"
+        ],
+        "unit": [
+          "英里",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "New York City",
+            "destination": "Los Angeles"
+          },
+          "id": "call-67a180f7-9987-495a-a4c6-8cd7fcceb0ce-0"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "New York City",
+            "destination": "Los Angeles"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'geodistance_find'. Please review the function parameters and try again.",
+      "input_tokens": 389,
+      "output_tokens": 23,
+      "latency_s": 1.8055763244628906,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "geodistance_find",
+          "arguments": {
+            "origin": "纽约市",
+            "destination": "洛杉矶"
+          },
+          "id": "call-74071e77-af79-4b96-a484-534ac1c8ba42-1"
+        }
+      ],
+      "decoded": [
+        {
+          "geodistance_find": {
+            "origin": "纽约市",
+            "destination": "洛杉矶"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 496,
+      "output_tokens": 21,
+      "latency_s": 3.637704849243164,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找纽约市与洛杉矶之间的距离。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-67a180f7-9987-495a-a4c6-8cd7fcceb0ce-0",
+          "function": {
+            "arguments": "{\"origin\":\"New York City\",\"destination\":\"Los Angeles\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'geodistance_find'. Please review the function parameters and try again.",
+      "tool_call_id": "call-67a180f7-9987-495a-a4c6-8cd7fcceb0ce-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-74071e77-af79-4b96-a484-534ac1c8ba42-1",
+          "function": {
+            "arguments": "{\"origin\":\"纽约市\",\"destination\":\"洛杉矶\"}",
+            "name": "geodistance_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

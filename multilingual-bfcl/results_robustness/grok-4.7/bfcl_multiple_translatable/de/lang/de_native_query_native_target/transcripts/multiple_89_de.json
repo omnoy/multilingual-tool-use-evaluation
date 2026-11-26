@@ -1,0 +1,289 @@
+{
+  "id": "multiple_89_de",
+  "source_id": "multiple_89",
+  "locale": "de",
+  "localization_level": "native_query_native_target",
+  "benchmark": "de_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1972,
+  "total_output_tokens": 104,
+  "total_latency_s": 18.392822265625,
+  "estimated_cost_usd": 0.004567999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde ein gesundes Rezept fürs Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "Hähnchen",
+            "Pilze"
+          ],
+          [
+            "Pilze",
+            "Hähnchen"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "Mittagessen",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 499,
+            "meal": "lunch"
+          },
+          "id": "call-e61227a4-05b7-4099-b86b-554b7f3248ab-0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 499,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "input_tokens": 501,
+      "output_tokens": 29,
+      "latency_s": 6.38637375831604,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "ingredients",
+            "value": [
+              "chicken",
+              "mushrooms"
+            ],
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "de"
+            ]
+          },
+          {
+            "param": "meal",
+            "value": "lunch",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "de"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Die Parameter müssen auf Deutsch sein. Ich suche das Rezept erneut."
+      ],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 499,
+            "meal": "Mittagessen"
+          },
+          "id": "call-9c142e93-f71f-4e9c-ac76-76e75f8fbb51-1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 499,
+            "meal": "Mittagessen"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "input_tokens": 555,
+      "output_tokens": 46,
+      "latency_s": 7.330744028091431,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        []
+      ]
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500
+          },
+          "id": "call-8ebbc385-718c-44eb-b44f-c6c80dfd9a41-2"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "Hähnchen",
+              "Pilze"
+            ],
+            "calories": 500
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 916,
+      "output_tokens": 29,
+      "latency_s": 4.675704479217529,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde ein gesundes Rezept fürs Mittagessen mit weniger als 500 Kalorien, das Hähnchen und Pilze enthält."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-e61227a4-05b7-4099-b86b-554b7f3248ab-0",
+          "function": {
+            "arguments": "{\"ingredients\":[\"chicken\",\"mushrooms\"],\"calories\":499,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "tool_call_id": "call-e61227a4-05b7-4099-b86b-554b7f3248ab-0"
+    },
+    {
+      "content": "Die Parameter müssen auf Deutsch sein. Ich suche das Rezept erneut.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-9c142e93-f71f-4e9c-ac76-76e75f8fbb51-1",
+          "function": {
+            "arguments": "{\"ingredients\":[\"Hähnchen\",\"Pilze\"],\"calories\":499,\"meal\":\"Mittagessen\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'recipe_search'. Please review the function definition and try again.",
+      "tool_call_id": "call-9c142e93-f71f-4e9c-ac76-76e75f8fbb51-1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-8ebbc385-718c-44eb-b44f-c6c80dfd9a41-2",
+          "function": {
+            "arguments": "{\"ingredients\":[\"Hähnchen\",\"Pilze\"],\"calories\":500}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

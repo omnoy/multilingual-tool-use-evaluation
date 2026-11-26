@@ -1,0 +1,180 @@
+{
+  "id": "multiple_181_zh",
+  "source_id": "multiple_181",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1381,
+  "total_output_tokens": 53,
+  "total_latency_s": 5.449300050735474,
+  "estimated_cost_usd": 0.0030800000000000003,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "请提供利物浦足球俱乐部最近一场比赛的详细信息，包括比赛统计数据。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "soccer.get_last_match": {
+        "team_name": [
+          "利物浦足球俱乐部",
+          "利物浦"
+        ],
+        "include_stats": [
+          true
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_get_last_match",
+          "arguments": {
+            "team_name": "Liverpool",
+            "include_stats": true
+          },
+          "id": "call-1fb8d271-6072-405a-8a69-7763da60e460-0"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_get_last_match": {
+            "team_name": "Liverpool",
+            "include_stats": true
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'soccer_get_last_match'. Please review the function parameters and try again.",
+      "input_tokens": 662,
+      "output_tokens": 26,
+      "latency_s": 3.1167209148406982,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "team_name",
+            "value": "Liverpool",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "zh"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "soccer_get_last_match",
+          "arguments": {
+            "team_name": "利物浦",
+            "include_stats": true
+          },
+          "id": "call-6408c52f-9034-41b4-8f7e-e75d3003efde-1"
+        }
+      ],
+      "decoded": [
+        {
+          "soccer_get_last_match": {
+            "team_name": "利物浦",
+            "include_stats": true
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 719,
+      "output_tokens": 27,
+      "latency_s": 2.3325791358947754,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "请提供利物浦足球俱乐部最近一场比赛的详细信息，包括比赛统计数据。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-1fb8d271-6072-405a-8a69-7763da60e460-0",
+          "function": {
+            "arguments": "{\"team_name\":\"Liverpool\",\"include_stats\":true}",
+            "name": "soccer_get_last_match"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'soccer_get_last_match'. Please review the function parameters and try again.",
+      "tool_call_id": "call-1fb8d271-6072-405a-8a69-7763da60e460-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-6408c52f-9034-41b4-8f7e-e75d3003efde-1",
+          "function": {
+            "arguments": "{\"team_name\":\"利物浦\",\"include_stats\":true}",
+            "name": "soccer_get_last_match"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

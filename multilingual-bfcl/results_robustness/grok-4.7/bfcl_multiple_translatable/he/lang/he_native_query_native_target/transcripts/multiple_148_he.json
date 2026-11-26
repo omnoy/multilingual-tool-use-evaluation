@@ -1,0 +1,196 @@
+{
+  "id": "multiple_148_he",
+  "source_id": "multiple_148",
+  "locale": "he",
+  "localization_level": "native_query_native_target",
+  "benchmark": "he_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 867,
+  "total_output_tokens": 56,
+  "total_latency_s": 6.337307929992676,
+  "estimated_cost_usd": 0.0020700000000000002,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "תן לי מידע מפורט על המניות של 'אפל אינק.'"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_stock_info": {
+        "company_name": [
+          "אפל",
+          "אפל אינק.",
+          "אפל אינק"
+        ],
+        "detail_level": [
+          "מפורט"
+        ],
+        "market": [
+          "נאסד\"ק",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_stock_info",
+          "arguments": {
+            "company_name": "Apple Inc.",
+            "detail_level": "detailed"
+          },
+          "id": "call-ab28acdb-ec88-4d3e-93e6-66efbbe567e3-0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_stock_info": {
+            "company_name": "Apple Inc.",
+            "detail_level": "detailed"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'get_stock_info'. Please review the function parameters and try again.",
+      "input_tokens": 311,
+      "output_tokens": 26,
+      "latency_s": 3.897507429122925,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "company_name",
+            "value": "Apple Inc.",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "he"
+            ]
+          },
+          {
+            "param": "detail_level",
+            "value": "detailed",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "he"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_stock_info",
+          "arguments": {
+            "company_name": "אפל אינק.",
+            "detail_level": "מפורט"
+          },
+          "id": "call-5bc48d18-2c1e-4fa7-b2f1-691c49b09a5a-1"
+        }
+      ],
+      "decoded": [
+        {
+          "get_stock_info": {
+            "company_name": "אפל אינק.",
+            "detail_level": "מפורט"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 556,
+      "output_tokens": 30,
+      "latency_s": 2.439800500869751,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "תן לי מידע מפורט על המניות של 'אפל אינק.'"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-ab28acdb-ec88-4d3e-93e6-66efbbe567e3-0",
+          "function": {
+            "arguments": "{\"company_name\":\"Apple Inc.\",\"detail_level\":\"detailed\"}",
+            "name": "get_stock_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'get_stock_info'. Please review the function parameters and try again.",
+      "tool_call_id": "call-ab28acdb-ec88-4d3e-93e6-66efbbe567e3-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-5bc48d18-2c1e-4fa7-b2f1-691c49b09a5a-1",
+          "function": {
+            "arguments": "{\"company_name\":\"אפל אינק.\",\"detail_level\":\"מפורט\"}",
+            "name": "get_stock_info"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

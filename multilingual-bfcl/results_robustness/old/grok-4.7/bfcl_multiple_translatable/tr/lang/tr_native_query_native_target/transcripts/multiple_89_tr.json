@@ -1,0 +1,192 @@
+{
+  "id": "multiple_89_tr",
+  "source_id": "multiple_89",
+  "locale": "tr",
+  "localization_level": "native_query_native_target",
+  "benchmark": "tr_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1048,
+  "total_output_tokens": 82,
+  "total_latency_s": 10.992339849472046,
+  "estimated_cost_usd": 0.002588,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Tavuk ve mantar içeren, 500 kalorinin altında sağlıklı bir öğle yemeği tarifi bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "tavuk",
+            "mantar"
+          ],
+          [
+            "mantar",
+            "tavuk"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "öğle yemeği",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushroom"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "call-b96f3550-a2c5-4868-90f8-93d892ed2e1d-0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushroom"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "input_tokens": 498,
+      "output_tokens": 27,
+      "latency_s": 9.092963695526123,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Aradığınız kriterlere uygun tarif için aramayı Türkçe parametrelerle yeniden deniyorum."
+      ],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "tavuk",
+              "mantar"
+            ],
+            "calories": 500,
+            "meal": "öğle yemeği"
+          },
+          "id": "call-f9b888eb-6f22-4fb6-aa8f-589776803d28-1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "tavuk",
+              "mantar"
+            ],
+            "calories": 500,
+            "meal": "öğle yemeği"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 550,
+      "output_tokens": 55,
+      "latency_s": 1.8993761539459229,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Tavuk ve mantar içeren, 500 kalorinin altında sağlıklı bir öğle yemeği tarifi bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-b96f3550-a2c5-4868-90f8-93d892ed2e1d-0",
+          "function": {
+            "arguments": "{\"ingredients\":[\"chicken\",\"mushroom\"],\"calories\":500,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "tool_call_id": "call-b96f3550-a2c5-4868-90f8-93d892ed2e1d-0"
+    },
+    {
+      "content": "Aradığınız kriterlere uygun tarif için aramayı Türkçe parametrelerle yeniden deniyorum.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-f9b888eb-6f22-4fb6-aa8f-589776803d28-1",
+          "function": {
+            "arguments": "{\"ingredients\":[\"tavuk\",\"mantar\"],\"calories\":500,\"meal\":\"öğle yemeği\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,203 @@
+{
+  "id": "multiple_27_tr",
+  "source_id": "multiple_27",
+  "locale": "tr",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "tr_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1331,
+  "total_output_tokens": 101,
+  "total_latency_s": 12.344587802886963,
+  "estimated_cost_usd": 0.003268,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Toplu taşıma kullanarak Fransa'nın Paris şehrinden İtalya'nın Roma şehrine gitmek için en kısa yol hangisidir?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "maps.shortest_path": {
+        "start_location": [
+          "Paris, France",
+          "Paris"
+        ],
+        "end_location": [
+          "Rome, Italy",
+          "Rome"
+        ],
+        "mode": [
+          "transit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "public transport"
+          },
+          "id": "call-bd278c94-b2dc-4fa0-871e-b84f7ed9167c-0"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris, France",
+            "end_location": "Rome, Italy",
+            "mode": "public transport"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'maps_shortest_path'. Please review the function parameters and try again.",
+      "input_tokens": 319,
+      "output_tokens": 35,
+      "latency_s": 6.01282525062561,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Toplu taşıma ile Paris'ten Roma'ya en kısa yolu sorgularken bir hata oluştu. Lütfen tekrar deneyin veya farklı bir rota belirtin."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 380,
+      "output_tokens": 36,
+      "latency_s": 1.5813052654266357,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "maps_shortest_path",
+          "arguments": {
+            "start_location": "Paris",
+            "end_location": "Rome",
+            "mode": "transit"
+          },
+          "id": "call-07bc1e0d-d8d9-46c4-b7fa-5da1065338de-1"
+        }
+      ],
+      "decoded": [
+        {
+          "maps_shortest_path": {
+            "start_location": "Paris",
+            "end_location": "Rome",
+            "mode": "transit"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 632,
+      "output_tokens": 30,
+      "latency_s": 4.750457286834717,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Toplu taşıma kullanarak Fransa'nın Paris şehrinden İtalya'nın Roma şehrine gitmek için en kısa yol hangisidir?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-bd278c94-b2dc-4fa0-871e-b84f7ed9167c-0",
+          "function": {
+            "arguments": "{\"start_location\":\"Paris, France\",\"end_location\":\"Rome, Italy\",\"mode\":\"public transport\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'maps_shortest_path'. Please review the function parameters and try again.",
+      "tool_call_id": "call-bd278c94-b2dc-4fa0-871e-b84f7ed9167c-0"
+    },
+    {
+      "content": "Toplu taşıma ile Paris'ten Roma'ya en kısa yolu sorgularken bir hata oluştu. Lütfen tekrar deneyin veya farklı bir rota belirtin.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-07bc1e0d-d8d9-46c4-b7fa-5da1065338de-1",
+          "function": {
+            "arguments": "{\"start_location\":\"Paris\",\"end_location\":\"Rome\",\"mode\":\"transit\"}",
+            "name": "maps_shortest_path"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

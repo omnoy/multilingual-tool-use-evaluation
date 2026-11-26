@@ -1,0 +1,190 @@
+{
+  "id": "multiple_93_de",
+  "source_id": "multiple_93",
+  "locale": "de",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "de_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 909,
+  "total_output_tokens": 74,
+  "total_latency_s": 12.630197525024414,
+  "estimated_cost_usd": 0.002262,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Buche ein Deluxe-Zimmer für 2 Nächte im Marriott-Hotel in New York und füge Frühstück als Zusatzleistung hinzu."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "hotel.book": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "NYC"
+        ],
+        "roomType": [
+          "deluxe",
+          "Deluxe"
+        ],
+        "nights": [
+          2
+        ],
+        "additional_services": [
+          [
+            "breakfast"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "Marriott-Hotel in New York",
+            "roomType": "Deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call-76cb8ce3-b8e7-4927-a064-5f00dcbbd37a-0"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "Marriott-Hotel in New York",
+            "roomType": "Deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'hotel_book'. Please review the function parameters and try again.",
+      "input_tokens": 423,
+      "output_tokens": 39,
+      "latency_s": 2.808232307434082,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "hotel_book",
+          "arguments": {
+            "location": "New York",
+            "roomType": "Deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          },
+          "id": "call-a5e9b8ba-4fb9-435c-9e3c-19f478625ed8-1"
+        }
+      ],
+      "decoded": [
+        {
+          "hotel_book": {
+            "location": "New York",
+            "roomType": "Deluxe",
+            "nights": 2,
+            "additional_services": [
+              "breakfast"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 486,
+      "output_tokens": 35,
+      "latency_s": 9.821965217590332,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Buche ein Deluxe-Zimmer für 2 Nächte im Marriott-Hotel in New York und füge Frühstück als Zusatzleistung hinzu."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-76cb8ce3-b8e7-4927-a064-5f00dcbbd37a-0",
+          "function": {
+            "arguments": "{\"location\":\"Marriott-Hotel in New York\",\"roomType\":\"Deluxe\",\"nights\":2,\"additional_services\":[\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'hotel_book'. Please review the function parameters and try again.",
+      "tool_call_id": "call-76cb8ce3-b8e7-4927-a064-5f00dcbbd37a-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-a5e9b8ba-4fb9-435c-9e3c-19f478625ed8-1",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"roomType\":\"Deluxe\",\"nights\":2,\"additional_services\":[\"breakfast\"]}",
+            "name": "hotel_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

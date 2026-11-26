@@ -1,0 +1,184 @@
+{
+  "id": "multiple_59_tr",
+  "source_id": "multiple_59",
+  "locale": "tr",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "tr_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 703,
+  "total_output_tokens": 46,
+  "total_latency_s": 6.104990482330322,
+  "estimated_cost_usd": 0.001682,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "New York'ta yakınımda bulunan, ceza hukuku alanında uzmanlaşmış avukatları bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "lawyer_finder": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "NY",
+          "New York City",
+          "NYC"
+        ],
+        "specialization": [
+          [
+            "Criminal Law"
+          ],
+          [
+            "criminal law"
+          ]
+        ],
+        "experience": [
+          "",
+          1
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_finder",
+          "arguments": {
+            "location": "New York",
+            "specialization": [
+              "ceza hukuku"
+            ]
+          },
+          "id": "call-0c7229dd-2ac4-482d-8066-1534945dd160-0"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_finder": {
+            "location": "New York",
+            "specialization": [
+              "ceza hukuku"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'lawyer_finder'. Please review the function parameters and try again.",
+      "input_tokens": 326,
+      "output_tokens": 24,
+      "latency_s": 2.8283236026763916,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "lawyer_finder",
+          "arguments": {
+            "location": "New York",
+            "specialization": [
+              "criminal law"
+            ]
+          },
+          "id": "call-28a71e08-1866-4f31-a828-9ac53d3b7929-1"
+        }
+      ],
+      "decoded": [
+        {
+          "lawyer_finder": {
+            "location": "New York",
+            "specialization": [
+              "criminal law"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 377,
+      "output_tokens": 22,
+      "latency_s": 3.2766668796539307,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "New York'ta yakınımda bulunan, ceza hukuku alanında uzmanlaşmış avukatları bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-0c7229dd-2ac4-482d-8066-1534945dd160-0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"specialization\":[\"ceza hukuku\"]}",
+            "name": "lawyer_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'lawyer_finder'. Please review the function parameters and try again.",
+      "tool_call_id": "call-0c7229dd-2ac4-482d-8066-1534945dd160-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-28a71e08-1866-4f31-a828-9ac53d3b7929-1",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"specialization\":[\"criminal law\"]}",
+            "name": "lawyer_finder"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

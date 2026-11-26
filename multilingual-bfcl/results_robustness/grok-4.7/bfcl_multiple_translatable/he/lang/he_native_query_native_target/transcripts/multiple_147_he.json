@@ -1,0 +1,220 @@
+{
+  "id": "multiple_147_he",
+  "source_id": "multiple_147",
+  "locale": "he",
+  "localization_level": "native_query_native_target",
+  "benchmark": "he_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1062,
+  "total_output_tokens": 80,
+  "total_latency_s": 13.637449026107788,
+  "estimated_cost_usd": 0.002604,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "השג לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "map_service.get_directions": {
+        "start": [
+          "ניו יורק",
+          "ניו יורק, ניו יורק",
+          "ניו יורק סיטי"
+        ],
+        "end": [
+          "לוס אנג'לס",
+          "אל איי",
+          "אל-איי"
+        ],
+        "avoid": [
+          [
+            "highways",
+            "tolls"
+          ],
+          [
+            "tolls",
+            "highways"
+          ]
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "call-6922588c-253e-4441-ae28-578af49ad17f-0"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "New York",
+            "end": "Los Angeles",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'map_service_get_directions'. Please review the function parameters and try again.",
+      "input_tokens": 499,
+      "output_tokens": 36,
+      "latency_s": 4.681826829910278,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "start",
+            "value": "New York",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "he"
+            ]
+          },
+          {
+            "param": "end",
+            "value": "Los Angeles",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "he"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "map_service_get_directions",
+          "arguments": {
+            "start": "ניו יורק",
+            "end": "לוס אנג'לס",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          },
+          "id": "call-97fddfd4-bcd5-4169-a0a0-7e4b119dbf6d-1"
+        }
+      ],
+      "decoded": [
+        {
+          "map_service_get_directions": {
+            "start": "ניו יורק",
+            "end": "לוס אנג'לס",
+            "avoid": [
+              "highways",
+              "tolls"
+            ]
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 563,
+      "output_tokens": 44,
+      "latency_s": 8.95562219619751,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "השג לי את ההוראות מניו יורק ללוס אנג'לס תוך הימנעות מכבישים מהירים וכבישי אגרה."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-6922588c-253e-4441-ae28-578af49ad17f-0",
+          "function": {
+            "arguments": "{\"start\":\"New York\",\"end\":\"Los Angeles\",\"avoid\":[\"highways\",\"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'map_service_get_directions'. Please review the function parameters and try again.",
+      "tool_call_id": "call-6922588c-253e-4441-ae28-578af49ad17f-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-97fddfd4-bcd5-4169-a0a0-7e4b119dbf6d-1",
+          "function": {
+            "arguments": "{\"start\":\"ניו יורק\",\"end\":\"לוס אנג'לס\",\"avoid\":[\"highways\",\"tolls\"]}",
+            "name": "map_service_get_directions"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,180 @@
+{
+  "id": "multiple_91_de",
+  "source_id": "multiple_91",
+  "locale": "de",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "de_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 789,
+  "total_output_tokens": 38,
+  "total_latency_s": 8.696022272109985,
+  "estimated_cost_usd": 0.0018059999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "apple pie",
+          "apple"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          },
+          "id": "call-edadfac8-892c-4088-90a4-6e8327f1be6e-0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "Apfel",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_find'. Please review the function parameters and try again.",
+      "input_tokens": 297,
+      "output_tokens": 19,
+      "latency_s": 4.676626205444336,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "mainIngredient",
+            "value": "Apfel",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "de"
+            ],
+            "expected_langs": [
+              "en"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          },
+          "id": "call-48565ce2-829e-4aaf-8747-dfda5c1c1cdb-1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 492,
+      "output_tokens": 19,
+      "latency_s": 4.019396066665649,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Kann ich ein gutes Rezept für Apfelkuchen mit weniger als 5 Zutaten finden?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-edadfac8-892c-4088-90a4-6e8327f1be6e-0",
+          "function": {
+            "arguments": "{\"mainIngredient\":\"Apfel\",\"ingredientLimit\":4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_find'. Please review the function parameters and try again.",
+      "tool_call_id": "call-edadfac8-892c-4088-90a4-6e8327f1be6e-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-48565ce2-829e-4aaf-8747-dfda5c1c1cdb-1",
+          "function": {
+            "arguments": "{\"mainIngredient\":\"apple\",\"ingredientLimit\":4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

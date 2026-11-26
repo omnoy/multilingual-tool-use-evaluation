@@ -1,0 +1,187 @@
+{
+  "id": "multiple_146_de",
+  "source_id": "multiple_146",
+  "locale": "de",
+  "localization_level": "native_query_native_target",
+  "benchmark": "de_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 707,
+  "total_output_tokens": 59,
+  "total_latency_s": 8.70279860496521,
+  "estimated_cost_usd": 0.0017679999999999998,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde Restaurants in meiner Nähe im Umkreis von 10 Meilen, die chinesische Küche in Seattle anbieten."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "Seattle",
+          "Seattle, WA"
+        ],
+        "cuisine": [
+          "Chinesisch"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call-79f6dbfd-3ec0-484a-8f88-cf9575adad2b-0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "input_tokens": 325,
+      "output_tokens": 30,
+      "latency_s": 3.245922088623047,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "cuisine",
+            "value": "Chinese",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "de"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle",
+            "cuisine": "chinesisch",
+            "max_distance": 10
+          },
+          "id": "call-14e4448a-7935-462c-b57e-ba47e6221e7e-1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle",
+            "cuisine": "chinesisch",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 382,
+      "output_tokens": 29,
+      "latency_s": 5.456876516342163,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde Restaurants in meiner Nähe im Umkreis von 10 Meilen, die chinesische Küche in Seattle anbieten."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-79f6dbfd-3ec0-484a-8f88-cf9575adad2b-0",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, WA\",\"cuisine\":\"Chinese\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "tool_call_id": "call-79f6dbfd-3ec0-484a-8f88-cf9575adad2b-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-14e4448a-7935-462c-b57e-ba47e6221e7e-1",
+          "function": {
+            "arguments": "{\"location\":\"Seattle\",\"cuisine\":\"chinesisch\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

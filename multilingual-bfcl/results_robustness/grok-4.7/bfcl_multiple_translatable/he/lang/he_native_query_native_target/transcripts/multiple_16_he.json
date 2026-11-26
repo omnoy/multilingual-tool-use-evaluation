@@ -1,0 +1,188 @@
+{
+  "id": "multiple_16_he",
+  "source_id": "multiple_16",
+  "locale": "he",
+  "localization_level": "native_query_native_target",
+  "benchmark": "he_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1405,
+  "total_output_tokens": 62,
+  "total_latency_s": 8.370494842529297,
+  "estimated_cost_usd": 0.003182,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "מהו גודל האוכלוסייה המינימלי הנדרש (Ne) לשמירה על המגוון הגנטי של אוכלוסיית נמרי בר למשך 100 הדורות הבאים בהסתברות של 0.95?"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "population_genetics.calculate_ne": {
+        "species": [
+          "נמר בר",
+          "נמר",
+          "נמרי בר"
+        ],
+        "generations": [
+          100
+        ],
+        "probability": [
+          0.95
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "population_genetics_calculate_ne",
+          "arguments": {
+            "species": "leopard",
+            "generations": 100,
+            "probability": 0.95
+          },
+          "id": "call-1646fc08-a582-432e-8cba-4d2befa51d9e-0"
+        }
+      ],
+      "decoded": [
+        {
+          "population_genetics_calculate_ne": {
+            "species": "leopard",
+            "generations": 100,
+            "probability": 0.95
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'population_genetics_calculate_ne'. Please review the function parameters and try again.",
+      "input_tokens": 558,
+      "output_tokens": 30,
+      "latency_s": 5.646121978759766,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "species",
+            "value": "leopard",
+            "method": "lingua",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "he"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "population_genetics_calculate_ne",
+          "arguments": {
+            "species": "נמר בר",
+            "generations": 100,
+            "probability": 0.95
+          },
+          "id": "call-fedd17a7-934c-4f77-ba0d-5c4489483f74-1"
+        }
+      ],
+      "decoded": [
+        {
+          "population_genetics_calculate_ne": {
+            "species": "נמר בר",
+            "generations": 100,
+            "probability": 0.95
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 847,
+      "output_tokens": 32,
+      "latency_s": 2.7243728637695312,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "מהו גודל האוכלוסייה המינימלי הנדרש (Ne) לשמירה על המגוון הגנטי של אוכלוסיית נמרי בר למשך 100 הדורות הבאים בהסתברות של 0.95?"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-1646fc08-a582-432e-8cba-4d2befa51d9e-0",
+          "function": {
+            "arguments": "{\"species\":\"leopard\",\"generations\":100,\"probability\":0.95}",
+            "name": "population_genetics_calculate_ne"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'population_genetics_calculate_ne'. Please review the function parameters and try again.",
+      "tool_call_id": "call-1646fc08-a582-432e-8cba-4d2befa51d9e-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-fedd17a7-934c-4f77-ba0d-5c4489483f74-1",
+          "function": {
+            "arguments": "{\"species\":\"נמר בר\",\"generations\":100,\"probability\":0.95}",
+            "name": "population_genetics_calculate_ne"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Hebrew. Understand the request in Hebrew and respond with the correct function call exactly as specified in the tool definitions."
+}

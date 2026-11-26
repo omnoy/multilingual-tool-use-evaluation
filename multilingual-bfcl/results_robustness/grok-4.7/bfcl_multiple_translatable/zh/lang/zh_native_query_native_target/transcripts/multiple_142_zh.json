@@ -1,0 +1,260 @@
+{
+  "id": "multiple_142_zh",
+  "source_id": "multiple_142",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1729,
+  "total_output_tokens": 75,
+  "total_latency_s": 9.616078615188599,
+  "estimated_cost_usd": 0.003908,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "佛罗里达州迈阿密未来7天的湿度是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "weather.humidity_forecast": {
+        "location": [
+          "迈阿密",
+          "佛罗里达州迈阿密",
+          "佛罗里达州"
+        ],
+        "days": [
+          7
+        ],
+        "min_humidity": [
+          "",
+          0
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "I'll check the humidity forecast for Miami over the next 7 days."
+      ],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "location": "Miami",
+            "days": 7
+          },
+          "id": "call-fd61f947-b529-45cc-ab2b-feb4a41839e2-0"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "location": "Miami",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'weather_humidity_forecast'. Please review the function parameters and try again.",
+      "input_tokens": 351,
+      "output_tokens": 34,
+      "latency_s": 2.877669334411621,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "location",
+            "value": "Miami",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "zh"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "location": "Miami, Florida",
+            "days": 7
+          },
+          "id": "call-d225f862-39e5-4326-a3fb-984ebaf9cd7b-1"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "location": "Miami, Florida",
+            "days": 7
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'weather_humidity_forecast'. Please review the function parameters and try again.",
+      "input_tokens": 580,
+      "output_tokens": 22,
+      "latency_s": 3.632981538772583,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "location",
+            "value": "Miami, Florida",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "zh"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "weather_humidity_forecast",
+          "arguments": {
+            "location": "迈阿密",
+            "days": 7
+          },
+          "id": "call-e045952d-c1ab-4136-8a1d-876402a6803f-2"
+        }
+      ],
+      "decoded": [
+        {
+          "weather_humidity_forecast": {
+            "location": "迈阿密",
+            "days": 7
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 798,
+      "output_tokens": 19,
+      "latency_s": 3.1054277420043945,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "佛罗里达州迈阿密未来7天的湿度是多少？"
+    },
+    {
+      "content": "I'll check the humidity forecast for Miami over the next 7 days.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-fd61f947-b529-45cc-ab2b-feb4a41839e2-0",
+          "function": {
+            "arguments": "{\"location\":\"Miami\",\"days\":7}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'weather_humidity_forecast'. Please review the function parameters and try again.",
+      "tool_call_id": "call-fd61f947-b529-45cc-ab2b-feb4a41839e2-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-d225f862-39e5-4326-a3fb-984ebaf9cd7b-1",
+          "function": {
+            "arguments": "{\"location\":\"Miami, Florida\",\"days\":7}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'weather_humidity_forecast'. Please review the function parameters and try again.",
+      "tool_call_id": "call-d225f862-39e5-4326-a3fb-984ebaf9cd7b-1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-e045952d-c1ab-4136-8a1d-876402a6803f-2",
+          "function": {
+            "arguments": "{\"location\":\"迈阿密\",\"days\":7}",
+            "name": "weather_humidity_forecast"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

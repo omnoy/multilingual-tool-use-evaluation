@@ -1,0 +1,141 @@
+{
+  "id": "multiple_164_zh",
+  "source_id": "multiple_164",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 1342,
+  "total_output_tokens": 69,
+  "total_latency_s": 12.727469205856323,
+  "estimated_cost_usd": 0.003098,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "玫瑰木饰面的芬达美国专业二代斯特拉托卡斯特的零售价是多少？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "instrument_price.get": {
+        "brand": [
+          "Fender"
+        ],
+        "model": [
+          "American Professional II Stratocaster"
+        ],
+        "finish": [
+          "Rosewood"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"instrument_price_get\", \"parameters\": {\"brand\": \"Fender\", \"model\": \"American Professional II Stratocaster\", \"finish\": \"rosewood\"}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 638,
+      "output_tokens": 37,
+      "latency_s": 3.379737377166748,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "instrument_price_get",
+          "arguments": {
+            "brand": "Fender",
+            "model": "American Professional II Stratocaster",
+            "finish": "rosewood"
+          },
+          "id": "call-adccdd57-4331-48a7-8541-2b320ea3410d-0"
+        }
+      ],
+      "decoded": [
+        {
+          "instrument_price_get": {
+            "brand": "Fender",
+            "model": "American Professional II Stratocaster",
+            "finish": "rosewood"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 704,
+      "output_tokens": 32,
+      "latency_s": 9.347731828689575,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "玫瑰木饰面的芬达美国专业二代斯特拉托卡斯特的零售价是多少？"
+    },
+    {
+      "content": "{\"name\": \"instrument_price_get\", \"parameters\": {\"brand\": \"Fender\", \"model\": \"American Professional II Stratocaster\", \"finish\": \"rosewood\"}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-adccdd57-4331-48a7-8541-2b320ea3410d-0",
+          "function": {
+            "arguments": "{\"brand\":\"Fender\",\"model\":\"American Professional II Stratocaster\",\"finish\":\"rosewood\"}",
+            "name": "instrument_price_get"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

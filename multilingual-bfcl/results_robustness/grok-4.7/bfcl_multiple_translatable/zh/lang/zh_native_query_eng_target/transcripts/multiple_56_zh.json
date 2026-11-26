@@ -1,0 +1,183 @@
+{
+  "id": "multiple_56_zh",
+  "source_id": "multiple_56",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 919,
+  "total_output_tokens": 39,
+  "total_latency_s": 6.029820203781128,
+  "estimated_cost_usd": 0.002072,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查询苹果公司股票在过去60天内的平均收盘价"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "avg_closing_price": {
+        "company": [
+          "Apple"
+        ],
+        "days": [
+          60
+        ],
+        "data_source": [
+          "yahoo finance",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "苹果公司",
+            "days": 60
+          },
+          "id": "call-2fb7d7b5-adee-44fe-a1a1-108e7de12130-0"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "苹果公司",
+            "days": 60
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'avg_closing_price'. Please review the function parameters and try again.",
+      "input_tokens": 435,
+      "output_tokens": 20,
+      "latency_s": 3.3636109828948975,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "company",
+            "value": "苹果公司",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "zh"
+            ],
+            "expected_langs": [
+              "en"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "avg_closing_price",
+          "arguments": {
+            "company": "Apple",
+            "days": 60
+          },
+          "id": "call-43825c17-6395-4bcc-8e91-4201c2361cc3-1"
+        }
+      ],
+      "decoded": [
+        {
+          "avg_closing_price": {
+            "company": "Apple",
+            "days": 60
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 484,
+      "output_tokens": 19,
+      "latency_s": 2.6662092208862305,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查询苹果公司股票在过去60天内的平均收盘价"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-2fb7d7b5-adee-44fe-a1a1-108e7de12130-0",
+          "function": {
+            "arguments": "{\"company\":\"苹果公司\",\"days\":60}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'avg_closing_price'. Please review the function parameters and try again.",
+      "tool_call_id": "call-2fb7d7b5-adee-44fe-a1a1-108e7de12130-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-43825c17-6395-4bcc-8e91-4201c2361cc3-1",
+          "function": {
+            "arguments": "{\"company\":\"Apple\",\"days\":60}",
+            "name": "avg_closing_price"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

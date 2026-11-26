@@ -1,0 +1,197 @@
+{
+  "id": "multiple_84_zh",
+  "source_id": "multiple_84",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 820,
+  "total_output_tokens": 58,
+  "total_latency_s": 5.499152421951294,
+  "estimated_cost_usd": 0.001988,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "请给我巴塞罗那队在欧洲冠军联赛中的前10名射手。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "getTopGoalScorers": {
+        "competition": [
+          "欧洲冠军联赛"
+        ],
+        "team": [
+          "巴塞罗那"
+        ],
+        "number": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "getTopGoalScorers",
+          "arguments": {
+            "competition": "Champions League",
+            "team": "Barcelona",
+            "number": 10
+          },
+          "id": "call-5e254e3f-bfa1-4d1f-97c9-4473fe4f895c-0"
+        }
+      ],
+      "decoded": [
+        {
+          "getTopGoalScorers": {
+            "competition": "Champions League",
+            "team": "Barcelona",
+            "number": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'getTopGoalScorers'. Please review the function parameters and try again.",
+      "input_tokens": 314,
+      "output_tokens": 27,
+      "latency_s": 2.4765737056732178,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "competition",
+            "value": "Champions League",
+            "method": "lingua",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "zh"
+            ]
+          },
+          {
+            "param": "team",
+            "value": "Barcelona",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "zh"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "getTopGoalScorers",
+          "arguments": {
+            "competition": "欧洲冠军联赛",
+            "team": "巴塞罗那",
+            "number": 10
+          },
+          "id": "call-8d1e7976-bcba-4fcc-be44-d27216a8b3c6-1"
+        }
+      ],
+      "decoded": [
+        {
+          "getTopGoalScorers": {
+            "competition": "欧洲冠军联赛",
+            "team": "巴塞罗那",
+            "number": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 506,
+      "output_tokens": 31,
+      "latency_s": 3.022578716278076,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "请给我巴塞罗那队在欧洲冠军联赛中的前10名射手。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-5e254e3f-bfa1-4d1f-97c9-4473fe4f895c-0",
+          "function": {
+            "arguments": "{\"competition\":\"Champions League\",\"team\":\"Barcelona\",\"number\":10}",
+            "name": "getTopGoalScorers"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'getTopGoalScorers'. Please review the function parameters and try again.",
+      "tool_call_id": "call-5e254e3f-bfa1-4d1f-97c9-4473fe4f895c-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-8d1e7976-bcba-4fcc-be44-d27216a8b3c6-1",
+          "function": {
+            "arguments": "{\"competition\":\"欧洲冠军联赛\",\"team\":\"巴塞罗那\",\"number\":10}",
+            "name": "getTopGoalScorers"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

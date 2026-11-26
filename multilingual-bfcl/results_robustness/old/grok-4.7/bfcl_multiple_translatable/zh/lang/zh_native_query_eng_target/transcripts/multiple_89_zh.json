@@ -1,0 +1,291 @@
+{
+  "id": "multiple_89_zh",
+  "source_id": "multiple_89",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 4,
+  "num_clarifications": 1,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 2528,
+  "total_output_tokens": 200,
+  "total_latency_s": 10.680402755737305,
+  "estimated_cost_usd": 0.006255999999999999,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "找一道使用鸡肉和蘑菇、热量低于500卡路里的健康午餐食谱。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "ingredients": [
+          [
+            "chicken",
+            "mushrooms"
+          ],
+          [
+            "mushrooms",
+            "chicken"
+          ]
+        ],
+        "calories": [
+          500
+        ],
+        "meal": [
+          "lunch",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "鸡肉",
+              "蘑菇"
+            ],
+            "calories": 500,
+            "meal": "午餐"
+          },
+          "id": "call-13538d1a-9549-4e0a-8beb-bf19b07f24d0-0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "鸡肉",
+              "蘑菇"
+            ],
+            "calories": 500,
+            "meal": "午餐"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "input_tokens": 491,
+      "output_tokens": 27,
+      "latency_s": 3.3665378093719482,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "看起来食谱搜索接口对中文参数返回了错误。我先用英文参数重试一次。"
+      ],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushroom"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "call-70fd5cc3-e038-4b50-92ff-1bf70e6cbe2e-1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushroom"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "input_tokens": 543,
+      "output_tokens": 49,
+      "latency_s": 1.4882404804229736,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "抱歉，食谱搜索服务目前无法正常调用（接口返回参数语言错误），所以我暂时查不到符合条件的具体食谱结果。\n\n你可以稍后再试，或直接告诉我更多偏好（例如不要乳制品、偏好烤箱/平底锅做法），我可以按“鸡肉 + 蘑菇、午餐、低于 500 卡路里”帮你整理一份可执行的食谱思路。"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 620,
+      "output_tokens": 84,
+      "latency_s": 2.2772207260131836,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "我再用可用的食谱搜索接口查询一次。"
+      ],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          },
+          "id": "call-c00e71ed-81ad-4e3f-97e6-2a3b12bbbe90-2"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "ingredients": [
+              "chicken",
+              "mushrooms"
+            ],
+            "calories": 500,
+            "meal": "lunch"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 874,
+      "output_tokens": 40,
+      "latency_s": 3.548403739929199,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "找一道使用鸡肉和蘑菇、热量低于500卡路里的健康午餐食谱。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-13538d1a-9549-4e0a-8beb-bf19b07f24d0-0",
+          "function": {
+            "arguments": "{\"ingredients\":[\"鸡肉\",\"蘑菇\"],\"calories\":500,\"meal\":\"午餐\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "tool_call_id": "call-13538d1a-9549-4e0a-8beb-bf19b07f24d0-0"
+    },
+    {
+      "content": "看起来食谱搜索接口对中文参数返回了错误。我先用英文参数重试一次。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-70fd5cc3-e038-4b50-92ff-1bf70e6cbe2e-1",
+          "function": {
+            "arguments": "{\"ingredients\":[\"chicken\",\"mushroom\"],\"calories\":500,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "tool_call_id": "call-70fd5cc3-e038-4b50-92ff-1bf70e6cbe2e-1"
+    },
+    {
+      "content": "抱歉，食谱搜索服务目前无法正常调用（接口返回参数语言错误），所以我暂时查不到符合条件的具体食谱结果。\n\n你可以稍后再试，或直接告诉我更多偏好（例如不要乳制品、偏好烤箱/平底锅做法），我可以按“鸡肉 + 蘑菇、午餐、低于 500 卡路里”帮你整理一份可执行的食谱思路。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "我再用可用的食谱搜索接口查询一次。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-c00e71ed-81ad-4e3f-97e6-2a3b12bbbe90-2",
+          "function": {
+            "arguments": "{\"ingredients\":[\"chicken\",\"mushrooms\"],\"calories\":500,\"meal\":\"lunch\"}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

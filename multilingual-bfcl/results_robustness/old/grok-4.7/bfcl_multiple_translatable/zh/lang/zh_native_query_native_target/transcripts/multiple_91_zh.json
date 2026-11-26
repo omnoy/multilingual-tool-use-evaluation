@@ -1,0 +1,224 @@
+{
+  "id": "multiple_91_zh",
+  "source_id": "multiple_91",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 3,
+  "num_api_calls": 3,
+  "num_clarifications": 0,
+  "num_failed_calls": 2,
+  "final_error_type": null,
+  "total_input_tokens": 1211,
+  "total_output_tokens": 86,
+  "total_latency_s": 9.955854892730713,
+  "estimated_cost_usd": 0.002938,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "能帮我找一个使用少于5种食材的优质苹果派食谱吗？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe.find": {
+        "mainIngredient": [
+          "苹果派",
+          "苹果"
+        ],
+        "ingredientLimit": [
+          4
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          },
+          "id": "call-f5d6e7e8-6441-4c58-a152-e68386539061-0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_find'. Please review the function parameters and try again.",
+      "input_tokens": 295,
+      "output_tokens": 19,
+      "latency_s": 3.759239912033081,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "工具调用失败了，因为参数语言不符合要求。我再用英文参数重新查找使用苹果、食材不超过4种的食谱。"
+      ],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          },
+          "id": "call-7fcf36be-b9cd-4f1e-bc3f-174ace7e1cfd-1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "apple",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_find'. Please review the function parameters and try again.",
+      "input_tokens": 341,
+      "output_tokens": 48,
+      "latency_s": 1.796616792678833,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_find",
+          "arguments": {
+            "mainIngredient": "苹果",
+            "ingredientLimit": 4
+          },
+          "id": "call-695ed338-a09f-4e08-944d-504865e26ef8-2"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_find": {
+            "mainIngredient": "苹果",
+            "ingredientLimit": 4
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 575,
+      "output_tokens": 19,
+      "latency_s": 4.399998188018799,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "能帮我找一个使用少于5种食材的优质苹果派食谱吗？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-f5d6e7e8-6441-4c58-a152-e68386539061-0",
+          "function": {
+            "arguments": "{\"mainIngredient\":\"apple\",\"ingredientLimit\":4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_find'. Please review the function parameters and try again.",
+      "tool_call_id": "call-f5d6e7e8-6441-4c58-a152-e68386539061-0"
+    },
+    {
+      "content": "工具调用失败了，因为参数语言不符合要求。我再用英文参数重新查找使用苹果、食材不超过4种的食谱。",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-7fcf36be-b9cd-4f1e-bc3f-174ace7e1cfd-1",
+          "function": {
+            "arguments": "{\"mainIngredient\":\"apple\",\"ingredientLimit\":4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_find'. Please review the function parameters and try again.",
+      "tool_call_id": "call-7fcf36be-b9cd-4f1e-bc3f-174ace7e1cfd-1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-695ed338-a09f-4e08-944d-504865e26ef8-2",
+          "function": {
+            "arguments": "{\"mainIngredient\":\"苹果\",\"ingredientLimit\":4}",
+            "name": "recipe_find"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

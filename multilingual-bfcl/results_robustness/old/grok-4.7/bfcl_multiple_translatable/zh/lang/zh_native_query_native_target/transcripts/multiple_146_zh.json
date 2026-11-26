@@ -1,0 +1,233 @@
+{
+  "id": "multiple_146_zh",
+  "source_id": "multiple_146",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 4,
+  "num_clarifications": 2,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 2565,
+  "total_output_tokens": 128,
+  "total_latency_s": 19.305228233337402,
+  "estimated_cost_usd": 0.0058980000000000005,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找西雅图距离我 10 英里以内提供中餐的餐厅。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "西雅图",
+          "华盛顿州西雅图"
+        ],
+        "cuisine": [
+          "中餐"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"restaurant_find_nearby\", \"parameters\": {\"location\": \"Seattle, WA\", \"cuisine\": \"Chinese\", \"max_distance\": 10}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 314,
+      "output_tokens": 36,
+      "latency_s": 3.592013120651245,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call-71c2b201-4efe-4471-9bc8-5dbfae2c0437-0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "input_tokens": 548,
+      "output_tokens": 30,
+      "latency_s": 3.5713424682617188,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [
+        "{\"name\": \"restaurant_find_nearby\", \"parameters\": {\"location\": \"西雅图\", \"cuisine\": \"中餐\", \"max_distance\": 10}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 767,
+      "output_tokens": 34,
+      "latency_s": 2.386854410171509,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "西雅图",
+            "cuisine": "中餐",
+            "max_distance": 10
+          },
+          "id": "call-3ef82c20-b195-4438-bbba-5eaa7fb610d0-1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "西雅图",
+            "cuisine": "中餐",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 936,
+      "output_tokens": 28,
+      "latency_s": 9.75501823425293,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找西雅图距离我 10 英里以内提供中餐的餐厅。"
+    },
+    {
+      "content": "{\"name\": \"restaurant_find_nearby\", \"parameters\": {\"location\": \"Seattle, WA\", \"cuisine\": \"Chinese\", \"max_distance\": 10}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-71c2b201-4efe-4471-9bc8-5dbfae2c0437-0",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, WA\",\"cuisine\":\"Chinese\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "tool_call_id": "call-71c2b201-4efe-4471-9bc8-5dbfae2c0437-0"
+    },
+    {
+      "content": "{\"name\": \"restaurant_find_nearby\", \"parameters\": {\"location\": \"西雅图\", \"cuisine\": \"中餐\", \"max_distance\": 10}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-3ef82c20-b195-4438-bbba-5eaa7fb610d0-1",
+          "function": {
+            "arguments": "{\"location\":\"西雅图\",\"cuisine\":\"中餐\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

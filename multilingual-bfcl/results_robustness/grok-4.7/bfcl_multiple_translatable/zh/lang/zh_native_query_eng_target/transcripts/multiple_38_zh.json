@@ -1,0 +1,201 @@
+{
+  "id": "multiple_38_zh",
+  "source_id": "multiple_38",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 813,
+  "total_output_tokens": 55,
+  "total_latency_s": 10.33355712890625,
+  "estimated_cost_usd": 0.0019560000000000003,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找纽约市各图书馆分馆中的《牧羊少年奇幻之旅》一书。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "library.search_book": {
+        "book_name": [
+          "The Alchemist"
+        ],
+        "city": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "NYC",
+          "NY"
+        ],
+        "availability": [
+          "",
+          false
+        ],
+        "genre": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_book",
+          "arguments": {
+            "book_name": "牧羊少年奇幻之旅",
+            "city": "纽约市"
+          },
+          "id": "call-e5d6b57b-ece6-423e-adca-d7e067fe9b93-0"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_book": {
+            "book_name": "牧羊少年奇幻之旅",
+            "city": "纽约市"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'library_search_book'. Please review the function parameters and try again.",
+      "input_tokens": 378,
+      "output_tokens": 29,
+      "latency_s": 5.469871282577515,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "book_name",
+            "value": "牧羊少年奇幻之旅",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "zh"
+            ],
+            "expected_langs": [
+              "en"
+            ]
+          },
+          {
+            "param": "city",
+            "value": "纽约市",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "zh"
+            ],
+            "expected_langs": [
+              "en"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "library_search_book",
+          "arguments": {
+            "book_name": "The Alchemist",
+            "city": "New York"
+          },
+          "id": "call-33ae3a11-a569-445a-8f25-26f38fa5b1a8-1"
+        }
+      ],
+      "decoded": [
+        {
+          "library_search_book": {
+            "book_name": "The Alchemist",
+            "city": "New York"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 435,
+      "output_tokens": 26,
+      "latency_s": 4.863685846328735,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找纽约市各图书馆分馆中的《牧羊少年奇幻之旅》一书。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-e5d6b57b-ece6-423e-adca-d7e067fe9b93-0",
+          "function": {
+            "arguments": "{\"book_name\":\"牧羊少年奇幻之旅\",\"city\":\"纽约市\"}",
+            "name": "library_search_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'library_search_book'. Please review the function parameters and try again.",
+      "tool_call_id": "call-e5d6b57b-ece6-423e-adca-d7e067fe9b93-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-33ae3a11-a569-445a-8f25-26f38fa5b1a8-1",
+          "function": {
+            "arguments": "{\"book_name\":\"The Alchemist\",\"city\":\"New York\"}",
+            "name": "library_search_book"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

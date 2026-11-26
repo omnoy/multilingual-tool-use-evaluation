@@ -1,0 +1,248 @@
+{
+  "id": "multiple_190_tr",
+  "source_id": "multiple_190",
+  "locale": "tr",
+  "localization_level": "native_query_native_target",
+  "benchmark": "tr_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 3,
+  "num_clarifications": 1,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1733,
+  "total_output_tokens": 141,
+  "total_latency_s": 10.148446083068848,
+  "estimated_cost_usd": 0.004312,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "10 Aralık 2022'den başlayarak Şikago'daki Hilton Oteli'nde iki geceliğine tek kişilik bir oda ayırt."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "book_hotel": {
+        "hotel_name": [
+          "Hilton Oteli",
+          "Hilton"
+        ],
+        "location": [
+          "Şikago"
+        ],
+        "room_type": [
+          "tek kişilik",
+          "Tek kişilik"
+        ],
+        "start_date": [
+          "2022-12-10",
+          "10/12/2022",
+          "10 Ara. 2022",
+          "10 Aralık 2022"
+        ],
+        "nights": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "single",
+            "start_date": "2022-12-10",
+            "nights": 2
+          },
+          "id": "call-0c07ec35-8695-4f20-ac0a-2a6314d3db54-0"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton",
+            "location": "Chicago",
+            "room_type": "single",
+            "start_date": "2022-12-10",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'book_hotel'. Please review the function parameters and try again.",
+      "input_tokens": 509,
+      "output_tokens": 47,
+      "latency_s": 3.36094069480896,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "location",
+            "value": "Chicago",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "tr"
+            ]
+          },
+          {
+            "param": "room_type",
+            "value": "single",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "tr"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [
+        "Üzgünüm, rezervasyon işlemi tamamlanamadı. Lütfen otel adı, konum, oda tipi, başlangıç tarihi ve gece sayısını kontrol edip yeniden deneyin."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 577,
+      "output_tokens": 41,
+      "latency_s": 1.5765831470489502,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false,
+      "language_mismatches": null
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "book_hotel",
+          "arguments": {
+            "hotel_name": "Hilton Oteli",
+            "location": "Şikago",
+            "room_type": "tek kişilik",
+            "start_date": "2022-12-10",
+            "nights": 2
+          },
+          "id": "call-b1f039e3-f01b-475b-afb8-bde2de62e247-1"
+        }
+      ],
+      "decoded": [
+        {
+          "book_hotel": {
+            "hotel_name": "Hilton Oteli",
+            "location": "Şikago",
+            "room_type": "tek kişilik",
+            "start_date": "2022-12-10",
+            "nights": 2
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 647,
+      "output_tokens": 53,
+      "latency_s": 5.2109222412109375,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "10 Aralık 2022'den başlayarak Şikago'daki Hilton Oteli'nde iki geceliğine tek kişilik bir oda ayırt."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-0c07ec35-8695-4f20-ac0a-2a6314d3db54-0",
+          "function": {
+            "arguments": "{\"hotel_name\":\"Hilton\",\"location\":\"Chicago\",\"room_type\":\"single\",\"start_date\":\"2022-12-10\",\"nights\":2}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'book_hotel'. Please review the function parameters and try again.",
+      "tool_call_id": "call-0c07ec35-8695-4f20-ac0a-2a6314d3db54-0"
+    },
+    {
+      "content": "Üzgünüm, rezervasyon işlemi tamamlanamadı. Lütfen otel adı, konum, oda tipi, başlangıç tarihi ve gece sayısını kontrol edip yeniden deneyin.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-b1f039e3-f01b-475b-afb8-bde2de62e247-1",
+          "function": {
+            "arguments": "{\"hotel_name\":\"Hilton Oteli\",\"location\":\"Şikago\",\"room_type\":\"tek kişilik\",\"start_date\":\"2022-12-10\",\"nights\":2}",
+            "name": "book_hotel"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,152 @@
+{
+  "id": "multiple_136_tr",
+  "source_id": "multiple_136",
+  "locale": "tr",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "tr_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": true,
+  "success_with_extra_calls": false,
+  "num_attempts": 1,
+  "num_api_calls": 2,
+  "num_clarifications": 1,
+  "num_failed_calls": 0,
+  "final_error_type": null,
+  "total_input_tokens": 994,
+  "total_output_tokens": 72,
+  "total_latency_s": 10.916920900344849,
+  "estimated_cost_usd": 0.0024200000000000003,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "2020 yılında San Fransisko'daki şiddet suçlarının resmî oranını bana ver."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "get_crime_rate": {
+        "city": [
+          "San Francisco",
+          "San Francisco, CA",
+          "SF"
+        ],
+        "state": [
+          "California",
+          "CA"
+        ],
+        "type": [
+          "violent",
+          "Violent"
+        ],
+        "year": [
+          2020
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [
+        "{\"name\": \"get_crime_rate\", \"parameters\": {\"city\": \"San Francisco\", \"state\": \"California\", \"type\": \"violent\", \"year\": 2020}}"
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 355,
+      "output_tokens": 39,
+      "latency_s": 6.451932907104492,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false,
+      "language_mismatches": null
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "get_crime_rate",
+          "arguments": {
+            "city": "San Francisco",
+            "state": "California",
+            "type": "violent",
+            "year": 2020
+          },
+          "id": "call-ef3d1e65-33f1-4e26-9f8f-1eb5ebd5e3cb-0"
+        }
+      ],
+      "decoded": [
+        {
+          "get_crime_rate": {
+            "city": "San Francisco",
+            "state": "California",
+            "type": "violent",
+            "year": 2020
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 639,
+      "output_tokens": 33,
+      "latency_s": 4.4649879932403564,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "2020 yılında San Fransisko'daki şiddet suçlarının resmî oranını bana ver."
+    },
+    {
+      "content": "{\"name\": \"get_crime_rate\", \"parameters\": {\"city\": \"San Francisco\", \"state\": \"California\", \"type\": \"violent\", \"year\": 2020}}",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-ef3d1e65-33f1-4e26-9f8f-1eb5ebd5e3cb-0",
+          "function": {
+            "arguments": "{\"city\":\"San Francisco\",\"state\":\"California\",\"type\":\"violent\",\"year\":2020}",
+            "name": "get_crime_rate"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

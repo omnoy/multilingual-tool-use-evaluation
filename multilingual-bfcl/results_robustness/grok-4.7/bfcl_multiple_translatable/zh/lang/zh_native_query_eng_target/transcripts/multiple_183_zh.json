@@ -1,0 +1,183 @@
+{
+  "id": "multiple_183_zh",
+  "source_id": "multiple_183",
+  "locale": "zh",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "zh_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 880,
+  "total_output_tokens": 51,
+  "total_latency_s": 9.31879734992981,
+  "estimated_cost_usd": 0.002066,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Foodnetwork.com 上的牛肉千层面食谱含有多少卡路里？"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_info.get_calories": {
+        "website": [
+          "Foodnetwork.com"
+        ],
+        "recipe": [
+          "Beef Lasagna",
+          "Beef Lasagna Recipe"
+        ],
+        "optional_meal_time": [
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_info_get_calories",
+          "arguments": {
+            "website": "Foodnetwork.com",
+            "recipe": "牛肉千层面"
+          },
+          "id": "call-af4b36c7-21f5-41a8-8438-6473f4b18ad8-0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_info_get_calories": {
+            "website": "Foodnetwork.com",
+            "recipe": "牛肉千层面"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_info_get_calories'. Please review the function parameters and try again.",
+      "input_tokens": 412,
+      "output_tokens": 26,
+      "latency_s": 5.135202169418335,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "recipe",
+            "value": "牛肉千层面",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "zh"
+            ],
+            "expected_langs": [
+              "en"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_info_get_calories",
+          "arguments": {
+            "website": "Foodnetwork.com",
+            "recipe": "beef lasagna"
+          },
+          "id": "call-4a14064b-f8c8-411e-a9f6-39233587ffb3-1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_info_get_calories": {
+            "website": "Foodnetwork.com",
+            "recipe": "beef lasagna"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 468,
+      "output_tokens": 25,
+      "latency_s": 4.183595180511475,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Foodnetwork.com 上的牛肉千层面食谱含有多少卡路里？"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-af4b36c7-21f5-41a8-8438-6473f4b18ad8-0",
+          "function": {
+            "arguments": "{\"website\":\"Foodnetwork.com\",\"recipe\":\"牛肉千层面\"}",
+            "name": "recipe_info_get_calories"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_info_get_calories'. Please review the function parameters and try again.",
+      "tool_call_id": "call-af4b36c7-21f5-41a8-8438-6473f4b18ad8-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-4a14064b-f8c8-411e-a9f6-39233587ffb3-1",
+          "function": {
+            "arguments": "{\"website\":\"Foodnetwork.com\",\"recipe\":\"beef lasagna\"}",
+            "name": "recipe_info_get_calories"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

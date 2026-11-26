@@ -1,0 +1,208 @@
+{
+  "id": "multiple_184_de",
+  "source_id": "multiple_184",
+  "locale": "de",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "de_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1103,
+  "total_output_tokens": 62,
+  "total_latency_s": 5.918015956878662,
+  "estimated_cost_usd": 0.002578,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Gib mir ein Rezept für ein vegetarisches Nudelgericht mit Käse für 2 Portionen."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "recipe_search": {
+        "dietary_restriction": [
+          "Vegetarian"
+        ],
+        "ingredients": [
+          [
+            "pasta",
+            "cheese"
+          ],
+          [
+            "cheese",
+            "pasta"
+          ]
+        ],
+        "servings": [
+          2
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "dietary_restriction": "vegetarian",
+            "ingredients": [
+              "Nudeln",
+              "Käse"
+            ],
+            "servings": 2
+          },
+          "id": "call-35054ca1-06af-42f6-bc31-a7e04b130c3e-0"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "dietary_restriction": "vegetarian",
+            "ingredients": [
+              "Nudeln",
+              "Käse"
+            ],
+            "servings": 2
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "input_tokens": 433,
+      "output_tokens": 32,
+      "latency_s": 4.009789705276489,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "ingredients",
+            "value": [
+              "Nudeln",
+              "Käse"
+            ],
+            "method": "lingua",
+            "value_lang": [
+              "de"
+            ],
+            "expected_langs": [
+              "en"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "recipe_search",
+          "arguments": {
+            "dietary_restriction": "vegetarian",
+            "ingredients": [
+              "pasta",
+              "cheese"
+            ],
+            "servings": 2
+          },
+          "id": "call-3aa08c78-65d1-4947-ae33-d08bb2a1e5e3-1"
+        }
+      ],
+      "decoded": [
+        {
+          "recipe_search": {
+            "dietary_restriction": "vegetarian",
+            "ingredients": [
+              "pasta",
+              "cheese"
+            ],
+            "servings": 2
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 670,
+      "output_tokens": 30,
+      "latency_s": 1.9082262516021729,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Gib mir ein Rezept für ein vegetarisches Nudelgericht mit Käse für 2 Portionen."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-35054ca1-06af-42f6-bc31-a7e04b130c3e-0",
+          "function": {
+            "arguments": "{\"dietary_restriction\":\"vegetarian\",\"ingredients\":[\"Nudeln\",\"Käse\"],\"servings\":2}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'recipe_search'. Please review the function parameters and try again.",
+      "tool_call_id": "call-35054ca1-06af-42f6-bc31-a7e04b130c3e-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-3aa08c78-65d1-4947-ae33-d08bb2a1e5e3-1",
+          "function": {
+            "arguments": "{\"dietary_restriction\":\"vegetarian\",\"ingredients\":[\"pasta\",\"cheese\"],\"servings\":2}",
+            "name": "recipe_search"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,185 @@
+{
+  "id": "multiple_161_zh",
+  "source_id": "multiple_161",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1594,
+  "total_output_tokens": 73,
+  "total_latency_s": 12.78506350517273,
+  "estimated_cost_usd": 0.003626,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "查找下个月在纽约举办的评分最高的现代雕塑展览。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_exhibition": {
+        "location": [
+          "纽约",
+          "纽约州纽约市",
+          "纽约市"
+        ],
+        "art_form": [
+          "雕塑",
+          "现代雕塑"
+        ],
+        "month": [
+          "即将到来",
+          "下个月",
+          "即将到来的月份",
+          "下一个",
+          ""
+        ],
+        "user_ratings": [
+          "high",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "location": "New York",
+            "art_form": "modern sculpture",
+            "month": "next month",
+            "user_ratings": "high"
+          },
+          "id": "call-e2de47df-fe23-44a5-8673-e8715d0b5f7b-0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "location": "New York",
+            "art_form": "modern sculpture",
+            "month": "next month",
+            "user_ratings": "high"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'find_exhibition'. Please review the function parameters and try again.",
+      "input_tokens": 517,
+      "output_tokens": 37,
+      "latency_s": 9.49493145942688,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "location": "纽约",
+            "art_form": "现代雕塑",
+            "month": "下个月",
+            "user_ratings": "high"
+          },
+          "id": "call-f250af24-c527-4e9f-a854-bd92bbb4aef9-1"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "location": "纽约",
+            "art_form": "现代雕塑",
+            "month": "下个月",
+            "user_ratings": "high"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 1077,
+      "output_tokens": 36,
+      "latency_s": 3.2901320457458496,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "查找下个月在纽约举办的评分最高的现代雕塑展览。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-e2de47df-fe23-44a5-8673-e8715d0b5f7b-0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"art_form\":\"modern sculpture\",\"month\":\"next month\",\"user_ratings\":\"high\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'find_exhibition'. Please review the function parameters and try again.",
+      "tool_call_id": "call-e2de47df-fe23-44a5-8673-e8715d0b5f7b-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-f250af24-c527-4e9f-a854-bd92bbb4aef9-1",
+          "function": {
+            "arguments": "{\"location\":\"纽约\",\"art_form\":\"现代雕塑\",\"month\":\"下个月\",\"user_ratings\":\"high\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

@@ -1,0 +1,414 @@
+{
+  "id": "multiple_146_tr",
+  "source_id": "multiple_146",
+  "locale": "tr",
+  "localization_level": "native_query_native_target",
+  "benchmark": "tr_native_query_native_target",
+  "model": "grok-4.7",
+  "success": false,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 5,
+  "num_api_calls": 6,
+  "num_clarifications": 1,
+  "num_failed_calls": 5,
+  "final_error_type": "no_matching_call",
+  "total_input_tokens": 5736,
+  "total_output_tokens": 383,
+  "total_latency_s": 49.20388841629028,
+  "estimated_cost_usd": 0.01377,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Sietıl'da bulunduğum yere 10 mil mesafede Çin mutfağı sunan restoranları bul."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "restaurant.find_nearby": {
+        "location": [
+          "Sietıl",
+          "Sietıl, Vaşington"
+        ],
+        "cuisine": [
+          "Çin"
+        ],
+        "max_distance": [
+          10
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call-00fc4af4-1249-46cf-ba63-f18f32a08f0a-0"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "input_tokens": 326,
+      "output_tokens": 30,
+      "latency_s": 2.4559597969055176,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Sietıl, WA",
+            "cuisine": "Çin",
+            "max_distance": 10
+          },
+          "id": "call-6ac0544a-11ab-4404-aafa-5b65a0b8733c-1"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Sietıl, WA",
+            "cuisine": "Çin",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "input_tokens": 383,
+      "output_tokens": 32,
+      "latency_s": 12.604206562042236,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 3,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, Washington",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call-b33bba39-7b1b-4880-974a-fa74d0abfad3-2"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, Washington",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "input_tokens": 1109,
+      "output_tokens": 30,
+      "latency_s": 7.569488286972046,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 4,
+      "text": [
+        "Üzgünüm, restoran arama işlemi sırasında bir hata oluştu ve sonuçları alamadım. Lütfen tekrar deneyin."
+      ],
+      "tool_calls": [],
+      "decoded": null,
+      "valid": false,
+      "error_type": "no_function_call",
+      "checker_error": null,
+      "feedback_sent": "400 Bad Request: no function call was made. You must answer by calling one of the available functions.",
+      "input_tokens": 616,
+      "output_tokens": 30,
+      "latency_s": 12.752491235733032,
+      "num_calls": 0,
+      "is_tool_call": false,
+      "relaxed": false
+    },
+    {
+      "attempt": 5,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": "10\n\nThat matches the expected format from the initial system, I think.\n\nThe initial example isn't given, but standard is that.\n\nPerhaps the language invalid means I should not translate, but use as is, but it failed.\n\nPerhaps \"Chinese\" is not the preferred, they want \"Chinese\" but the system detects the response language.\n\nThe current user message is the error, and I must call a function.\n\nLet me try with location in full.\n\nPerhaps include the country or something.\n\nLet's see ecology tool, no.\n\nPerhaps the problem is that Seattle is \"Seattle, WA\" and cuisine \"Chinese\" is correct, but the \"language\" refers to something in the backend that checks if the params are English when they should be.\n\nLet's assume I need to output the function call with those params again.\n\nSo I'll do it."
+          },
+          "id": "call-ff115463-cbea-40c3-8825-2ac6c4350bee-1"
+        },
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          },
+          "id": "call-ff115463-cbea-40c3-8825-2ac6c4350bee-3"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": "10\n\nThat matches the expected format from the initial system, I think.\n\nThe initial example isn't given, but standard is that.\n\nPerhaps the language invalid means I should not translate, but use as is, but it failed.\n\nPerhaps \"Chinese\" is not the preferred, they want \"Chinese\" but the system detects the response language.\n\nThe current user message is the error, and I must call a function.\n\nLet me try with location in full.\n\nPerhaps include the country or something.\n\nLet's see ecology tool, no.\n\nPerhaps the problem is that Seattle is \"Seattle, WA\" and cuisine \"Chinese\" is correct, but the \"language\" refers to something in the backend that checks if the params are English when they should be.\n\nLet's assume I need to output the function call with those params again.\n\nSo I'll do it."
+          }
+        },
+        {
+          "restaurant_find_nearby": {
+            "location": "Seattle, WA",
+            "cuisine": "Chinese",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again. | 400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "input_tokens": 1623,
+      "output_tokens": 226,
+      "latency_s": 10.894110441207886,
+      "num_calls": 2,
+      "is_tool_call": true,
+      "relaxed": false
+    },
+    {
+      "attempt": 6,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "restaurant_find_nearby",
+          "arguments": {
+            "location": "Sietıl, WA",
+            "cuisine": "Çin mutfağı",
+            "max_distance": 10
+          },
+          "id": "call-a85768eb-73f9-4648-9f65-f846bcb64353-5"
+        }
+      ],
+      "decoded": [
+        {
+          "restaurant_find_nearby": {
+            "location": "Sietıl, WA",
+            "cuisine": "Çin mutfağı",
+            "max_distance": 10
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": null,
+      "input_tokens": 1679,
+      "output_tokens": 35,
+      "latency_s": 2.9276320934295654,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Sietıl'da bulunduğum yere 10 mil mesafede Çin mutfağı sunan restoranları bul."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-00fc4af4-1249-46cf-ba63-f18f32a08f0a-0",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, WA\",\"cuisine\":\"Chinese\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "tool_call_id": "call-00fc4af4-1249-46cf-ba63-f18f32a08f0a-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-6ac0544a-11ab-4404-aafa-5b65a0b8733c-1",
+          "function": {
+            "arguments": "{\"location\":\"Sietıl, WA\",\"cuisine\":\"Çin\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "tool_call_id": "call-6ac0544a-11ab-4404-aafa-5b65a0b8733c-1"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-b33bba39-7b1b-4880-974a-fa74d0abfad3-2",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, Washington\",\"cuisine\":\"Chinese\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "tool_call_id": "call-b33bba39-7b1b-4880-974a-fa74d0abfad3-2"
+    },
+    {
+      "content": "Üzgünüm, restoran arama işlemi sırasında bir hata oluştu ve sonuçları alamadım. Lütfen tekrar deneyin.",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": null
+    },
+    {
+      "role": "user",
+      "content": "400 Bad Request: no function call was made. You must answer by calling one of the available functions."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-ff115463-cbea-40c3-8825-2ac6c4350bee-1",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, WA\",\"cuisine\":\"Chinese\",\"max_distance\":\"10\\n\\nThat matches the expected format from the initial system, I think.\\n\\nThe initial example isn't given, but standard is that.\\n\\nPerhaps the language invalid means I should not translate, but use as is, but it failed.\\n\\nPerhaps \\\"Chinese\\\" is not the preferred, they want \\\"Chinese\\\" but the system detects the response language.\\n\\nThe current user message is the error, and I must call a function.\\n\\nLet me try with location in full.\\n\\nPerhaps include the country or something.\\n\\nLet's see ecology tool, no.\\n\\nPerhaps the problem is that Seattle is \\\"Seattle, WA\\\" and cuisine \\\"Chinese\\\" is correct, but the \\\"language\\\" refers to something in the backend that checks if the params are English when they should be.\\n\\nLet's assume I need to output the function call with those params again.\\n\\nSo I'll do it.\"}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        },
+        {
+          "id": "call-ff115463-cbea-40c3-8825-2ac6c4350bee-3",
+          "function": {
+            "arguments": "{\"location\":\"Seattle, WA\",\"cuisine\":\"Chinese\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "tool_call_id": "call-ff115463-cbea-40c3-8825-2ac6c4350bee-1"
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'restaurant_find_nearby'. Please review the function parameters and try again.",
+      "tool_call_id": "call-ff115463-cbea-40c3-8825-2ac6c4350bee-3"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-a85768eb-73f9-4648-9f65-f846bcb64353-5",
+          "function": {
+            "arguments": "{\"location\":\"Sietıl, WA\",\"cuisine\":\"Çin mutfağı\",\"max_distance\":10}",
+            "name": "restaurant_find_nearby"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Turkish. Understand the request in Turkish and respond with the correct function call exactly as specified in the tool definitions."
+}

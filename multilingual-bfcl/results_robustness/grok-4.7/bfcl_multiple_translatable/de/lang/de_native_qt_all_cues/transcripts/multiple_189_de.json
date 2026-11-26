@@ -1,0 +1,181 @@
+{
+  "id": "multiple_189_de",
+  "source_id": "multiple_189",
+  "locale": "de",
+  "localization_level": "native_qt_all_cues",
+  "benchmark": "de_native_qt_all_cues",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 944,
+  "total_output_tokens": 65,
+  "total_latency_s": 4.629474401473999,
+  "estimated_cost_usd": 0.0022779999999999996,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Rechne 3 Uhr nachmittags von der Zeitzone von New York in die Zeitzone von London um."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "timezone.convert": {
+        "time": [
+          "3 Uhr nachmittags"
+        ],
+        "from_timezone": [
+          "America/New_York",
+          "New York",
+          "New York, New York",
+          "Stadt New York",
+          "Östliche Standardzeit"
+        ],
+        "to_timezone": [
+          "Europe/London",
+          "London",
+          "Britische Sommerzeit",
+          "Mittlere Greenwich-Zeit"
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "15:00 Uhr",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          },
+          "id": "call-473a83c3-d85a-46a6-a68c-365f138f83bf-0"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "15:00 Uhr",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "input_tokens": 382,
+      "output_tokens": 32,
+      "latency_s": 2.532417058944702,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        []
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "timezone_convert",
+          "arguments": {
+            "time": "3 Uhr nachmittags",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          },
+          "id": "call-4f2bdb90-5bd6-479e-b72e-657feeec4021-1"
+        }
+      ],
+      "decoded": [
+        {
+          "timezone_convert": {
+            "time": "3 Uhr nachmittags",
+            "from_timezone": "New York",
+            "to_timezone": "London"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 562,
+      "output_tokens": 33,
+      "latency_s": 2.097057342529297,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Rechne 3 Uhr nachmittags von der Zeitzone von New York in die Zeitzone von London um."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-473a83c3-d85a-46a6-a68c-365f138f83bf-0",
+          "function": {
+            "arguments": "{\"time\":\"15:00 Uhr\",\"from_timezone\":\"New York\",\"to_timezone\":\"London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'timezone_convert'. Please review the function definition and try again.",
+      "tool_call_id": "call-473a83c3-d85a-46a6-a68c-365f138f83bf-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-4f2bdb90-5bd6-479e-b72e-657feeec4021-1",
+          "function": {
+            "arguments": "{\"time\":\"3 Uhr nachmittags\",\"from_timezone\":\"New York\",\"to_timezone\":\"London\"}",
+            "name": "timezone_convert"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

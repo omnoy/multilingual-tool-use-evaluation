@@ -1,0 +1,187 @@
+{
+  "id": "multiple_161_de",
+  "source_id": "multiple_161",
+  "locale": "de",
+  "localization_level": "native_query_eng_target",
+  "benchmark": "de_native_query_eng_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 1106,
+  "total_output_tokens": 59,
+  "total_latency_s": 21.5047550201416,
+  "estimated_cost_usd": 0.002566,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "Finde die am besten bewertete Ausstellung moderner Skulpturen, die im kommenden Monat in New York stattfindet."
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "find_exhibition": {
+        "location": [
+          "New York",
+          "New York, NY",
+          "New York City",
+          "NYC",
+          "NY"
+        ],
+        "art_form": [
+          "sculpture",
+          "modern sculpture"
+        ],
+        "month": [
+          "upcoming",
+          "next month",
+          "upcoming month",
+          "next",
+          ""
+        ],
+        "user_ratings": [
+          "high",
+          ""
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "location": "New York",
+            "art_form": "modern sculptures",
+            "user_ratings": "high"
+          },
+          "id": "call-57ebb1eb-d542-4f21-9f4f-d15954dc13cc-0"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "location": "New York",
+            "art_form": "modern sculptures",
+            "user_ratings": "high"
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid parameters for function 'find_exhibition'. Please review the function definition and try again.",
+      "input_tokens": 527,
+      "output_tokens": 30,
+      "latency_s": 4.916353464126587,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        []
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "find_exhibition",
+          "arguments": {
+            "location": "New York",
+            "art_form": "sculpture",
+            "user_ratings": "high"
+          },
+          "id": "call-3475098d-105b-4222-a12a-49d13abc4558-1"
+        }
+      ],
+      "decoded": [
+        {
+          "find_exhibition": {
+            "location": "New York",
+            "art_form": "sculpture",
+            "user_ratings": "high"
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 579,
+      "output_tokens": 29,
+      "latency_s": 16.588401556015015,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "Finde die am besten bewertete Ausstellung moderner Skulpturen, die im kommenden Monat in New York stattfindet."
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-57ebb1eb-d542-4f21-9f4f-d15954dc13cc-0",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"art_form\":\"modern sculptures\",\"user_ratings\":\"high\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid parameters for function 'find_exhibition'. Please review the function definition and try again.",
+      "tool_call_id": "call-57ebb1eb-d542-4f21-9f4f-d15954dc13cc-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-3475098d-105b-4222-a12a-49d13abc4558-1",
+          "function": {
+            "arguments": "{\"location\":\"New York\",\"art_form\":\"sculpture\",\"user_ratings\":\"high\"}",
+            "name": "find_exhibition"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in German. Understand the request in German and respond with the correct function call exactly as specified in the tool definitions."
+}

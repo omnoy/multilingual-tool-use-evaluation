@@ -1,0 +1,225 @@
+{
+  "id": "multiple_8_zh",
+  "source_id": "multiple_8",
+  "locale": "zh",
+  "localization_level": "native_query_native_target",
+  "benchmark": "zh_native_query_native_target",
+  "model": "grok-4.7",
+  "success": true,
+  "first_attempt_success": false,
+  "success_with_extra_calls": false,
+  "num_attempts": 2,
+  "num_api_calls": 2,
+  "num_clarifications": 0,
+  "num_failed_calls": 1,
+  "final_error_type": null,
+  "total_input_tokens": 967,
+  "total_output_tokens": 97,
+  "total_latency_s": 13.150001049041748,
+  "estimated_cost_usd": 0.002516,
+  "error": null,
+  "query": [
+    [
+      {
+        "role": "user",
+        "content": "寻找位于圣迭戈、售价在300,000至400,000美元预算范围内的3卧室别墅。"
+      }
+    ]
+  ],
+  "ground_truth": [
+    {
+      "realestate.find_properties": {
+        "location": [
+          "圣迭戈",
+          "加利福尼亚州圣迭戈",
+          "加利福尼亚州"
+        ],
+        "propertyType": [
+          "别墅"
+        ],
+        "bedrooms": [
+          3
+        ],
+        "budget": [
+          {
+            "min": [
+              300000
+            ],
+            "max": [
+              400000
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "San Diego, CA",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call-9bc6449d-bda5-4d9b-9ab5-1717fea5f8fd-0"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "San Diego, CA",
+            "propertyType": "villa",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": false,
+      "error_type": "no_matching_call",
+      "checker_error": [
+        "No model call matched a ground-truth call."
+      ],
+      "feedback_sent": "400 Bad Request: invalid language for parameters in function 'realestate_find_properties'. Please review the function parameters and try again.",
+      "input_tokens": 447,
+      "output_tokens": 49,
+      "latency_s": 4.109004735946655,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": [
+        [
+          {
+            "param": "location",
+            "value": "San Diego, CA",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "zh"
+            ]
+          },
+          {
+            "param": "propertyType",
+            "value": "villa",
+            "method": "counterpart_gt",
+            "value_lang": [
+              "en"
+            ],
+            "expected_langs": [
+              "zh"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "attempt": 2,
+      "text": [],
+      "tool_calls": [
+        {
+          "name": "realestate_find_properties",
+          "arguments": {
+            "location": "圣迭戈",
+            "propertyType": "别墅",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          },
+          "id": "call-673bbd46-f628-4f55-9523-e273474be765-1"
+        }
+      ],
+      "decoded": [
+        {
+          "realestate_find_properties": {
+            "location": "圣迭戈",
+            "propertyType": "别墅",
+            "bedrooms": 3,
+            "budget": {
+              "min": 300000,
+              "max": 400000
+            }
+          }
+        }
+      ],
+      "valid": true,
+      "error_type": null,
+      "checker_error": null,
+      "feedback_sent": null,
+      "input_tokens": 520,
+      "output_tokens": 48,
+      "latency_s": 9.040996313095093,
+      "num_calls": 1,
+      "is_tool_call": true,
+      "relaxed": false,
+      "language_mismatches": null
+    }
+  ],
+  "final_messages": [
+    {
+      "role": "system",
+      "content": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+    },
+    {
+      "role": "user",
+      "content": "寻找位于圣迭戈、售价在300,000至400,000美元预算范围内的3卧室别墅。"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-9bc6449d-bda5-4d9b-9ab5-1717fea5f8fd-0",
+          "function": {
+            "arguments": "{\"location\":\"San Diego, CA\",\"propertyType\":\"villa\",\"bedrooms\":3,\"budget\":{\"min\":300000,\"max\":400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "400 Bad Request: invalid language for parameters in function 'realestate_find_properties'. Please review the function parameters and try again.",
+      "tool_call_id": "call-9bc6449d-bda5-4d9b-9ab5-1717fea5f8fd-0"
+    },
+    {
+      "content": "",
+      "refusal": null,
+      "role": "assistant",
+      "annotations": null,
+      "audio": null,
+      "function_call": null,
+      "tool_calls": [
+        {
+          "id": "call-673bbd46-f628-4f55-9523-e273474be765-1",
+          "function": {
+            "arguments": "{\"location\":\"圣迭戈\",\"propertyType\":\"别墅\",\"bedrooms\":3,\"budget\":{\"min\":300000,\"max\":400000}}",
+            "name": "realestate_find_properties"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "system_prompt": "The user will write in Chinese. Understand the request in Chinese and respond with the correct function call exactly as specified in the tool definitions."
+}

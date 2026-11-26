@@ -1,17 +1,17 @@
 """
 summarize_robustness_results.py — collect every robustness-run summary into one CSV.
 
-Walks results_robustness/<model>/<category>/<lang>/<benchmark>/summary.json (skipping
-the "old" directory) and writes one row per summary:
+Walks results_robustness/<model>/<category>/<lang>/<error-lvl>/<benchmark>/summary.json
+(skipping the "old" directory) and writes one row per summary:
 
-    model_family, model_name, benchmark, language, experiment,
+    model_family, model_name, benchmark, language, experiment, error_lvl,
     max_retries_acc, first_attempt_acc, average_attempts, cost
 
 Rows are ordered model_family -> model_name -> benchmark (the category folder, e.g.
 bfcl_multiple_translatable; alphabetical) -> language (English first, then
 alphabetical) -> experiment (en_baseline, native_query_eng_target,
 native_query_native_target, native_qt_func_descs, native_qt_lang_hints,
-native_qt_all_cues; unknown variations go last, alphabetically).
+native_qt_all_cues; unknown variations go last, alphabetically) -> error_lvl.
 
 Usage:
     python scripts/summarize_robustness_results.py
@@ -60,6 +60,7 @@ COLUMNS = [
     "benchmark",
     "language",
     "experiment",
+    "error_lvl",
     "max_retries_acc",
     "first_attempt_acc",
     "avg_attempts_per_success",
@@ -95,6 +96,7 @@ def sort_key(row: dict) -> tuple:
         row["benchmark"],
         (lang_rank, lang),
         (exp_rank, exp),
+        row["error_lvl"],
     )
 
 
@@ -108,13 +110,15 @@ def collect_rows(results_dir: Path) -> list[dict]:
         model = summary.get("model", rel.parts[0])
         category = summary.get("category", rel.parts[1])
         lang = summary.get("lang_dir", rel.parts[2])
-        benchmark = summary.get("benchmark", rel.parts[3])
+        error_lvl = summary.get("error_lvl", rel.parts[3])
+        benchmark = summary.get("benchmark", rel.parts[4])
         rows.append({
             "model_family": model_family(model),
             "model_name": model,
             "benchmark": category,
             "language": lang,
             "experiment": experiment_name(benchmark, lang),
+            "error_lvl": error_lvl,
             "max_retries_acc": f'{summary.get("success_rate"):.4f}',
             "first_attempt_acc": f'{summary.get("first_attempt_success_rate"):.4f}',
             "avg_attempts_per_success": f'{summary.get("avg_attempts_per_success"):.2f}',

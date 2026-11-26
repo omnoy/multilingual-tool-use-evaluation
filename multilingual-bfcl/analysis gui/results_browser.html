@@ -224,11 +224,20 @@ function scanFileList(fileList) {
   return finishScan(rootName);
 }
 
+const ERROR_LVLS = new Set(["params", "lang"]);
 function addRun(run) {
-  const p = run.parts;
-  run.bench = p.length >= 3 ? p[p.length - 3] : "(root)";
+  let p = run.parts;
+  // New layout: <model>/<category>/<lang>/<error-lvl>/<benchmark>. Pull the error-level
+  // folder out so the rest parses like the older <model>/<category>/<lang>/<benchmark>.
+  run.errorLvl = null;
+  if (p.length >= 5 && ERROR_LVLS.has(p[p.length - 2])) {
+    run.errorLvl = p[p.length - 2];
+    p = [...p.slice(0, -2), p[p.length - 1]];
+  }
+  run.bench =p.length >= 3 ? p[p.length - 3] : "(root)";
   run.lang = p.length >= 2 ? p[p.length - 2] : "?";
   run.variant = (p[p.length - 1] || "").replace(new RegExp("^" + run.lang + "_"), "") || p[p.length - 1];
+  if (run.errorLvl) run.variant += ` [${run.errorLvl}]`;
   run.model = p.length >= 4 ? p.slice(0, -3).join("/") : "(unknown)";
   runs.push(run); runByKey.set(run.key, run);
 }

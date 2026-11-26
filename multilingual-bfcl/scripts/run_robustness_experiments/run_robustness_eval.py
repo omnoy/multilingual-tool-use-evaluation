@@ -9,7 +9,8 @@ benchmark entry we run a short *conversation*, not a single shot:
   2. Decode the model's function call and check it against the ground-truth answer
      using BFCL's own AST checker (so scoring matches standard BFCL exactly).
   3. If the call is wrong, return a generic English "400 Bad Request" tool result
-     and let the model try again — up to --max-attempts *tool-call* attempts.
+     (wording set by --error-lvl, see below) and let the model try again — up to
+     --max-attempts *tool-call* attempts.
   4. The entry succeeds the moment any attempt produces a correct call; otherwise it
      fails after the tool-call budget (or the total API-call ceiling) is exhausted.
 
@@ -42,7 +43,19 @@ Data layout (under data/benchmarks/<category>/<lang-dir>/):
   Categories seen in this project: bfcl_multiple_translatable, wildtoolbench.
   Lang dirs: en (source, no locale), he, zh, ...
 
-Outputs (under <output-dir>/<model>/<category>/<lang-dir>/<benchmark>/):
+Error message (--error-lvl, required):
+  params   ambiguous: "invalid parameters for function '<name>'" -- says the call was
+           rejected, not why.
+  lang     explicit: "invalid language for parameters in function '<name>'" -- sent
+           only for a call whose free-text (string, non-enum) argument is in the wrong
+           language: either it equals an accepted answer of the same entry in the
+           other-language variant (native_query_eng_target <-> native_query_native_target),
+           or, failing that, lingua (English vs the entry's locale language) detects it
+           in a different language than the ground-truth values. Every other wrong call still gets the
+           'params' message, so the hint is never sent when it would be false. See
+           multilingual_bfcl.param_language.
+
+Outputs (under <output-dir>/<model>/<category>/<lang-dir>/<error-lvl>/<benchmark>/):
   transcripts/<entry_id>.json   full reasoning + tool calls + injected errors per entry
   statistics.csv                one row per entry (success, #attempts, #api calls,
                                 #failed calls, tokens, estimated_cost_usd, ...)
@@ -63,7 +76,7 @@ parameters are shaped: 'standard'/'reasoning' use the OpenAI-compatible v1 route
 Usage:
     # Small sample (default 10 entries) against an Azure deployment:
     python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target \
-        --category bfcl_multiple_translatable --lang-dir he --model gpt-4o
+        --category bfcl_multiple_translatable --lang-dir he --model gpt-4o --error-lvl params
 
     # Full file, more retries, higher concurrency:
     python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target \
@@ -87,7 +100,7 @@ Usage:
         --category bfcl_multiple_translatable --lang-dir he --model gpt-4o --limit 0 --resume
 
     # Rebuild stats + cost from existing transcripts, no API calls:
-    python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target --recompute-stats
+    python scripts/run_robustness_eval.py --benchmark he_native_query_eng_target --error-lvl params --recompute-stats
 
 Environment (multilingual-bfcl/.env):
     AZURE_OPENAI_ENDPOINT=...      # …/openai/v1 (or the resource root)
@@ -137,6 +150,10 @@ from multilingual_bfcl.model_handler.azure_responses_handler import (  # noqa: E
     AzureOpenAIResponsesFCHandler,
 )
 from multilingual_bfcl.localization.locale_config import get_locale  # noqa: E402
+from multilingual_bfcl.param_language import (  # noqa: E402
+    counterpart_experiment,
+    param_language_mismatch,
+)
 
 # Any handler the harness drives (both expose the same BFCL FC methods plus the
 # extract_turn / apply_language_prefix format adapters run_entry relies on).
@@ -281,13 +298,23 @@ DATA_ROOT = PACKAGE_ROOT / "data" / "benchmarks"
 # Generic, English, non-leaking rejection. It signals bad parameters without naming
 # which parameter is wrong or what the expected value is, so it cannot leak the answer.
 MULTIPLE_TOOL_CALL_ERROR_TEMPLATE = (
-    "400 Bad Request: w. "
+    "400 Bad Request: unexpected number of function calls. "
     "Please review the function definition and try again."
 )
-PARAMETER_VALUE_ERROR_TEMPLATE = (
-    "400 Bad Request: invalid parameters for function '{name}'. "
-    "Please review the function definition and try again."
-)
+# Per-tool-call rejection returned for a wrong call, keyed by --error-lvl.
+#   params: ambiguous -- the call was rejected, without saying why.
+#   lang:   explicit  -- the parameter values are in the wrong language.
+PARAMETER_VALUE_ERROR_TEMPLATES = {
+    "params": (
+        "400 Bad Request: invalid parameters for function '{name}'. "
+        "Please review the function definition and try again."
+    ),
+    "lang": (
+        "400 Bad Request: invalid language for parameters in function '{name}'. "
+        "Please review the function parameters and try again."
+    ),
+}
+
 NO_CALL_FEEDBACK = (
     "400 Bad Request: no function call was made. "
     "You must answer by calling one of the available functions."
@@ -323,6 +350,9 @@ class Attempt:
     is_tool_call: bool = False
     # True when this attempt passed only because extra calls were tolerated.
     relaxed: bool = False
+    # --error-lvl lang only: per tool call, the free-text params detected in the wrong
+    # language ([] = none, so that call got the 'params' message). None otherwise.
+    language_mismatches: list[list[dict]] | None = None
 
 
 @dataclass
@@ -412,6 +442,17 @@ def _json_default(obj: Any) -> Any:
     return str(obj)
 
 
+def _call_args(tool_call: dict) -> dict:
+    """A tool call's arguments as a dict (some handlers keep them as a JSON string)."""
+    args = tool_call.get("arguments")
+    if isinstance(args, str):
+        try:
+            args = json.loads(args)
+        except json.JSONDecodeError:
+            return {}
+    return args if isinstance(args, dict) else {}
+
+
 async def run_entry(
     handler: FCHandler,
     entry: dict,
@@ -424,6 +465,8 @@ async def run_entry(
     max_api_calls: int,
     add_lang_prefix: bool,
     allow_extra_calls: bool,
+    error_lvl: str,
+    counterpart_ground_truth: Any,
     semaphore: asyncio.Semaphore,
 ) -> EntryResult:
     """Drive one entry's conversation loop: query -> check -> 400 -> retry.
@@ -568,8 +611,25 @@ async def run_entry(
                 # Wrong call: tally, record, and inject a generic 400 per tool call.
                 result.num_failed_calls += 1
                 result.final_error_type = error_type
+                # 'lang' sends the language message only for calls with a detected
+                # wrong-language free-text argument; all other calls get 'params'.
+                language_mismatches = None
+                templates = [PARAMETER_VALUE_ERROR_TEMPLATES[error_lvl]] * len(tool_calls)
+                if error_lvl == "lang":
+                    language_mismatches = [
+                        param_language_mismatch(
+                            tc["name"], _call_args(tc), test_entry["function"],
+                            ground_truth, entry.get("locale"),
+                            entry.get("localization_level"), counterpart_ground_truth,
+                        )
+                        for tc in tool_calls
+                    ]
+                    templates = [
+                        PARAMETER_VALUE_ERROR_TEMPLATES["lang" if mm else "params"]
+                        for mm in language_mismatches
+                    ]
                 execution_results = [
-                    PARAMETER_VALUE_ERROR_TEMPLATE.format(name=tc["name"]) for tc in tool_calls
+                    t.format(name=tc["name"]) for t, tc in zip(templates, tool_calls)
                 ]
                 feedback = " | ".join(execution_results)
                 retry = tool_call_attempts < max_tool_call_attempts and api_calls < max_api_calls
@@ -581,6 +641,7 @@ async def run_entry(
                     input_tokens=parsed["input_token"],
                     output_tokens=parsed["output_token"], latency_s=latency,
                     num_calls=num_calls, is_tool_call=True,
+                    language_mismatches=language_mismatches,
                 ))
                 if retry:
                     handler._add_execution_results_FC(
@@ -678,7 +739,7 @@ _ENTRY_RESULT_FIELDS = {f.name for f in dataclasses.fields(EntryResult)}
 def _out_dir_for(benchmark: str, args: argparse.Namespace) -> Path:
     return (
         PACKAGE_ROOT / args.output_dir / args.model / args.category
-        / args.lang_dir / benchmark
+        / args.lang_dir / args.error_lvl / benchmark
     )
 
 
@@ -720,6 +781,7 @@ def _summary_meta(benchmark: str, args: argparse.Namespace, **extra: Any) -> dic
         "max_api_calls": args.max_api_calls,
         "lang_prefix": not args.no_lang_prefix,
         "allow_extra_calls": not args.strict_call_count,
+        "error_lvl": args.error_lvl,
         **extra,
     }
 
@@ -738,6 +800,21 @@ def recompute_stats(benchmark: str, args: argparse.Namespace) -> None:
     print(f"=== {benchmark} | recomputed {len(results)} transcripts (no API calls) ===")
     print(f"  -> total estimated cost ${summary['total_estimated_cost_usd']}")
     print(f"  -> wrote {out_dir}")
+
+
+def _load_counterpart_ground_truth(category: str, lang_dir: str, entries: list[dict]) -> dict:
+    """--error-lvl lang: entry id -> ground truth of the same entry in the other-language
+    variant (see param_language.counterpart_experiment). {} when there is none."""
+    levels = {e.get("localization_level") for e in entries}
+    experiments = {counterpart_experiment(level) for level in levels} - {None}
+    if len(experiments) != 1:
+        return {}
+    path = DATA_ROOT / category / lang_dir / f"{lang_dir}_{experiments.pop()}.jsonl"
+    if not path.exists():
+        print(f"  ! no counterpart benchmark {path.name}; language check uses lingua only",
+              file=sys.stderr)
+        return {}
+    return {e["id"]: e.get("ground_truth") for e in _load_jsonl(path)}
 
 
 async def run_benchmark(
@@ -776,8 +853,14 @@ async def run_benchmark(
             continue
         runnable.append((entry, gt))
 
+    counterpart_gt = (
+        _load_counterpart_ground_truth(args.category, args.lang_dir, entries)
+        if args.error_lvl == "lang" else {}
+    )
+
     resume_note = f" | resuming, {resumed} already done" if args.resume else ""
-    print(f"\n=== {benchmark} | model={args.model} | {len(runnable)} entries to run "
+    print(f"\n=== {benchmark} | model={args.model} | error_lvl={args.error_lvl} "
+          f"| {len(runnable)} entries to run "
           f"(skipped {skipped}){resume_note} "
           f"| max_tool_call_attempts={args.max_tool_call_attempts} "
           f"| max_api_calls={args.max_api_calls} ===")
@@ -799,7 +882,8 @@ async def run_benchmark(
             handler, entry, gt, benchmark, args.category,
             f"{args.model}-FC", args.model,
             args.max_tool_call_attempts, args.max_api_calls, not args.no_lang_prefix,
-            not args.strict_call_count, semaphore,
+            not args.strict_call_count,
+            args.error_lvl, counterpart_gt.get(entry["id"]), semaphore,
         ))
         for entry, gt in runnable
     ]
@@ -912,6 +996,12 @@ def main() -> None:
                              "data/benchmarks/<category>/<lang-dir>/, e.g. he_native_query_eng_target.")
     parser.add_argument("--model", required=True,
                         help="Azure deployment name (the harness appends the -FC registry suffix).")
+    parser.add_argument("--error-lvl", "--error_lvl", dest="error_lvl", required=True,
+                        choices=sorted(PARAMETER_VALUE_ERROR_TEMPLATES),
+                        help="400 message returned for a wrong call: 'params' (ambiguous: "
+                             "invalid parameters) or 'lang' (explicit: invalid language for "
+                             "parameters, sent only when a free-text argument is detected in "
+                             "the wrong language; other wrong calls get 'params'). Also selects the <lang-dir>/<error-lvl>/ results subfolder.")
     parser.add_argument("--model-type", choices=[mt.value for mt in ModelType],
                         default=ModelType.STANDARD.value,
                         help="Deployment kind / route: 'standard' (v1 route, temperature + "

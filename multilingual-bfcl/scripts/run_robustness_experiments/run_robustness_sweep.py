@@ -10,26 +10,29 @@ nargs="+"), so one model failing does not stop the others.
 Any argument not recognised here is forwarded verbatim to run_robustness_eval.py
 (e.g. --resume, --concurrency 8, --max-api-calls 12).
 
+--error-lvl (params | lang) is required and forwarded; it picks the 400 message wording
+and the results subfolder <output-dir>/<model>/<category>/<lang-dir>/<error-lvl>/.
+
 Usage:
     # Every model in MODELS on every German variant, full files:
-    python scripts/run_robustness_sweep.py --lang-dir de
+    python scripts/run_robustness_sweep.py --error-lvl params --lang-dir de
 
     # A subset of models and variants (variant = file stem minus the "<lang>_" prefix):
-    python scripts/run_robustness_sweep.py --lang-dir de \
+    python scripts/run_robustness_sweep.py --error-lvl params --lang-dir de \
         --models gpt-6-astra Kimi-K2.6 --variants native_query_eng_target native_query_native_target
 
     # Finish runs that stopped early (forwarded to the harness):
-    python scripts/run_robustness_sweep.py --lang-dir de --resume
+    python scripts/run_robustness_sweep.py --error-lvl params --lang-dir de --resume
 
     # Rebuild statistics.csv + summary.json from saved transcripts, no API calls. Pairs
     # with no transcripts are skipped:
-    python scripts/run_robustness_sweep.py --lang-dir de --recompute-stats
+    python scripts/run_robustness_sweep.py --error-lvl params --lang-dir de --recompute-stats
 
     # Just print the commands:
-    python scripts/run_robustness_sweep.py --lang-dir de --dry-run
+    python scripts/run_robustness_sweep.py --error-lvl params --lang-dir de --dry-run
 
     # Several languages and categories at once (missing combinations are skipped):
-    python scripts/run_robustness_sweep.py --lang-dir en he de tr \
+    python scripts/run_robustness_sweep.py --error-lvl params --lang-dir en he de tr \
         --category bfcl_multiple_translatable wildtoolbench
 """
 
@@ -76,8 +79,10 @@ def discover_benchmarks(category: str, lang_dir: str, variants: list[str] | None
     return selected, matched
 
 
-def has_transcripts(output_dir: str, model: str, category: str, lang_dir: str, benchmark: str) -> bool:
-    transcripts = PACKAGE_ROOT / output_dir / model / category / lang_dir / benchmark / "transcripts"
+def has_transcripts(output_dir: str, error_lvl: str, model: str, category: str, lang_dir: str,
+                    benchmark: str) -> bool:
+    transcripts = (PACKAGE_ROOT / output_dir / model / category / lang_dir / error_lvl
+                   / benchmark / "transcripts")
     return any(transcripts.glob("*.json"))
 
 
@@ -97,6 +102,10 @@ def main() -> None:
     parser.add_argument("--variants", nargs="+", required=True,
                         help="Benchmark variants (file stem with or without the '<lang>_' "
                              "prefix). Default: every .jsonl in the language folder.")
+    parser.add_argument("--error-lvl", "--error_lvl", dest="error_lvl", required=True,
+                        choices=["lang", "params"],
+                        help="Forwarded --error-lvl: 400 message wording, 'params' (ambiguous: "
+                             "invalid parameters) or 'lang' (explicit: invalid language).")
     parser.add_argument("--limit", default="0",
                         help="Forwarded --limit (default 0 = full file).")
     parser.add_argument("--recompute-stats", action="store_true",
@@ -138,7 +147,7 @@ def main() -> None:
             for b in bms]
     if args.recompute_stats:
         # The harness raises on a benchmark with no transcripts, so skip those up front.
-        skipped = [j for j in jobs if not has_transcripts(args.output_dir, *j)]
+        skipped = [j for j in jobs if not has_transcripts(args.output_dir, args.error_lvl, *j)]
         for m, c, l, b in skipped:
             print(f"Skipping {m} / {c}/{l}/{b} (no transcripts)")
         jobs = [j for j in jobs if j not in skipped]
@@ -152,6 +161,7 @@ def main() -> None:
             "--benchmark", benchmark,
             "--model", model,
             "--model-type", MODELS[model],
+            "--error-lvl", args.error_lvl,
             "--limit", args.limit,
             "--output-dir", args.output_dir,
             *passthrough,

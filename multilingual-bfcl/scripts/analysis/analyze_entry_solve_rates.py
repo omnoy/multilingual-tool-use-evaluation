@@ -1,7 +1,8 @@
 """Per-entry solve-rate analysis across all robustness-eval results.
 
-Walks results_robustness/ (excluding the deprecated results_robustness/old/
-subtree), reads every statistics.csv, and aggregates each benchmark entry's
+Walks results_robustness/<model>/<category>/<lang>/<error-lvl>/ (excluding the
+deprecated old/ subtree; one error level at a time, --error-lvl, default params),
+reads every statistics.csv, and aggregates each benchmark entry's
 solve rate across models/locales/formats. Also pulls a representative query
 and ground_truth for each entry from its transcripts.
 
@@ -18,11 +19,11 @@ from collections import Counter, defaultdict
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 from multilingual_bfcl.experiment_names import level_of_stem  # noqa: E402
 
-DEFAULT_RESULTS_DIR = Path(__file__).resolve().parent.parent / "results_robustness"
-DEFAULT_OUT = Path(__file__).resolve().parent.parent / "results_robustness" / "entry_solve_rates.tsv"
+DEFAULT_RESULTS_DIR = Path(__file__).resolve().parent.parent.parent / "results_robustness"
+DEFAULT_OUT = Path(__file__).resolve().parent.parent.parent / "results_robustness" / "entry_solve_rates.tsv"
 
 # Priority order (lower = preferred) for picking which transcript to pull the
 # representative query / ground_truth from for a given entry.
@@ -41,10 +42,11 @@ def pct(successes: int, total: int) -> str:
     return f"{100.0 * successes / total:.2f}"
 
 
-def find_statistics_files(results_dir: Path):
+def find_statistics_files(results_dir: Path, error_lvl: str):
+    # Only one error level: pooling 'params' and 'lang' runs would mix two experiments.
     for path in sorted(results_dir.rglob("statistics.csv")):
-        rel_parts = path.relative_to(results_dir).parts
-        if rel_parts and rel_parts[0] == "old":
+        parts = path.relative_to(results_dir).parts
+        if parts[0] == "old" or len(parts) < 6 or parts[3] != error_lvl:
             continue
         yield path
 
@@ -72,6 +74,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-dir", type=Path, default=DEFAULT_RESULTS_DIR)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    parser.add_argument("--error-lvl", choices=["lang", "params"], default="params",
+                        help="Which error-level subfolder of --results-dir to analyze.")
     args = parser.parse_args()
 
     results_dir: Path = args.results_dir
@@ -88,7 +92,7 @@ def main():
     # Best transcript candidate per entry: (priority, path)
     best_transcript = {}
 
-    stats_files = list(find_statistics_files(results_dir))
+    stats_files = list(find_statistics_files(results_dir, args.error_lvl))
     if not stats_files:
         raise SystemExit(f"No statistics.csv files found under {results_dir}")
 
